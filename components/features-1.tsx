@@ -7,8 +7,8 @@ export default function Features() {
         <section className="bg-zinc-50 py-16 md:py-32 dark:bg-transparent">
             <div className="@container mx-auto max-w-5xl px-6">
                 <div className="text-center">
-                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Nossos Tours Exclusivos no Rio de Janeiro</h2>
-                    <p className="mt-4">As parcerias Os melhores destinos para que essas opções sejam ainda mais incríveis.</p>
+                    <h2 className="font-inter text-balance text-4xl font-semibold lg:text-5xl">Nossos Tours Exclusivos no Rio de Janeiro</h2>
+                    <p className="font-inter mt-4 text-muted-foreground">Escolha o pacote ideal para sua viagem e descubra as belezas do Rio de Janeiro com guias credenciados e experiências personalizadas.</p>
                 </div>
                 <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 *:text-center md:mt-16">
                     <Card className="group shadow-zinc-950/5">
@@ -20,11 +20,16 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">Customizable</h3>
+                            <h3 className="font-inter mt-6 font-medium">PACOTE 1 DIA RIO DE JANEIRO</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="text-sm">Extensive customization options, allowing you to tailor every aspect to meet your specific needs.</p>
+                            <p className="font-inter text-sm text-muted-foreground">
+                                Descubra as principais atrações do Rio de Janeiro em um dia completo com nosso guia credenciado Cadastur. 
+                                Visite o Cristo Redentor, Pão de Açúcar, praias icônicas e pontos turísticos históricos com transporte 
+                                incluso e suporte em múltiplos idiomas. Experiência única e personalizada para turistas nacionais e 
+                                internacionais.
+                            </p>
                         </CardContent>
                     </Card>
 
@@ -37,11 +42,16 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">You have full control</h3>
+                            <h3 className="font-inter mt-6 font-medium">PACOTE 2 DIAS RIO DE JANEIRO</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="mt-3 text-sm">From design elements to functionality, you have complete control to create a unique and personalized experience.</p>
+                            <p className="font-inter mt-3 text-sm text-muted-foreground">
+                                Explore o melhor do Rio de Janeiro em dois dias intensos de passeios guiados. Combine visitas aos 
+                                principais pontos turísticos com experiências culturais, gastronômicas e atividades exclusivas. 
+                                Guia credenciado Cadastur, roteiro personalizado e flexível com suporte em português, inglês e 
+                                espanhol. Ideal para quem deseja conhecer a cidade maravilhosa com mais profundidade e conforto.
+                            </p>
                         </CardContent>
                     </Card>
 
@@ -54,11 +64,17 @@ export default function Features() {
                                 />
                             </CardDecorator>
 
-                            <h3 className="mt-6 font-medium">Powered By AI</h3>
+                            <h3 className="font-inter mt-6 font-medium">PACOTE 3 DIAS RIO</h3>
                         </CardHeader>
 
                         <CardContent>
-                            <p className="mt-3 text-sm">Elements to functionality, you have complete control to create a unique experience.</p>
+                            <p className="font-inter mt-3 text-sm text-muted-foreground">
+                                Imersão completa no Rio de Janeiro com três dias de passeios exclusivos e personalizados. 
+                                Roteiro completo incluindo pontos históricos, culturais, naturais e de entretenimento. 
+                                Guia turístico credenciado Cadastur, transporte privado, acompanhamento multilíngue e 
+                                experiência premium. Perfeito para turistas que buscam conhecer verdadeiramente a essência 
+                                da cidade maravilhosa com segurança, qualidade e autenticidade.
+                            </p>
                         </CardContent>
                     </Card>
                 </div>
