@@ -13,3 +13,12 @@ model User {
   email     String   @unique
   createdAt DateTime @default(now())
 }
+
+model Trip {
+  id          String   @id @default(cuid())
+  title       String
+  city        String
+  description String?
+  priceCents  Int
+  createdAt   DateTime @default(now())
+}
