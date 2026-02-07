@@ -4,17 +4,20 @@ import FooterSection from "@/components/footer";
 import HeroSection from "@/components/hero-section";
 import IntegrationsSection from "@/components/integrations-1";
 import Testimonials from "@/components/testimonials";
+import { ReservationsSection } from "@/components/reservations-section";
 
 
 export default function Home() {
   return (
     <div>
       <HeroSection />
+      <ReservationsSection />
       <Features />
-      <IntegrationsSection/>
+      <IntegrationsSection />
       <Testimonials />
-      <FAQsTwo/> 
+      <FAQsTwo />
       <FooterSection />
-  </div>
+    </div>
   );
 }
+
