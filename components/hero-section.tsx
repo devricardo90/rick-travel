@@ -59,8 +59,6 @@ const LOGOS_SECTION = {
         },
         {
             component: TurismoUrbanoIcon,
-            alt: 'Turismo Urbano',
-            height: 36,
         },
     ],
     sliderConfig: {
