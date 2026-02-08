@@ -1,92 +1,153 @@
 
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 type Trip = {
-  id: string
-  title: string
-  city: string
-  description?: string | null
-  priceCents: number
+  id: string;
+  title: string;
+  city: string;
+  description?: string | null;
+  priceCents: number;
+  createdAt?: string;
+};
+
+function formatBRLFromCents(cents: number) {
+  return (cents / 100).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 }
 
 export function TripList() {
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [loading, setLoading] = useState(true)
-  const [userId, setUserId] = useState('')
-  const [message, setMessage] = useState('')
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
+  const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
+
+  async function loadTrips() {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/trips", { cache: "no-store" });
+      if (!res.ok) {
+        setMessage("Erro ao carregar passeios");
+        setTrips([]);
+        return;
+      }
+      const data = (await res.json()) as Trip[];
+      setTrips(Array.isArray(data) ? data : []);
+    } catch {
+      setMessage("Erro de rede ao carregar passeios");
+      setTrips([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    fetch('/api/trips')
-      .then((res) => res.json())
-      .then(setTrips)
-      .finally(() => setLoading(false))
-  }, [])
+    loadTrips();
+  }, []);
 
-  async function handleReserve(tripId: string) {
-    setMessage('')
+  async function reserve(tripId: string) {
+    setMessage(null);
+    setLoadingTripId(tripId);
 
-    const res = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, tripId }),
-    })
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ tripId }),
+      });
 
-    const data = await res.json().catch(() => null)
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      setMessage(data?.error ?? 'Erro ao reservar')
-      return
+      if (res.status === 401) {
+        window.location.href = "/login";
+        return;
+      }
+
+      if (res.status === 409) {
+        setMessage("Você já possui uma reserva para esse passeio ✅");
+        // opcional (mas útil): se já existia, atualiza a lista mesmo assim
+        window.dispatchEvent(new Event("bookings:refresh"));
+        return;
+      }
+
+      if (!res.ok) {
+        setMessage(data?.error ?? "Erro ao reservar");
+        return;
+      }
+
+      setMessage("Reserva criada com sucesso ✅");
+      // ✅ aqui é o lugar certo
+      window.dispatchEvent(new Event("bookings:refresh"));
+    } catch {
+      setMessage("Erro de rede ao reservar");
+    } finally {
+      setLoadingTripId(null);
     }
-
-    setMessage('Reserva criada com sucesso ✅')
   }
 
   if (loading) {
-    return <p className="text-center text-muted-foreground">Carregando passeios…</p>
-  }
-
-  if (trips.length === 0) {
-    return <p className="text-center text-muted-foreground">Nenhum passeio cadastrado.</p>
+    return (
+      <p className="text-center text-muted-foreground">
+        Carregando passeios...
+      </p>
+    );
   }
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border p-4">
-        <p className="mb-2 text-sm text-muted-foreground">
-          (Temporário) Cole um <strong>User ID</strong> para reservar
-        </p>
-        <input
-          className="w-full rounded-lg border px-3 py-2 text-sm"
-          placeholder="Cole o userId aqui"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-      </div>
-
-      {trips.map((trip) => (
-        <div
-          key={trip.id}
-          className="flex flex-col gap-4 rounded-xl border p-6 md:flex-row md:items-center md:justify-between"
-        >
-          <div>
-            <h3 className="font-semibold">{trip.title}</h3>
-            <p className="text-sm text-muted-foreground">{trip.city}</p>
-            {trip.description ? <p className="mt-2 text-sm">{trip.description}</p> : null}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="font-medium">R$ {(trip.priceCents / 100).toFixed(2)}</span>
-            <Button disabled={!userId.trim()} onClick={() => handleReserve(trip.id)}>
-              Reservar
-            </Button>
-          </div>
+      {message ? (
+        <div className="text-center text-sm text-muted-foreground">
+          {message}
         </div>
-      ))}
+      ) : null}
 
-      {message ? <p className="text-center text-sm font-medium">{message}</p> : null}
+      {trips.length === 0 ? (
+        <div className="text-center text-muted-foreground">
+          Nenhum passeio disponível no momento.
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {trips.map((trip) => (
+            <div
+              key={trip.id}
+              className="flex flex-col gap-4 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="min-w-0">
+                <h3 className="text-lg font-semibold">{trip.title}</h3>
+                <p className="text-sm text-muted-foreground">{trip.city}</p>
+                {trip.description ? (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {trip.description}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="flex items-center justify-between gap-4 sm:justify-end">
+                <div className="text-right">
+                  <div className="text-lg font-semibold">
+                    {formatBRLFromCents(trip.priceCents)}
+                  </div>
+                </div>
+
+                <Button
+                  onClick={() => reserve(trip.id)}
+                  disabled={loadingTripId === trip.id}
+                  className="rounded-xl"
+                >
+                  {loadingTripId === trip.id ? "Reservando..." : "Reservar"}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-  )
+  );
 }

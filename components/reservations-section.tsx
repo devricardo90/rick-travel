@@ -1,5 +1,6 @@
 
-import { TripList } from './trip-list'
+import { TripList } from "./trip-list";
+import { MyBookings } from "./my-bookings";
 
 export function ReservationsSection() {
   return (
@@ -11,7 +12,15 @@ export function ReservationsSection() {
         </p>
       </div>
 
-      <TripList />
+      <div className="mb-10">
+        <h3 className="mb-4 text-xl font-semibold">Minhas reservas</h3>
+        <MyBookings />
+      </div>
+
+      <div>
+        <h3 className="mb-4 text-xl font-semibold">Passeios disponíveis</h3>
+        <TripList />
+      </div>
     </section>
-  )
+  );
 }
