@@ -34,197 +34,174 @@ const VIDEO_CONFIG = {
     muted: true,
 } as const
 
+
 const LOGOS_SECTION = {
-    title: 'Nossos serviços',
-    logos: [
-        {
-            component: EntretenimentosIcon,
-            alt: 'Entretenimentos',
-            height: 36,
-        },
-        {
-            component: VisitacoesIcon,
-            alt: 'Visitações',
-            height: 36,
-        },
-        {
-            component: AtividadesEsportivasIcon,
-            alt: 'Atividades Esportivas',
-            height: 36,
-        },
-        {
-            component: ToursGuiadosIcon,
-            alt: 'Tours Guiados',
-            height: 36,
-        },
-        {
-            component: TurismoUrbanoIcon,
-        },
-    ],
-    sliderConfig: {
-        speed: 40,
-        speedOnHover: 20,
-        gap: 112,
-    },
+  title: 'Nossos serviços',
+  logos: [
+    { component: EntretenimentosIcon, alt: 'Entretenimentos', height: 36 },
+    { component: VisitacoesIcon, alt: 'Visitações', height: 36 },
+    { component: AtividadesEsportivasIcon, alt: 'Atividades Esportivas', height: 36 },
+    { component: ToursGuiadosIcon, alt: 'Tours Guiados', height: 36 },
+    { component: TurismoUrbanoIcon, alt: 'Turismo Urbano', height: 36 },
+  ],
+  sliderConfig: {
+    speed: 25,       // movimento mais calmo (premium)
+    speedOnHover: 0, // pausa total no hover
+    gap: 96,
+  },
 } as const
 
-// Componente para o conteúdo principal do hero
+/* ===========================
+   HERO CONTENT
+=========================== */
+
 function HeroContent() {
-    return (
-        <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
-            <div className="mx-auto max-w-lg text-center lg:ml-0 lg:max-w-full lg:text-left">
-                <h1 className="font-inter mt-8 max-w-2xl text-balance text-5xl md:text-6xl lg:mt-16 xl:text-7xl font-bold tracking-tight">
-                    {HERO_CONTENT.title}
-                </h1>
-                
-                <p className="font-inter mt-8 max-w-2xl text-balance text-lg text-muted-foreground leading-relaxed">
-                    {HERO_CONTENT.description}
-                </p>
+  return (
+    <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
+      <div className="mx-auto max-w-lg text-center lg:ml-0 lg:max-w-full lg:text-left">
+        <h1 className="mt-8 max-w-2xl text-balance text-5xl font-bold tracking-tight md:text-6xl lg:mt-16 xl:text-7xl">
+          {HERO_CONTENT.title}
+        </h1>
 
-                <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
-                    <Button
-                        asChild
-                        size="lg"
-                        className="h-12 rounded-full pl-5 pr-3 text-base"
-                    >
-                        <Link href={HERO_CONTENT.primaryButton.href}>
-                            <span className="text-nowrap">
-                                {HERO_CONTENT.primaryButton.text}
-                            </span>
-                            <ChevronRight className="ml-1" />
-                        </Link>
-                    </Button>
-                    
-                    <Button
-                        asChild
-                        size="lg"
-                        variant="ghost"
-                        className="h-12 rounded-full px-5 text-base hover:bg-zinc-950/5 dark:hover:bg-white/5"
-                    >
-                        <Link href={HERO_CONTENT.secondaryButton.href}>
-                            <span className="text-nowrap">
-                                {HERO_CONTENT.secondaryButton.text}
-                            </span>
-                        </Link>
-                    </Button>
-                </div>
-            </div>
+        <p className="mt-8 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground">
+          {HERO_CONTENT.description}
+        </p>
+
+        <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+          <Button asChild size="lg" className="h-12 rounded-full pl-5 pr-3 text-base">
+            <Link href={HERO_CONTENT.primaryButton.href}>
+              <span>{HERO_CONTENT.primaryButton.text}</span>
+              <ChevronRight className="ml-1" />
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            size="lg"
+            variant="ghost"
+            className="h-12 rounded-full px-5 text-base hover:bg-zinc-950/5 dark:hover:bg-white/5"
+          >
+            <Link href={HERO_CONTENT.secondaryButton.href}>
+              {HERO_CONTENT.secondaryButton.text}
+            </Link>
+          </Button>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
-// Componente para o vídeo de fundo
+/* ===========================
+   HERO VIDEO
+=========================== */
+
 function HeroVideo() {
-    return (
-        <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
-            <video
-                autoPlay={VIDEO_CONFIG.autoPlay}
-                loop={VIDEO_CONFIG.loop}
-                muted={VIDEO_CONFIG.muted}
-                playsInline
-                className="size-full object-cover opacity-50 invert dark:opacity-35 dark:invert-0 dark:lg:opacity-75"
-                src={VIDEO_CONFIG.src}
-                aria-label="Vídeo de fundo do Rio de Janeiro"
-            />
-        </div>
-    )
+  return (
+    <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
+      <video
+        autoPlay={VIDEO_CONFIG.autoPlay}
+        loop={VIDEO_CONFIG.loop}
+        muted={VIDEO_CONFIG.muted}
+        playsInline
+        className="size-full object-cover opacity-50 invert dark:opacity-35 dark:invert-0 lg:dark:opacity-75"
+        src={VIDEO_CONFIG.src}
+        aria-label="Vídeo de fundo do Rio de Janeiro"
+      />
+    </div>
+  )
 }
 
-// Componente para logo individual
+/* ===========================
+   LOGO ITEM
+=========================== */
+
 interface LogoItemProps {
-    component?: React.ComponentType<{ height?: number; className?: string }>
-    src?: string
-    alt: string
-    height: number
+  component: React.ComponentType<{ height?: number; className?: string }>
+  alt: string
+  height: number
 }
 
-function LogoItem({ component: IconComponent, src, alt, height }: LogoItemProps) {
-    return (
-        <div className="flex items-center justify-center" style={{ height: `${height}px` }}>
-            {IconComponent ? (
-                <IconComponent
-                    height={height}
-                    className="mx-auto w-auto text-white dark:text-white drop-shadow-lg"
-                />
-            ) : src ? (
-                <img
-                    src={src}
-                    alt={alt}
-                    height={height}
-                    width="auto"
-                    className="mx-auto h-auto w-fit dark:invert"
-                    loading="lazy"
-                    decoding="async"
-                />
-            ) : null}
-        </div>
-    )
+function LogoItem({ component: IconComponent, alt, height }: LogoItemProps) {
+  return (
+    <div
+      className="group relative flex items-center justify-center transition-transform duration-300 hover:-translate-y-1"
+      style={{ height }}
+    >
+      <IconComponent
+        height={height}
+        className="opacity-70 transition-all duration-300 group-hover:opacity-100 group-hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
+      />
+
+      {/* Tooltip */}
+      <span className="pointer-events-none absolute -bottom-6 text-xs text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        {alt}
+      </span>
+    </div>
+  )
 }
 
-// Componente para a seção de logos
+/* ===========================
+   LOGOS SECTION
+=========================== */
+
 function LogosSection() {
-    return (
-        <section className="bg-background pb-2">
-            <div className="group relative m-auto max-w-7xl px-6">
-                <div className="flex flex-col items-center md:flex-row">
-                    <div className="md:max-w-44 md:border-r md:pr-6">
-                        <p className="text-end text-sm">
-                            {LOGOS_SECTION.title}
-                        </p>
-                    </div>
-                    
-                    <div className="relative py-6 md:w-[calc(100%-11rem)]">
-                        <InfiniteSlider
-                            speedOnHover={LOGOS_SECTION.sliderConfig.speedOnHover}
-                            speed={LOGOS_SECTION.sliderConfig.speed}
-                            gap={LOGOS_SECTION.sliderConfig.gap}
-                        >
-                            {LOGOS_SECTION.logos.map((logo, index) => (
-                                <LogoItem
-                                    key={`${logo.alt}-${index}`}
-                                    component={logo.component}
-                                    alt={logo.alt}
-                                    height={logo.height}
-                                />
-                            ))}
-                        </InfiniteSlider>
+  return (
+    <section className="bg-background pb-4">
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center gap-6 md:flex-row">
+          <div className="md:max-w-48 md:border-r md:pr-6">
+            <p className="text-center text-sm font-medium text-muted-foreground md:text-right">
+              {LOGOS_SECTION.title}
+            </p>
+          </div>
 
-                        {/* Gradientes laterais para efeito de fade */}
-                        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent" />
-                        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent" />
-                        
-                        {/* Efeitos de blur progressivo */}
-                        <ProgressiveBlur
-                            className="pointer-events-none absolute left-0 top-0 h-full w-20"
-                            direction="left"
-                            blurIntensity={1}
-                        />
-                        <ProgressiveBlur
-                            className="pointer-events-none absolute right-0 top-0 h-full w-20"
-                            direction="right"
-                            blurIntensity={1}
-                        />
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
+          <div className="relative w-full overflow-hidden py-6">
+            <InfiniteSlider
+              speed={LOGOS_SECTION.sliderConfig.speed}
+              speedOnHover={LOGOS_SECTION.sliderConfig.speedOnHover}
+              gap={LOGOS_SECTION.sliderConfig.gap}
+            >
+              {LOGOS_SECTION.logos.map((logo, index) => (
+                <LogoItem
+                  key={`${logo.alt}-${index}`}
+                  component={logo.component}
+                  alt={logo.alt}
+                  height={logo.height}
+                />
+              ))}
+            </InfiniteSlider>
+
+            {/* Fade lateral */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
+
+            {/* Blur progressivo */}
+            <ProgressiveBlur className="pointer-events-none absolute left-0 top-0 h-full w-24" direction="left" />
+            <ProgressiveBlur className="pointer-events-none absolute right-0 top-0 h-full w-24" direction="right" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }
 
-// Componente principal
+/* ===========================
+   PAGE
+=========================== */
+
 export default function HeroSection() {
-    return (
-        <>
-            <HeroHeader />
-            <main className="overflow-x-hidden">
-                <section>
-                    <div className="relative py-24 md:pb-32 lg:pb-36 lg:pt-72">
-                        <HeroContent />
-                        <HeroVideo />
-                    </div>
-                </section>
-                <LogosSection />
-            </main>
-        </>
-    )
+  return (
+    <>
+      <HeroHeader />
+      <main className="overflow-x-hidden">
+        <section>
+          <div className="relative py-24 md:pb-32 lg:pb-36 lg:pt-72">
+            <HeroContent />
+            <HeroVideo />
+          </div>
+        </section>
+        <LogosSection />
+      </main>
+    </>
+  )
 }
