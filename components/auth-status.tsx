@@ -3,60 +3,80 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 
-type SessionResponse =
-  | { user?: { name?: string | null; email?: string | null } }
-  | null;
+type SessionUser = {
+  id: string;
+  name: string | null;
+  email: string;
+};
 
 export function AuthStatus() {
-  const [session, setSession] = useState<SessionResponse>(null);
+  const [user, setUser] = useState<SessionUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  async function refresh() {
-    const res = await fetch("/api/auth/get-session", { credentials: "include" });
-    if (!res.ok) {
-      setSession(null);
-      return;
+  async function loadSession() {
+    try {
+      const res = await fetch("/api/auth/get-session", {
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+      setUser(data?.session?.user ?? null);
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-    const data = await res.json();
-    setSession(data ?? null);
   }
 
   useEffect(() => {
-    refresh();
+    loadSession();
   }, []);
 
   async function logout() {
-    await authClient.signOut();
-    await refresh();
+    await fetch("/api/auth/sign-out", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    // força recarregar tudo (limpa middleware + header)
     window.location.href = "/";
   }
 
-  const user = session?.user;
+  if (loading) return null;
 
+  // 🔓 DESLOGADO
   if (!user) {
     return (
-      <div className="flex items-center gap-2">
-        <Button asChild variant="outline">
+      <>
+        <Button asChild variant="outline" size="sm">
           <Link href="/login">Login</Link>
         </Button>
-        <Button asChild>
-          <Link href="/register">Sign up</Link>
+
+        <Button asChild size="sm">
+          <Link href="/register">Criar conta</Link>
         </Button>
-      </div>
+      </>
     );
   }
 
+  // 🔐 LOGADO
   return (
-    <div className="flex items-center gap-3">
-      <span className="hidden sm:inline text-sm text-muted-foreground">
-        Logado: {user.name || user.email}
+    <>
+      <span className="hidden sm:block text-sm text-muted-foreground">
+        Olá, <strong>{user.name ?? "usuário"}</strong>
       </span>
-      <Button variant="outline" onClick={logout}>
-        Sair
+
+      <Button asChild variant="outline" size="sm">
+        <Link href="/reservas">Minhas reservas</Link>
       </Button>
-    </div>
+
+      <Button onClick={logout} size="sm">
+        Logout
+      </Button>
+    </>
   );
 }
 

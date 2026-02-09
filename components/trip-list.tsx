@@ -25,7 +25,9 @@ export function TripList() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
   const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
+  const [reservedTripIds, setReservedTripIds] = useState<string[]>([]);
 
+  // 🔹 carrega passeios
   async function loadTrips() {
     setLoading(true);
     setMessage(null);
@@ -47,10 +49,37 @@ export function TripList() {
     }
   }
 
+  // 🔹 carrega IDs das trips já reservadas
+  async function loadReservedTripIds() {
+    try {
+      const res = await fetch("/api/bookings/my-trip-ids", {
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      if (!res.ok) return;
+
+      const ids = (await res.json()) as string[];
+      setReservedTripIds(Array.isArray(ids) ? ids : []);
+    } catch {
+      // silencioso
+    }
+  }
+
+  // 🔹 load inicial
   useEffect(() => {
     loadTrips();
+    loadReservedTripIds();
   }, []);
 
+  // 🔹 refresh automático após reservar/cancelar
+  useEffect(() => {
+    const onRefresh = () => loadReservedTripIds();
+    window.addEventListener("bookings:refresh", onRefresh);
+    return () => window.removeEventListener("bookings:refresh", onRefresh);
+  }, []);
+
+  // 🔹 reservar
   async function reserve(tripId: string) {
     setMessage(null);
     setLoadingTripId(tripId);
@@ -72,7 +101,6 @@ export function TripList() {
 
       if (res.status === 409) {
         setMessage("Você já possui uma reserva para esse passeio ✅");
-        // opcional (mas útil): se já existia, atualiza a lista mesmo assim
         window.dispatchEvent(new Event("bookings:refresh"));
         return;
       }
@@ -83,7 +111,6 @@ export function TripList() {
       }
 
       setMessage("Reserva criada com sucesso ✅");
-      // ✅ aqui é o lugar certo
       window.dispatchEvent(new Event("bookings:refresh"));
     } catch {
       setMessage("Erro de rede ao reservar");
@@ -102,11 +129,11 @@ export function TripList() {
 
   return (
     <div className="space-y-6">
-      {message ? (
+      {message && (
         <div className="text-center text-sm text-muted-foreground">
           {message}
         </div>
-      ) : null}
+      )}
 
       {trips.length === 0 ? (
         <div className="text-center text-muted-foreground">
@@ -114,40 +141,50 @@ export function TripList() {
         </div>
       ) : (
         <div className="space-y-4">
-          {trips.map((trip) => (
-            <div
-              key={trip.id}
-              className="flex flex-col gap-4 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="min-w-0">
-                <h3 className="text-lg font-semibold">{trip.title}</h3>
-                <p className="text-sm text-muted-foreground">{trip.city}</p>
-                {trip.description ? (
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {trip.description}
-                  </p>
-                ) : null}
-              </div>
+          {trips.map((trip) => {
+            const alreadyReserved = reservedTripIds.includes(trip.id);
 
-              <div className="flex items-center justify-between gap-4 sm:justify-end">
-                <div className="text-right">
-                  <div className="text-lg font-semibold">
-                    {formatBRLFromCents(trip.priceCents)}
-                  </div>
+            return (
+              <div
+                key={trip.id}
+                className="flex flex-col gap-4 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="min-w-0">
+                  <h3 className="text-lg font-semibold">{trip.title}</h3>
+                  <p className="text-sm text-muted-foreground">{trip.city}</p>
+                  {trip.description && (
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {trip.description}
+                    </p>
+                  )}
                 </div>
 
-                <Button
-                  onClick={() => reserve(trip.id)}
-                  disabled={loadingTripId === trip.id}
-                  className="rounded-xl"
-                >
-                  {loadingTripId === trip.id ? "Reservando..." : "Reservar"}
-                </Button>
+                <div className="flex items-center justify-between gap-4 sm:justify-end">
+                  <div className="text-right">
+                    <div className="text-lg font-semibold">
+                      {formatBRLFromCents(trip.priceCents)}
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => reserve(trip.id)}
+                    disabled={alreadyReserved || loadingTripId === trip.id}
+                    variant={alreadyReserved ? "outline" : "default"}
+                    className="rounded-xl"
+                  >
+                    {alreadyReserved
+                      ? "Reservado ✅"
+                      : loadingTripId === trip.id
+                      ? "Reservando..."
+                      : "Reservar"}
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
+
