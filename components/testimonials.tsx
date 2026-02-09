@@ -1,111 +1,157 @@
+
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 
 export default function Testimonials() {
-    return (
-        <section className="py-16 md:py-32">
-            <div className="mx-auto max-w-6xl space-y-8 px-6 md:space-y-16">
-                <div className="relative z-10 mx-auto max-w-xl space-y-6 text-center md:space-y-12">
-                    <h2 className="font-inter text-4xl font-medium lg:text-5xl">Avaliações e Depoimentos</h2>
-                    <p className="font-inter text-muted-foreground">
-                        Veja aqui os depoimentos de nossos clientes que viveram experiências inesquecíveis no Rio de Janeiro. 
-                        Histórias reais de turistas que escolheram a Rick Travel para descobrir a cidade maravilhosa com guias credenciados e passeios exclusivos.
-                    </p>
-                </div>
+  return (
+    <section className="py-16 md:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="font-inter text-4xl font-semibold lg:text-5xl">
+            Avaliações e Depoimentos
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Experiências reais de clientes que descobriram o Rio de Janeiro com
+            a Rick Travel.
+          </p>
+        </div>
 
-                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-rows-2">
-                    <TestimonialCard
-                        author="Camila Ferraz"
-                        role="Turista de São Paulo"
-                        initials="CF"
-                        isLarge={true}
-                        text="Foi maravilhoso! A experiência no Rio de Janeiro superou todas as minhas expectativas. O guia credenciado da Rick Travel foi extremamente profissional, conhecedor da história e cultura da cidade. Visitamos o Cristo Redentor, Pão de Açúcar, e tantos outros pontos turísticos incríveis. O atendimento personalizado e a atenção aos detalhes fizeram toda a diferença. Recomendo muito para quem quer conhecer o melhor do Rio com segurança e qualidade."
-                        fullText="Foi maravilhoso! A experiência no Rio de Janeiro superou todas as minhas expectativas. O guia credenciado da Rick Travel foi extremamente profissional, conhecedor da história e cultura da cidade. Visitamos o Cristo Redentor, Pão de Açúcar, e tantos outros pontos turísticos incríveis. O atendimento personalizado e a atenção aos detalhes fizeram toda a diferença. A equipe foi muito atenciosa desde o primeiro contato, respondendo todas as nossas dúvidas prontamente. O roteiro foi perfeitamente planejado, permitindo que aproveitássemos ao máximo cada momento. A experiência superou todas as minhas expectativas e certamente voltarei a contratar os serviços da Rick Travel quando retornar ao Rio de Janeiro. Recomendo muito para quem quer conhecer o melhor do Rio com segurança e qualidade."
-                    />
-                    <TestimonialCard
-                        author="Lucas Hernanes"
-                        role="Turista Internacional"
-                        initials="LH"
-                        text="Serviço excelente! Desde o primeiro contato até o final do passeio, tudo foi perfeito. O tour privado pelo Rio de Janeiro foi incrível, com roteiro personalizado que incluiu Cristo Redentor, Maracanã e a famosa Escadaria Selarón. O guia falava perfeitamente em português e inglês, o que facilitou muito para nossa família."
-                        fullText="Serviço excelente! Desde o primeiro contato até o final do passeio, tudo foi perfeito. O tour privado pelo Rio de Janeiro foi incrível, com roteiro personalizado que incluiu Cristo Redentor, Maracanã e a famosa Escadaria Selarón. O guia falava perfeitamente em português e inglês, o que facilitou muito para nossa família. O transporte foi confortável e pontual, e o guia estava sempre disponível para tirar dúvidas e fazer ajustes no roteiro conforme necessário. A experiência foi verdadeiramente única e memorável, superando todas as nossas expectativas. Certamente repetirei quando voltar ao Rio!"
-                    />
-                    <TestimonialCard
-                        author="Danyela Viana"
-                        role="Influenciadora Digital"
-                        initials="DV"
-                        text="Experiência inesquecível no passeio de helicóptero sobre o Rio de Janeiro! A vista aérea do Cristo Redentor e da Baía de Guanabara foi de tirar o fôlego."
-                        fullText="Experiência inesquecível no passeio de helicóptero sobre o Rio de Janeiro! A vista aérea do Cristo Redentor e da Baía de Guanabara foi de tirar o fôlego. A equipe da Rick Travel cuidou de todos os detalhes, desde a reserva até o retorno. Segurança, profissionalismo e muita dedicação. O piloto foi extremamente experiente e nos proporcionou uma visão privilegiada dos principais cartões-postais da cidade. Recomendo muito para quem busca uma experiência única e memorável na cidade maravilhosa."
-                    />
-                    <TestimonialCard
-                        author="Julia Cortez"
-                        role="Jornalista e Escritora"
-                        initials="JC"
-                        text="Atendimento impecável da Rick Travel! Desde o primeiro contato, percebi o cuidado e atenção com cada detalhe. O tour pelo centro histórico do Rio foi enriquecedor."
-                        fullText="Atendimento impecável da Rick Travel! Desde o primeiro contato, percebi o cuidado e atenção com cada detalhe. O tour pelo centro histórico do Rio foi enriquecedor, com explicações detalhadas sobre a história e cultura da cidade. O guia credenciado Cadastur demonstrou muito conhecimento e paciência, respondendo todas as minhas perguntas com propriedade. A experiência me proporcionou insights valiosos para minhas pesquisas e trabalhos. Serviço de excelência que superou minhas expectativas em todos os aspectos!"
-                    />
-                </div>
-            </div>
-        </section>
-    )
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <TestimonialCard
+            author="Camila Ferraz"
+            role="Turista • São Paulo"
+            initials="CF"
+            instagram="@camilaf"
+            avatarUrl="/avatars/camila.jpg"
+            text="Experiência incrível! Atendimento impecável e roteiro muito bem planejado."
+            fullText="Experiência incrível! Atendimento impecável e roteiro muito bem planejado. O guia foi extremamente profissional e atencioso, tornando o passeio leve, seguro e enriquecedor. Recomendo para quem quer conhecer o Rio com qualidade."
+          />
+
+          <TestimonialCard
+            author="Lucas Hernanes"
+            role="Turista Internacional"
+            initials="LH"
+            instagram="@lucas.h"
+            avatarUrl="/avatars/lucas.jpg"
+            text="Tour privado excelente, tudo organizado nos mínimos detalhes."
+            fullText="Tour privado excelente, tudo organizado nos mínimos detalhes. O guia falava inglês fluentemente, o transporte foi confortável e o roteiro flexível. Uma experiência memorável para toda a família."
+          />
+
+        <TestimonialCard
+         author="Rafael Monteiro"
+         role="Turista • Minas Gerais"
+         initials="RM"
+         instagram="@rafaelmonteiro"
+         avatarUrl="/avatars/rafael.jpg"
+         text="Passeio super organizado e confortável, vale cada minuto."
+         fullText="Passeio super organizado e confortável, vale cada minuto. O roteiro foi flexível, o guia extremamente educado e o transporte impecável. Conseguimos aproveitar o Rio com tranquilidade e segurança. Recomendo demais!"
+         />
+
+         <TestimonialCard
+          author="Mariana Lopes"
+         role="Empresária"
+         initials="ML"
+          instagram="@marilopes"
+           avatarUrl="/avatars/mariana.jpg"
+          text="Atendimento premium do início ao fim, experiência sensacional."
+          fullText="Atendimento premium do início ao fim, experiência sensacional. A Rick Travel cuidou de todos os detalhes com muito profissionalismo. O tour foi exclusivo, confortável e super bem planejado. Sem dúvida a melhor forma de conhecer o Rio."
+         />
+
+
+          <TestimonialCard
+            author="Danyela Viana"
+            role="Influenciadora Digital"
+            initials="DV"
+            instagram="@danyviana"
+            avatarUrl="/avatars/dany.jpg"
+            text="O passeio de helicóptero foi simplesmente surreal!"
+            fullText="O passeio de helicóptero foi simplesmente surreal! A vista aérea do Cristo Redentor e da Baía de Guanabara é algo que nunca vou esquecer. Organização, segurança e profissionalismo impecáveis."
+          />
+
+          <TestimonialCard
+            author="Julia Cortez"
+            role="Jornalista"
+            initials="JC"
+            instagram="@juliacortez"
+            avatarUrl="/avatars/julia.jpg"
+            text="Roteiro cultural riquíssimo e muito bem explicado."
+            fullText="Roteiro cultural riquíssimo e muito bem explicado. O guia demonstrou domínio total da história do Rio, tornando o passeio envolvente e educativo. Experiência de altíssimo nível."
+          />
+        </div>
+      </div>
+    </section>
+  )
 }
 
 interface TestimonialCardProps {
-    author: string
-    role: string
-    initials: string
-    text: string
-    fullText: string
-    isLarge?: boolean
+  author: string
+  role: string
+  initials: string
+  instagram: string
+  avatarUrl?: string
+  text: string
+  fullText: string
 }
 
-function TestimonialCard({ author, role, initials, text, fullText, isLarge = false }: TestimonialCardProps) {
-    const [isExpanded, setIsExpanded] = useState(false)
-    const needsExpand = fullText.length > text.length
+function TestimonialCard({
+  author,
+  role,
+  initials,
+  instagram,
+  avatarUrl,
+  text,
+  fullText,
+}: TestimonialCardProps) {
+  const [expanded, setExpanded] = useState(false)
+  const canExpand = fullText.length > text.length
 
-    return (
-        <Card className={`grid grid-rows-[auto_1fr] ${isLarge ? 'sm:col-span-2 lg:row-span-2' : ''} ${!isLarge && isExpanded ? 'md:col-span-2' : ''}`}>
-            {isLarge && (
-                <CardHeader>
-                    <div className="h-6 flex items-center">
-                        <span className="font-inter text-lg font-semibold text-primary">Rick Travel</span>
-                    </div>
-                </CardHeader>
-            )}
-            <CardContent className={`${isLarge ? '' : 'pt-6'} p-6`}>
-                <blockquote className="grid h-full grid-rows-[1fr_auto] gap-4">
-                    <div className="space-y-2">
-                        <p className={`font-inter leading-relaxed text-muted-foreground ${isLarge ? 'text-base' : 'text-sm'}`}>
-                            {isExpanded ? fullText : text}
-                        </p>
-                        {needsExpand && (
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setIsExpanded(!isExpanded)}
-                                className="font-inter h-auto p-0 text-xs text-primary hover:bg-transparent hover:underline -ml-1"
-                            >
-                                {isExpanded ? 'Ler menos' : 'Leia mais'}
-                                <ChevronDown className={`ml-1 size-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                            </Button>
-                        )}
-                    </div>
+  return (
+    <Card className="h-full rounded-2xl border bg-background/60 shadow-sm">
+      <CardContent className="flex h-full flex-col justify-between p-6">
+        <div className="space-y-3">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {expanded ? fullText : text}
+          </p>
 
-                    <div className={`grid ${isLarge ? 'grid-cols-[auto_1fr]' : 'grid-cols-[auto_1fr]'} items-center gap-3 pt-4 border-t border-dashed`}>
-                        <Avatar className="size-10 sm:size-12">
-                            <AvatarFallback className="font-inter bg-primary/10 text-primary font-semibold text-xs sm:text-sm">{initials}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <cite className="font-inter text-sm font-medium block">{author}</cite>
-                            <span className="text-muted-foreground font-inter block text-xs sm:text-sm">{role}</span>
-                        </div>
-                    </div>
-                </blockquote>
-            </CardContent>
-        </Card>
-    )
+          {canExpand && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setExpanded(!expanded)}
+              className="h-auto px-0 text-xs text-primary hover:bg-transparent"
+            >
+              {expanded ? 'Ler menos' : 'Leia mais'}
+              <ChevronDown
+                className={`ml-1 size-3 transition-transform ${
+                  expanded ? 'rotate-180' : ''
+                }`}
+              />
+            </Button>
+          )}
+        </div>
+
+        <div className="mt-6 flex items-center gap-3 border-t pt-4">
+          <Avatar className="size-11">
+            {avatarUrl ? (
+              <AvatarImage src={avatarUrl} alt={author} />
+            ) : null}
+            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="min-w-0">
+            <p className="text-sm font-medium leading-tight">{author}</p>
+            <p className="text-xs text-muted-foreground">{role}</p>
+            <p className="text-xs text-primary">{instagram}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }
