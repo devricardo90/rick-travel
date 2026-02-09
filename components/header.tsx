@@ -12,10 +12,11 @@ import { AuthStatus } from '@/components/auth-status'
 
 const menuItems = [
   { name: 'Home', href: '/' },
-  { name: 'Quem somos', href: '#quem-somos' },
-  { name: 'Nossos tour', href: '#nossos-tour' },
-  { name: 'Contatos', href: '#contatos' },
+  { name: 'Quem somos', href: '/quem-somos' },
+  { name: 'Nossos tours', href: '/tours' },
+  { name: 'Contatos', href: '/contato' },
 ]
+
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false)

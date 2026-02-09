@@ -22,9 +22,9 @@ const HERO_CONTENT = {
         href: '#reservas',
     },
     secondaryButton: {
-        text: 'Solicitar orçamento',
-        href: '#contato',
-    },
+    text: 'Solicitar orçamento',
+    href: '/contato', // ✅ aqui
+  },
 } as const
 
 const VIDEO_CONFIG = {

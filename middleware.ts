@@ -1,11 +1,11 @@
 
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // nunca proteger API
   if (pathname.startsWith("/api")) {
     return NextResponse.next();
   }
@@ -14,7 +14,13 @@ export function middleware(req: NextRequest) {
     req.cookies.get("better-auth.session-token")?.value ??
     req.cookies.get("__Secure-better-auth.session-token")?.value;
 
-  if (!sessionToken && pathname.startsWith("/admin")) {
+  const isLoggedIn = Boolean(sessionToken);
+
+  // 🔐 protege apenas admin e reservas
+  if (
+    !isLoggedIn &&
+    (pathname.startsWith("/admin") || pathname.startsWith("/reservas"))
+  ) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -22,6 +28,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/reservas/:path*"],
 };
 

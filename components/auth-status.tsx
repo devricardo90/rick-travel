@@ -32,21 +32,30 @@ export function AuthStatus() {
     }
   }
 
-  useEffect(() => {
-    loadSession();
-  }, []);
+useEffect(() => {
+  loadSession();
+
+  const onFocus = () => loadSession();
+  window.addEventListener("focus", onFocus);
+
+  return () => window.removeEventListener("focus", onFocus);
+}, []);
 
 async function logout() {
   try {
     await fetch("/api/auth/sign-out", {
       method: "POST",
-      credentials: "include", // 🔑 essencial
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   } finally {
-    // 🔄 força recarregar tudo (limpa cookies + middleware + header)
+    // força limpar estado + middleware + header
     window.location.href = "/";
   }
 }
+
 
   if (loading) return null;
 
