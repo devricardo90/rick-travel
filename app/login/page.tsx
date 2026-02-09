@@ -1,9 +1,9 @@
 
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
@@ -17,16 +17,28 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const res = await authClient.signIn.email({ email, password });
+    const res = await fetch("/api/auth/sign-in/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include", // 🔑 ESSENCIAL
+      body: JSON.stringify({
+        email,
+        password,
+        redirect: false, // 🔑 NÃO deixar o backend redirecionar
+      }),
+    });
 
+    const data = await res.json().catch(() => ({}));
     setLoading(false);
 
-    if (res?.error) {
-      setError(res.error.message || "Erro ao entrar");
+    if (!res.ok) {
+      setError(data?.error?.message ?? "Erro ao entrar");
       return;
     }
 
-    window.location.href = "/";
+    // ✅ cookie criado corretamente
+    // força recarregar tudo (middleware + header)
+    window.location.replace("/");
   }
 
   return (
@@ -44,6 +56,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="seu@email.com"
+            required
           />
         </div>
 
@@ -55,10 +68,11 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="********"
+            required
           />
         </div>
 
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
+        {error && <p className="text-sm text-red-500">{error}</p>}
 
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Entrando..." : "Entrar"}

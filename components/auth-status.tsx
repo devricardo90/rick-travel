@@ -9,6 +9,7 @@ type SessionUser = {
   id: string;
   name: string | null;
   email: string;
+  role?: "USER" | "ADMIN";
 };
 
 export function AuthStatus() {
@@ -35,15 +36,17 @@ export function AuthStatus() {
     loadSession();
   }, []);
 
-  async function logout() {
+async function logout() {
+  try {
     await fetch("/api/auth/sign-out", {
       method: "POST",
-      credentials: "include",
+      credentials: "include", // 🔑 essencial
     });
-
-    // força recarregar tudo (limpa middleware + header)
+  } finally {
+    // 🔄 força recarregar tudo (limpa cookies + middleware + header)
     window.location.href = "/";
   }
+}
 
   if (loading) return null;
 
@@ -72,6 +75,12 @@ export function AuthStatus() {
       <Button asChild variant="outline" size="sm">
         <Link href="/reservas">Minhas reservas</Link>
       </Button>
+
+      {user.role === "ADMIN" && (
+        <Button asChild variant="outline" size="sm">
+          <Link href="/admin">Admin</Link>
+        </Button>
+      )}
 
       <Button onClick={logout} size="sm">
         Logout
