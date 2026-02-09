@@ -1,4 +1,10 @@
 
+export const metadata = {
+  title: 'reservas',
+  description:
+    'Solicite a sua reserva no Rio de Janeiro com guias credenciados Cadastur.',
+}
+
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";

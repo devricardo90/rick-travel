@@ -33,6 +33,28 @@ export const metadata: Metadata = {
     description: "Guia credenciado Cadastur. PT/EN/ES.",
     locale: "pt_BR",
     type: "website",
+     title: 'Rick Travel | City Tour no Rio de Janeiro',
+    description:
+      'Descubra o Rio de Janeiro com passeios exclusivos e guias credenciados.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'City Tour no Rio de Janeiro - Rick Travel',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rick Travel | City Tour no Rio',
+    description:
+      'Passeios exclusivos no Rio de Janeiro com guias credenciados.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

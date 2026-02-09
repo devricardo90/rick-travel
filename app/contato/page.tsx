@@ -1,4 +1,11 @@
 
+export const metadata = {
+  title: 'Contato e Orçamento',
+  description:
+    'Solicite orçamento para passeios no Rio de Janeiro com guias credenciados Cadastur.',
+}
+
+
 export default function ContatoPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-20">
