@@ -1,16 +1,21 @@
 
 import { redirect } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { AdminLogoutButton } from "@/components/admin/logout-button";
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await authClient.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  if (!session) {
+  // 🔐 Proteção REAL de admin
+  if (!session || session.user.role !== "ADMIN") {
     redirect("/login");
   }
 
@@ -26,18 +31,12 @@ export default async function AdminLayout({
             <Link href="/admin/bookings">Reservas</Link>
 
             {/* Logout */}
-            <form action="/api/auth/sign-out" method="POST">
-              <button className="text-red-500 hover:underline">
-                Sair
-              </button>
-            </form>
+            <AdminLogoutButton />
           </nav>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-10">
-        {children}
-      </main>
+      <main>{children}</main>
     </div>
   );
 }

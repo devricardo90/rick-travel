@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 
 type SessionUser = {
   id: string;
@@ -32,29 +33,25 @@ export function AuthStatus() {
     }
   }
 
-useEffect(() => {
-  loadSession();
+  useEffect(() => {
+    loadSession();
 
-  const onFocus = () => loadSession();
-  window.addEventListener("focus", onFocus);
+    const onFocus = () => loadSession();
+    window.addEventListener("focus", onFocus);
 
-  return () => window.removeEventListener("focus", onFocus);
-}, []);
+    return () => window.removeEventListener("focus", onFocus);
+  }, []);
 
-async function logout() {
-  try {
-    await fetch("/api/auth/sign-out", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+
+  async function logout() {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.href = "/";
+        },
       },
     });
-  } finally {
-    // força limpar estado + middleware + header
-    window.location.href = "/";
   }
-}
 
 
   if (loading) return null;

@@ -1,24 +1,22 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { TripCard } from "./trips/trip-card";
 
 type Trip = {
   id: string;
   title: string;
   city: string;
+  location?: string | null;
   description?: string | null;
   priceCents: number;
+  imageUrl?: string | null;
+  startDate?: string;
+  endDate?: string;
+  maxGuests?: number | null;
+  highlights?: string[];
   createdAt?: string;
 };
-
-function formatBRLFromCents(cents: number) {
-  return (cents / 100).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  });
-}
 
 export function TripList() {
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -121,67 +119,51 @@ export function TripList() {
 
   if (loading) {
     return (
-      <p className="text-center text-muted-foreground">
-        Carregando passeios...
-      </p>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="flex flex-col gap-4 rounded-2xl border bg-white p-4 shadow-sm">
+            <div className="aspect-video w-full animate-pulse rounded-lg bg-gray-200" />
+            <div className="space-y-3">
+              <div className="h-6 w-3/4 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-1/2 animate-pulse rounded bg-gray-200" />
+              <div className="flex gap-2">
+                <div className="h-6 w-20 animate-pulse rounded bg-gray-200" />
+                <div className="h-6 w-20 animate-pulse rounded bg-gray-200" />
+              </div>
+              <div className="flex items-center justify-between border-t pt-4">
+                <div className="h-8 w-24 animate-pulse rounded bg-gray-200" />
+                <div className="h-9 w-24 animate-pulse rounded bg-gray-200" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     );
   }
 
   return (
     <div className="space-y-6">
       {message && (
-        <div className="text-center text-sm text-muted-foreground">
+        <div className="rounded-md bg-blue-50 p-4 text-center text-sm text-blue-700">
           {message}
         </div>
       )}
 
       {trips.length === 0 ? (
-        <div className="text-center text-muted-foreground">
+        <div className="text-center text-muted-foreground py-10">
           Nenhum passeio disponível no momento.
         </div>
       ) : (
-        <div className="space-y-4">
-          {trips.map((trip) => {
-            const alreadyReserved = reservedTripIds.includes(trip.id);
-
-            return (
-              <div
-                key={trip.id}
-                className="flex flex-col gap-4 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <div className="min-w-0">
-                  <h3 className="text-lg font-semibold">{trip.title}</h3>
-                  <p className="text-sm text-muted-foreground">{trip.city}</p>
-                  {trip.description && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {trip.description}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between gap-4 sm:justify-end">
-                  <div className="text-right">
-                    <div className="text-lg font-semibold">
-                      {formatBRLFromCents(trip.priceCents)}
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={() => reserve(trip.id)}
-                    disabled={alreadyReserved || loadingTripId === trip.id}
-                    variant={alreadyReserved ? "outline" : "default"}
-                    className="rounded-xl"
-                  >
-                    {alreadyReserved
-                      ? "Reservado ✅"
-                      : loadingTripId === trip.id
-                      ? "Reservando..."
-                      : "Reservar"}
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {trips.map((trip) => (
+            <TripCard
+              key={trip.id}
+              trip={trip}
+              onReserve={reserve}
+              loading={loadingTripId === trip.id}
+              reserved={reservedTripIds.includes(trip.id)}
+            />
+          ))}
         </div>
       )}
     </div>

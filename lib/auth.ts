@@ -9,11 +9,19 @@ export const auth = betterAuth({
 
   emailAndPassword: { enabled: true },
 
-  user: { modelName: "User" },
+  user: {
+    modelName: "User",
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "USER",
+      },
+    },
+  },
+
   session: { modelName: "Session" },
   account: { modelName: "Account" },
   verification: { modelName: "Verification" },
 
   plugins: [nextCookies()],
 });
-

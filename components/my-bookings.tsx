@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,6 +8,8 @@ type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
 type Booking = {
   id: string;
   status: BookingStatus;
+  guestCount: number;
+  totalPriceCents: number;
   createdAt: string;
   trip: {
     id: string;
@@ -32,15 +33,15 @@ function StatusBadge({ status }: { status: BookingStatus }) {
     status === "CONFIRMED"
       ? "border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
       : status === "PENDING"
-      ? "border-amber-500/30 text-amber-600 dark:text-amber-400"
-      : "border-zinc-500/30 text-zinc-500";
+        ? "border-amber-500/30 text-amber-600 dark:text-amber-400"
+        : "border-zinc-500/30 text-zinc-500";
 
   const label =
     status === "CONFIRMED"
       ? "CONFIRMADA"
       : status === "PENDING"
-      ? "PENDENTE"
-      : "CANCELADA";
+        ? "PENDENTE"
+        : "CANCELADA";
 
   return <span className={`${base} ${variant}`}>{label}</span>;
 }
@@ -143,8 +144,13 @@ export function MyBookings() {
       <div className="flex items-center gap-3">
         <div className="text-right">
           <div className="text-lg font-semibold">
-            {formatBRLFromCents(b.trip.priceCents)}
+            {formatBRLFromCents(b.totalPriceCents > 0 ? b.totalPriceCents : b.trip.priceCents)}
           </div>
+          {b.guestCount > 1 && (
+            <div className="text-xs text-muted-foreground">
+              {b.guestCount} viajantes
+            </div>
+          )}
         </div>
 
         {b.status === "CANCELED" ? null : (
@@ -180,4 +186,3 @@ export function MyBookings() {
     </div>
   );
 }
-

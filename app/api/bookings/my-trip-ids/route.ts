@@ -5,7 +5,9 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export async function GET() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session) {
     return NextResponse.json([], { status: 200 });
@@ -21,4 +23,3 @@ export async function GET() {
 
   return NextResponse.json(bookings.map((b) => b.tripId));
 }
-

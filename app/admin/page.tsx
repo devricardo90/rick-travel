@@ -1,5 +1,6 @@
 
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 async function getStats() {
@@ -13,7 +14,9 @@ async function getStats() {
 }
 
 export default async function AdminPage() {
-  const session = await auth.api.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/");

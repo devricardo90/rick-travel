@@ -24,24 +24,24 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.BETTER_AUTH_URL || "http://localhost:3000"),
   title: "Rick Travel — City Tour no Rio",
   description: "Guia credenciado Cadastur. PT/EN/ES.",
   authors: [{ name: "Rick Travel" }],
   keywords: ["turismo", "rio de janeiro", "city tour", "cadastur", "guia turístico"],
   openGraph: {
-    title: "Rick Travel — City Tour no Rio",
-    description: "Guia credenciado Cadastur. PT/EN/ES.",
-    locale: "pt_BR",
     type: "website",
-     title: 'Rick Travel | City Tour no Rio de Janeiro',
-    description:
-      'Descubra o Rio de Janeiro com passeios exclusivos e guias credenciados.',
+    locale: "pt_BR",
+    url: "https://ricktravel.com.br",
+    title: "Rick Travel | City Tour no Rio de Janeiro",
+    description: "Descubra o Rio de Janeiro com passeios exclusivos e guias credenciados.",
+    siteName: "Rick Travel",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: 'City Tour no Rio de Janeiro - Rick Travel',
+        alt: "City Tour no Rio de Janeiro - Rick Travel",
       },
     ],
   },

@@ -8,7 +8,9 @@ export async function PATCH(
   _req: Request,
   ctx: { params: Promise<{ id: string }> }
 ) {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   if (!session) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
