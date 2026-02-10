@@ -18,7 +18,7 @@ export default async function AdminTripsPage() {
 
             <div className="bg-white rounded-lg shadow overflow-hidden border">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 text-gray-700 font-medium border-b">
+                    <thead className="bg-gray-100 text-black-900 font-semibold border-b">
                         <tr>
                             <th className="py-3 px-4">Título</th>
                             <th className="py-3 px-4">Cidade</th>
@@ -30,13 +30,13 @@ export default async function AdminTripsPage() {
                     <tbody className="divide-y">
                         {trips.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className="py-8 text-center text-gray-500">
+                                <td colSpan={5} className="py-8 text-center text-gray-700">
                                     Nenhuma viagem cadastrada.
                                 </td>
                             </tr>
                         ) : (
                             trips.map((trip) => (
-                                <tr key={trip.id} className="hover:bg-gray-50">
+                                <tr key={trip.id} className="hover:bg-blue-100">
                                     <td className="py-3 px-4 font-medium">{trip.title}</td>
                                     <td className="py-3 px-4">{trip.city}</td>
                                     <td className="py-3 px-4">

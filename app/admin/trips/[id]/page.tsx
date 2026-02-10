@@ -4,14 +4,15 @@ import TripForm from "@/components/admin/trip-form";
 import { notFound } from "next/navigation";
 
 interface EditTripPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function EditTripPage({ params }: EditTripPageProps) {
+    const { id } = await params;
     const trip = await prisma.trip.findUnique({
-        where: { id: params.id },
+        where: { id },
     });
 
     if (!trip) {
