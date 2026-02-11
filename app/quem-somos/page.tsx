@@ -21,7 +21,7 @@ export default function QuemSomosPage() {
         {/* Foto do Guia */}
         <div className="mx-auto relative w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-xl">
           <img
-            src="/images/imagem-casal-pao-de-acucar.jpg"
+            src="/images/trips/imagem-casal-pao-de-acucar.jpg"
             alt="Ricardo Guia de Turismo no Pão de Açúcar com turista"
             className="object-cover w-full h-full"
           />

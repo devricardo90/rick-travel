@@ -25,7 +25,7 @@ export default function Features() {
           <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
             <div className="relative h-48 w-full overflow-hidden">
               <img
-                src="/images/imagem-casal-pao-de-acucar.jpg"
+                src="/images/trips/imagem-casal-pao-de-acucar.jpg"
                 alt="Tour Rio de Janeiro Pão de Açúcar"
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
               />
@@ -57,7 +57,7 @@ export default function Features() {
           <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
             <div className="relative h-48 w-full overflow-hidden">
               <img
-                src="/images/imagem-turista-quarda-favela.jpg"
+                src="/images/trips/imagem-escadaria-selarao-brasil.jpg"
                 alt="Tour Rio de Janeiro Experiência Completa"
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
               />
@@ -89,7 +89,7 @@ export default function Features() {
           <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
             <div className="relative h-48 w-full overflow-hidden">
               <img
-                src="/images/imagem-tour-favela-rocinha.jpg"
+                src="/images/trips/imagem-tour-favela-rocinha.jpg"
                 alt="Tour Favela Rocinha e Arte Urbana"
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
               />
