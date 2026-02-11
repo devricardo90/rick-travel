@@ -2,16 +2,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-async function getStats() {
-  const res = await fetch("http://localhost:3000/api/admin/stats", {
-    cache: "no-store",
-    credentials: "include",
-  });
-
-  if (!res.ok) return null;
-  return res.json();
-}
+import { prisma } from "@/lib/prisma";
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({
@@ -21,29 +12,33 @@ export default async function AdminPage() {
   if (!session) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/");
 
-  const stats = await getStats();
+  const [usersCount, tripsCount, bookingsCount] = await Promise.all([
+    prisma.user.count(),
+    prisma.trip.count(),
+    prisma.booking.count(),
+  ]);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold">Dashboard Admin</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-slate-900">Dashboard Admin</h1>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="rounded-xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">Usuários</p>
-          <p className="text-2xl font-bold">{stats?.users ?? "-"}</p>
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <p className="text-sm font-medium text-slate-500">Usuários</p>
+          <p className="text-2xl font-bold text-slate-900">{usersCount}</p>
         </div>
 
-        <div className="rounded-xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">Passeios</p>
-          <p className="text-2xl font-bold">{stats?.trips ?? "-"}</p>
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <p className="text-sm font-medium text-slate-500">Passeios</p>
+          <p className="text-2xl font-bold text-slate-900">{tripsCount}</p>
         </div>
 
-        <div className="rounded-xl border bg-background p-6">
-          <p className="text-sm text-muted-foreground">Reservas</p>
-          <p className="text-2xl font-bold">{stats?.bookings ?? "-"}</p>
+        <div className="rounded-xl border bg-white p-6 shadow-sm">
+          <p className="text-sm font-medium text-slate-500">Reservas</p>
+          <p className="text-2xl font-bold text-slate-900">{bookingsCount}</p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

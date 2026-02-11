@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Settings2, Sparkles, Zap } from 'lucide-react'
 import { ReactNode } from 'react'
 
 export default function Features() {
@@ -21,15 +20,19 @@ export default function Features() {
         </div>
 
         <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 md:mt-16">
-          
-          {/* PACOTE 1 */}
-          <Card className="group flex flex-col shadow-zinc-950/5">
-            <CardHeader className="pb-3 text-center">
-              <CardDecorator>
-                <Zap className="size-6" aria-hidden />
-              </CardDecorator>
 
-              <h3 className="font-inter mt-6 font-medium">
+          {/* PACOTE 1: Rio Essencial */}
+          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
+            <div className="relative h-48 w-full overflow-hidden">
+              <img
+                src="/images/imagem-casal-pao-de-acucar.jpg"
+                alt="Tour Rio de Janeiro Pão de Açúcar"
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            <CardHeader className="pb-3 text-center">
+              <h3 className="font-inter mt-2 font-medium text-xl">
                 Rio Essencial – 1 Dia
               </h3>
             </CardHeader>
@@ -50,14 +53,18 @@ export default function Features() {
             </CardContent>
           </Card>
 
-          {/* PACOTE 2 */}
-          <Card className="group flex flex-col shadow-zinc-950/5">
-            <CardHeader className="pb-3 text-center">
-              <CardDecorator>
-                <Settings2 className="size-6" aria-hidden />
-              </CardDecorator>
+          {/* PACOTE 2: Rio Completo */}
+          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
+            <div className="relative h-48 w-full overflow-hidden">
+              <img
+                src="/images/imagem-turista-quarda-favela.jpg"
+                alt="Tour Rio de Janeiro Experiência Completa"
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
 
-              <h3 className="font-inter mt-6 font-medium">
+            <CardHeader className="pb-3 text-center">
+              <h3 className="font-inter mt-2 font-medium text-xl">
                 Rio Completo – 2 Dias
               </h3>
             </CardHeader>
@@ -78,14 +85,18 @@ export default function Features() {
             </CardContent>
           </Card>
 
-          {/* PACOTE 3 */}
-          <Card className="group flex flex-col shadow-zinc-950/5">
-            <CardHeader className="pb-3 text-center">
-              <CardDecorator>
-                <Sparkles className="size-6" aria-hidden />
-              </CardDecorator>
+          {/* PACOTE 3: Rio Imersão */}
+          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden">
+            <div className="relative h-48 w-full overflow-hidden">
+              <img
+                src="/images/imagem-tour-favela-rocinha.jpg"
+                alt="Tour Favela Rocinha e Arte Urbana"
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
 
-              <h3 className="font-inter mt-6 font-medium">
+            <CardHeader className="pb-3 text-center">
+              <h3 className="font-inter mt-2 font-medium text-xl">
                 Rio Imersão – 3 Dias
               </h3>
             </CardHeader>
@@ -111,14 +122,4 @@ export default function Features() {
   )
 }
 
-const CardDecorator = ({ children }: { children: ReactNode }) => (
-  <div className="mask-radial-from-40% mask-radial-to-60% relative mx-auto size-36 duration-200">
-    <div
-      aria-hidden
-      className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:24px_24px] dark:opacity-50"
-    />
-    <div className="bg-background absolute inset-0 m-auto flex size-12 items-center justify-center border-l border-t">
-      {children}
-    </div>
-  </div>
-)
+

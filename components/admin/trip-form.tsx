@@ -46,8 +46,11 @@ export default function TripForm({ initialData }: TripFormProps) {
                 highlights: highlightsArray,
             };
 
-            const res = await fetch("/api/trips", {
-                method: "POST", // TODO: Adicionar PUT para edição se initialData existir
+            const url = initialData?.id ? `/api/trips/${initialData.id}` : "/api/trips";
+            const method = initialData?.id ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });

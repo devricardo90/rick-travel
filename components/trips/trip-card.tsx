@@ -2,6 +2,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Calendar, MapPin, Users } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface TripCardProps {
@@ -103,8 +104,15 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                                     : "Reservar"}
                         </Button>
                     </div>
+
+                    <div className="mt-4 flex justify-end">
+                        <Link href={`/tours/${trip.id}`} className="text-sm font-medium text-muted-foreground hover:text-primary hover:underline">
+                            Ver detalhes →
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 }

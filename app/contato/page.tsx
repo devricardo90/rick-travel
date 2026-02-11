@@ -1,19 +1,27 @@
 
+import { ContactForm } from "@/components/contact-form";
+
 export const metadata = {
-  title: 'Contato e Orçamento',
+  title: 'Contato e Orçamento | Rick Travel',
   description:
-    'Solicite orçamento para passeios no Rio de Janeiro com guias credenciados Cadastur.',
+    'Solicite orçamento para passeios no Rio de Janeiro com guias credenciados Cadastur. Entre em contato conosco.',
+  openGraph: {
+    title: 'Contato e Orçamento | Rick Travel',
+    description: 'Solicite orçamento para passeios no Rio de Janeiro com guias credenciados Cadastur.',
+    url: 'https://ricktravel.com.br/contato',
+    siteName: 'Rick Travel',
+    locale: 'pt_BR',
+    type: 'website',
+  },
 }
 
 
 export default function ContatoPage() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-20">
-      <h1 className="text-4xl font-bold">Contato</h1>
-      <p className="mt-4 text-muted-foreground">
-        Entre em contato conosco para dúvidas ou orçamentos.
-      </p>
+    <main className="container mx-auto max-w-5xl px-6 py-20">
+      <div className="flex flex-col items-center justify-center">
+        <ContactForm />
+      </div>
     </main>
   );
 }
-
