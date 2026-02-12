@@ -1,4 +1,4 @@
-import { TripList } from "@/components/trip-list";
+import TripList from "@/components/trip-list";
 
 export const metadata = {
   title: "Tours e Experiências | Rick Travel",

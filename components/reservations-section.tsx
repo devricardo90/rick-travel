@@ -1,5 +1,5 @@
 
-import { TripList } from "./trip-list";
+import TripList from "./trip-list";
 import { MyBookings } from "./my-bookings";
 
 export function ReservationsSection() {

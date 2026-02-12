@@ -6,33 +6,32 @@ import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { ChevronRight } from 'lucide-react'
 import {
-    EntretenimentosIcon,
-    VisitacoesIcon,
-    AtividadesEsportivasIcon,
-    ToursGuiadosIcon,
-    TurismoUrbanoIcon,
+  EntretenimentosIcon,
+  VisitacoesIcon,
+  AtividadesEsportivasIcon,
+  ToursGuiadosIcon,
+  TurismoUrbanoIcon,
 } from '@/components/logos/tourism-services'
 
 // Constantes de configuração
 const HERO_CONTENT = {
-    title: 'City Tour no Rio de Janeiro com Guia Credenciado',
-    description: 'Descubra as maravilhas do Rio de Janeiro em passeios exclusivos, guiados por especialistas credenciados. Segurança e experiências personalizadas para brasileiros e estrangeiros.',
-    primaryButton: {
-        text: 'Reserve agora seu passeio exclusivo',
-        href: '#reservas',
-    },
-    secondaryButton: {
+  title: 'City Tour no Rio de Janeiro com Guia Credenciado',
+  description: 'Descubra as maravilhas do Rio de Janeiro em passeios exclusivos, guiados por especialistas credenciados. Segurança e experiências personalizadas para brasileiros e estrangeiros.',
+  primaryButton: {
+    text: 'Reserve agora seu passeio exclusivo',
+    href: '#reservas',
+  },
+  secondaryButton: {
     text: 'Solicitar orçamento',
     href: '/contato', // ✅ aqui
   },
 } as const
 
-const VIDEO_CONFIG = {
-    src: '/videos/rio-de-janeiro-hero.mp4',
-    autoPlay: true,
-    loop: true,
-    muted: true,
+const HERO_IMAGE = {
+  src: '/videos/imagem-praia-ipanema.jpg',
+  alt: 'Praia de Ipanema',
 } as const
+
 
 
 const LOGOS_SECTION = {
@@ -91,21 +90,18 @@ function HeroContent() {
   )
 }
 
+
 /* ===========================
-   HERO VIDEO
+   HERO MEDIA (IMAGE REPLACEMENT)
 =========================== */
 
-function HeroVideo() {
+function HeroMedia() {
   return (
     <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
-      <video
-        autoPlay={VIDEO_CONFIG.autoPlay}
-        loop={VIDEO_CONFIG.loop}
-        muted={VIDEO_CONFIG.muted}
-        playsInline
-        className="size-full object-cover opacity-50 invert dark:opacity-35 dark:invert-0 lg:dark:opacity-75"
-        src={VIDEO_CONFIG.src}
-        aria-label="Vídeo de fundo do Rio de Janeiro"
+      <img
+        className="size-full object-cover opacity-50 dark:opacity-35 lg:dark:opacity-75"
+        src={HERO_IMAGE.src}
+        alt={HERO_IMAGE.alt}
       />
     </div>
   )
@@ -197,7 +193,7 @@ export default function HeroSection() {
         <section>
           <div className="relative py-24 md:pb-32 lg:pb-36 lg:pt-72">
             <HeroContent />
-            <HeroVideo />
+            <HeroMedia />
           </div>
         </section>
         <LogosSection />

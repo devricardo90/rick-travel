@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { createTrip, updateTrip } from "@/app/admin/trips/actions";
 
 interface TripFormProps {
     initialData?: any; // Tipar melhor depois se sobrar tempo
@@ -46,18 +47,16 @@ export default function TripForm({ initialData }: TripFormProps) {
                 highlights: highlightsArray,
             };
 
-            const url = initialData?.id ? `/api/trips/${initialData.id}` : "/api/trips";
-            const method = initialData?.id ? "PUT" : "POST";
+            let result;
 
-            const res = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            if (initialData?.id) {
+                result = await updateTrip(initialData.id, payload);
+            } else {
+                result = await createTrip(payload);
+            }
 
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || "Erro ao salvar viagem");
+            if (result.error) {
+                throw new Error(result.error);
             }
 
             router.push("/admin/trips");
