@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function ContatoPage() {
   return (
-    <main className="container mx-auto max-w-5xl px-6 py-20">
+    <main className="container mx-auto max-w-5xl px-6 pt-32 pb-20">
       <div className="flex flex-col items-center justify-center">
         <ContactForm />
       </div>

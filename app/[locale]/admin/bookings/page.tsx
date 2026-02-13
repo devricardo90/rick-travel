@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { BookingActions } from "@/components/admin/booking-actions";
+import { getLocalizedField } from "@/lib/translation-service";
 
 export default async function AdminBookingsPage() {
     const bookings = await prisma.booking.findMany({
@@ -54,7 +55,9 @@ export default async function AdminBookingsPage() {
                                         <div className="text-xs text-slate-500">{booking.user.email}</div>
                                     </td>
                                     <td className="py-3 px-4">
-                                        <div className="font-medium text-slate-900">{booking.trip.title}</div>
+                                        <div className="font-medium text-slate-900">
+                                            {getLocalizedField<string>(booking.trip.title, 'pt')}
+                                        </div>
                                         <div className="text-xs text-slate-500">{booking.trip.city}</div>
                                     </td>
                                     <td className="py-3 px-4">

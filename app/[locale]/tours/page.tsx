@@ -14,7 +14,7 @@ export const metadata = {
 
 export default function ToursPage() {
   return (
-    <main className="mx-auto max-w-7xl px-6 py-20">
+    <main className="mx-auto max-w-7xl px-6 pt-32 pb-20">
       <ToursHeader />
       <TripList />
     </main>

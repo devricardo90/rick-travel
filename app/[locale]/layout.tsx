@@ -7,6 +7,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { HeroHeader } from '@/components/header';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -92,6 +93,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <HeroHeader />
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

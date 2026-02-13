@@ -9,6 +9,11 @@
         "Logos": {
             "title": "Nossos serviços"
         },
+        "Search": {
+            "placeholder": "Busque por passeios, pontos turísticos, cidades...",
+            "button": "Buscar",
+            "noResults": "Nenhum passeio encontrado. Tente outra busca."
+        },
         "Reservations": {
             "title": "Reserve seu passeio",
             "subtitle": "Escolha uma experiência e garanta sua vaga com poucos cliques.",

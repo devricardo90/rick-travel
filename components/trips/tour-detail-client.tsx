@@ -48,15 +48,11 @@ export function TourDetailClient({ trip, startDate, endDate }: TourDetailClientP
     const localizedHighlights = getLocalizedField<string[]>(trip.highlights, locale) || [];
 
     return (
-        <main className="mx-auto max-w-7xl px-6 py-10">
-            <div className="mb-8">
-                <Link href="/tours">
-                    <Button variant="ghost" className="pl-0 hover:pl-0 hover:bg-transparent text-muted-foreground hover:text-foreground">
-                        <ChevronLeft className="mr-2 h-4 w-4" />
-                        {t('backToTours')}
-                    </Button>
-                </Link>
-            </div>
+        <main className="mx-auto max-w-7xl px-6 pt-32 pb-10">
+            <Link href="/tours" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
+                <ChevronLeft className="h-4 w-4" />
+                {t('backToTours')}
+            </Link>
 
             <div className="grid gap-10 lg:grid-cols-3">
                 {/* Main Content */}

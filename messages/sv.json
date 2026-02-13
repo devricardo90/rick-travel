@@ -9,6 +9,11 @@
         "Logos": {
             "title": "Våra Tjänster"
         },
+        "Search": {
+            "placeholder": "Sök turer, attraktioner, städer...",
+            "button": "Sök",
+            "noResults": "Inga turer hittades. Försök med en annan sökning."
+        },
         "Reservations": {
             "title": "Boka Din Tur",
             "subtitle": "Välj en upplevelse och säkra din plats med bara några klick.",

@@ -6,7 +6,7 @@ export default function QuemSomosPage() {
   const t = useTranslations('AboutPage');
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-20 space-y-16">
+    <main className="mx-auto max-w-5xl px-6 pt-32 pb-20 space-y-16">
       {/* Intro Section */}
       <section className="text-center space-y-8">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>

@@ -9,6 +9,11 @@
         "Logos": {
             "title": "Nuestros Servicios"
         },
+        "Search": {
+            "placeholder": "Buscar tours, atracciones, ciudades...",
+            "button": "Buscar",
+            "noResults": "No se encontraron tours. Intenta otra búsqueda."
+        },
         "Reservations": {
             "title": "Reserva Tu Tour",
             "subtitle": "Elige una experiencia y asegura tu lugar en pocos clics.",
