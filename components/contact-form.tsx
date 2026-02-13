@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Loader2 } from "lucide-react"
+import { useTranslations } from 'next-intl'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,16 +13,19 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { submitContactForm } from "@/app/actions/contact"
 
-const contactSchema = z.object({
-    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Email inválido"),
-    phone: z.string().optional(),
-    message: z.string().min(10, "Mensagem deve ter pelo menos 10 caracteres"),
-})
-
-type ContactFormData = z.infer<typeof contactSchema>
 
 export function ContactForm() {
+    const t = useTranslations('ContactPage.form');
+    const tPage = useTranslations('ContactPage');
+
+    const contactSchema = z.object({
+        name: z.string().min(2, t('nameError')),
+        email: z.string().email(t('emailError')),
+        phone: z.string().optional(),
+        message: z.string().min(10, t('messageError')),
+    })
+
+    type ContactFormData = z.infer<typeof contactSchema>
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
 
@@ -53,11 +57,11 @@ export function ContactForm() {
                 setSubmitResult({ success: true, message: result.message! })
                 reset()
             } else {
-                setSubmitResult({ success: false, message: result.message || "Erro ao enviar mensagem." })
+                setSubmitResult({ success: false, message: result.message || t('errorSubmit') })
                 // If there are field errors from server, we could set them here using setError
             }
         } catch (error) {
-            setSubmitResult({ success: false, message: "Erro inesperado. Tente novamente." })
+            setSubmitResult({ success: false, message: t('errorGeneric') })
         } finally {
             setIsSubmitting(false)
         }
@@ -66,17 +70,17 @@ export function ContactForm() {
     return (
         <div className="mx-auto w-full max-w-md space-y-6">
             <div className="grid gap-2 text-center">
-                <h2 className="text-3xl font-bold">Entre em contato</h2>
+                <h2 className="text-3xl font-bold">{tPage('title')}</h2>
                 <p className="text-balance text-muted-foreground">
-                    Preencha o formulário abaixo para enviar uma mensagem para nossa equipe.
+                    {tPage('subtitle')}
                 </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Nome</Label>
+                    <Label htmlFor="name">{t('name')}</Label>
                     <Input
                         id="name"
-                        placeholder="Seu nome completo"
+                        placeholder={t('namePlaceholder')}
                         {...register("name")}
                         className={errors.name ? "border-red-500" : ""}
                     />
@@ -85,11 +89,11 @@ export function ContactForm() {
                     )}
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('email')}</Label>
                     <Input
                         id="email"
                         type="email"
-                        placeholder="seu@email.com"
+                        placeholder={t('emailPlaceholder')}
                         {...register("email")}
                         className={errors.email ? "border-red-500" : ""}
                     />
@@ -98,19 +102,19 @@ export function ContactForm() {
                     )}
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="phone">Telefone (Opcional)</Label>
+                    <Label htmlFor="phone">{t('phone')}</Label>
                     <Input
                         id="phone"
                         type="tel"
-                        placeholder="(21) 99999-9999"
+                        placeholder={t('phonePlaceholder')}
                         {...register("phone")}
                     />
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="message">Mensagem</Label>
+                    <Label htmlFor="message">{t('message')}</Label>
                     <Textarea
                         id="message"
-                        placeholder="Diga como podemos ajudar..."
+                        placeholder={t('messagePlaceholder')}
                         {...register("message")}
                         className={errors.message ? "border-red-500" : ""}
                     />
@@ -122,8 +126,8 @@ export function ContactForm() {
                 {submitResult && (
                     <div
                         className={`rounded-md p-3 text-sm ${submitResult.success
-                                ? "bg-green-100 text-green-600 dark:bg-green-900/30"
-                                : "bg-red-100 text-red-600 dark:bg-red-900/30"
+                            ? "bg-green-100 text-green-600 dark:bg-green-900/30"
+                            : "bg-red-100 text-red-600 dark:bg-red-900/30"
                             }`}
                     >
                         {submitResult.message}
@@ -134,10 +138,10 @@ export function ContactForm() {
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Enviando...
+                            {t('sending')}
                         </>
                     ) : (
-                        "Enviar Mensagem"
+                        t('submit')
                     )}
                 </Button>
             </form>

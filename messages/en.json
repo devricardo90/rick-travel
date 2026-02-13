@@ -1,0 +1,232 @@
+{
+    "HomePage": {
+        "Hero": {
+            "title": "City Tour in Rio de Janeiro with Licensed Guide",
+            "description": "Discover the wonders of Rio de Janeiro on exclusive tours, guided by licensed experts. Safety and personalized experiences for Brazilians and foreigners.",
+            "primaryButton": "Book Your Exclusive Tour Now",
+            "secondaryButton": "Request a Quote"
+        },
+        "Logos": {
+            "title": "Our Services"
+        },
+        "Reservations": {
+            "title": "Book Your Tour",
+            "subtitle": "Choose an experience and secure your spot in just a few clicks.",
+            "myBookings": "My Bookings",
+            "availableTrips": "Available Tours"
+        },
+        "Features": {
+            "title": "Our Exclusive Tours in Rio de Janeiro",
+            "subtitle": "Choose the perfect package for your trip and discover the beauties of Rio de Janeiro with licensed guides and personalized experiences.",
+            "package1": {
+                "title": "Essential Rio – 1 Day",
+                "description": "Visit Rio de Janeiro's main landmarks in a full day. Christ the Redeemer, Sugarloaf Mountain, iconic beaches, and historical sites, all with included transportation and a Cadastur-licensed guide."
+            },
+            "package2": {
+                "title": "Complete Rio – 2 Days",
+                "description": "Explore the best of Rio de Janeiro in two intense days of guided tours. Combine visits to major tourist attractions with cultural, gastronomic, and exclusive activities."
+            },
+            "package3": {
+                "title": "Rio Immersion – 3 Days",
+                "description": "Full immersion in Rio de Janeiro with three days of exclusive and personalized tours. Complete itinerary, private transportation, multilingual guidance, and premium experience."
+            },
+            "requestQuote": "Request a Quote"
+        },
+        "Testimonials": {
+            "title": "Reviews and Testimonials",
+            "subtitle": "Real experiences from clients who discovered Rio de Janeiro with Rick Travel.",
+            "readMore": "Read more",
+            "readLess": "Read less",
+            "testimonial1": {
+                "author": "Camila Ferraz",
+                "role": "Tourist • São Paulo",
+                "text": "Amazing experience! Impeccable service and very well-planned itinerary.",
+                "fullText": "Amazing experience! Impeccable service and very well-planned itinerary. The guide was extremely professional and attentive, making the tour easy, safe, and enriching. I recommend it to anyone who wants to explore Rio with quality."
+            },
+            "testimonial2": {
+                "author": "Lucas Hernanes",
+                "role": "International Tourist",
+                "text": "Excellent private tour, everything organized down to the smallest details.",
+                "fullText": "Excellent private tour, everything organized down to the smallest details. The guide spoke fluent English, the transportation was comfortable, and the itinerary flexible. A memorable experience for the whole family."
+            },
+            "testimonial3": {
+                "author": "Rafael Monteiro",
+                "role": "Tourist • Minas Gerais",
+                "text": "Super organized and comfortable tour, worth every minute.",
+                "fullText": "Super organized and comfortable tour, worth every minute. The itinerary was flexible, the guide extremely polite, and the transportation impeccable. We enjoyed Rio with peace of mind and safety. Highly recommend!"
+            },
+            "testimonial4": {
+                "author": "Mariana Lopes",
+                "role": "Businesswoman",
+                "text": "Premium service from start to finish, sensational experience.",
+                "fullText": "Premium service from start to finish, sensational experience. Rick Travel took care of every detail with great professionalism. The tour was exclusive, comfortable, and super well-planned. Undoubtedly the best way to explore Rio."
+            },
+            "testimonial5": {
+                "author": "Danyela Viana",
+                "role": "Digital Influencer",
+                "text": "The helicopter tour was simply surreal!",
+                "fullText": "The helicopter tour was simply surreal! The aerial view of Christ the Redeemer and Guanabara Bay is something I will never forget. Impeccable organization, safety, and professionalism."
+            },
+            "testimonial6": {
+                "author": "Julia Cortez",
+                "role": "Journalist",
+                "text": "Extremely rich cultural itinerary and very well explained.",
+                "fullText": "Extremely rich cultural itinerary and very well explained. The guide demonstrated complete mastery of Rio's history, making the tour engaging and educational. Top-tier experience."
+            }
+        },
+        "FAQs": {
+            "title": "Frequently Asked Questions",
+            "subtitle": "Quick and clear answers to the main questions about our tours, bookings, and experiences in Rio de Janeiro.",
+            "stillHaveQuestions": "Still have questions?",
+            "contactTeam": "Contact our support team",
+            "questions": {
+                "q1": {
+                    "question": "How long does it take to confirm the booking?",
+                    "answer": "Booking confirmation happens within 24 hours after payment. For urgent bookings, we offer express confirmation within 2 hours. Just contact our team."
+                },
+                "q2": {
+                    "question": "What payment methods do you accept?",
+                    "answer": "We accept credit cards (Visa, Mastercard, and American Express), Pix, PayPal, and bank transfers. For companies, we also provide invoicing."
+                },
+                "q3": {
+                    "question": "Can I change or cancel my booking?",
+                    "answer": "Yes. Changes or cancellations can be made up to 48 hours before the tour. After this deadline, our team will evaluate each case according to the cancellation policy."
+                },
+                "q4": {
+                    "question": "Do you serve international tourists?",
+                    "answer": "We serve tourists from all over the world. Our guides are Cadastur-licensed and speak Portuguese, English, and Spanish, ensuring a safe and personalized experience."
+                },
+                "q5": {
+                    "question": "What is the refund policy?",
+                    "answer": "Refunds are guaranteed for cancellations made up to 48 hours before the tour. In cases of adverse weather, we offer free rescheduling."
+                }
+            }
+        }
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "About Us",
+        "tours": "Our Tours",
+        "contact": "Contact"
+    },
+    "Footer": {
+        "links": {
+            "home": "Home",
+            "pricing": "Pricing",
+            "help": "Help",
+            "about": "About Us"
+        },
+        "copyright": "All rights reserved."
+    },
+    "ThemeToggle": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "AboutPage": {
+        "title": "About Us",
+        "intro": "Rick Travel was born from a passion for Rio de Janeiro and the desire to provide unforgettable experiences to our visitors.",
+        "mission": {
+            "title": "Mission",
+            "description": "To offer safe, authentic, and memorable tourism experiences, connecting people to the culture and beauty of Rio de Janeiro."
+        },
+        "vision": {
+            "title": "Vision",
+            "description": "To be a reference in receptive tourism in Rio, recognized for excellence in service and quality of itineraries."
+        },
+        "values": {
+            "title": "Values",
+            "item1": "Safety first",
+            "item2": "Punctuality and commitment",
+            "item3": "Respect for local culture",
+            "item4": "Excellence in service"
+        },
+        "certification": {
+            "title": "Safety and Certification",
+            "description1": "Your safety is our priority. All our guides are licensed by the Ministry of Tourism (Cadastur) and our vehicles undergo rigorous inspections.",
+            "description2": "Travel with peace of mind knowing you're in good hands."
+        }
+    },
+    "ToursPage": {
+        "title": "Our Tours",
+        "subtitle": "Check out all available tours and book your experience."
+    },
+    "ContactPage": {
+        "title": "Get in Touch",
+        "subtitle": "Fill out the form below to send a message to our team.",
+        "form": {
+            "name": "Name",
+            "namePlaceholder": "Your full name",
+            "nameError": "Name must be at least 2 characters",
+            "email": "Email",
+            "emailPlaceholder": "your@email.com",
+            "emailError": "Invalid email",
+            "phone": "Phone (Optional)",
+            "phonePlaceholder": "+1 (555) 123-4567",
+            "message": "Message",
+            "messagePlaceholder": "Tell us how we can help...",
+            "messageError": "Message must be at least 10 characters",
+            "sending": "Sending...",
+            "submit": "Send Message",
+            "errorGeneric": "Unexpected error. Please try again.",
+            "errorSubmit": "Error sending message."
+        }
+    },
+    "TourDetailPage": {
+        "backToTours": "Back to Tours",
+        "aboutTour": "About the tour",
+        "noDescription": "No description available.",
+        "highlights": "Highlights",
+        "noImage": "No image available",
+        "information": "Information",
+        "group": "Group",
+        "maxGuests": "Maximum {count} people",
+        "duration": "Duration",
+        "durationTime": "Approx. 4 hours",
+        "needHelp": "Need help?",
+        "needHelpText": "Have questions about this itinerary? Contact our team before booking.",
+        "contactUs": "Contact Us",
+        "notFound": "Tour not found"
+    },
+    "BookingsPage": {
+        "title": "My Bookings",
+        "noBookings": "You don't have any bookings yet.",
+        "browseToursButton": "Browse available tours"
+    },
+    "LoginPage": {
+        "title": "Sign In",
+        "emailPlaceholder": "Email",
+        "passwordPlaceholder": "Password",
+        "loginButton": "Sign In",
+        "loggingIn": "Signing in...",
+        "errorLogin": "Error signing in",
+        "noAccount": "Don't have an account?",
+        "createAccount": "Create account"
+    },
+    "RegisterPage": {
+        "title": "Create Account",
+        "subtitle": "Sign up to book tours.",
+        "nameLabel": "Name",
+        "namePlaceholder": "Your name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "your@email.com",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "minimum 8 characters",
+        "createButton": "Create Account",
+        "creating": "Creating...",
+        "errorRegister": "Error creating account",
+        "haveAccount": "Already have an account?",
+        "login": "Sign In"
+    },
+    "TourActions": {
+        "pricePerPerson": "Price per person",
+        "processing": "Processing...",
+        "reserved": "Reserved",
+        "reserveNow": "Reserve Now",
+        "alreadyReserved": "You already have a booking for this tour!",
+        "successMessage": "Booking successful!",
+        "errorMessage": "Error making reservation.",
+        "connectionError": "Connection error.",
+        "freeCancellation": "Free cancellation up to 24h before."
+    }
+}

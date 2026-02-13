@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { DeleteTripButton } from "@/components/admin/delete-trip-button";
+import { getLocalizedField } from "@/lib/translation-service";
 
 export default async function AdminTripsPage() {
     const trips = await prisma.trip.findMany({
@@ -39,9 +40,11 @@ export default async function AdminTripsPage() {
                         ) : (
                             trips.map((trip) => (
                                 <tr key={trip.id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="py-3 px-4 font-semibold text-slate-900">{trip.title}</td>
-                                    <td className="py-3 px-4 text-slate-600 max-w-[200px] truncate" title={trip.description || ""}>
-                                        {trip.description || "-"}
+                                    <td className="py-3 px-4 font-semibold text-slate-900">
+                                        {getLocalizedField<string>(trip.title, 'pt')}
+                                    </td>
+                                    <td className="py-3 px-4 text-slate-600 max-w-[200px] truncate" title={getLocalizedField<string>(trip.description, 'pt') || ""}>
+                                        {getLocalizedField<string>(trip.description, 'pt') || "-"}
                                     </td>
                                     <td className="py-3 px-4 text-slate-700">{trip.city}</td>
                                     <td className="py-3 px-4 text-slate-700">

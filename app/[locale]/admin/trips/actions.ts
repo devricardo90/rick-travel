@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { tripSchema, TripInput } from "@/lib/schemas";
 import { z } from "zod";
+import { translateText, translateArray } from "@/lib/translation-service";
 
 async function checkAdmin() {
     const session = await auth.api.getSession({
@@ -24,13 +25,33 @@ export async function createTrip(data: TripInput) {
 
         const validated = tripSchema.parse(data);
 
-        // Converter datas de string para Date object se existirem
+        // Convert dates from string to Date object if they exist
         const startDate = validated.startDate ? new Date(validated.startDate) : null;
         const endDate = validated.endDate ? new Date(validated.endDate) : null;
 
+        // Auto-translate title, description, and highlights from PT to other languages
+        console.log('📝 Translating trip content...');
+
+        const translatedTitle = await translateText(validated.title, 'pt');
+        const translatedDescription = validated.description
+            ? await translateText(validated.description, 'pt')
+            : null;
+        const translatedHighlights = validated.highlights?.length
+            ? await translateArray(validated.highlights, 'pt')
+            : { pt: [], en: [], es: [], sv: [] };
+
+        console.log('✅ Translation complete');
+
         await prisma.trip.create({
             data: {
-                ...validated,
+                title: translatedTitle as any,
+                description: translatedDescription as any,
+                highlights: translatedHighlights as any,
+                city: validated.city,
+                priceCents: validated.priceCents,
+                imageUrl: validated.imageUrl,
+                location: validated.location,
+                maxGuests: validated.maxGuests,
                 startDate,
                 endDate,
             },
@@ -56,10 +77,30 @@ export async function updateTrip(id: string, data: TripInput) {
         const startDate = validated.startDate ? new Date(validated.startDate) : null;
         const endDate = validated.endDate ? new Date(validated.endDate) : null;
 
+        // Auto-translate title, description, and highlights from PT to other languages
+        console.log('📝 Translating updated trip content...');
+
+        const translatedTitle = await translateText(validated.title, 'pt');
+        const translatedDescription = validated.description
+            ? await translateText(validated.description, 'pt')
+            : null;
+        const translatedHighlights = validated.highlights?.length
+            ? await translateArray(validated.highlights, 'pt')
+            : { pt: [], en: [], es: [], sv: [] };
+
+        console.log('✅ Translation complete');
+
         await prisma.trip.update({
             where: { id },
             data: {
-                ...validated,
+                title: translatedTitle as any,
+                description: translatedDescription as any,
+                highlights: translatedHighlights as any,
+                city: validated.city,
+                priceCents: validated.priceCents,
+                imageUrl: validated.imageUrl,
+                location: validated.location,
+                maxGuests: validated.maxGuests,
                 startDate,
                 endDate,
             },

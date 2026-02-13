@@ -1,4 +1,5 @@
 import TripList from "@/components/trip-list";
+import { ToursHeader } from "@/components/tours-header";
 
 export const metadata = {
   title: "Tours e Experiências | Rick Travel",
@@ -14,15 +15,8 @@ export const metadata = {
 export default function ToursPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 py-20">
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold">Nossos tours</h1>
-        <p className="mt-4 text-muted-foreground text-lg">
-          Confira todos os passeios disponíveis e reserve sua experiência.
-        </p>
-      </div>
-
+      <ToursHeader />
       <TripList />
     </main>
   );
 }
-

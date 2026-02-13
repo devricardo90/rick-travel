@@ -1,0 +1,232 @@
+{
+    "HomePage": {
+        "Hero": {
+            "title": "City Tour en Río de Janeiro con Guía Acreditado",
+            "description": "Descubre las maravillas de Río de Janeiro en tours exclusivos, guiados por expertos acreditados. Seguridad y experiencias personalizadas para brasileños y extranjeros.",
+            "primaryButton": "Reserva Ahora Tu Tour Exclusivo",
+            "secondaryButton": "Solicitar Presupuesto"
+        },
+        "Logos": {
+            "title": "Nuestros Servicios"
+        },
+        "Reservations": {
+            "title": "Reserva Tu Tour",
+            "subtitle": "Elige una experiencia y asegura tu lugar en pocos clics.",
+            "myBookings": "Mis Reservas",
+            "availableTrips": "Tours Disponibles"
+        },
+        "Features": {
+            "title": "Nuestros Tours Exclusivos en Río de Janeiro",
+            "subtitle": "Elige el paquete ideal para tu viaje y descubre las bellezas de Río de Janeiro con guías acreditados y experiencias personalizadas.",
+            "package1": {
+                "title": "Río Esencial – 1 Día",
+                "description": "Conoce las principales postales de Río de Janeiro en un día completo. Cristo Redentor, Pan de Azúcar, playas icónicas y puntos históricos, todo con transporte incluido y acompañamiento de guía acreditado Cadastur."
+            },
+            "package2": {
+                "title": "Río Completo – 2 Días",
+                "description": "Explora lo mejor de Río de Janeiro en dos días intensos de tours guiados. Combina visitas a los principales puntos turísticos con experiencias culturales, gastronómicas y actividades exclusivas."
+            },
+            "package3": {
+                "title": "Río Inmersión – 3 Días",
+                "description": "Inmersión completa en Río de Janeiro con tres días de tours exclusivos y personalizados. Itinerario completo, transporte privado, acompañamiento multilingüe y experiencia premium."
+            },
+            "requestQuote": "Solicitar Presupuesto"
+        },
+        "Testimonials": {
+            "title": "Valoraciones y Testimonios",
+            "subtitle": "Experiencias reales de clientes que descubrieron Río de Janeiro con Rick Travel.",
+            "readMore": "Leer más",
+            "readLess": "Leer menos",
+            "testimonial1": {
+                "author": "Camila Ferraz",
+                "role": "Turista • São Paulo",
+                "text": "¡Experiencia increíble! Atención impecable e itinerario muy bien planificado.",
+                "fullText": "¡Experiencia increíble! Atención impecable e itinerario muy bien planificado. El guía fue extremadamente profesional y atento, haciendo el paseo ligero, seguro y enriquecedor. Lo recomiendo para quien quiera conocer Río con calidad."
+            },
+            "testimonial2": {
+                "author": "Lucas Hernanes",
+                "role": "Turista Internacional",
+                "text": "Tour privado excelente, todo organizado al detalle.",
+                "fullText": "Tour privado excelente, todo organizado al detalle. El guía hablaba inglés con fluidez, el transporte fue cómodo y el itinerario flexible. Una experiencia memorable para toda la familia."
+            },
+            "testimonial3": {
+                "author": "Rafael Monteiro",
+                "role": "Turista • Minas Gerais",
+                "text": "Paseo súper organizado y cómodo, vale cada minuto.",
+                "fullText": "Paseo súper organizado y cómodo, vale cada minuto. El itinerario fue flexible, el guía extremadamente educado y el transporte impecable. Pudimos disfrutar de Río con tranquilidad y seguridad. ¡Lo recomiendo muchísimo!"
+            },
+            "testimonial4": {
+                "author": "Mariana Lopes",
+                "role": "Empresaria",
+                "text": "Atención premium de principio a fin, experiencia sensacional.",
+                "fullText": "Atención premium de principio a fin, experiencia sensacional. Rick Travel cuidó todos los detalles con mucho profesionalismo. El tour fue exclusivo, cómodo y súper bien planificado. Sin duda la mejor forma de conocer Río."
+            },
+            "testimonial5": {
+                "author": "Danyela Viana",
+                "role": "Influencer Digital",
+                "text": "¡El paseo en helicóptero fue simplemente surreal!",
+                "fullText": "¡El paseo en helicóptero fue simplemente surreal! La vista aérea del Cristo Redentor y de la Bahía de Guanabara es algo que nunca olvidaré. Organización, seguridad y profesionalismo impecables."
+            },
+            "testimonial6": {
+                "author": "Julia Cortez",
+                "role": "Periodista",
+                "text": "Itinerario cultural riquísimo y muy bien explicado.",
+                "fullText": "Itinerario cultural riquísimo y muy bien explicado. El guía demostró dominio total de la historia de Río, haciendo el paseo envolvente y educativo. Experiencia de altísimo nivel."
+            }
+        },
+        "FAQs": {
+            "title": "Preguntas Frecuentes",
+            "subtitle": "Respuestas rápidas y claras a las principales preguntas sobre nuestros tours, reservas y experiencias en Río de Janeiro.",
+            "stillHaveQuestions": "¿Todavía tienes alguna duda?",
+            "contactTeam": "Habla con nuestro equipo de atención",
+            "questions": {
+                "q1": {
+                    "question": "¿Cuánto tiempo tarda la confirmación de la reserva?",
+                    "answer": "La confirmación de la reserva ocurre en hasta 24 horas después del pago. Para reservas urgentes, ofrecemos confirmación expresa en hasta 2 horas. Solo contacta con nuestro equipo."
+                },
+                "q2": {
+                    "question": "¿Qué métodos de pago aceptan?",
+                    "answer": "Aceptamos tarjetas de crédito (Visa, Mastercard y American Express), Pix, PayPal y transferencia bancaria. Para empresas, también disponibilizamos facturación."
+                },
+                "q3": {
+                    "question": "¿Puedo cambiar o cancelar mi reserva?",
+                    "answer": "Sí. Los cambios o cancelaciones pueden hacerse hasta 48 horas antes del tour. Después de ese plazo, nuestro equipo evaluará cada caso según la política de cancelación."
+                },
+                "q4": {
+                    "question": "¿Atienden a turistas internacionales?",
+                    "answer": "Atendemos a turistas de todo el mundo. Nuestros guías están acreditados por Cadastur y hablan portugués, inglés y español, garantizando una experiencia segura y personalizada."
+                },
+                "q5": {
+                    "question": "¿Cuál es la política de reembolso?",
+                    "answer": "Los reembolsos están garantizados para cancelaciones hechas hasta 48 horas antes del tour. En casos de clima adverso, ofrecemos reprogramación sin costo adicional."
+                }
+            }
+        }
+    },
+    "Navigation": {
+        "home": "Inicio",
+        "about": "Quiénes Somos",
+        "tours": "Nuestros Tours",
+        "contact": "Contacto"
+    },
+    "Footer": {
+        "links": {
+            "home": "Inicio",
+            "pricing": "Precios",
+            "help": "Ayuda",
+            "about": "Sobre Nosotros"
+        },
+        "copyright": "Todos los derechos reservados."
+    },
+    "ThemeToggle": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+    },
+    "AboutPage": {
+        "title": "Quiénes Somos",
+        "intro": "Rick Travel nació de la pasión por Río de Janeiro y del deseo de proporcionar experiencias inolvidables a nuestros visitantes.",
+        "mission": {
+            "title": "Misión",
+            "description": "Ofrecer experiencias turísticas seguras, auténticas y memorables, conectando personas a la cultura y belleza de Río de Janeiro."
+        },
+        "vision": {
+            "title": "Visión",
+            "description": "Ser referencia en turismo receptivo en Río, reconocida por la excelencia en el servicio y la calidad de los itinerarios."
+        },
+        "values": {
+            "title": "Valores",
+            "item1": "Seguridad en primer lugar",
+            "item2": "Puntualidad y compromiso",
+            "item3": "Respeto a la cultura local",
+            "item4": "Excelencia en el servicio"
+        },
+        "certification": {
+            "title": "Seguridad y Certificación",
+            "description1": "Tu seguridad es nuestra prioridad. Todos nuestros guías están acreditados por el Ministerio de Turismo (Cadastur) y nuestros vehículos pasan por rigurosas inspecciones.",
+            "description2": "Viaja tranquilo sabiendo que estás en buenas manos."
+        }
+    },
+    "ToursPage": {
+        "title": "Nuestros Tours",
+        "subtitle": "Consulta todos los tours disponibles y reserva tu experiencia."
+    },
+    "ContactPage": {
+        "title": "Contáctanos",
+        "subtitle": "Completa el formulario a continuación para enviar un mensaje a nuestro equipo.",
+        "form": {
+            "name": "Nombre",
+            "namePlaceholder": "Tu nombre completo",
+            "nameError": "El nombre debe tener al menos 2 caracteres",
+            "email": "Email",
+            "emailPlaceholder": "tu@email.com",
+            "emailError": "Email inválido",
+            "phone": "Teléfono (Opcional)",
+            "phonePlaceholder": "+34 612 345 678",
+            "message": "Mensaje",
+            "messagePlaceholder": "Dinos cómo podemos ayudarte...",
+            "messageError": "El mensaje debe tener al menos 10 caracteres",
+            "sending": "Enviando...",
+            "submit": "Enviar Mensaje",
+            "errorGeneric": "Error inesperado. Inténtalo de nuevo.",
+            "errorSubmit": "Error al enviar el mensaje."
+        }
+    },
+    "TourDetailPage": {
+        "backToTours": "Volver a Tours",
+        "aboutTour": "Sobre el tour",
+        "noDescription": "Sin descripción disponible.",
+        "highlights": "Destacados",
+        "noImage": "Sin imagen disponible",
+        "information": "Información",
+        "group": "Grupo",
+        "maxGuests": "Máximo {count} personas",
+        "duration": "Duración",
+        "durationTime": "Aprox. 4 horas",
+        "needHelp": "¿Necesitas ayuda?",
+        "needHelpText": "¿Tienes dudas sobre este itinerario? Habla con nuestro equipo antes de reservar.",
+        "contactUs": "Contáctanos",
+        "notFound": "Tour no encontrado"
+    },
+    "BookingsPage": {
+        "title": "Mis Reservas",
+        "noBookings": "Aún no tienes reservas.",
+        "browseToursButton": "Ver tours disponibles"
+    },
+    "LoginPage": {
+        "title": "Iniciar Sesión",
+        "emailPlaceholder": "Email",
+        "passwordPlaceholder": "Contraseña",
+        "loginButton": "Iniciar Sesión",
+        "loggingIn": "Iniciando sesión...",
+        "errorLogin": "Error al iniciar sesión",
+        "noAccount": "¿No tienes cuenta?",
+        "createAccount": "Crear cuenta"
+    },
+    "RegisterPage": {
+        "title": "Crear Cuenta",
+        "subtitle": "Regístrate para reservar tours.",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Tu nombre",
+        "emailLabel": "Email",
+        "emailPlaceholder": "tu@email.com",
+        "passwordLabel": "Contraseña",
+        "passwordPlaceholder": "mínimo 8 caracteres",
+        "createButton": "Crear Cuenta",
+        "creating": "Creando...",
+        "errorRegister": "Error al crear cuenta",
+        "haveAccount": "¿Ya tienes cuenta?",
+        "login": "Iniciar Sesión"
+    },
+    "TourActions": {
+        "pricePerPerson": "Precio por persona",
+        "processing": "Procesando...",
+        "reserved": "Reservado",
+        "reserveNow": "Reservar Ahora",
+        "alreadyReserved": "¡Ya tienes una reserva para este tour!",
+        "successMessage": "¡Reserva realizada con éxito!",
+        "errorMessage": "Error al realizar la reserva.",
+        "connectionError": "Error de conexión.",
+        "freeCancellation": "Cancelación gratuita hasta 24h antes."
+    }
+}

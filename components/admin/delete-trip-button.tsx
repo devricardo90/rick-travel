@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { deleteTrip } from "@/app/admin/trips/actions";
+import { deleteTrip } from "@/app/[locale]/admin/trips/actions";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 

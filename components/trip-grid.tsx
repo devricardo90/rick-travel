@@ -5,16 +5,16 @@ import { TripCard } from "./trips/trip-card";
 
 type Trip = {
     id: string;
-    title: string;
+    title: any; // JSON multilingual
     city: string;
     location?: string | null;
-    description?: string | null;
+    description?: any | null; // JSON multilingual
     priceCents: number;
     imageUrl?: string | null;
     startDate?: Date | string | null;
     endDate?: Date | string | null;
     maxGuests?: number | null;
-    highlights?: string[];
+    highlights?: any; // JSON multilingual array
     createdAt?: Date | string;
 };
 

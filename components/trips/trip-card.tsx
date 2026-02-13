@@ -4,14 +4,16 @@ import { ptBR } from "date-fns/locale";
 import { Calendar, MapPin, Users } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { getLocalizedField } from "@/lib/translation-service";
+import { useLocale } from 'next-intl';
 
 interface TripCardProps {
     trip: {
         id: string;
-        title: string;
+        title: any; // JSON multilingual field
         city: string;
         location?: string | null;
-        description?: string | null;
+        description?: any | null; // JSON multilingual field
         priceCents: number;
         imageUrl?: string | null;
         startDate?: string | Date | null;
@@ -24,8 +26,12 @@ interface TripCardProps {
 }
 
 export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) {
+    const locale = useLocale();
     const startDate = trip.startDate ? new Date(trip.startDate) : null;
     const endDate = trip.endDate ? new Date(trip.endDate) : null;
+
+    // Get localized title
+    const localizedTitle = getLocalizedField<string>(trip.title, locale);
 
     return (
         <div className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition-all hover:shadow-md">
@@ -33,7 +39,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                 {trip.imageUrl ? (
                     <Image
                         src={trip.imageUrl}
-                        alt={trip.title}
+                        alt={localizedTitle}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -50,7 +56,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
             <div className="p-5">
                 <div className="flex items-start justify-between">
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">{trip.title}</h3>
+                        <h3 className="text-lg font-bold text-gray-900">{localizedTitle}</h3>
                         {trip.location && (
                             <div className="mt-1 flex items-center text-sm text-gray-500">
                                 <MapPin className="mr-1 h-3.5 w-3.5" />

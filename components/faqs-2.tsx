@@ -8,38 +8,35 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function FAQsTwo() {
+  const t = useTranslations('HomePage.FAQs');
   const faqItems = [
     {
       id: 'item-1',
-      question: 'Quanto tempo leva para confirmar a reserva?',
-      answer:
-        'A confirmação da reserva acontece em até 24 horas após o pagamento. Para reservas urgentes, oferecemos confirmação expressa em até 2 horas. Basta entrar em contato com nossa equipe.',
+      question: t('questions.q1.question'),
+      answer: t('questions.q1.answer'),
     },
     {
       id: 'item-2',
-      question: 'Quais métodos de pagamento vocês aceitam?',
-      answer:
-        'Aceitamos cartões de crédito (Visa, Mastercard e American Express), Pix, PayPal e transferência bancária. Para empresas, também disponibilizamos faturamento com nota fiscal.',
+      question: t('questions.q2.question'),
+      answer: t('questions.q2.answer'),
     },
     {
       id: 'item-3',
-      question: 'Posso alterar ou cancelar minha reserva?',
-      answer:
-        'Sim. Alterações ou cancelamentos podem ser feitos até 48 horas antes do passeio. Após esse prazo, nossa equipe avaliará cada caso conforme a política de cancelamento.',
+      question: t('questions.q3.question'),
+      answer: t('questions.q3.answer'),
     },
     {
       id: 'item-4',
-      question: 'Vocês atendem turistas internacionais?',
-      answer:
-        'Atendemos turistas do mundo todo. Nossos guias são credenciados Cadastur e falam português, inglês e espanhol, garantindo uma experiência segura e personalizada.',
+      question: t('questions.q4.question'),
+      answer: t('questions.q4.answer'),
     },
     {
       id: 'item-5',
-      question: 'Qual é a política de reembolso?',
-      answer:
-        'Reembolsos são garantidos para cancelamentos feitos até 48 horas antes do passeio. Em casos de clima adverso, oferecemos reagendamento sem custo adicional.',
+      question: t('questions.q5.question'),
+      answer: t('questions.q5.answer'),
     },
   ]
 
@@ -49,11 +46,10 @@ export default function FAQsTwo() {
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center space-y-4">
           <h2 className="font-inter text-balance text-4xl font-semibold md:text-5xl">
-            Dúvidas Frequentes
+            {t('title')}
           </h2>
           <p className="font-inter text-muted-foreground text-balance">
-            Respostas rápidas e claras para as principais perguntas sobre nossos
-            passeios, reservas e experiências no Rio de Janeiro.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -83,13 +79,13 @@ export default function FAQsTwo() {
           {/* CTA */}
           <div className="mt-8 text-center">
             <p className="font-inter text-muted-foreground">
-              Ainda ficou com alguma dúvida?
+              {t('stillHaveQuestions')}
             </p>
             <Link
               href="#contato"
               className="font-inter mt-2 inline-block text-primary font-medium hover:underline"
             >
-              Fale com nossa equipe de atendimento
+              {t('contactTeam')}
             </Link>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 interface TourActionsProps {
     tripId: string;
@@ -10,6 +11,7 @@ interface TourActionsProps {
 }
 
 export function TourActions({ tripId, priceCents }: TourActionsProps) {
+    const t = useTranslations('TourActions');
     const [loading, setLoading] = useState(false);
     const [reserved, setReserved] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
@@ -49,20 +51,20 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
             }
 
             if (res.status === 409) {
-                setMessage("Você já tem uma reserva para este tour!");
+                setMessage(t('alreadyReserved'));
                 setReserved(true);
                 return;
             }
 
             if (!res.ok) {
-                setMessage("Erro ao realizar reserva.");
+                setMessage(t('errorMessage'));
                 return;
             }
 
             setReserved(true);
-            setMessage("Reserva realizada com sucesso!");
+            setMessage(t('successMessage'));
         } catch (error) {
-            setMessage("Erro de conexão.");
+            setMessage(t('connectionError'));
         } finally {
             setLoading(false);
         }
@@ -71,7 +73,7 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
     return (
         <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
             <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Preço por pessoa</span>
+                <span className="text-sm text-muted-foreground">{t('pricePerPerson')}</span>
                 <span className="text-2xl font-bold text-primary">
                     {new Intl.NumberFormat("pt-BR", {
                         style: "currency",
@@ -90,12 +92,12 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
                 {loading ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processando...
+                        {t('processing')}
                     </>
                 ) : reserved ? (
-                    "Reservado"
+                    t('reserved')
                 ) : (
-                    "Reservar Agora"
+                    t('reserveNow')
                 )}
             </Button>
 
@@ -106,7 +108,7 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
             )}
 
             <p className="text-center text-xs text-muted-foreground">
-                Cancelamento grátis até 24h antes.
+                {t('freeCancellation')}
             </p>
         </div>
     );

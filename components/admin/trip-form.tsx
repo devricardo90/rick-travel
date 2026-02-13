@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { createTrip, updateTrip } from "@/app/admin/trips/actions";
+import { createTrip, updateTrip } from "@/app/[locale]/admin/trips/actions";
 
 interface TripFormProps {
     initialData?: any; // Tipar melhor depois se sobrar tempo

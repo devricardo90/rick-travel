@@ -6,18 +6,19 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function Testimonials() {
+  const t = useTranslations('HomePage.Testimonials');
   return (
     <section className="py-16 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-12 max-w-2xl text-center">
           <h2 className="font-inter text-4xl font-semibold lg:text-5xl">
-            Avaliações e Depoimentos
+            {t('title')}
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Experiências reais de clientes que descobriram o Rio de Janeiro com
-            a Rick Travel.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -30,6 +31,7 @@ export default function Testimonials() {
             avatarUrl="/avatars/camila.jpg"
             text="Experiência incrível! Atendimento impecável e roteiro muito bem planejado."
             fullText="Experiência incrível! Atendimento impecável e roteiro muito bem planejado. O guia foi extremamente profissional e atencioso, tornando o passeio leve, seguro e enriquecedor. Recomendo para quem quer conhecer o Rio com qualidade."
+            translate={t}
           />
 
           <TestimonialCard
@@ -40,27 +42,30 @@ export default function Testimonials() {
             avatarUrl="/avatars/lucas.jpg"
             text="Tour privado excelente, tudo organizado nos mínimos detalhes."
             fullText="Tour privado excelente, tudo organizado nos mínimos detalhes. O guia falava inglês fluentemente, o transporte foi confortável e o roteiro flexível. Uma experiência memorável para toda a família."
+            translate={t}
           />
 
-        <TestimonialCard
-         author="Rafael Monteiro"
-         role="Turista • Minas Gerais"
-         initials="RM"
-         instagram="@rafaelmonteiro"
-         avatarUrl="/avatars/rafael.jpg"
-         text="Passeio super organizado e confortável, vale cada minuto."
-         fullText="Passeio super organizado e confortável, vale cada minuto. O roteiro foi flexível, o guia extremamente educado e o transporte impecável. Conseguimos aproveitar o Rio com tranquilidade e segurança. Recomendo demais!"
-         />
+          <TestimonialCard
+            author="Rafael Monteiro"
+            role="Turista • Minas Gerais"
+            initials="RM"
+            instagram="@rafaelmonteiro"
+            avatarUrl="/avatars/rafael.jpg"
+            text="Passeio super organizado e confortável, vale cada minuto."
+            fullText="Passeio super organizado e confortável, vale cada minuto. O roteiro foi flexível, o guia extremamente educado e o transporte impecável. Conseguimos aproveitar o Rio com tranquilidade e segurança. Recomendo demais!"
+            translate={t}
+          />
 
-         <TestimonialCard
-          author="Mariana Lopes"
-         role="Empresária"
-         initials="ML"
-          instagram="@marilopes"
-           avatarUrl="/avatars/mariana.jpg"
-          text="Atendimento premium do início ao fim, experiência sensacional."
-          fullText="Atendimento premium do início ao fim, experiência sensacional. A Rick Travel cuidou de todos os detalhes com muito profissionalismo. O tour foi exclusivo, confortável e super bem planejado. Sem dúvida a melhor forma de conhecer o Rio."
-         />
+          <TestimonialCard
+            author="Mariana Lopes"
+            role="Empresária"
+            initials="ML"
+            instagram="@marilopes"
+            avatarUrl="/avatars/mariana.jpg"
+            text="Atendimento premium do início ao fim, experiência sensacional."
+            fullText="Atendimento premium do início ao fim, experiência sensacional. A Rick Travel cuidou de todos os detalhes com muito profissionalismo. O tour foi exclusivo, confortável e super bem planejado. Sem dúvida a melhor forma de conhecer o Rio."
+            translate={t}
+          />
 
 
           <TestimonialCard
@@ -71,6 +76,7 @@ export default function Testimonials() {
             avatarUrl="/avatars/dany.jpg"
             text="O passeio de helicóptero foi simplesmente surreal!"
             fullText="O passeio de helicóptero foi simplesmente surreal! A vista aérea do Cristo Redentor e da Baía de Guanabara é algo que nunca vou esquecer. Organização, segurança e profissionalismo impecáveis."
+            translate={t}
           />
 
           <TestimonialCard
@@ -81,6 +87,7 @@ export default function Testimonials() {
             avatarUrl="/avatars/julia.jpg"
             text="Roteiro cultural riquíssimo e muito bem explicado."
             fullText="Roteiro cultural riquíssimo e muito bem explicado. O guia demonstrou domínio total da história do Rio, tornando o passeio envolvente e educativo. Experiência de altíssimo nível."
+            translate={t}
           />
         </div>
       </div>
@@ -96,6 +103,7 @@ interface TestimonialCardProps {
   avatarUrl?: string
   text: string
   fullText: string
+  translate: (key: string) => string
 }
 
 function TestimonialCard({
@@ -106,6 +114,7 @@ function TestimonialCard({
   avatarUrl,
   text,
   fullText,
+  translate: t,
 }: TestimonialCardProps) {
   const [expanded, setExpanded] = useState(false)
   const canExpand = fullText.length > text.length
@@ -125,11 +134,10 @@ function TestimonialCard({
               onClick={() => setExpanded(!expanded)}
               className="h-auto px-0 text-xs text-primary hover:bg-transparent"
             >
-              {expanded ? 'Ler menos' : 'Leia mais'}
+              {expanded ? t('readLess') : t('readMore')}
               <ChevronDown
-                className={`ml-1 size-3 transition-transform ${
-                  expanded ? 'rotate-180' : ''
-                }`}
+                className={`ml-1 size-3 transition-transform ${expanded ? 'rotate-180' : ''
+                  }`}
               />
             </Button>
           )}

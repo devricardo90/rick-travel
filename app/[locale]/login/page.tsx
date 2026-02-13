@@ -1,11 +1,12 @@
-
-"use client";
+'use client'
 
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
+  const t = useTranslations('LoginPage');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (!res.ok) {
-      setError(data?.error?.message ?? "Erro ao entrar");
+      setError(data?.error?.message ?? t('errorLogin'));
       return;
     }
 
@@ -37,11 +38,11 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-3xl font-bold">Entrar</h1>
+      <h1 className="text-3xl font-bold">{t('title')}</h1>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-4">
         <input
-          placeholder="Email"
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full border p-2 rounded"
@@ -49,7 +50,7 @@ export default function LoginPage() {
         />
         <input
           type="password"
-          placeholder="Senha"
+          placeholder={t('passwordPlaceholder')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border p-2 rounded"
@@ -59,14 +60,13 @@ export default function LoginPage() {
         {error && <p className="text-red-500">{error}</p>}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Entrando..." : "Entrar"}
+          {loading ? t('loggingIn') : t('loginButton')}
         </Button>
       </form>
 
       <p className="mt-4 text-sm">
-        Não tem conta? <Link href="/register">Criar conta</Link>
+        {t('noAccount')} <Link href="/register">{t('createAccount')}</Link>
       </p>
     </main>
   );
 }
-

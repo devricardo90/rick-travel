@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
-import { updateBookingStatus } from "@/app/admin/bookings/actions";
+import { updateBookingStatus } from "@/app/[locale]/admin/bookings/actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";

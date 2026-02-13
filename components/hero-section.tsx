@@ -1,10 +1,12 @@
+'use client'
 import React from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { HeroHeader } from '@/components/header'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { ChevronRight } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   EntretenimentosIcon,
   VisitacoesIcon,
@@ -13,63 +15,47 @@ import {
   TurismoUrbanoIcon,
 } from '@/components/logos/tourism-services'
 
-// Constantes de configuração
-const HERO_CONTENT = {
-  title: 'City Tour no Rio de Janeiro com Guia Credenciado',
-  description: 'Descubra as maravilhas do Rio de Janeiro em passeios exclusivos, guiados por especialistas credenciados. Segurança e experiências personalizadas para brasileiros e estrangeiros.',
-  primaryButton: {
-    text: 'Reserve agora seu passeio exclusivo',
-    href: '#reservas',
-  },
-  secondaryButton: {
-    text: 'Solicitar orçamento',
-    href: '/contato', // ✅ aqui
-  },
-} as const
-
 const HERO_IMAGE = {
   src: '/videos/imagem-praia-ipanema.jpg',
   alt: 'Praia de Ipanema',
 } as const
 
+const LOGOS_LIST = [
+  { component: EntretenimentosIcon, alt: 'Entretenimentos', height: 36 },
+  { component: VisitacoesIcon, alt: 'Visitações', height: 36 },
+  { component: AtividadesEsportivasIcon, alt: 'Atividades Esportivas', height: 36 },
+  { component: ToursGuiadosIcon, alt: 'Tours Guiados', height: 36 },
+  { component: TurismoUrbanoIcon, alt: 'Turismo Urbano', height: 36 },
+]
 
-
-const LOGOS_SECTION = {
-  title: 'Nossos serviços',
-  logos: [
-    { component: EntretenimentosIcon, alt: 'Entretenimentos', height: 36 },
-    { component: VisitacoesIcon, alt: 'Visitações', height: 36 },
-    { component: AtividadesEsportivasIcon, alt: 'Atividades Esportivas', height: 36 },
-    { component: ToursGuiadosIcon, alt: 'Tours Guiados', height: 36 },
-    { component: TurismoUrbanoIcon, alt: 'Turismo Urbano', height: 36 },
-  ],
-  sliderConfig: {
-    speed: 25,       // movimento mais calmo (premium)
-    speedOnHover: 0, // pausa total no hover
-    gap: 96,
-  },
-} as const
+const SLIDER_CONFIG = {
+  speed: 25,
+  speedOnHover: 0,
+  gap: 96,
+}
 
 /* ===========================
    HERO CONTENT
 =========================== */
 
 function HeroContent() {
+  const t = useTranslations('HomePage.Hero')
+
   return (
     <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
       <div className="mx-auto max-w-lg text-center lg:ml-0 lg:max-w-full lg:text-left">
         <h1 className="mt-8 max-w-2xl text-balance text-5xl font-bold tracking-tight md:text-6xl lg:mt-16 xl:text-7xl">
-          {HERO_CONTENT.title}
+          {t('title')}
         </h1>
 
         <p className="mt-8 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground">
-          {HERO_CONTENT.description}
+          {t('description')}
         </p>
 
         <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
           <Button asChild size="lg" className="h-12 rounded-full pl-5 pr-3 text-base">
-            <Link href={HERO_CONTENT.primaryButton.href}>
-              <span>{HERO_CONTENT.primaryButton.text}</span>
+            <Link href="#reservas">
+              <span>{t('primaryButton')}</span>
               <ChevronRight className="ml-1" />
             </Link>
           </Button>
@@ -80,8 +66,8 @@ function HeroContent() {
             variant="ghost"
             className="h-12 rounded-full px-5 text-base hover:bg-zinc-950/5 dark:hover:bg-white/5"
           >
-            <Link href={HERO_CONTENT.secondaryButton.href}>
-              {HERO_CONTENT.secondaryButton.text}
+            <Link href="/contato">
+              {t('secondaryButton')}
             </Link>
           </Button>
         </div>
@@ -141,23 +127,25 @@ function LogoItem({ component: IconComponent, alt, height }: LogoItemProps) {
 =========================== */
 
 function LogosSection() {
+  const t = useTranslations('HomePage.Logos')
+
   return (
     <section className="bg-background pb-4">
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="flex flex-col items-center gap-6 md:flex-row">
           <div className="md:max-w-48 md:border-r md:pr-6">
             <p className="text-center text-sm font-medium text-muted-foreground md:text-right">
-              {LOGOS_SECTION.title}
+              {t('title')}
             </p>
           </div>
 
           <div className="relative w-full overflow-hidden py-6">
             <InfiniteSlider
-              speed={LOGOS_SECTION.sliderConfig.speed}
-              speedOnHover={LOGOS_SECTION.sliderConfig.speedOnHover}
-              gap={LOGOS_SECTION.sliderConfig.gap}
+              speed={SLIDER_CONFIG.speed}
+              speedOnHover={SLIDER_CONFIG.speedOnHover}
+              gap={SLIDER_CONFIG.gap}
             >
-              {LOGOS_SECTION.logos.map((logo, index) => (
+              {LOGOS_LIST.map((logo, index) => (
                 <LogoItem
                   key={`${logo.alt}-${index}`}
                   component={logo.component}

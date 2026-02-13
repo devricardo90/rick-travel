@@ -1,28 +1,33 @@
+'use client'
+
 import { RickTravelLogo } from '@/components/rick-travel-logo'
 import Link from 'next/link'
-
-const links = [
-    {
-        title: 'Início',
-        href: '#',
-    },
-    
-    {
-        title: 'Preços',
-        href: '#',
-    },
-    
-    {
-        title: 'Ajuda',
-        href: '#',
-    },
-    {
-        title: 'Sobre nós',
-        href: '#',
-    },
-]
+import { useTranslations } from 'next-intl'
 
 export default function FooterSection() {
+    const t = useTranslations('Footer');
+
+    const links = [
+        {
+            title: t('links.home'),
+            href: '#',
+        },
+
+        {
+            title: t('links.pricing'),
+            href: '#',
+        },
+
+        {
+            title: t('links.help'),
+            href: '#',
+        },
+        {
+            title: t('links.about'),
+            href: '#',
+        },
+    ]
+
     return (
         <footer className="py-16 md:py-32">
             <div className="mx-auto max-w-5xl px-6">
@@ -152,8 +157,8 @@ export default function FooterSection() {
                         </svg>
                     </Link>
                 </div>
-                <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()}  <strong>RicardoDev</strong>. Todos os direitos reservados.
-    </span>
+                <span className="text-muted-foreground block text-center text-sm">© {new Date().getFullYear()}  <strong>RicardoDev</strong>. {t('copyright')}
+                </span>
             </div>
         </footer>
     )

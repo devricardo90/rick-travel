@@ -1,0 +1,232 @@
+{
+    "HomePage": {
+        "Hero": {
+            "title": "City Tour i Rio de Janeiro med Licensierad Guide",
+            "description": "Upptäck underverken i Rio de Janeiro på exklusiva turer, guidade av licensierade experter. Säkerhet och personliga upplevelser för brasilianare och utlänningar.",
+            "primaryButton": "Boka Din Exklusiva Tur Nu",
+            "secondaryButton": "Begär Offert"
+        },
+        "Logos": {
+            "title": "Våra Tjänster"
+        },
+        "Reservations": {
+            "title": "Boka Din Tur",
+            "subtitle": "Välj en upplevelse och säkra din plats med bara några klick.",
+            "myBookings": "Mina Bokningar",
+            "availableTrips": "Tillgängliga Turer"
+        },
+        "Features": {
+            "title": "Våra Exklusiva Turer i Rio de Janeiro",
+            "subtitle": "Välj det perfekta paketet för din resa och upptäck skönheterna i Rio de Janeiro med licensierade guider och personliga upplevelser.",
+            "package1": {
+                "title": "Essentiella Rio – 1 Dag",
+                "description": "Besök Rio de Janeiros huvudattraktioner på en hel dag. Kristusstatyn, Sockertoppen, ikoniska stränder och historiska platser, allt med inkluderad transport och en Cadastur-licensierad guide."
+            },
+            "package2": {
+                "title": "Kompletta Rio – 2 Dagar",
+                "description": "Utforska det bästa av Rio de Janeiro på två intensiva dagar av guidade turer. Kombinera besök till stora turistattraktioner med kulturella, gastronomiska och exklusiva aktiviteter."
+            },
+            "package3": {
+                "title": "Rio Immersion – 3 Dagar",
+                "description": "Full fördjupning i Rio de Janeiro med tre dagar av exklusiva och personliga turer. Komplett resplan, privat transport, flerspråkig vägledning och premiumupplevelse."
+            },
+            "requestQuote": "Begär Offert"
+        },
+        "Testimonials": {
+            "title": "Recensioner och Vittnesmål",
+            "subtitle": "Verkliga upplevelser från kunder som upptäckte Rio de Janeiro med Rick Travel.",
+            "readMore": "Läs mer",
+            "readLess": "Läs mindre",
+            "testimonial1": {
+                "author": "Camila Ferraz",
+                "role": "Turist • São Paulo",
+                "text": "Fantastisk upplevelse! Oklanderlig service och mycket välplanerad resplan.",
+                "fullText": "Fantastisk upplevelse! Oklanderlig service och mycket välplanerad resplan. Guiden var extremt professionell och uppmärksam, vilket gjorde turen lätt, säker och berikande. Jag rekommenderar det till alla som vill utforska Rio med kvalitet."
+            },
+            "testimonial2": {
+                "author": "Lucas Hernanes",
+                "role": "Internationell Turist",
+                "text": "Utmärkt privat tur, allt organiserat ner till minsta detalj.",
+                "fullText": "Utmärkt privat tur, allt organiserat ner till minsta detalj. Guiden talade flytande engelska, transporten var bekväm och resplanen flexibel. En minnesvärd upplevelse för hela familjen."
+            },
+            "testimonial3": {
+                "author": "Rafael Monteiro",
+                "role": "Turist • Minas Gerais",
+                "text": "Super organiserad och bekväm tur, värd varje minut.",
+                "fullText": "Super organiserad och bekväm tur, värd varje minut. Resplanen var flexibel, guiden extremt artig och transporten oklanderlig. Vi njöt av Rio med sinnesfrid och säkerhet. Rekommenderar starkt!"
+            },
+            "testimonial4": {
+                "author": "Mariana Lopes",
+                "role": "Företagare",
+                "text": "Premiumservice från början till slut, sensationell upplevelse.",
+                "fullText": "Premiumservice från början till slut, sensationell upplevelse. Rick Travel tog hand om varje detalj med stor professionalism. Turen var exklusiv, bekväm och superplanerad. Utan tvekan det bästa sättet att utforska Rio."
+            },
+            "testimonial5": {
+                "author": "Danyela Viana",
+                "role": "Digital Influencer",
+                "text": "Helikopterturen var helt enkelt surrealistisk!",
+                "fullText": "Helikopterturen var helt enkelt surrealistisk! Flygvyn över Kristusstatyn och Guanabarabukten är något jag aldrig kommer att glömma. Oklanderlig organisation, säkerhet och professionalism."
+            },
+            "testimonial6": {
+                "author": "Julia Cortez",
+                "role": "Journalist",
+                "text": "Extremt rik kulturell resplan och mycket välförklarad.",
+                "fullText": "Extremt rik kulturell resplan och mycket välförklarad. Guiden visade fullständig behärskning av Rios historia, vilket gjorde turen engagerande och utbildande. Toppklass upplevelse."
+            }
+        },
+        "FAQs": {
+            "title": "Vanliga Frågor",
+            "subtitle": "Snabba och tydliga svar på de viktigaste frågorna om våra turer, bokningar och upplevelser i Rio de Janeiro.",
+            "stillHaveQuestions": "Har du fortfarande frågor?",
+            "contactTeam": "Kontakta vårt supportteam",
+            "questions": {
+                "q1": {
+                    "question": "Hur lång tid tar det att bekräfta bokningen?",
+                    "answer": "Bokningsbekräftelse sker inom 24 timmar efter betalning. För brådskande bokningar erbjuder vi expressbekräftelse inom 2 timmar. Kontakta bara vårt team."
+                },
+                "q2": {
+                    "question": "Vilka betalningsmetoder accepterar ni?",
+                    "answer": "Vi accepterar kreditkort (Visa, Mastercard och American Express), Pix, PayPal och banköverföringar. För företag tillhandahåller vi också fakturering."
+                },
+                "q3": {
+                    "question": "Kan jag ändra eller avboka min bokning?",
+                    "answer": "Ja. Ändringar eller avbokningar kan göras upp till 48 timmar före turen. Efter denna tidsfrist kommer vårt team att utvärdera varje fall enligt avbokningspolicyn."
+                },
+                "q4": {
+                    "question": "Betjänar ni internationella turister?",
+                    "answer": "Vi betjänar turister från hela världen. Våra guider är Cadastur-licensierade och talar portugisiska, engelska och spanska, vilket garanterar en säker och personlig upplevelse."
+                },
+                "q5": {
+                    "question": "Vad är återbetalningspolicyn?",
+                    "answer": "Återbetalningar garanteras för avbokningar som görs upp till 48 timmar före turen. Vid ofördelaktigt väder erbjuder vi gratis ombokning."
+                }
+            }
+        }
+    },
+    "Navigation": {
+        "home": "Hem",
+        "about": "Om Oss",
+        "tours": "Våra Turer",
+        "contact": "Kontakt"
+    },
+    "Footer": {
+        "links": {
+            "home": "Hem",
+            "pricing": "Priser",
+            "help": "Hjälp",
+            "about": "Om Oss"
+        },
+        "copyright": "Alla rättigheter förbehållna."
+    },
+    "ThemeToggle": {
+        "light": "Ljus",
+        "dark": "Mörk",
+        "system": "System"
+    },
+    "AboutPage": {
+        "title": "Om Oss",
+        "intro": "Rick Travel föddes ur passion för Rio de Janeiro och önskan att erbjuda oförglömliga upplevelser till våra besökare.",
+        "mission": {
+            "title": "Mission",
+            "description": "Att erbjuda säkra, autentiska och minnesvärda turistupplevelser, som kopplar människor till kulturen och skönheten i Rio de Janeiro."
+        },
+        "vision": {
+            "title": "Vision",
+            "description": "Att vara en referens inom receptiv turism i Rio, erkänd för excellens i service och kvaliteten på resplanerna."
+        },
+        "values": {
+            "title": "Värderingar",
+            "item1": "Säkerhet först",
+            "item2": "Punktlighet och engagemang",
+            "item3": "Respekt för lokal kultur",
+            "item4": "Excellens i service"
+        },
+        "certification": {
+            "title": "Säkerhet och Certifiering",
+            "description1": "Din säkerhet är vår prioritet. Alla våra guider är licensierade av turistministeriet (Cadastur) och våra fordon genomgår rigorösa inspektioner.",
+            "description2": "Res med sinnesro och vet att du är i goda händer."
+        }
+    },
+    "ToursPage": {
+        "title": "Våra Turer",
+        "subtitle": "Kolla in alla tillgängliga turer och boka din upplevelse."
+    },
+    "ContactPage": {
+        "title": "Kontakta Oss",
+        "subtitle": "Fyll i formuläret nedan för att skicka ett meddelande till vårt team.",
+        "form": {
+            "name": "Namn",
+            "namePlaceholder": "Ditt fullständiga namn",
+            "nameError": "Namnet måste vara minst 2 tecken",
+            "email": "Email",
+            "emailPlaceholder": "din@email.com",
+            "emailError": "Ogiltig email",
+            "phone": "Telefon (Valfritt)",
+            "phonePlaceholder": "+46 70 123 45 67",
+            "message": "Meddelande",
+            "messagePlaceholder": "Berätta hur vi kan hjälpa...",
+            "messageError": "Meddelandet måste vara minst 10 tecken",
+            "sending": "Skickar...",
+            "submit": "Skicka Meddelande",
+            "errorGeneric": "Oväntat fel. Försök igen.",
+            "errorSubmit": "Fel vid skickande av meddelande."
+        }
+    },
+    "TourDetailPage": {
+        "backToTours": "Tillbaka till Turer",
+        "aboutTour": "Om turen",
+        "noDescription": "Ingen beskrivning tillgänglig.",
+        "highlights": "Höjdpunkter",
+        "noImage": "Ingen bild tillgänglig",
+        "information": "Information",
+        "group": "Grupp",
+        "maxGuests": "Max {count} personer",
+        "duration": "Varaktighet",
+        "durationTime": "Ca. 4 timmar",
+        "needHelp": "Behöver du hjälp?",
+        "needHelpText": "Har du frågor om denna resplan? Kontakta vårt team innan bokning.",
+        "contactUs": "Kontakta Oss",
+        "notFound": "Tur hittades inte"
+    },
+    "BookingsPage": {
+        "title": "Mina Bokningar",
+        "noBookings": "Du har inga bokningar ännu.",
+        "browseToursButton": "Se tillgängliga turer"
+    },
+    "LoginPage": {
+        "title": "Logga In",
+        "emailPlaceholder": "Email",
+        "passwordPlaceholder": "Lösenord",
+        "loginButton": "Logga In",
+        "loggingIn": "Loggar in...",
+        "errorLogin": "Fel vid inloggning",
+        "noAccount": "Har du inget konto?",
+        "createAccount": "Skapa konto"
+    },
+    "RegisterPage": {
+        "title": "Skapa Konto",
+        "subtitle": "Registrera dig för att boka turer.",
+        "nameLabel": "Namn",
+        "namePlaceholder": "Ditt namn",
+        "emailLabel": "Email",
+        "emailPlaceholder": "din@email.com",
+        "passwordLabel": "Lösenord",
+        "passwordPlaceholder": "minimum 8 tecken",
+        "createButton": "Skapa Konto",
+        "creating": "Skapar...",
+        "errorRegister": "Fel vid skapande av konto",
+        "haveAccount": "Har du redan ett konto?",
+        "login": "Logga In"
+    },
+    "TourActions": {
+        "pricePerPerson": "Pris per person",
+        "processing": "Bearbetar...",
+        "reserved": "Reserverad",
+        "reserveNow": "Reservera Nu",
+        "alreadyReserved": "Du har redan en bokning för denna tur!",
+        "successMessage": "Bokning lyckades!",
+        "errorMessage": "Fel vid bokning.",
+        "connectionError": "Anslutningsfel.",
+        "freeCancellation": "Gratis avbokning upp till 24h innan."
+    }
+}

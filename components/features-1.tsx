@@ -1,21 +1,22 @@
-
+'use client'
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function Features() {
+  const t = useTranslations('HomePage.Features');
+
   return (
     <section className="bg-zinc-50 py-16 md:py-32 dark:bg-transparent">
       <div className="@container mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="font-inter text-balance text-4xl font-semibold lg:text-5xl">
-            Nossos Tours Exclusivos no Rio de Janeiro
+            {t('title')}
           </h2>
           <p className="font-inter mt-4 text-muted-foreground">
-            Escolha o pacote ideal para sua viagem e descubra as belezas do Rio de
-            Janeiro com guias credenciados e experiências personalizadas.
+            {t('subtitle')}
           </p>
         </div>
 
@@ -33,21 +34,18 @@ export default function Features() {
 
             <CardHeader className="pb-3 text-center">
               <h3 className="font-inter mt-2 font-medium text-xl">
-                Rio Essencial – 1 Dia
+                {t('package1.title')}
               </h3>
             </CardHeader>
 
             <CardContent className="flex flex-1 flex-col">
               <p className="font-inter text-sm text-muted-foreground">
-                Conheça os principais cartões-postais do Rio de Janeiro em um dia
-                completo. Cristo Redentor, Pão de Açúcar, praias icônicas e pontos
-                históricos, tudo com transporte incluso e acompanhamento de guia
-                credenciado Cadastur.
+                {t('package1.description')}
               </p>
 
               <div className="mt-auto pt-6">
                 <Link href="/contato?pacote=1-dia">
-                  <Button className="w-full">Solicitar orçamento</Button>
+                  <Button className="w-full">{t('requestQuote')}</Button>
                 </Link>
               </div>
             </CardContent>
@@ -65,21 +63,18 @@ export default function Features() {
 
             <CardHeader className="pb-3 text-center">
               <h3 className="font-inter mt-2 font-medium text-xl">
-                Rio Completo – 2 Dias
+                {t('package2.title')}
               </h3>
             </CardHeader>
 
             <CardContent className="flex flex-1 flex-col">
               <p className="font-inter text-sm text-muted-foreground">
-                Explore o melhor do Rio de Janeiro em dois dias intensos de
-                passeios guiados. Combine visitas aos principais pontos
-                turísticos com experiências culturais, gastronômicas e
-                atividades exclusivas.
+                {t('package2.description')}
               </p>
 
               <div className="mt-auto pt-6">
                 <Link href="/contato?pacote=2-dias">
-                  <Button className="w-full">Solicitar orçamento</Button>
+                  <Button className="w-full">{t('requestQuote')}</Button>
                 </Link>
               </div>
             </CardContent>
@@ -97,20 +92,18 @@ export default function Features() {
 
             <CardHeader className="pb-3 text-center">
               <h3 className="font-inter mt-2 font-medium text-xl">
-                Rio Imersão – 3 Dias
+                {t('package3.title')}
               </h3>
             </CardHeader>
 
             <CardContent className="flex flex-1 flex-col">
               <p className="font-inter text-sm text-muted-foreground">
-                Imersão completa no Rio de Janeiro com três dias de passeios
-                exclusivos e personalizados. Roteiro completo, transporte
-                privado, acompanhamento multilíngue e experiência premium.
+                {t('package3.description')}
               </p>
 
               <div className="mt-auto pt-6">
                 <Link href="/contato?pacote=3-dias">
-                  <Button className="w-full">Solicitar orçamento</Button>
+                  <Button className="w-full">{t('requestQuote')}</Button>
                 </Link>
               </div>
             </CardContent>
@@ -121,5 +114,4 @@ export default function Features() {
     </section>
   )
 }
-
 

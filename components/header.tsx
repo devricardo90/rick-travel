@@ -1,7 +1,6 @@
-
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/routing' // Changed import
 import { RickTravelLogo } from '@/components/rick-travel-logo'
 import { Menu, X } from 'lucide-react'
 import React from 'react'
@@ -9,19 +8,14 @@ import { useScroll, motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { ThemeToggleButton } from './ThemeToggleButton'
 import { AuthStatus } from '@/components/auth-status'
-
-const menuItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Quem somos', href: '/quem-somos' },
-  { name: 'Nossos tours', href: '/tours' },
-  { name: 'Contatos', href: '/contato' },
-]
-
+import { LanguageSwitcher } from './LanguageSwitcher' // Added import
+import { useTranslations } from 'next-intl' // Added import
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const { scrollYProgress } = useScroll()
+  const t = useTranslations('Navigation') // Hook for translations
 
   React.useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (latest) => {
@@ -29,6 +23,13 @@ export const HeroHeader = () => {
     })
     return () => unsubscribe()
   }, [scrollYProgress])
+
+  const menuItems = [
+    { name: t('home'), href: '/' },
+    { name: t('about'), href: '/quem-somos' },
+    { name: t('tours'), href: '/tours' },
+    { name: t('contact'), href: '/contato' },
+  ]
 
   return (
     <header>
@@ -99,6 +100,7 @@ export const HeroHeader = () => {
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:items-center sm:gap-3 sm:space-y-0 md:w-fit">
                 <AuthStatus />
                 <ThemeToggleButton />
+                <LanguageSwitcher />
               </div>
             </div>
           </motion.div>

@@ -1,0 +1,232 @@
+{
+    "HomePage": {
+        "Hero": {
+            "title": "City Tour no Rio de Janeiro com Guia Credenciado",
+            "description": "Descubra as maravilhas do Rio de Janeiro em passeios exclusivos, guiados por especialistas credenciados. Segurança e experiências personalizadas para brasileiros e estrangeiros.",
+            "primaryButton": "Reserve agora seu passeio exclusivo",
+            "secondaryButton": "Solicitar orçamento"
+        },
+        "Logos": {
+            "title": "Nossos serviços"
+        },
+        "Reservations": {
+            "title": "Reserve seu passeio",
+            "subtitle": "Escolha uma experiência e garanta sua vaga com poucos cliques.",
+            "myBookings": "Minhas reservas",
+            "availableTrips": "Passeios disponíveis"
+        },
+        "Features": {
+            "title": "Nossos Tours Exclusivos no Rio de Janeiro",
+            "subtitle": "Escolha o pacote ideal para sua viagem e descubra as belezas do Rio de Janeiro com guias credenciados e experiências personalizadas.",
+            "package1": {
+                "title": "Rio Essencial – 1 Dia",
+                "description": "Conheça os principais cartões-postais do Rio de Janeiro em um dia completo. Cristo Redentor, Pão de Açúcar, praias icônicas e pontos históricos, tudo com transporte incluso e acompanhamento de guia credenciado Cadastur."
+            },
+            "package2": {
+                "title": "Rio Completo – 2 Dias",
+                "description": "Explore o melhor do Rio de Janeiro em dois dias intensos de passeios guiados. Combine visitas aos principais pontos turísticos com experiências culturais, gastronômicas e atividades exclusivas."
+            },
+            "package3": {
+                "title": "Rio Imersão – 3 Dias",
+                "description": "Imersão completa no Rio de Janeiro com três dias de passeios exclusivos e personalizados. Roteiro completo, transporte privado, acompanhamento multilíngue e experiência premium."
+            },
+            "requestQuote": "Solicitar orçamento"
+        },
+        "Testimonials": {
+            "title": "Avaliações e Depoimentos",
+            "subtitle": "Experiências reais de clientes que descobriram o Rio de Janeiro com a Rick Travel.",
+            "readMore": "Leia mais",
+            "readLess": "Ler menos",
+            "testimonial1": {
+                "author": "Camila Ferraz",
+                "role": "Turista • São Paulo",
+                "text": "Experiência incrível! Atendimento impecável e roteiro muito bem planejado.",
+                "fullText": "Experiência incrível! Atendimento impecável e roteiro muito bem planejado. O guia foi extremamente profissional e atencioso, tornando o passeio leve, seguro e enriquecedor. Recomendo para quem quer conhecer o Rio com qualidade."
+            },
+            "testimonial2": {
+                "author": "Lucas Hernanes",
+                "role": "Turista Internacional",
+                "text": "Tour privado excelente, tudo organizado nos mínimos detalhes.",
+                "fullText": "Tour privado excelente, tudo organizado nos mínimos detalhes. O guia falava inglês fluentemente, o transporte foi confortável e o roteiro flexível. Uma experiência memorável para toda a família."
+            },
+            "testimonial3": {
+                "author": "Rafael Monteiro",
+                "role": "Turista • Minas Gerais",
+                "text": "Passeio super organizado e confortável, vale cada minuto.",
+                "fullText": "Passeio super organizado e confortável, vale cada minuto. O roteiro foi flexível, o guia extremamente educado e o transporte impecável. Conseguimos aproveitar o Rio com tranquilidade e segurança. Recomendo demais!"
+            },
+            "testimonial4": {
+                "author": "Mariana Lopes",
+                "role": "Empresária",
+                "text": "Atendimento premium do início ao fim, experiência sensacional.",
+                "fullText": "Atendimento premium do início ao fim, experiência sensacional. A Rick Travel cuidou de todos os detalhes com muito profissionalismo. O tour foi exclusivo, confortável e super bem planejado. Sem dúvida a melhor forma de conhecer o Rio."
+            },
+            "testimonial5": {
+                "author": "Danyela Viana",
+                "role": "Influenciadora Digital",
+                "text": "O passeio de helicóptero foi simplesmente surreal!",
+                "fullText": "O passeio de helicóptero foi simplesmente surreal! A vista aérea do Cristo Redentor e da Baía de Guanabara é algo que nunca vou esquecer. Organização, segurança e profissionalismo impecáveis."
+            },
+            "testimonial6": {
+                "author": "Julia Cortez",
+                "role": "Jornalista",
+                "text": "Roteiro cultural riquíssimo e muito bem explicado.",
+                "fullText": "Roteiro cultural riquíssimo e muito bem explicado. O guia demonstrou domínio total da história do Rio, tornando o passeio envolvente e educativo. Experiência de altíssimo nível."
+            }
+        },
+        "FAQs": {
+            "title": "Dúvidas Frequentes",
+            "subtitle": "Respostas rápidas e claras para as principais perguntas sobre nossos passeios, reservas e experiências no Rio de Janeiro.",
+            "stillHaveQuestions": "Ainda ficou com alguma dúvida?",
+            "contactTeam": "Fale com nossa equipe de atendimento",
+            "questions": {
+                "q1": {
+                    "question": "Quanto tempo leva para confirmar a reserva?",
+                    "answer": "A confirmação da reserva acontece em até 24 horas após o pagamento. Para reservas urgentes, oferecemos confirmação expressa em até 2 horas. Basta entrar em contato com nossa equipe."
+                },
+                "q2": {
+                    "question": "Quais métodos de pagamento vocês aceitam?",
+                    "answer": "Aceitamos cartões de crédito (Visa, Mastercard e American Express), Pix, PayPal e transferência bancária. Para empresas, também disponibilizamos faturamento com nota fiscal."
+                },
+                "q3": {
+                    "question": "Posso alterar ou cancelar minha reserva?",
+                    "answer": "Sim. Alterações ou cancelamentos podem ser feitos até 48 horas antes do passeio. Após esse prazo, nossa equipe avaliará cada caso conforme a política de cancelamento."
+                },
+                "q4": {
+                    "question": "Vocês atendem turistas internacionais?",
+                    "answer": "Atendemos turistas do mundo todo. Nossos guias são credenciados Cadastur e falam português, inglês e espanhol, garantindo uma experiência segura e personalizada."
+                },
+                "q5": {
+                    "question": "Qual é a política de reembolso?",
+                    "answer": "Reembolsos são garantidos para cancelamentos feitos até 48 horas antes do passeio. Em casos de clima adverso, oferecemos reagendamento sem custo adicional."
+                }
+            }
+        }
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "Quem somos",
+        "tours": "Nossos tours",
+        "contact": "Contatos"
+    },
+    "Footer": {
+        "links": {
+            "home": "Início",
+            "pricing": "Preços",
+            "help": "Ajuda",
+            "about": "Sobre nós"
+        },
+        "copyright": "Todos os direitos reservados."
+    },
+    "ThemeToggle": {
+        "light": "Claro",
+        "dark": "Escuro",
+        "system": "Sistema"
+    },
+    "AboutPage": {
+        "title": "Quem Somos",
+        "intro": "A Rick Travel nasceu da paixão pelo Rio de Janeiro e do desejo de proporcionar experiências inesquecíveis aos nossos visitantes.",
+        "mission": {
+            "title": "Missão",
+            "description": "Oferecer experiências turísticas seguras, autênticas e memoráveis, conectando pessoas à cultura e beleza do Rio de Janeiro."
+        },
+        "vision": {
+            "title": "Visão",
+            "description": "Ser referência em turismo receptivo no Rio, reconhecida pela excelência no atendimento e pela qualidade dos roteiros."
+        },
+        "values": {
+            "title": "Valores",
+            "item1": "Segurança em primeiro lugar",
+            "item2": "Pontualidade e compromisso",
+            "item3": "Respeito à cultura local",
+            "item4": "Excelência no atendimento"
+        },
+        "certification": {
+            "title": "Segurança e Certificação",
+            "description1": "Sua segurança é nossa prioridade. Todos os nossos guias são credenciados pelo Ministério do Turismo (Cadastur) e nossos veículos passam por rigorosas inspeções.",
+            "description2": "Viaje tranquilo sabendo que você está em boas mãos."
+        }
+    },
+    "ToursPage": {
+        "title": "Nossos tours",
+        "subtitle": "Confira todos os passeios disponíveis e reserve sua experiência."
+    },
+    "ContactPage": {
+        "title": "Entre em contato",
+        "subtitle": "Preencha o formulário abaixo para enviar uma mensagem para nossa equipe.",
+        "form": {
+            "name": "Nome",
+            "namePlaceholder": "Seu nome completo",
+            "nameError": "Nome deve ter pelo menos 2 caracteres",
+            "email": "Email",
+            "emailPlaceholder": "seu@email.com",
+            "emailError": "Email inválido",
+            "phone": "Telefone (Opcional)",
+            "phonePlaceholder": "(21) 99999-9999",
+            "message": "Mensagem",
+            "messagePlaceholder": "Diga como podemos ajudar...",
+            "messageError": "Mensagem deve ter pelo menos 10 caracteres",
+            "sending": "Enviando...",
+            "submit": "Enviar Mensagem",
+            "errorGeneric": "Erro inesperado. Tente novamente.",
+            "errorSubmit": "Erro ao enviar mensagem."
+        }
+    },
+    "TourDetailPage": {
+        "backToTours": "Voltar para Tours",
+        "aboutTour": "Sobre o passeio",
+        "noDescription": "Sem descrição disponível.",
+        "highlights": "Destaques",
+        "noImage": "Sem imagem disponível",
+        "information": "Informações",
+        "group": "Grupo",
+        "maxGuests": "Máximo de {count} pessoas",
+        "duration": "Duração",
+        "durationTime": "Aprox. 4 horas",
+        "needHelp": "Precisa de ajuda?",
+        "needHelpText": "Tem dúvidas sobre este roteiro? Fale com nossa equipe antes de reservar.",
+        "contactUs": "Fale Conosco",
+        "notFound": "Tour não encontrado"
+    },
+    "BookingsPage": {
+        "title": "Minhas reservas",
+        "noBookings": "Você ainda não tem reservas.",
+        "browseToursButton": "Ver tours disponíveis"
+    },
+    "LoginPage": {
+        "title": "Entrar",
+        "emailPlaceholder": "Email",
+        "passwordPlaceholder": "Senha",
+        "loginButton": "Entrar",
+        "loggingIn": "Entrando...",
+        "errorLogin": "Erro ao entrar",
+        "noAccount": "Não tem conta?",
+        "createAccount": "Criar conta"
+    },
+    "RegisterPage": {
+        "title": "Criar conta",
+        "subtitle": "Cadastre-se para reservar passeios.",
+        "nameLabel": "Nome",
+        "namePlaceholder": "Seu nome",
+        "emailLabel": "Email",
+        "emailPlaceholder": "seu@email.com",
+        "passwordLabel": "Senha",
+        "passwordPlaceholder": "mínimo 8 caracteres",
+        "createButton": "Criar conta",
+        "creating": "Criando...",
+        "errorRegister": "Erro ao cadastrar",
+        "haveAccount": "Já tem conta?",
+        "login": "Entrar"
+    },
+    "TourActions": {
+        "pricePerPerson": "Preço por pessoa",
+        "processing": "Processando...",
+        "reserved": "Reservado",
+        "reserveNow": "Reservar Agora",
+        "alreadyReserved": "Você já tem uma reserva para este tour!",
+        "successMessage": "Reserva realizada com sucesso!",
+        "errorMessage": "Erro ao realizar reserva.",
+        "connectionError": "Erro de conexão.",
+        "freeCancellation": "Cancelamento grátis até 24h antes."
+    }
+}

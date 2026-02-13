@@ -1,22 +1,15 @@
+'use client'
 
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Quem Somos | Rick Travel",
-  description: "Conheça a Rick Travel, especialistas em turismo receptivo no Rio de Janeiro. Guias credenciados Cadastur e roteiros personalizados.",
-  openGraph: {
-    title: "Quem Somos | Rick Travel",
-    description: "Especialistas em turismo no Rio de Janeiro com guias credenciados.",
-    url: "https://ricktravel.com.br/quem-somos",
-  },
-};
+import { useTranslations } from 'next-intl';
 
 export default function QuemSomosPage() {
+  const t = useTranslations('AboutPage');
+
   return (
     <main className="mx-auto max-w-5xl px-6 py-20 space-y-16">
       {/* Intro Section */}
       <section className="text-center space-y-8">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Quem Somos</h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
 
         {/* Foto do Guia */}
         <div className="mx-auto relative w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-xl">
@@ -28,31 +21,31 @@ export default function QuemSomosPage() {
         </div>
 
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-          A Rick Travel nasceu da paixão pelo Rio de Janeiro e do desejo de proporcionar experiências inesquecíveis aos nossos visitantes.
+          {t('intro')}
         </p>
       </section>
 
       {/* Mission/Vision/Values Grid */}
       <section className="grid gap-8 md:grid-cols-3">
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">Missão</h3>
+          <h3 className="mb-2 text-xl font-semibold">{t('mission.title')}</h3>
           <p className="text-muted-foreground">
-            Oferecer experiências turísticas seguras, autênticas e memoráveis, conectando pessoas à cultura e beleza do Rio de Janeiro.
+            {t('mission.description')}
           </p>
         </div>
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">Visão</h3>
+          <h3 className="mb-2 text-xl font-semibold">{t('vision.title')}</h3>
           <p className="text-muted-foreground">
-            Ser referência em turismo receptivo no Rio, reconhecida pela excelência no atendimento e pela qualidade dos roteiros.
+            {t('vision.description')}
           </p>
         </div>
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">Valores</h3>
+          <h3 className="mb-2 text-xl font-semibold">{t('values.title')}</h3>
           <ul className="list-disc list-inside text-muted-foreground text-left">
-            <li>Segurança em primeiro lugar</li>
-            <li>Pontualidade e compromisso</li>
-            <li>Respeito à cultura local</li>
-            <li>Excelência no atendimento</li>
+            <li>{t('values.item1')}</li>
+            <li>{t('values.item2')}</li>
+            <li>{t('values.item3')}</li>
+            <li>{t('values.item4')}</li>
           </ul>
         </div>
       </section>
@@ -61,12 +54,12 @@ export default function QuemSomosPage() {
       <section className="rounded-2xl bg-muted/50 p-8 md:p-12">
         <div className="md:flex md:items-center md:justify-between md:gap-8">
           <div className="space-y-4 md:w-2/3">
-            <h2 className="text-3xl font-bold">Segurança e Certificação</h2>
+            <h2 className="text-3xl font-bold">{t('certification.title')}</h2>
             <p className="text-muted-foreground">
-              Sua segurança é nossa prioridade. Todos os nossos guias são credenciados pelo Ministério do Turismo (Cadastur) e nossos veículos passam por rigorosas inspeções.
+              {t('certification.description1')}
             </p>
             <p className="text-muted-foreground">
-              Viaje tranquilo sabendo que você está em boas mãos.
+              {t('certification.description2')}
             </p>
           </div>
           {/* Placeholder for Cadastur Seal/Image */}
