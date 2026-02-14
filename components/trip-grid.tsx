@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { TripCard } from "./trips/trip-card";
+import { TripGridSkeleton } from "./trips/trip-card-skeleton";
+import { toast } from "sonner";
 
 type Trip = {
     id: string;
@@ -23,9 +25,9 @@ interface TripGridProps {
 }
 
 export function TripGrid({ trips }: TripGridProps) {
-    const [message, setMessage] = useState<string | null>(null);
     const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
     const [reservedTripIds, setReservedTripIds] = useState<string[]>([]);
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     // 🔹 carrega IDs das trips já reservadas
     async function loadReservedTripIds() {
@@ -41,6 +43,8 @@ export function TripGrid({ trips }: TripGridProps) {
             setReservedTripIds(Array.isArray(ids) ? ids : []);
         } catch {
             // silencioso
+        } finally {
+            setIsInitialLoading(false);
         }
     }
 
@@ -58,7 +62,6 @@ export function TripGrid({ trips }: TripGridProps) {
 
     // 🔹 reservar
     async function reserve(tripId: string) {
-        setMessage(null);
         setLoadingTripId(tripId);
 
         try {
@@ -72,44 +75,56 @@ export function TripGrid({ trips }: TripGridProps) {
             const data = await res.json().catch(() => ({}));
 
             if (res.status === 401) {
-                window.location.href = "/login";
+                toast.error("Você precisa fazer login para reservar", {
+                    description: "Redirecionando para a página de login...",
+                });
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 1500);
                 return;
             }
 
             if (res.status === 409) {
-                setMessage("Você já possui uma reserva para esse passeio ✅");
+                toast.info("Já reservado", {
+                    description: "Você já possui uma reserva para este passeio ✅",
+                });
                 window.dispatchEvent(new Event("bookings:refresh"));
                 return;
             }
 
             if (!res.ok) {
-                setMessage(data?.error ?? "Erro ao reservar");
+                toast.error("Erro ao reservar", {
+                    description: data?.error ?? "Tente novamente mais tarde",
+                });
                 return;
             }
 
-            setMessage("Reserva criada com sucesso ✅");
+            toast.success("Reserva criada com sucesso! 🎉", {
+                description: "Você pode ver suas reservas em suas informações",
+            });
             window.dispatchEvent(new Event("bookings:refresh"));
         } catch {
-            setMessage("Erro de rede ao reservar");
+            toast.error("Erro de rede", {
+                description: "Verifique sua conexão e tente novamente",
+            });
         } finally {
             setLoadingTripId(null);
         }
     }
 
+    // Mostrar skeleton durante carregamento inicial
+    if (isInitialLoading) {
+        return <TripGridSkeleton count={6} />;
+    }
+
     return (
         <div className="space-y-6">
-            {message && (
-                <div className="rounded-md bg-blue-50 p-4 text-center text-sm text-blue-700">
-                    {message}
-                </div>
-            )}
-
             {trips.length === 0 ? (
                 <div className="text-center text-muted-foreground py-10">
                     Nenhum passeio disponível no momento.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
                     {trips.map((trip) => (
                         <TripCard
                             key={trip.id}

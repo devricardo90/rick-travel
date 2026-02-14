@@ -4,8 +4,9 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Loader2 } from "lucide-react"
+import { Loader2, CheckCircle2 } from "lucide-react"
 import { useTranslations } from 'next-intl'
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,7 +28,7 @@ export function ContactForm() {
 
     type ContactFormData = z.infer<typeof contactSchema>
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
+    const [showSuccess, setShowSuccess] = useState(false)
 
     const {
         register,
@@ -40,7 +41,7 @@ export function ContactForm() {
 
     async function onSubmit(data: ContactFormData) {
         setIsSubmitting(true)
-        setSubmitResult(null)
+        setShowSuccess(false)
 
         const formData = new FormData()
         formData.append("name", data.name)
@@ -49,19 +50,26 @@ export function ContactForm() {
         formData.append("message", data.message)
 
         try {
-            // Initial state is not used in the action logic but required by signature if using useFormState, 
-            // here we call it directly so we pass null or empty state
             const result = await submitContactForm({}, formData)
 
             if (result.success) {
-                setSubmitResult({ success: true, message: result.message! })
+                setShowSuccess(true)
+                toast.success("Mensagem enviada com sucesso! 🎉", {
+                    description: result.message || "Entraremos em contato em breve",
+                })
                 reset()
+
+                // Esconder animação de sucesso após 3 segundos
+                setTimeout(() => setShowSuccess(false), 3000)
             } else {
-                setSubmitResult({ success: false, message: result.message || t('errorSubmit') })
-                // If there are field errors from server, we could set them here using setError
+                toast.error("Erro ao enviar mensagem", {
+                    description: result.message || t('errorSubmit'),
+                })
             }
         } catch (error) {
-            setSubmitResult({ success: false, message: t('errorGeneric') })
+            toast.error("Erro ao enviar", {
+                description: t('errorGeneric'),
+            })
         } finally {
             setIsSubmitting(false)
         }
@@ -75,6 +83,14 @@ export function ContactForm() {
                     {tPage('subtitle')}
                 </p>
             </div>
+
+            {showSuccess && (
+                <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/30 p-4 text-green-700 dark:text-green-400 fade-in">
+                    <CheckCircle2 className="h-5 w-5 animate-bounce" />
+                    <p className="font-medium">Mensagem enviada!</p>
+                </div>
+            )}
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="name">{t('name')}</Label>
@@ -82,10 +98,10 @@ export function ContactForm() {
                         id="name"
                         placeholder={t('namePlaceholder')}
                         {...register("name")}
-                        className={errors.name ? "border-red-500" : ""}
+                        className={`transition-all duration-200 ${errors.name ? "border-red-500 dark:border-red-700 shake" : ""}`}
                     />
                     {errors.name && (
-                        <p className="text-sm text-red-500">{errors.name.message}</p>
+                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.name.message}</p>
                     )}
                 </div>
                 <div className="grid gap-2">
@@ -95,10 +111,10 @@ export function ContactForm() {
                         type="email"
                         placeholder={t('emailPlaceholder')}
                         {...register("email")}
-                        className={errors.email ? "border-red-500" : ""}
+                        className={`transition-all duration-200 ${errors.email ? "border-red-500 dark:border-red-700 shake" : ""}`}
                     />
                     {errors.email && (
-                        <p className="text-sm text-red-500">{errors.email.message}</p>
+                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.email.message}</p>
                     )}
                 </div>
                 <div className="grid gap-2">
@@ -108,6 +124,7 @@ export function ContactForm() {
                         type="tel"
                         placeholder={t('phonePlaceholder')}
                         {...register("phone")}
+                        className="transition-all duration-200"
                     />
                 </div>
                 <div className="grid gap-2">
@@ -116,25 +133,14 @@ export function ContactForm() {
                         id="message"
                         placeholder={t('messagePlaceholder')}
                         {...register("message")}
-                        className={errors.message ? "border-red-500" : ""}
+                        className={`transition-all duration-200 ${errors.message ? "border-red-500 dark:border-red-700 shake" : ""}`}
                     />
                     {errors.message && (
-                        <p className="text-sm text-red-500">{errors.message.message}</p>
+                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.message.message}</p>
                     )}
                 </div>
 
-                {submitResult && (
-                    <div
-                        className={`rounded-md p-3 text-sm ${submitResult.success
-                            ? "bg-green-100 text-green-600 dark:bg-green-900/30"
-                            : "bg-red-100 text-red-600 dark:bg-red-900/30"
-                            }`}
-                    >
-                        {submitResult.message}
-                    </div>
-                )}
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" className="w-full button-press" disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

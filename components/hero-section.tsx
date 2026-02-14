@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { HeroHeader } from '@/components/header'
@@ -45,7 +46,7 @@ function HeroContent() {
   return (
     <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:px-12">
       <div className="mx-auto max-w-4xl text-center space-y-8">
-        <h1 className="mt-8 text-balance text-5xl font-bold tracking-tight md:text-6xl lg:mt-16 xl:text-7xl">
+        <h1 className="mt-8 heading-1 text-balance lg:mt-16">
           {t('title')}
         </h1>
 
@@ -54,12 +55,12 @@ function HeroContent() {
           <HeroSearch />
         </div>
 
-        <p className="mx-auto max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground">
+        <p className="mx-auto max-w-2xl body-lg text-balance text-muted-foreground">
           {t('description')}
         </p>
 
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg" className="h-12 min-w-[200px] rounded-full pl-5 pr-3 text-base shadow-lg hover:shadow-xl transition-shadow">
+          <Button asChild size="lg" className="h-12 min-w-[200px] rounded-full pl-5 pr-3 text-base shadow-lg btn-hover-lift">
             <Link href="#reservas">
               <span>{t('primaryButton')}</span>
               <ChevronRight className="ml-1" />
@@ -70,7 +71,7 @@ function HeroContent() {
             asChild
             size="lg"
             variant="outline"
-            className="h-12 min-w-[200px] rounded-full px-5 text-base border-2 hover:bg-accent transition-colors"
+            className="h-12 min-w-[200px] rounded-full px-5 text-base border-2 btn-hover-lift"
           >
             <Link href="/contato">
               {t('secondaryButton')}
@@ -90,11 +91,17 @@ function HeroContent() {
 function HeroMedia() {
   return (
     <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
-      <img
+      <Image
         className="size-full object-cover opacity-50 dark:opacity-35 lg:dark:opacity-75"
         src={HERO_IMAGE.src}
         alt={HERO_IMAGE.alt}
+        fill
+        priority
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1400px"
+        quality={90}
       />
+      {/* Gradient overlay for better text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background/80" />
     </div>
   )
 }

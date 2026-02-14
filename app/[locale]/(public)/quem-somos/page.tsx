@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useTranslations } from 'next-intl';
 
 export default function QuemSomosPage() {
@@ -9,39 +10,43 @@ export default function QuemSomosPage() {
     <main className="mx-auto max-w-5xl px-6 pt-32 pb-20 space-y-16">
       {/* Intro Section */}
       <section className="text-center space-y-8">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t('title')}</h1>
+        <h1 className="heading-1">{t('title')}</h1>
 
         {/* Foto do Guia */}
         <div className="mx-auto relative w-full max-w-2xl aspect-video rounded-2xl overflow-hidden shadow-xl">
-          <img
+          <Image
             src="/images/trips/imagem-casal-pao-de-acucar.jpg"
             alt="Ricardo Guia de Turismo no Pão de Açúcar com turista"
-            className="object-cover w-full h-full"
+            fill
+            sizes="(max-width: 768px) 100vw, 672px"
+            className="object-cover"
+            quality={90}
+            priority
           />
         </div>
 
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+        <p className="mx-auto max-w-2xl body-lg text-muted-foreground">
           {t('intro')}
         </p>
       </section>
 
       {/* Mission/Vision/Values Grid */}
       <section className="grid gap-8 md:grid-cols-3">
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">{t('mission.title')}</h3>
-          <p className="text-muted-foreground">
+        <div className="card-padding rounded-lg border bg-card shadow-sm">
+          <h3 className="heading-5 mb-3">{t('mission.title')}</h3>
+          <p className="body-sm text-muted-foreground">
             {t('mission.description')}
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">{t('vision.title')}</h3>
-          <p className="text-muted-foreground">
+        <div className="card-padding rounded-lg border bg-card shadow-sm">
+          <h3 className="heading-5 mb-3">{t('vision.title')}</h3>
+          <p className="body-sm text-muted-foreground">
             {t('vision.description')}
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <h3 className="mb-2 text-xl font-semibold">{t('values.title')}</h3>
-          <ul className="list-disc list-inside text-muted-foreground text-left">
+        <div className="card-padding rounded-lg border bg-card shadow-sm">
+          <h3 className="heading-5 mb-3">{t('values.title')}</h3>
+          <ul className="body-sm list-disc list-inside text-muted-foreground text-left space-y-1">
             <li>{t('values.item1')}</li>
             <li>{t('values.item2')}</li>
             <li>{t('values.item3')}</li>
@@ -54,11 +59,11 @@ export default function QuemSomosPage() {
       <section className="rounded-2xl bg-muted/50 p-8 md:p-12">
         <div className="md:flex md:items-center md:justify-between md:gap-8">
           <div className="space-y-4 md:w-2/3">
-            <h2 className="text-3xl font-bold">{t('certification.title')}</h2>
-            <p className="text-muted-foreground">
+            <h2 className="heading-3">{t('certification.title')}</h2>
+            <p className="body-base text-muted-foreground">
               {t('certification.description1')}
             </p>
-            <p className="text-muted-foreground">
+            <p className="body-base text-muted-foreground">
               {t('certification.description2')}
             </p>
           </div>

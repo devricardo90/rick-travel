@@ -11,18 +11,18 @@ import { useTranslations } from 'next-intl'
 export default function Testimonials() {
   const t = useTranslations('HomePage.Testimonials');
   return (
-    <section className="py-16 md:py-28">
+    <section className="section-spacing">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="font-inter text-4xl font-semibold lg:text-5xl">
+        <div className="mx-auto mb-12 max-w-2xl text-center space-y-4">
+          <h2 className="heading-2">
             {t('title')}
           </h2>
-          <p className="mt-4 text-muted-foreground">
+          <p className="body-base text-muted-foreground">
             {t('subtitle')}
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
           <TestimonialCard
             author="Camila Ferraz"
             role="Turista • São Paulo"
@@ -120,7 +120,7 @@ function TestimonialCard({
   const canExpand = fullText.length > text.length
 
   return (
-    <Card className="h-full rounded-2xl border bg-background/60 shadow-sm">
+    <Card className="h-full rounded-2xl border bg-background/60 shadow-sm card-hover">
       <CardContent className="flex h-full flex-col justify-between p-6">
         <div className="space-y-3">
           <p className="text-sm leading-relaxed text-muted-foreground">
@@ -132,7 +132,7 @@ function TestimonialCard({
               variant="ghost"
               size="sm"
               onClick={() => setExpanded(!expanded)}
-              className="h-auto px-0 text-xs text-primary hover:bg-transparent"
+              className="h-auto px-0 text-xs link-primary hover:bg-transparent hover:no-underline"
             >
               {expanded ? t('readLess') : t('readMore')}
               <ChevronDown

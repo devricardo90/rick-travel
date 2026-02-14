@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useLocale } from 'next-intl';
+import { getLocalizedField } from '@/lib/translation-service';
 
 type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
 
@@ -13,7 +15,7 @@ type Booking = {
   createdAt: string;
   trip: {
     id: string;
-    title: string;
+    title: any; // JSON multilingual
     city: string;
     priceCents: number;
   };
@@ -49,6 +51,7 @@ function StatusBadge({ status }: { status: BookingStatus }) {
 export function MyBookings() {
   const [data, setData] = useState<Booking[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const locale = useLocale();
 
   async function load() {
     setError(null);
@@ -126,41 +129,46 @@ export function MyBookings() {
     );
   }
 
-  const Card = ({ b }: { b: Booking }) => (
-    <div className="flex flex-col gap-3 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <div className="flex items-center gap-2">
-          <div className="text-lg font-semibold">{b.trip.title}</div>
-          <StatusBadge status={b.status} />
-        </div>
+  const Card = ({ b }: { b: Booking }) => {
+    // Extrair título localizado
+    const localizedTitle = getLocalizedField<string>(b.trip.title, locale);
 
-        <div className="text-sm text-muted-foreground">{b.trip.city}</div>
-
-        <div className="mt-1 text-xs text-muted-foreground">
-          Reservado em: {new Date(b.createdAt).toLocaleString("pt-BR")}
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <div className="text-right">
-          <div className="text-lg font-semibold">
-            {formatBRLFromCents(b.totalPriceCents > 0 ? b.totalPriceCents : b.trip.priceCents)}
+    return (
+      <div className="flex flex-col gap-3 rounded-2xl border bg-background/40 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="text-lg font-semibold">{localizedTitle}</div>
+            <StatusBadge status={b.status} />
           </div>
-          {b.guestCount > 1 && (
-            <div className="text-xs text-muted-foreground">
-              {b.guestCount} viajantes
+
+          <div className="text-sm text-muted-foreground">{b.trip.city}</div>
+
+          <div className="mt-1 text-xs text-muted-foreground">
+            Reservado em: {new Date(b.createdAt).toLocaleString("pt-BR")}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <div className="text-lg font-semibold">
+              {formatBRLFromCents(b.totalPriceCents > 0 ? b.totalPriceCents : b.trip.priceCents)}
             </div>
+            {b.guestCount > 1 && (
+              <div className="text-xs text-muted-foreground">
+                {b.guestCount} viajantes
+              </div>
+            )}
+          </div>
+
+          {b.status === "CANCELED" ? null : (
+            <Button variant="outline" onClick={() => cancelBooking(b.id)}>
+              Cancelar
+            </Button>
           )}
         </div>
-
-        {b.status === "CANCELED" ? null : (
-          <Button variant="outline" onClick={() => cancelBooking(b.id)}>
-            Cancelar
-          </Button>
-        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="space-y-10">

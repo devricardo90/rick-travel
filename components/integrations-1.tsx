@@ -6,18 +6,17 @@ import * as React from 'react'
 
 export default function IntegrationsSection() {
     return (
-        <section>
-            <div className="py-32">
-                <div className="mx-auto max-w-5xl px-6">
-                    <div className="text-center">
-                        <h2 className="font-inter text-balance text-3xl font-semibold md:text-4xl">Rio de Janeiro Excursões, ingressos, atividades</h2>
-                        <p className="font-inter text-muted-foreground mt-6">
-                            Explore as melhores experiências turísticas do Rio de Janeiro com excursões exclusivas, ingressos para principais atrações 
-                            e atividades personalizadas. Sua jornada pela cidade maravilhosa começa aqui.
-                        </p>
-                    </div>
+        <section className="section-spacing">
+            <div className="mx-auto max-w-5xl px-6">
+                <div className="text-center space-y-6">
+                    <h2 className="heading-2 text-balance">Rio de Janeiro Excursões, ingressos, atividades</h2>
+                    <p className="body-base text-muted-foreground max-w-3xl mx-auto">
+                        Explore as melhores experiências turísticas do Rio de Janeiro com excursões exclusivas, ingressos para principais atrações 
+                        e atividades personalizadas. Sua jornada pela cidade maravilhosa começa aqui.
+                    </p>
+                </div>
 
-                    <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         <IntegrationCard
                             title="Um Dia no Rio - Cristo, Pão de Açúcar, City Tour"
                             description="Passeio completo pelas principais atrações do Rio em um dia. Visite o Cristo Redentor no Corcovado, 
@@ -73,20 +72,19 @@ export default function IntegrationsSection() {
                         </IntegrationCard>
                     </div>
                 </div>
-            </div>
         </section>
     )
 }
 
 const IntegrationCard = ({ title, description, children, link = '#reservas' }: { title: string; description: string; children: React.ReactNode; link?: string }) => {
     return (
-        <Card className="p-6">
+        <Card className="p-6 card-hover">
             <div className="relative">
                 <div className="*:size-10">{children}</div>
 
                 <div className="space-y-2 py-6">
-                    <h3 className="font-inter text-base font-medium">{title}</h3>
-                    <p className="font-inter text-muted-foreground line-clamp-3 text-sm leading-relaxed">{description}</p>
+                    <h3 className="heading-5">{title}</h3>
+                    <p className="body-sm text-muted-foreground line-clamp-3">{description}</p>
                 </div>
 
                 <div className="flex gap-3 border-t border-dashed pt-6">

@@ -41,14 +41,14 @@ export default function FAQsTwo() {
   ]
 
   return (
-    <section className="py-20 md:py-32">
+    <section className="section-spacing">
       <div className="mx-auto max-w-5xl px-6">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center space-y-4">
-          <h2 className="font-inter text-balance text-4xl font-semibold md:text-5xl">
+          <h2 className="heading-2 text-balance">
             {t('title')}
           </h2>
-          <p className="font-inter text-muted-foreground text-balance">
+          <p className="body-base text-muted-foreground text-balance">
             {t('subtitle')}
           </p>
         </div>
@@ -66,10 +66,10 @@ export default function FAQsTwo() {
                 value={item.id}
                 className="border-b border-dashed last:border-none"
               >
-                <AccordionTrigger className="font-inter text-left text-base font-medium hover:no-underline">
+                <AccordionTrigger className="body-base text-left font-medium hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="font-inter text-muted-foreground leading-relaxed">
+                <AccordionContent className="body-base text-muted-foreground">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -77,13 +77,13 @@ export default function FAQsTwo() {
           </Accordion>
 
           {/* CTA */}
-          <div className="mt-8 text-center">
-            <p className="font-inter text-muted-foreground">
+          <div className="mt-8 text-center space-y-2">
+            <p className="body-base text-muted-foreground">
               {t('stillHaveQuestions')}
             </p>
             <Link
               href="#contato"
-              className="font-inter mt-2 inline-block text-primary font-medium hover:underline"
+              className="body-base inline-block link-primary"
             >
               {t('contactTeam')}
             </Link>

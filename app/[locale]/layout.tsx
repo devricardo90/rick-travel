@@ -1,31 +1,20 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google"; // Removed unused Geist fonts
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { HeroHeader } from '@/components/header';
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -83,8 +72,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://api.ricktravel.com" />
+        <link rel="dns-prefetch" href="https://api.ricktravel.com" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+        className={`${inter.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
@@ -93,7 +86,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <HeroHeader />
+            <Toaster />
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

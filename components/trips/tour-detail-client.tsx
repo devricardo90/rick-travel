@@ -1,6 +1,6 @@
 'use client'
 
-import Image from "next/image";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR, enUS, es, sv, Locale } from "date-fns/locale";
@@ -77,12 +77,14 @@ export function TourDetailClient({ trip, startDate, endDate }: TourDetailClientP
 
                     <div className="relative aspect-video overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
                         {trip.imageUrl ? (
-                            <Image
+                            <OptimizedImage
                                 src={trip.imageUrl}
                                 alt={localizedTitle}
                                 fill
                                 className="object-cover"
                                 priority
+                                sizes="(max-width: 1024px) 100vw, 66vw"
+                                quality={90}
                             />
                         ) : (
                             <div className="flex h-full items-center justify-center text-muted-foreground">

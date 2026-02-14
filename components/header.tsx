@@ -1,21 +1,33 @@
-'use client'
+'use client';
 
-import { Link } from '@/i18n/routing' // Changed import
+import { Link } from '@/i18n/routing'
 import { RickTravelLogo } from '@/components/rick-travel-logo'
 import { Menu, X } from 'lucide-react'
 import React from 'react'
-import { useScroll, motion } from 'motion/react'
+import { useScroll, motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { ThemeToggleButton } from './ThemeToggleButton'
 import { AuthStatus } from '@/components/auth-status'
-import { LanguageSwitcher } from './LanguageSwitcher' // Added import
-import { useTranslations } from 'next-intl' // Added import
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { useTranslations } from 'next-intl'
 
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const { scrollYProgress } = useScroll()
-  const t = useTranslations('Navigation') // Hook for translations
+  const t = useTranslations('Navigation')
+
+  // Lock body scroll when menu is open
+  React.useEffect(() => {
+    if (menuState) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [menuState])
 
   React.useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (latest) => {
@@ -33,78 +45,129 @@ export const HeroHeader = () => {
 
   return (
     <header>
-      <nav data-state={menuState && 'active'} className="fixed z-20 w-full pt-2">
+      <nav
+        data-state={menuState && 'active'}
+        className={cn(
+          "fixed z-50 w-full transition-all duration-300",
+          scrolled ? "pt-0" : "pt-2"
+        )}
+      >
         <div
           className={cn(
-            'mx-auto max-w-7xl rounded-3xl px-6 transition-all duration-300 lg:px-12',
-            scrolled && 'bg-background/50 backdrop-blur-2xl'
+            'mx-auto max-w-7xl px-6 transition-all duration-300 lg:px-12 lg:rounded-3xl',
+            scrolled ? 'bg-background/80 backdrop-blur-md border-b lg:border-none lg:shadow-sm py-2' : 'lg:bg-transparent'
           )}
         >
-          <motion.div
-            key={1}
-            className={cn(
-              'relative flex flex-wrap items-center justify-between gap-6 py-3 duration-200 lg:gap-0 lg:py-6',
-              scrolled && 'lg:py-4'
-            )}
-          >
-            <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
-              <Link
-                href="/"
-                aria-label="Rick Travel - Página inicial"
-                className="flex items-center"
-              >
-                <RickTravelLogo variant="full" size="sm" />
-              </Link>
+          <div className="relative flex items-center justify-between py-3 lg:py-4">
+            <Link
+              href="/"
+              aria-label="Rick Travel - Página inicial"
+              className="relative z-50 flex items-center"
+              onClick={() => setMenuState(false)}
+            >
+              <RickTravelLogo variant="full" size="sm" />
+            </Link>
 
-              <button
-                onClick={() => setMenuState(!menuState)}
-                aria-label={menuState ? 'Close Menu' : 'Open Menu'}
-                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
-              >
-                <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-              </button>
-
-              <div className="hidden lg:block">
-                <ul className="flex gap-8 text-sm">
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        href={item.href}
-                        className="text-muted-foreground hover:text-accent-foreground block duration-150"
-                      >
-                        <span>{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            <button
+              onClick={() => setMenuState(!menuState)}
+              aria-label={menuState ? 'Fechar Menu' : 'Abrir Menu'}
+              className="relative z-50 -m-2.5 -mr-4 block cursor-pointer p-4 lg:hidden"
+            >
+              <div className="relative h-6 w-6">
+                <motion.div
+                  animate={menuState ? { rotate: 180, opacity: 0 } : { rotate: 0, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0"
+                >
+                  <Menu className="h-6 w-6" />
+                </motion.div>
+                <motion.div
+                  initial={{ rotate: -180, opacity: 0 }}
+                  animate={menuState ? { rotate: 0, opacity: 1 } : { rotate: -180, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0"
+                >
+                  <X className="h-6 w-6" />
+                </motion.div>
               </div>
-            </div>
+            </button>
 
-            <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-              <div className="lg:hidden">
-                <ul className="space-y-6 text-base">
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        href={item.href}
-                        className="text-muted-foreground hover:text-accent-foreground block duration-150"
-                      >
-                        <span>{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:items-center sm:gap-3 sm:space-y-0 md:w-fit">
+            {/* Desktop Menu */}
+            <div className="hidden lg:flex lg:items-center lg:gap-8">
+              <ul className="flex gap-8 text-sm font-medium">
+                {menuItems.map((item, index) => (
+                  <li key={index}>
+                    <Link
+                      href={item.href}
+                      className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center gap-4 border-l pl-6">
                 <AuthStatus />
-                <ThemeToggleButton />
-                <LanguageSwitcher />
+                <div className="flex items-center gap-2">
+                  <ThemeToggleButton />
+                  <LanguageSwitcher />
+                </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* Mobile Fullscreen Menu */}
+        <AnimatePresence>
+          {menuState && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-40 flex flex-col bg-background/98 backdrop-blur-xl lg:hidden"
+            >
+              <div className="flex flex-1 flex-col items-center justify-center space-y-8 px-6 pt-20">
+                <ul className="flex flex-col items-center space-y-6 text-center">
+                  {menuItems.map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + index * 0.1 }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setMenuState(false)}
+                        className="block py-2 text-3xl font-bold tracking-tight text-foreground/90 hover:text-primary active:scale-95 transition-all"
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex flex-col items-center gap-6 pt-8"
+                >
+                  <div className="w-full h-px bg-border/50 max-w-[200px]" />
+                  <AuthStatus />
+                  <div className="flex items-center gap-6">
+                    <div className="scale-125">
+                      <ThemeToggleButton />
+                    </div>
+                    <div className="scale-125">
+                      <LanguageSwitcher />
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   )
