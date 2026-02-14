@@ -9,6 +9,32 @@ interface TripFormProps {
     initialData?: any; // Tipar melhor depois se sobrar tempo
 }
 
+// Helper para garantir que highlights seja convertido corretamente
+function getHighlightsAsString(highlights: any): string {
+    if (!highlights) return "";
+
+    // Se já é string, retorna direto
+    if (typeof highlights === "string") {
+        // Se parece com JSON, tenta parsear
+        if (highlights.startsWith("[") || highlights.startsWith("{")) {
+            try {
+                const parsed = JSON.parse(highlights);
+                return Array.isArray(parsed) ? parsed.join("\n") : "";
+            } catch {
+                return highlights;
+            }
+        }
+        return highlights;
+    }
+
+    // Se é array, faz join
+    if (Array.isArray(highlights)) {
+        return highlights.join("\n");
+    }
+
+    return "";
+}
+
 export default function TripForm({ initialData }: TripFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -24,7 +50,7 @@ export default function TripForm({ initialData }: TripFormProps) {
         startDate: initialData?.startDate ? new Date(initialData.startDate).toISOString().split('T')[0] : "",
         endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "",
         maxGuests: initialData?.maxGuests || "",
-        highlights: initialData?.highlights ? initialData.highlights.join("\n") : "",
+        highlights: getHighlightsAsString(initialData?.highlights),
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

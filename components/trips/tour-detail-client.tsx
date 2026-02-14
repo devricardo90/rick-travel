@@ -10,6 +10,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Button } from "@/components/ui/button";
 import { TourActions } from "@/components/trips/tour-actions";
 import { getLocalizedField } from "@/lib/translation-service";
+import { normalizeTripImage } from "@/lib/image-utils";
 
 interface Trip {
     id: string;
@@ -76,21 +77,15 @@ export function TourDetailClient({ trip, startDate, endDate }: TourDetailClientP
                     </div>
 
                     <div className="relative aspect-video overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
-                        {trip.imageUrl ? (
-                            <OptimizedImage
-                                src={trip.imageUrl}
-                                alt={localizedTitle}
-                                fill
-                                className="object-cover"
-                                priority
-                                sizes="(max-width: 1024px) 100vw, 66vw"
-                                quality={90}
-                            />
-                        ) : (
-                            <div className="flex h-full items-center justify-center text-muted-foreground">
-                                {t('noImage')}
-                            </div>
-                        )}
+                        <OptimizedImage
+                            src={normalizeTripImage(trip.imageUrl)}
+                            alt={localizedTitle}
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="(max-width: 1024px) 100vw, 66vw"
+                            quality={90}
+                        />
                         <div className="absolute top-4 right-4 rounded-full bg-white/90 px-4 py-1.5 text-sm font-semibold text-black shadow-sm backdrop-blur-md">
                             {trip.city}
                         </div>

@@ -74,7 +74,7 @@ model Trip {
   createdAt   DateTime  @default(now())
   endDate     DateTime?
   highlights  Json      // Multilingual array: { "pt": [...], "en": [...], "es": [...], "sv": [...] }
-  imageUrl    String?
+  imageUrl    String    @default("/images/placeholder.svg")
   location    String?
   maxGuests   Int?
   startDate   DateTime?
