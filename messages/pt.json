@@ -112,7 +112,9 @@
         "home": "Home",
         "about": "Quem somos",
         "tours": "Nossos tours",
-        "contact": "Contatos"
+        "contact": "Contatos",
+        "openMenu": "Abrir menu de navegação",
+        "closeMenu": "Fechar menu de navegação"
     },
     "Footer": {
         "links": {
@@ -233,5 +235,13 @@
         "errorMessage": "Erro ao realizar reserva.",
         "connectionError": "Erro de conexão.",
         "freeCancellation": "Cancelamento grátis até 24h antes."
+    },
+    "TripCard": {
+        "maxGuests": "Máximo {count} pessoas",
+        "pricePerPerson": "Preço por pessoa",
+        "reserved": "Reservado",
+        "reserveNow": "Reservar Agora",
+        "viewDetails": "Ver detalhes do passeio",
+        "imageAlt": "{title} em {city}"
     }
 }

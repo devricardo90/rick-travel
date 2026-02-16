@@ -21,6 +21,7 @@ export function HeroSearch() {
     const [suggestions, setSuggestions] = useState<Trip[]>([])
     const [showSuggestions, setShowSuggestions] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [selectedIndex, setSelectedIndex] = useState(-1)
     const searchRef = useRef<HTMLDivElement>(null)
     const router = useRouter()
     const locale = useLocale()
@@ -71,6 +72,7 @@ export function HeroSearch() {
             setSuggestions(filtered.slice(0, 5)) // Show max 5 suggestions
             setShowSuggestions(true) // Mostrar sempre durante busca
             setIsLoading(false)
+            setSelectedIndex(-1) // Reset selection on new results
         }, 300)
 
         return () => {
@@ -78,6 +80,34 @@ export function HeroSearch() {
             setIsLoading(false)
         }
     }, [query, trips, locale])
+
+    // Keyboard navigation
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!showSuggestions || suggestions.length === 0) return
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault()
+                setSelectedIndex(prev =>
+                    prev < suggestions.length - 1 ? prev + 1 : prev
+                )
+                break
+            case 'ArrowUp':
+                e.preventDefault()
+                setSelectedIndex(prev => prev > 0 ? prev - 1 : -1)
+                break
+            case 'Enter':
+                e.preventDefault()
+                if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+                    handleSuggestionClick(suggestions[selectedIndex].id)
+                }
+                break
+            case 'Escape':
+                setShowSuggestions(false)
+                setSelectedIndex(-1)
+                break
+        }
+    }
 
     // Close suggestions when clicking outside
     useEffect(() => {
@@ -113,19 +143,29 @@ export function HeroSearch() {
 
     return (
         <div ref={searchRef} className="relative w-full max-w-3xl mx-auto">
-            <form onSubmit={handleSearch} className="relative">
+            <form onSubmit={handleSearch} role="search" className="relative">
+                <label htmlFor="hero-search-input" className="sr-only">
+                    {t('placeholder')}
+                </label>
                 <div className="relative flex items-center bg-white dark:bg-gray-900 rounded-full shadow-2xl border-2 border-transparent hover:border-primary/20 focus-within:border-primary transition-all duration-300">
                     <Search className="absolute left-6 h-5 w-5 text-muted-foreground pointer-events-none" aria-hidden="true" />
 
                     <input
+                        id="hero-search-input"
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         onFocus={() => query.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
                         placeholder={t('placeholder')}
                         aria-label={t('placeholder')}
+                        aria-expanded={showSuggestions && query.length >= 2}
+                        aria-controls="search-suggestions"
+                        aria-autocomplete="list"
+                        aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
                         className="w-full h-14 pl-14 pr-32 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none rounded-full"
                     />
+
 
                     <button
                         type="submit"
@@ -140,7 +180,13 @@ export function HeroSearch() {
 
             {/* Autocomplete Suggestions com Loading Skeleton e Fade-in */}
             {showSuggestions && query.length >= 2 && (
-                <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-border overflow-hidden fade-in">
+                <div
+                    id="search-suggestions"
+                    role="listbox"
+                    aria-live="polite"
+                    aria-label={t('noResults')}
+                    className="absolute z-40 w-full mt-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-border overflow-hidden fade-in"
+                >
                     <div className="p-2">
                         {isLoading ? (
                             // Skeleton durante loading
@@ -157,17 +203,30 @@ export function HeroSearch() {
                             </>
                         ) : suggestions.length > 0 ? (
                             // Resultados
-                            suggestions.map((trip) => {
+                            suggestions.map((trip, index) => {
                                 const title = getLocalizedField<string>(trip.title, locale)
                                 return (
                                     <button
                                         key={trip.id}
+                                        id={`suggestion-${index}`}
+                                        type="button"
+                                        role="option"
+                                        aria-selected={index === selectedIndex}
                                         onClick={() => handleSuggestionClick(trip.id)}
-                                        className="w-full text-left px-4 py-3 hover:bg-accent rounded-lg transition-colors duration-150 flex items-start gap-3 group"
+                                        className={`w-full text-left px-4 py-3 rounded-lg transition-colors duration-150 flex items-start gap-3 group ${index === selectedIndex
+                                            ? 'bg-primary/10 border-l-2 border-primary'
+                                            : 'hover:bg-accent'
+                                            }`}
                                     >
-                                        <Search className="h-4 w-4 text-muted-foreground mt-1 group-hover:text-primary transition-colors" />
+                                        <Search className={`h-4 w-4 mt-1 transition-colors ${index === selectedIndex
+                                            ? 'text-primary'
+                                            : 'text-muted-foreground group-hover:text-primary'
+                                            }`} />
                                         <div className="flex-1 min-w-0">
-                                            <p className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                                            <p className={`font-medium transition-colors line-clamp-1 ${index === selectedIndex
+                                                ? 'text-primary'
+                                                : 'text-foreground group-hover:text-primary'
+                                                }`}>
                                                 {title}
                                             </p>
                                             <p className="text-sm text-muted-foreground line-clamp-1">

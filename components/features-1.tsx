@@ -24,7 +24,7 @@ export default function Features() {
         <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 md:mt-16">
 
           {/* PACOTE 1: Rio Essencial */}
-          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden card-hover">
+          <Card className="group flex flex-col shadow-sm overflow-hidden card-hover">
             <div className="relative h-48 w-full overflow-hidden">
               <Image
                 src="/images/trips/imagem-casal-pao-de-acucar.jpg"
@@ -32,7 +32,8 @@ export default function Features() {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
-                quality={85}
+                quality={75}
+                loading="lazy"
               />
               <div className="absolute top-3 right-3">
                 <span className="badge-success text-xs px-3 py-1 rounded-full font-medium">
@@ -61,7 +62,7 @@ export default function Features() {
           </Card>
 
           {/* PACOTE 2: Rio Completo */}
-          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden card-hover">
+          <Card className="group flex flex-col shadow-sm overflow-hidden card-hover">
             <div className="relative h-48 w-full overflow-hidden">
               <Image
                 src="/images/trips/imagem-escadaria-selarao-brasil.jpg"
@@ -69,7 +70,8 @@ export default function Features() {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
-                quality={85}
+                quality={75}
+                loading="lazy"
               />
               <div className="absolute top-3 right-3">
                 <span className="badge-info text-xs px-3 py-1 rounded-full font-medium">
@@ -98,7 +100,7 @@ export default function Features() {
           </Card>
 
           {/* PACOTE 3: Rio Imersão */}
-          <Card className="group flex flex-col shadow-zinc-950/5 overflow-hidden card-hover">
+          <Card className="group flex flex-col shadow-sm overflow-hidden card-hover">
             <div className="relative h-48 w-full overflow-hidden">
               <Image
                 src="/images/trips/imagem-tour-favela-rocinha.jpg"
@@ -106,7 +108,8 @@ export default function Features() {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
-                quality={85}
+                quality={75}
+                loading="lazy"
               />
               <div className="absolute top-3 right-3">
                 <span className="badge-warning text-xs px-3 py-1 rounded-full font-medium">

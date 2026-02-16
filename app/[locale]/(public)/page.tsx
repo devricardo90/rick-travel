@@ -3,40 +3,43 @@ import { ReservationsSection } from "@/components/reservations-section";
 import { FadeInSection } from "@/components/ui/fade-in-section";
 import dynamic from 'next/dynamic';
 
-const Features = dynamic(() => import('@/components/features-1'));
-const IntegrationsSection = dynamic(() => import('@/components/integrations-1'));
-const Testimonials = dynamic(() => import('@/components/testimonials'));
-const FAQsTwo = dynamic(() => import('@/components/faqs-2'));
+// Code Splitting: Lazy load below-the-fold components
+const Features = dynamic(() => import('@/components/features-1'), {
+    loading: () => <div className="section-spacing h-96 bg-zinc-50 dark:bg-transparent animate-pulse" />,
+});
+
+const Testimonials = dynamic(() => import('@/components/testimonials'), {
+    loading: () => <div className="section-spacing h-96 animate-pulse" />,
+});
+
+const FAQsTwo = dynamic(() => import('@/components/faqs-2'), {
+    loading: () => <div className="section-spacing h-96 animate-pulse" />,
+});
+
 const FooterSection = dynamic(() => import('@/components/footer'));
 
 export default function Home() {
     return (
-        <div>
+        <main className="flex flex-col">
             <HeroSection />
 
-            <FadeInSection>
-                <ReservationsSection />
-            </FadeInSection>
+            {/* Above-the-fold - sem FadeIn para melhor TBT */}
+            <ReservationsSection />
 
-            <FadeInSection delay={0.1}>
+            {/* Below-the-fold - lazy load com FadeIn */}
+            <FadeInSection delay={0.2}>
                 <Features />
             </FadeInSection>
 
-            <FadeInSection delay={0.1}>
-                <IntegrationsSection />
-            </FadeInSection>
-
-            <FadeInSection delay={0.1}>
+            <FadeInSection delay={0.2}>
                 <Testimonials />
             </FadeInSection>
 
-            <FadeInSection delay={0.1}>
+            <FadeInSection delay={0.2}>
                 <FAQsTwo />
             </FadeInSection>
 
-            <FadeInSection delay={0.1}>
-                <FooterSection />
-            </FadeInSection>
-        </div>
+            <FooterSection />
+        </main>
     );
 }

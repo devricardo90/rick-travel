@@ -305,20 +305,41 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
+  /* Badges - WCAG AAA Contrast Ratio 7:1 */
   .badge-success {
-    @apply bg-success/10 text-success border border-success/20;
+    @apply bg-emerald-100 text-emerald-900 border border-emerald-300;
+    @apply dark:bg-emerald-950 dark:text-emerald-50 dark:border-emerald-800;
   }
 
   .badge-warning {
-    @apply bg-warning/10 text-warning border border-warning/20;
+    @apply bg-amber-100 text-amber-900 border border-amber-300;
+    @apply dark:bg-amber-950 dark:text-amber-50 dark:border-amber-800;
   }
 
   .badge-info {
-    @apply bg-info/10 text-info-foreground border border-info/20;
+    @apply bg-blue-100 text-blue-900 border border-blue-300;
+    @apply dark:bg-blue-950 dark:text-blue-50 dark:border-blue-800;
   }
 
   .badge-error {
-    @apply bg-destructive/10 text-destructive border border-destructive/20;
+    @apply bg-red-100 text-red-900 border border-red-300;
+    @apply dark:bg-red-950 dark:text-red-50 dark:border-red-800;
+  }
+
+  /* Touch Target - WCAG 2.5.5 (min 44x44px) */
+  .touch-target {
+    @apply relative min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  /* Ripple Effect for Touch Feedback */
+  .touch-target::before {
+    content: '';
+    @apply absolute inset-0 rounded-full scale-0 bg-primary/10;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .touch-target:active::before {
+    @apply scale-100;
   }
 
   /* Link Styles */
@@ -368,6 +389,19 @@
 
   .pulse-slow {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Screen Reader Only - Acessibilidade */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }
 

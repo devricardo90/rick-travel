@@ -70,8 +70,10 @@ export const HeroHeader = () => {
 
             <button
               onClick={() => setMenuState(!menuState)}
-              aria-label={menuState ? 'Fechar Menu' : 'Abrir Menu'}
-              className="relative z-50 -m-2.5 -mr-4 block cursor-pointer p-4 lg:hidden"
+              aria-label={menuState ? t('closeMenu') : t('openMenu')}
+              aria-expanded={menuState}
+              aria-controls="mobile-navigation"
+              className="touch-target relative z-50 lg:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg"
             >
               <div className="relative h-6 w-6">
                 <motion.div
@@ -99,7 +101,7 @@ export const HeroHeader = () => {
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                      className="text-muted-foreground hover:text-primary transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-sm"
                     >
                       {item.name}
                     </Link>
@@ -121,6 +123,7 @@ export const HeroHeader = () => {
         <AnimatePresence>
           {menuState && (
             <motion.div
+              id="mobile-navigation"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -139,7 +142,7 @@ export const HeroHeader = () => {
                       <Link
                         href={item.href}
                         onClick={() => setMenuState(false)}
-                        className="block py-2 text-3xl font-bold tracking-tight text-foreground/90 hover:text-primary active:scale-95 transition-all"
+                        className="block py-2 text-3xl font-bold tracking-tight text-foreground/90 hover:text-primary active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-md"
                       >
                         {item.name}
                       </Link>

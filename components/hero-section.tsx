@@ -46,7 +46,7 @@ function HeroContent() {
   return (
     <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:px-12">
       <div className="mx-auto max-w-4xl text-center space-y-8">
-        <h1 className="mt-8 heading-1 text-balance lg:mt-16">
+        <h1 className="mt-8 heading-1 text-balance lg:mt-16 [text-shadow:_0_2px_12px_rgb(0_0_0_/_40%)] dark:[text-shadow:_0_2px_12px_rgb(0_0_0_/_60%)]">
           {t('title')}
         </h1>
 
@@ -71,10 +71,11 @@ function HeroContent() {
             asChild
             size="lg"
             variant="outline"
-            className="h-12 min-w-[200px] rounded-full px-5 text-base border-2 btn-hover-lift"
+            className="h-12 min-w-[200px] rounded-full pl-5 pr-3 text-base border-2 shadow-lg btn-hover-lift"
           >
             <Link href="/contato">
-              {t('secondaryButton')}
+              <span>{t('secondaryButton')}</span>
+              <ChevronRight className="ml-1" />
             </Link>
           </Button>
         </div>
@@ -97,8 +98,11 @@ function HeroMedia() {
         alt={HERO_IMAGE.alt}
         fill
         priority
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1400px"
-        quality={90}
+        sizes="100vw"
+        quality={75}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwABmQAAA//9k="
+        loading="eager"
       />
       {/* Gradient overlay for better text contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background/80" />
@@ -127,8 +131,8 @@ function LogoItem({ component: IconComponent, alt, height }: LogoItemProps) {
         className="opacity-70 transition-all duration-300 group-hover:opacity-100 group-hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
       />
 
-      {/* Tooltip */}
-      <span className="pointer-events-none absolute -bottom-6 text-xs text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+      {/* Tooltip - fixed position to avoid layout shift */}
+      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
         {alt}
       </span>
     </div>

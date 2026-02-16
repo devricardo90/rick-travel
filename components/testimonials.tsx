@@ -132,11 +132,12 @@ function TestimonialCard({
               variant="ghost"
               size="sm"
               onClick={() => setExpanded(!expanded)}
-              className="h-auto px-0 text-xs link-primary hover:bg-transparent hover:no-underline"
+              aria-expanded={expanded}
+              className="h-auto px-2 py-1 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary rounded-md transition-all duration-200 flex items-center gap-1"
             >
               {expanded ? t('readLess') : t('readMore')}
               <ChevronDown
-                className={`ml-1 size-3 transition-transform ${expanded ? 'rotate-180' : ''
+                className={`size-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''
                   }`}
               />
             </Button>
@@ -145,9 +146,16 @@ function TestimonialCard({
 
         <div className="mt-6 flex items-center gap-3 border-t pt-4">
           <Avatar className="size-11">
-            {avatarUrl ? (
-              <AvatarImage src={avatarUrl} alt={author} />
-            ) : null}
+            {avatarUrl && (
+              <AvatarImage
+                src={avatarUrl}
+                alt={author}
+                onError={(e) => {
+                  // Fallback to initials on image load error
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            )}
             <AvatarFallback className="bg-primary/10 text-primary font-semibold">
               {initials}
             </AvatarFallback>

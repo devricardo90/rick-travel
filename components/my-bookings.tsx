@@ -61,16 +61,26 @@ export function MyBookings() {
         cache: "no-store",
       });
 
+      // Trata 401 silenciosamente (usuário não autenticado)
       if (res.status === 401) {
         setData([]);
         return;
       }
 
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
       const json = await res.json();
       setData(Array.isArray(json) ? json : []);
-    } catch {
-      setError("Erro ao carregar suas reservas");
-      setData([]);
+    } catch (err) {
+      // Não mostra erro se for 401 (não autenticado) - é esperado
+      if (err instanceof Response && err.status === 401) {
+        setData([]);
+      } else {
+        setError("Erro ao carregar suas reservas");
+        setData([]);
+      }
     }
   }
 

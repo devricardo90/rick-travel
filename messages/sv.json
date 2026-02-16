@@ -110,9 +110,11 @@
     },
     "Navigation": {
         "home": "Hem",
-        "about": "Om Oss",
-        "tours": "Våra Turer",
-        "contact": "Kontakt"
+        "about": "Om oss",
+        "tours": "Våra turer",
+        "contact": "Kontakt",
+        "openMenu": "Öppna navigeringsmeny",
+        "closeMenu": "Stäng navigeringsmeny"
     },
     "Footer": {
         "links": {
@@ -233,5 +235,13 @@
         "errorMessage": "Fel vid bokning.",
         "connectionError": "Anslutningsfel.",
         "freeCancellation": "Gratis avbokning upp till 24h innan."
+    },
+    "TripCard": {
+        "maxGuests": "Maximalt {count} personer",
+        "pricePerPerson": "Pris per person",
+        "reserved": "Reserverad",
+        "reserveNow": "Reservera nu",
+        "viewDetails": "Visa turdetaljer",
+        "imageAlt": "{title} i {city}"
     }
 }
