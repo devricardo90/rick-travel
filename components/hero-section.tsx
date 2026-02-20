@@ -1,10 +1,9 @@
 'use client'
 import React from 'react'
-import Image from 'next/image'
-import { Link } from '@/i18n/routing'
-import { Button } from '@/components/ui/button'
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { HeroSearch } from "@/components/hero-search";
 import { HeroHeader } from '@/components/header'
-import { HeroSearch } from '@/components/hero-search'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { ChevronRight } from 'lucide-react'
@@ -17,10 +16,7 @@ import {
   TurismoUrbanoIcon,
 } from '@/components/logos/tourism-services'
 
-const HERO_IMAGE = {
-  src: '/videos/imagem-praia-ipanema.jpg',
-  alt: 'Praia de Ipanema',
-} as const
+
 
 const LOGOS_LIST = [
   { component: EntretenimentosIcon, alt: 'Entretenimentos', height: 36 },
@@ -92,20 +88,22 @@ function HeroContent() {
 function HeroMedia() {
   return (
     <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
-      <Image
-        className="size-full object-cover opacity-50 dark:opacity-35 lg:dark:opacity-75"
-        src={HERO_IMAGE.src}
-        alt={HERO_IMAGE.alt}
-        fill
-        priority
-        sizes="100vw"
-        quality={75}
-        placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwABmQAAA//9k="
-        loading="eager"
+      {/* Vídeo cinematográfico - brightness controlado direto na classe */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover brightness-90"
+        src="/videos/video-site-hero.mp4"
+        preload="auto"
       />
-      {/* Gradient overlay for better text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background/80" />
+
+      {/* Overlay cinematográfico: suaviza imperfeições + aumenta contraste */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+
+      {/* Gradient direcional para legibilidade do texto */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
     </div>
   )
 }

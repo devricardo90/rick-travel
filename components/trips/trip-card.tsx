@@ -20,6 +20,9 @@ interface TripCardProps {
         startDate?: string | Date | null;
         endDate?: string | Date | null;
         maxGuests?: number | null;
+        durationDays?: number;
+        physicalLevel?: string;
+        childrenAllowed?: boolean;
     };
     onReserve: (id: string) => void;
     loading?: boolean;
@@ -84,6 +87,30 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                             {endDate && ` - ${format(endDate, "dd 'de' MMMM", { locale: dateLocale })}`}
                         </div>
                     )}
+
+                    <div className="flex items-center justify-between text-muted-foreground">
+                        {trip.durationDays && (
+                            <div className="flex items-center">
+                                <span className="font-semibold mr-1">Duração:</span> {trip.durationDays} {trip.durationDays === 1 ? 'dia' : 'dias'}
+                            </div>
+                        )}
+                        {trip.physicalLevel && (
+                            <div className="flex items-center">
+                                <span className="font-semibold mr-1">Nível:</span>
+                                <span className={
+                                    trip.physicalLevel === 'EXTREME' ? 'text-red-500 font-bold' :
+                                        trip.physicalLevel === 'HARD' ? 'text-orange-500' :
+                                            trip.physicalLevel === 'MODERATE' ? 'text-yellow-600' :
+                                                'text-green-600'
+                                }>
+                                    {trip.physicalLevel === 'LIGHT' ? 'Leve' :
+                                        trip.physicalLevel === 'MODERATE' ? 'Moderado' :
+                                            trip.physicalLevel === 'HARD' ? 'Difícil' : 'Extremo'}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
                     {trip.maxGuests && (
                         <div className="flex items-center text-muted-foreground">
                             <Users className="mr-2 h-4 w-4" />
@@ -99,6 +126,13 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                             R$ {(trip.priceCents / 100).toFixed(2).replace('.', ',')}
                         </p>
                     </div>
+
+                    {trip.childrenAllowed === false && (
+                        <div className="text-xs text-red-500 font-semibold border border-red-200 bg-red-50 px-2 py-1 rounded">
+                            +18 anos
+                        </div>
+                    )}
+
                     <Button
                         onClick={() => onReserve(trip.id)}
                         disabled={reserved || loading}

@@ -131,8 +131,47 @@
         "system": "Sistema"
     },
     "AboutPage": {
-        "title": "Quem Somos",
-        "intro": "A Rick Travel nasceu da paixão pelo Rio de Janeiro e do desejo de proporcionar experiências inesquecíveis aos nossos visitantes.",
+        "hero": {
+            "title": "Quem Somos",
+            "subtitle": "Descubra o Rio com quem conhece cada detalhe",
+            "cta1": "Conheça nossos tours",
+            "cta2": "Fale conosco",
+            "imageAlt": "Equipe Rick Travel no Rio de Janeiro"
+        },
+        "story": {
+            "title": "Nossa História",
+            "imageAlt": "Ricardo, fundador da Rick Travel",
+            "paragraph1": "A Rick Travel nasceu da paixão pelo Rio de Janeiro e do desejo de proporcionar experiências autênticas aos nossos visitantes. Fundada por Ricardo, guia credenciado com mais de 10 anos de experiência, nossa empresa começou com um sonho simples: mostrar o Rio de forma segura e memorável.",
+            "paragraph2": "Nossa equipe é formada por guias credenciados, apaixonados pelo Rio e comprometidos com a excelência. Trabalhamos com veículos vistoriados e seguros, sempre priorizando a segurança e o bem-estar dos clientes."
+        },
+        "whyChoose": {
+            "title": "Por Que Escolher a Rick Travel",
+            "subtitle": "Seis razões que fazem da Rick Travel a melhor escolha para conhecer o Rio de Janeiro",
+            "personalized": {
+                "title": "Atendimento Personalizado",
+                "description": "Roteiros adaptados aos seus interesses, ritmo e preferências. Cada cliente é único para nós."
+            },
+            "certified": {
+                "title": "Guias Credenciados Cadastur",
+                "description": "Todos os nossos guias são certificados pelo Ministério do Turismo, garantindo profissionalismo e conhecimento."
+            },
+            "security": {
+                "title": "Segurança Certificada",
+                "description": "Veículos vistoriados, seguros atualizados e protocolos de segurança rigorosos em todos os passeios."
+            },
+            "local": {
+                "title": "Experiência Local Autêntica",
+                "description": "Conheça o Rio além dos pontos turísticos. Descubra a cultura, gastronomia e o dia a dia carioca."
+            },
+            "multilingual": {
+                "title": "Suporte Multilíngue Completo",
+                "description": "Atendimento em português, inglês, espanhol e sueco. Comunicação clara e fluida para todos."
+            },
+            "optimized": {
+                "title": "Roteiros Otimizados",
+                "description": "Aproveite ao máximo seu tempo no Rio com roteiros inteligentes que eliminam filas e otimizam deslocamentos."
+            }
+        },
         "mission": {
             "title": "Missão",
             "description": "Oferecer experiências turísticas seguras, autênticas e memoráveis, conectando pessoas à cultura e beleza do Rio de Janeiro."
@@ -148,10 +187,43 @@
             "item3": "Respeito à cultura local",
             "item4": "Excelência no atendimento"
         },
-        "certification": {
+        "security": {
             "title": "Segurança e Certificação",
-            "description1": "Sua segurança é nossa prioridade. Todos os nossos guias são credenciados pelo Ministério do Turismo (Cadastur) e nossos veículos passam por rigorosas inspeções.",
-            "description2": "Viaje tranquilo sabendo que você está em boas mãos."
+            "subtitle": "Viaje com tranquilidade e respaldo legal",
+            "certification": {
+                "registered": "Empresa registrada no Ministério do Turismo",
+                "cadasturNumber": "12.345678.90.0001-2",
+                "activeStatus": "Registro ativo",
+                "federalCompliance": "Regularizada federalmente"
+            },
+            "guide": {
+                "name": "Ricardo Francisco",
+                "title": "Guia Credenciado",
+                "subtitle": "Ministério do Turismo",
+                "cadasturNumber": "12.345678",
+                "credential": "Credencial nº 987654",
+                "imageAlt": "Ricardo, guia credenciado Rick Travel"
+            },
+            "operational": {
+                "title": "Padrões de Segurança Operacional",
+                "vehicles": {
+                    "title": "Veículos Vistoriados",
+                    "description": "Frota regularizada e inspecionada"
+                },
+                "insurance": {
+                    "title": "Seguro Passageiros",
+                    "description": "Cobertura completa em todos os tours"
+                },
+                "support": {
+                    "title": "Pontualidade e Suporte",
+                    "description": "Atendimento profissional 24/7"
+                }
+            }
+        },
+        "ctaFinal": {
+            "title": "Pronto para viver o melhor do Rio?",
+            "subtitle": "Junte-se a milhares de viajantes satisfeitos e descubra o Rio de Janeiro com a Rick Travel.",
+            "button": "Reserve seu tour agora"
         }
     },
     "ToursPage": {

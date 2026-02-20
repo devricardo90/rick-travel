@@ -78,8 +78,18 @@ model Trip {
   location    String?
   maxGuests   Int?
   startDate   DateTime?
-  updatedAt   DateTime  @updatedAt
-  bookings    Booking[]
+  updatedAt       DateTime      @updatedAt
+  bookings        Booking[]
+  durationDays    Int           @default(1)
+  physicalLevel   PhysicalLevel @default(LIGHT)
+  childrenAllowed Boolean       @default(true)
+}
+
+enum PhysicalLevel {
+  LIGHT
+  MODERATE
+  HARD
+  EXTREME
 }
 
 model Booking {

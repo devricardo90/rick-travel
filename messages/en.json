@@ -131,11 +131,50 @@
         "system": "System"
     },
     "AboutPage": {
-        "title": "About Us",
-        "intro": "Rick Travel was born from a passion for Rio de Janeiro and the desire to provide unforgettable experiences to our visitors.",
+        "hero": {
+            "title": "About Us",
+            "subtitle": "Discover Rio with those who know every detail",
+            "cta1": "Explore our tours",
+            "cta2": "Contact us",
+            "imageAlt": "Rick Travel team in Rio de Janeiro"
+        },
+        "story": {
+            "title": "Our Story",
+            "imageAlt": "Ricardo, founder of Rick Travel",
+            "paragraph1": "Rick Travel was born from a passion for Rio de Janeiro and the desire to provide authentic experiences to our visitors. Founded by Ricardo, a certified guide with over 10 years of experience, our company started with a simple dream: to showcase Rio safely and memorably.",
+            "paragraph2": "Our team consists of certified guides, passionate about Rio and committed to excellence. We work with inspected and insured vehicles, always prioritizing the safety and well-being of our clients."
+        },
+        "whyChoose": {
+            "title": "Why Choose Rick Travel",
+            "subtitle": "Six reasons that make Rick Travel the best choice to discover Rio de Janeiro",
+            "personalized": {
+                "title": "Personalized Service",
+                "description": "Itineraries adapted to your interests, pace, and preferences. Each client is unique to us."
+            },
+            "certified": {
+                "title": "Cadastur Certified Guides",
+                "description": "All our guides are certified by the Ministry of Tourism, ensuring professionalism and knowledge."
+            },
+            "security": {
+                "title": "Certified Safety",
+                "description": "Inspected vehicles, updated insurance, and rigorous safety protocols on all tours."
+            },
+            "local": {
+                "title": "Authentic Local Experience",
+                "description": "Discover Rio beyond tourist spots. Explore the culture, gastronomy, and daily life of Rio."
+            },
+            "multilingual": {
+                "title": "Complete Multilingual Support",
+                "description": "Service in Portuguese, English, Spanish, and Swedish. Clear and fluent communication for everyone."
+            },
+            "optimized": {
+                "title": "Optimized Routes",
+                "description": "Make the most of your time in Rio with smart itineraries that eliminate queues and optimize transfers."
+            }
+        },
         "mission": {
             "title": "Mission",
-            "description": "To offer safe, authentic, and memorable tourism experiences, connecting people to the culture and beauty of Rio de Janeiro."
+            "description": "To offer safe, authentic, and memorable tourist experiences, connecting people to the culture and beauty of Rio de Janeiro."
         },
         "vision": {
             "title": "Vision",
@@ -148,10 +187,43 @@
             "item3": "Respect for local culture",
             "item4": "Excellence in service"
         },
-        "certification": {
+        "security": {
             "title": "Safety and Certification",
-            "description1": "Your safety is our priority. All our guides are licensed by the Ministry of Tourism (Cadastur) and our vehicles undergo rigorous inspections.",
-            "description2": "Travel with peace of mind knowing you're in good hands."
+            "subtitle": "Travel with peace of mind and legal support",
+            "certification": {
+                "registered": "Registered with the Ministry of Tourism",
+                "cadasturNumber": "12.345678.90.0001-2",
+                "activeStatus": "Active registration",
+                "federalCompliance": "Federally compliant"
+            },
+            "guide": {
+                "name": "Ricardo Francisco",
+                "title": "Certified Guide",
+                "subtitle": "Ministry of Tourism",
+                "cadasturNumber": "12.345678",
+                "credential": "Credential #987654",
+                "imageAlt": "Ricardo, Rick Travel certified guide"
+            },
+            "operational": {
+                "title": "Operational Safety Standards",
+                "vehicles": {
+                    "title": "Inspected Vehicles",
+                    "description": "Regulated and inspected fleet"
+                },
+                "insurance": {
+                    "title": "Passenger Insurance",
+                    "description": "Full coverage on all tours"
+                },
+                "support": {
+                    "title": "Punctuality & Support",
+                    "description": "Professional 24/7 service"
+                }
+            }
+        },
+        "ctaFinal": {
+            "title": "Ready to experience the best of Rio?",
+            "subtitle": "Join thousands of satisfied travelers and discover Rio de Janeiro with Rick Travel.",
+            "button": "Book your tour now"
         }
     },
     "ToursPage": {

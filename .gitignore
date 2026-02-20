@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -44,3 +45,22 @@ next-env.d.ts
 
 # Kombai
 .kombai/
+
+# ─── Arquivos temporários de desenvolvimento ───
+# Docs de planejamento local que não fazem parte do produto
+ASSETS_NEEDED.md
+**/ASSETS_NEEDED.md
+
+# ─── Vídeos grandes (usar Git LFS ou CDN em produção) ───
+# Mantenha apenas SVG/imagens otimizadas no repositório.
+# Para vídeos, use storage externo (S3, Cloudflare R2, etc.)
+# ou Git LFS: git lfs track "public/videos/*.mp4"
+public/videos/*.mp4
+public/videos/*.webm
+public/videos/*.mov
+
+# ─── Imagens brutas / não otimizadas ───
+# Prefira manter apenas versões finais otimizadas (WebP, AVIF)
+# Arquivos JPEG/PNG grandes devem ser comprimidos antes do commit
+**/*.JPEG
+

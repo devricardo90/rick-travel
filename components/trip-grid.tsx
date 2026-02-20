@@ -18,6 +18,9 @@ type Trip = {
     maxGuests?: number | null;
     highlights?: any; // JSON multilingual array
     createdAt?: Date | string;
+    durationDays?: number;
+    physicalLevel?: string;
+    childrenAllowed?: boolean;
 };
 
 interface TripGridProps {
