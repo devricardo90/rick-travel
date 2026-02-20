@@ -8,21 +8,33 @@ import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+function StarRating() {
+  return (
+    <div className="star-rating mb-3" aria-label="5 estrelas">
+      {[...Array(5)].map((_, i) => (
+        <svg key={i} className="h-4 w-4 fill-amber-400 text-amber-400" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  )
+}
+
 export default function Testimonials() {
   const t = useTranslations('HomePage.Testimonials');
   return (
     <section className="section-spacing">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-12 max-w-2xl text-center space-y-4">
-          <h2 className="heading-2">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] text-white">
             {t('title')}
           </h2>
-          <p className="body-base text-muted-foreground">
+          <p className="text-white/65">
             {t('subtitle')}
           </p>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <TestimonialCard
             author="Camila Ferraz"
             role="Turista • São Paulo"
@@ -120,9 +132,17 @@ function TestimonialCard({
   const canExpand = fullText.length > text.length
 
   return (
-    <Card className="h-full rounded-2xl border bg-background/60 shadow-sm card-hover">
+    <Card className="h-full rounded-2xl border bg-white dark:bg-card shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden">
+      {/* Aspas decorativas */}
+      <div className="absolute top-4 right-5 text-5xl font-serif text-primary/10 select-none leading-none" aria-hidden="true">
+        "
+      </div>
+
       <CardContent className="flex h-full flex-col justify-between p-6">
-        <div className="space-y-3">
+        <div className="space-y-2">
+          {/* 5 estrelas */}
+          <StarRating />
+
           <p className="text-sm leading-relaxed text-muted-foreground">
             {expanded ? fullText : text}
           </p>
@@ -151,7 +171,6 @@ function TestimonialCard({
                 src={avatarUrl}
                 alt={author}
                 onError={(e) => {
-                  // Fallback to initials on image load error
                   e.currentTarget.style.display = 'none'
                 }}
               />
@@ -162,7 +181,7 @@ function TestimonialCard({
           </Avatar>
 
           <div className="min-w-0">
-            <p className="text-sm font-medium leading-tight">{author}</p>
+            <p className="text-sm font-semibold leading-tight">{author}</p>
             <p className="text-xs text-muted-foreground">{role}</p>
             <p className="text-xs text-primary">{instagram}</p>
           </div>

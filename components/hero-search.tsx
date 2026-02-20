@@ -147,8 +147,8 @@ export function HeroSearch() {
                 <label htmlFor="hero-search-input" className="sr-only">
                     {t('placeholder')}
                 </label>
-                <div className="relative flex items-center bg-white dark:bg-gray-900 rounded-full shadow-2xl border-2 border-transparent hover:border-primary/20 focus-within:border-primary transition-all duration-300">
-                    <Search className="absolute left-6 h-5 w-5 text-muted-foreground pointer-events-none" aria-hidden="true" />
+                <div className="relative flex items-center bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/12 hover:border-white/20 focus-within:border-white/30 focus-within:ring-4 focus-within:ring-white/5 transition-all duration-300">
+                    <Search className="absolute left-6 h-5 w-5 text-white/50 pointer-events-none" aria-hidden="true" />
 
                     <input
                         id="hero-search-input"
@@ -163,14 +163,14 @@ export function HeroSearch() {
                         aria-controls="search-suggestions"
                         aria-autocomplete="list"
                         aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
-                        className="w-full h-14 pl-14 pr-32 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none rounded-full"
+                        className="w-full h-14 pl-14 pr-32 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none rounded-full"
                     />
 
 
                     <button
                         type="submit"
                         disabled={query.length < 2 || isLoading}
-                        className="absolute right-2 h-10 px-6 bg-primary text-primary-foreground rounded-full font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 button-press flex items-center gap-2"
+                        className="absolute right-2 h-10 px-6 bg-brazil-green-600 text-white rounded-full font-semibold hover:bg-brazil-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 button-press flex items-center gap-2 shadow-lg"
                     >
                         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                         {t('button')}
@@ -185,7 +185,7 @@ export function HeroSearch() {
                     role="listbox"
                     aria-live="polite"
                     aria-label={t('noResults')}
-                    className="absolute z-40 w-full mt-2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-border overflow-hidden fade-in"
+                    className="absolute z-40 w-full mt-3 bg-navy-900/95 backdrop-blur-xl rounded-2xl shadow-hero border border-white/10 overflow-hidden fade-in"
                 >
                     <div className="p-2">
                         {isLoading ? (
@@ -213,23 +213,23 @@ export function HeroSearch() {
                                         role="option"
                                         aria-selected={index === selectedIndex}
                                         onClick={() => handleSuggestionClick(trip.id)}
-                                        className={`w-full text-left px-4 py-3 rounded-lg transition-colors duration-150 flex items-start gap-3 group ${index === selectedIndex
-                                            ? 'bg-primary/10 border-l-2 border-primary'
-                                            : 'hover:bg-accent'
+                                        className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-150 flex items-start gap-3 group ${index === selectedIndex
+                                            ? 'bg-white/10 border-l-4 border-brazil-green-600'
+                                            : 'hover:bg-white/5'
                                             }`}
                                     >
                                         <Search className={`h-4 w-4 mt-1 transition-colors ${index === selectedIndex
-                                            ? 'text-primary'
-                                            : 'text-muted-foreground group-hover:text-primary'
+                                            ? 'text-brazil-green-600'
+                                            : 'text-white/40 group-hover:text-white'
                                             }`} />
                                         <div className="flex-1 min-w-0">
                                             <p className={`font-medium transition-colors line-clamp-1 ${index === selectedIndex
-                                                ? 'text-primary'
-                                                : 'text-foreground group-hover:text-primary'
+                                                ? 'text-white'
+                                                : 'text-white/90 group-hover:text-white'
                                                 }`}>
                                                 {title}
                                             </p>
-                                            <p className="text-sm text-muted-foreground line-clamp-1">
+                                            <p className="text-sm text-white/50 line-clamp-1">
                                                 {trip.city}{trip.location && ` • ${trip.location}`}
                                             </p>
                                         </div>

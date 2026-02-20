@@ -6,7 +6,7 @@ import { HeroSearch } from "@/components/hero-search";
 import { HeroHeader } from '@/components/header'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ShieldCheck, Star, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import {
   EntretenimentosIcon,
@@ -33,6 +33,30 @@ const SLIDER_CONFIG = {
 }
 
 /* ===========================
+   TRUST BAR
+=========================== */
+
+function TrustBar() {
+  const t = useTranslations('HomePage.Hero')
+  const badges = [
+    { icon: <MapPin className="h-3.5 w-3.5" />, text: '500+ tours realizados' },
+    { icon: <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />, text: '★ 4,9 (143 avaliações)' },
+    { icon: <ShieldCheck className="h-3.5 w-3.5" />, text: 'Viagens seguras' },
+  ]
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+      {badges.map((badge, i) => (
+        <span key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium bg-black/25 text-white/75 border border-white/10 backdrop-blur-sm">
+          {badge.icon}
+          {badge.text}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/* ===========================
    HERO CONTENT
 =========================== */
 
@@ -42,7 +66,7 @@ function HeroContent() {
   return (
     <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:px-12">
       <div className="mx-auto max-w-4xl text-center space-y-8">
-        <h1 className="mt-8 heading-1 text-balance lg:mt-16 [text-shadow:_0_2px_12px_rgb(0_0_0_/_40%)] dark:[text-shadow:_0_2px_12px_rgb(0_0_0_/_60%)]">
+        <h1 className="mt-8 text-balance lg:mt-16 text-white text-3xl font-bold tracking-[-0.02em] leading-[1.1] md:text-5xl lg:text-6xl xl:text-7xl">
           {t('title')}
         </h1>
 
@@ -51,30 +75,29 @@ function HeroContent() {
           <HeroSearch />
         </div>
 
-        <p className="mx-auto max-w-2xl body-lg text-balance text-muted-foreground">
-          {t('description')}
-        </p>
-
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg" className="h-12 min-w-[200px] rounded-full pl-5 pr-3 text-base shadow-lg btn-hover-lift">
+          <Button asChild size="lg" className="h-12 min-w-[210px] rounded-2xl bg-brazil-green-600 hover:bg-brazil-green-700 px-6 text-base font-semibold shadow-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0">
             <Link href="#reservas">
               <span>{t('primaryButton')}</span>
-              <ChevronRight className="ml-1" />
+              <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
 
           <Button
             asChild
             size="lg"
-            variant="outline"
-            className="h-12 min-w-[200px] rounded-full pl-5 pr-3 text-base border-2 shadow-lg btn-hover-lift"
+            variant="ghost"
+            className="h-12 min-w-[210px] rounded-2xl border border-white/15 bg-white/5 text-white/90 hover:bg-white/10 hover:text-white px-6 text-base font-semibold backdrop-blur-md transition-all duration-200 hover:-translate-y-px active:translate-y-0"
           >
             <Link href="/contato">
               <span>{t('secondaryButton')}</span>
-              <ChevronRight className="ml-1" />
+              <ChevronRight className="ml-1 h-4 w-4 opacity-70" />
             </Link>
           </Button>
         </div>
+
+        {/* Trust Bar */}
+        <TrustBar />
       </div>
     </div>
   )
@@ -88,22 +111,25 @@ function HeroContent() {
 function HeroMedia() {
   return (
     <div className="absolute inset-1 -z-10 overflow-hidden rounded-3xl border border-black/10 aspect-[2/3] lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
-      {/* Vídeo cinematográfico - brightness controlado direto na classe */}
+      {/* Vídeo cinematográfico */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover brightness-90"
+        className="absolute inset-0 w-full h-full object-cover brightness-75"
         src="/videos/video-site-hero.mp4"
         preload="auto"
       />
 
-      {/* Overlay cinematográfico: suaviza imperfeições + aumenta contraste */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      {/* Overlay cinematográfico com gradiente do design system */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80" />
 
-      {/* Gradient direcional para legibilidade do texto */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+      {/* Highlight radial no topo para "depth" */}
+      <div className="absolute inset-0 bg-[radial-gradient(1000px_400px_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]" />
+
+      {/* Vinheta lateral sutil */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.4)_100%)]" />
     </div>
   )
 }

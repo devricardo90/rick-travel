@@ -10,7 +10,7 @@
             "title": "Our Services"
         },
         "Search": {
-            "placeholder": "Search for tours, attractions, cities...",
+            "placeholder": "Search tours...",
             "button": "Search",
             "noResults": "No tours found. Try another search."
         },

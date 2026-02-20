@@ -135,18 +135,104 @@ function MenuItem({
             <Link
                 href={href}
                 onClick={onClose}
-                className="flex w-full items-center gap-3 rounded-2xl border border-border/50 bg-muted/40 px-4 py-3 text-left transition-all duration-200 hover:bg-primary/10 hover:border-primary/30"
+                className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition-all duration-200 hover:bg-white/10"
             >
-                {/* Ícone com cor primária */}
-                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/15 text-primary">
+                {/* Ícone neutro glass */}
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/5 border border-white/10 text-white/80">
                     {icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground">{title}</p>
-                    {hint && <p className="text-xs text-muted-foreground mt-0.5">{hint}</p>}
+                    <p className="text-sm font-semibold text-white tracking-[-0.01em]">{title}</p>
+                    {hint && <p className="text-xs text-white/50 mt-0.5">{hint}</p>}
                 </div>
-                <ChevronRight size={15} className="text-muted-foreground/50 shrink-0" />
+                <ChevronRight size={15} className="text-white/30 shrink-0" />
             </Link>
+        </div>
+    );
+}
+
+/* ─── HelloHeader (bloco de saudação premium) ─── */
+function HelloHeader({
+    name,
+    subtitle = "Bem-vindo ao Rick Travel",
+    onClose,
+}: {
+    name: string;
+    subtitle?: string;
+    onClose: () => void;
+}) {
+    // Iniciais do avatar
+    const initials = name
+        .split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+    return (
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-4 mb-3">
+            {/* Barra verde decorativa (micro-acento premium) */}
+            <div className="mb-3 h-1 w-8 rounded-full bg-emerald-500/70" />
+
+            <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                    {/* Label estilo referência */}
+                    <p className="text-[11px] font-semibold tracking-[0.18em] text-white/55 uppercase">
+                        Bem-vindo de volta
+                    </p>
+
+                    {/* Avatar + Nome */}
+                    <div className="mt-2 flex items-center gap-2.5">
+                        {/* Avatar com iniciais */}
+                        <div className="h-9 w-9 shrink-0 rounded-full border border-white/10 bg-white/10 grid place-items-center">
+                            <span className="text-xs font-bold text-white/80">{initials}</span>
+                        </div>
+
+                        <div className="min-w-0">
+                            <h2 className="truncate text-base font-semibold tracking-[-0.02em] text-white">
+                                Olá, {name} <span className="text-white/80">👋</span>
+                            </h2>
+                            <p className="truncate text-xs text-white/55">{subtitle}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Botão fechar premium */}
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/5 text-white/60 transition hover:bg-white/10 hover:text-white/90"
+                    aria-label="Fechar menu"
+                >
+                    <X size={14} />
+                </button>
+            </div>
+        </div>
+    );
+}
+
+/* ─── GuestHeader (cabeçalho para visitante não autenticado) ─── */
+function GuestHeader({ onClose }: { onClose: () => void }) {
+    return (
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-4 mb-3">
+            <div className="flex items-center justify-between">
+                <div className="min-w-0">
+                    <p className="text-[11px] font-semibold tracking-[0.18em] text-white/55 uppercase">
+                        Rick Travel
+                    </p>
+                    <p className="mt-0.5 text-base font-semibold tracking-[-0.02em] text-white">
+                        Navegação
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/5 text-white/60 transition hover:bg-white/10 hover:text-white/90"
+                    aria-label="Fechar menu"
+                >
+                    <X size={14} />
+                </button>
+            </div>
         </div>
     );
 }
@@ -239,61 +325,36 @@ export default function MobileMenu({ open, onClose }: Props) {
                 aria-hidden={!open}
             />
 
-            {/* Bottom Sheet — usa as cores do tema */}
+            {/* Bottom Sheet — tema escuro premium */}
             <div
                 ref={sheetRef}
-                className="fixed left-3 right-3 bottom-3 z-50 rounded-[26px] border border-border bg-background/95 p-4 opacity-0 shadow-2xl"
+                className="fixed left-3 right-3 bottom-3 z-50 rounded-[26px] border border-white/10 p-4 opacity-0 shadow-2xl"
                 style={{
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
+                    background: "rgba(7, 26, 43, 0.96)",
+                    backdropFilter: "blur(24px)",
+                    WebkitBackdropFilter: "blur(24px)",
                 }}
                 role="dialog"
                 aria-modal="true"
                 aria-label="Menu de navegação"
             >
                 {/* Handle */}
-                <div className="flex justify-center mb-4">
-                    <div className="h-1 w-10 rounded-full bg-muted-foreground/20" />
+                <div className="flex justify-center mb-3">
+                    <div className="h-1 w-8 rounded-full bg-white/15" />
                 </div>
 
-                {/* Cabeçalho: saudação animada + botão fechar */}
-                <div data-item className="flex items-center justify-between mb-4 px-1">
-                    <div className="overflow-hidden">
-                        {!authLoading && user ? (
-                            <>
-                                {/* Label em onda */}
-                                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                                    <WaveText text="Bem-vindo de volta" />
-                                </p>
-                                {/* Nome em onda com cor primária */}
-                                <p className="text-base font-bold text-foreground flex items-center gap-1">
-                                    <WaveText text={`Olá, ${user.name ?? "usuário"}`} color="var(--primary)" />
-                                    <span>👋</span>
-                                </p>
-                            </>
-                        ) : (
-                            <>
-                                <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                                    <WaveText text="Rick Travel" />
-                                </p>
-                                <p className="text-base font-bold text-foreground">
-                                    <WaveText text="Menu de navegação" />
-                                </p>
-                            </>
-                        )}
-                    </div>
-
-                    <button
-                        onClick={onClose}
-                        className="grid h-9 w-9 place-items-center rounded-xl border border-border bg-muted/50 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                        aria-label="Fechar menu"
-                    >
-                        <X size={16} />
-                    </button>
+                {/* HelloHeader / GuestHeader */}
+                <div data-item>
+                    {!authLoading && user ? (
+                        <HelloHeader
+                            name={user.name ?? "Usuário"}
+                            subtitle="Pronto para explorar o Rio?"
+                            onClose={onClose}
+                        />
+                    ) : (
+                        <GuestHeader onClose={onClose} />
+                    )}
                 </div>
-
-                {/* Separador */}
-                <div className="mb-3 h-px bg-border/60" />
 
                 {/* Itens de navegação */}
                 <nav className="flex flex-col gap-1.5">
@@ -310,7 +371,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                 </nav>
 
                 {/* Separador */}
-                <div className="my-3 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                <div className="my-3 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                 {/* CTAs de auth */}
                 {!authLoading && (
@@ -319,7 +380,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                             /* ── Logado ── */
                             <div className="flex flex-col gap-2">
                                 <div className="grid grid-cols-2 gap-2">
-                                    {/* Minhas Reservas — cor primária */}
+                                    {/* Minhas Reservas — verde = CTA principal */}
                                     <Link
                                         data-item
                                         href="/reservas"
@@ -332,26 +393,26 @@ export default function MobileMenu({ open, onClose }: Props) {
                                         Minhas reservas
                                     </Link>
 
-                                    {/* Sair — outline */}
+                                    {/* Sair — ghost discreta */}
                                     <button
                                         data-item
                                         onClick={logout}
                                         onPointerDown={(e) => pressIn(e.currentTarget)}
                                         onPointerUp={(e) => pressOut(e.currentTarget)}
-                                        className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+                                        className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/70 transition-all hover:bg-white/10 hover:text-white"
                                     >
                                         <LogOut size={15} />
                                         Sair
                                     </button>
                                 </div>
 
-                                {/* Admin */}
+                                {/* Admin — ghost, sem verde */}
                                 {user.role === "ADMIN" && (
                                     <Link
                                         data-item
                                         href="/admin"
                                         onClick={onClose}
-                                        className="flex items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/10 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+                                        className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 py-3 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                                     >
                                         <ShieldCheck size={15} />
                                         Painel Admin
@@ -379,7 +440,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                                     onClick={onClose}
                                     onPointerDown={(e) => pressIn(e.currentTarget)}
                                     onPointerUp={(e) => pressOut(e.currentTarget)}
-                                    className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-muted"
+                                    className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/70 transition-all hover:bg-white/10 hover:text-white"
                                 >
                                     <UserPlus size={15} />
                                     Criar conta
@@ -390,9 +451,9 @@ export default function MobileMenu({ open, onClose }: Props) {
                 )}
 
                 {/* Tema e Idioma */}
-                <div className="mt-3 flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-muted/30 px-5 py-2.5">
+                <div className="mt-3 flex items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-2.5">
                     <ThemeToggleButton />
-                    <div className="h-4 w-px bg-border" />
+                    <div className="h-4 w-px bg-white/10" />
                     <LanguageSwitcher />
                 </div>
             </div>

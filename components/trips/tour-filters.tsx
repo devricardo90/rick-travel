@@ -14,6 +14,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
+import { SlidersHorizontal, RotateCcw } from "lucide-react";
 
 export function TourFilters() {
     const router = useRouter();
@@ -24,11 +25,9 @@ export function TourFilters() {
     const [physicalLevel, setPhysicalLevel] = useState<string>("all");
     const [childrenAllowed, setChildrenAllowed] = useState(false);
 
-    // Debounce price to avoid too many URL updates
     const [debouncedPrice] = useDebounce(priceRange, 500);
 
     useEffect(() => {
-        // Initial sync with URL
         const priceMin = searchParams.get("minPrice");
         const priceMax = searchParams.get("maxPrice");
         const dur = searchParams.get("duration");
@@ -73,72 +72,94 @@ export function TourFilters() {
         router.push(`?${params.toString()}`, { scroll: false });
     }, [debouncedPrice, duration, physicalLevel, childrenAllowed, router]);
 
+    function handleReset() {
+        setPriceRange([0, 5000]);
+        setDuration("all");
+        setPhysicalLevel("all");
+        setChildrenAllowed(false);
+    }
+
     return (
-        <div className="space-y-6 rounded-lg border p-6 shadow-sm bg-card">
-            <div>
-                <h3 className="text-lg font-semibold mb-4">Filtros</h3>
-                <div className="space-y-4">
+        <div className="card-dark p-6 space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <SlidersHorizontal className="h-4 w-4 text-white/70" />
+                    <h3 className="text-base font-semibold text-white">Filtros</h3>
+                </div>
+                <button
+                    onClick={handleReset}
+                    className="flex items-center gap-1 text-xs text-white/50 hover:text-white/80 transition-colors"
+                >
+                    <RotateCcw className="h-3 w-3" />
+                    Limpar
+                </button>
+            </div>
 
-                    {/* Preço */}
-                    <div className="space-y-2">
-                        <Label>Faixa de Preço (R$)</Label>
-                        <Slider
-                            defaultValue={[0, 5000]}
-                            value={priceRange}
-                            max={5000}
-                            step={50}
-                            onValueChange={setPriceRange}
-                            className="py-4"
-                        />
-                        <div className="flex justify-between text-sm text-muted-foreground">
-                            <span>R$ {priceRange[0]}</span>
-                            <span>R$ {priceRange[1]}</span>
-                        </div>
+            {/* Separador */}
+            <div className="h-px bg-white/10" />
+
+            <div className="space-y-5">
+                {/* Preço */}
+                <div className="space-y-3">
+                    <Label className="text-sm text-white/70">Faixa de Preço (R$)</Label>
+                    <Slider
+                        defaultValue={[0, 5000]}
+                        value={priceRange}
+                        max={5000}
+                        step={50}
+                        onValueChange={setPriceRange}
+                        className="py-4"
+                    />
+                    <div className="flex justify-between text-xs text-white/50">
+                        <span>R$ {priceRange[0]}</span>
+                        <span>R$ {priceRange[1]}</span>
                     </div>
+                </div>
 
-                    {/* Duração */}
-                    <div className="space-y-2">
-                        <Label>Duração (dias)</Label>
-                        <Select value={duration} onValueChange={setDuration}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Qualquer duração" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Todas</SelectItem>
-                                <SelectItem value="1">1 dia (Bate e volta)</SelectItem>
-                                <SelectItem value="2">2 dias</SelectItem>
-                                <SelectItem value="3">3+ dias</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                {/* Duração */}
+                <div className="space-y-2">
+                    <Label className="text-sm text-white/70">Duração (dias)</Label>
+                    <Select value={duration} onValueChange={setDuration}>
+                        <SelectTrigger className="bg-white/5 border-white/10 text-white focus:ring-white/20 hover:bg-white/10 transition-colors">
+                            <SelectValue placeholder="Qualquer duração" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">Todas</SelectItem>
+                            <SelectItem value="1">1 dia (Bate e volta)</SelectItem>
+                            <SelectItem value="2">2 dias</SelectItem>
+                            <SelectItem value="3">3+ dias</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                    {/* Nível Físico */}
-                    <div className="space-y-2">
-                        <Label>Nível Físico</Label>
-                        <Select value={physicalLevel} onValueChange={setPhysicalLevel}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Qualquer nível" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Todos</SelectItem>
-                                <SelectItem value="LIGHT">Leve</SelectItem>
-                                <SelectItem value="MODERATE">Moderado</SelectItem>
-                                <SelectItem value="HARD">Difícil</SelectItem>
-                                <SelectItem value="EXTREME">Extremo</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                {/* Nível Físico */}
+                <div className="space-y-2">
+                    <Label className="text-sm text-white/70">Nível Físico</Label>
+                    <Select value={physicalLevel} onValueChange={setPhysicalLevel}>
+                        <SelectTrigger className="bg-white/5 border-white/10 text-white focus:ring-white/20 hover:bg-white/10 transition-colors">
+                            <SelectValue placeholder="Qualquer nível" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">Todos</SelectItem>
+                            <SelectItem value="LIGHT">🌿 Leve</SelectItem>
+                            <SelectItem value="MODERATE">⚡ Moderado</SelectItem>
+                            <SelectItem value="HARD">🔥 Difícil</SelectItem>
+                            <SelectItem value="EXTREME">💀 Extremo</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                    {/* Crianças */}
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="children-allowed">Permite Crianças</Label>
-                        <Switch
-                            id="children-allowed"
-                            checked={childrenAllowed}
-                            onCheckedChange={setChildrenAllowed}
-                        />
-                    </div>
-
+                {/* Crianças */}
+                <div className="flex items-center justify-between py-1">
+                    <Label htmlFor="children-allowed" className="text-sm text-white/70 cursor-pointer">
+                        Permite Crianças
+                    </Label>
+                    <Switch
+                        id="children-allowed"
+                        checked={childrenAllowed}
+                        onCheckedChange={setChildrenAllowed}
+                    />
                 </div>
             </div>
         </div>

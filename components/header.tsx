@@ -46,7 +46,15 @@ export const HeroHeader = () => {
         <div
           className={cn(
             'mx-auto max-w-7xl px-6 transition-all duration-300 lg:px-12 lg:rounded-3xl',
-            scrolled ? 'bg-background/80 backdrop-blur-md border-b lg:border-none lg:shadow-sm py-2' : 'lg:bg-transparent'
+            scrolled
+              ? [
+                // Light scrolled: branco glass premium
+                'bg-white/80 backdrop-blur-xl border-b border-black/5 shadow-[0_10px_25px_rgba(15,23,42,0.08)] py-2',
+                // Dark scrolled: navy glass
+                'dark:bg-navy-900/80 dark:border-white/10 dark:shadow-[0_10px_25px_rgba(0,0,0,0.25)]',
+                'lg:border-b-0 lg:border lg:border-black/5 dark:lg:border-white/10',
+              ].join(' ')
+              : 'lg:bg-transparent'
           )}
         >
           <div className="relative flex items-center justify-between py-3 lg:py-4">
@@ -65,7 +73,7 @@ export const HeroHeader = () => {
               aria-label={t('openMenu')}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
-              className="touch-target relative z-50 lg:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg"
+              className="touch-target relative z-50 lg:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg text-slate-700 dark:text-white/80"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -77,14 +85,14 @@ export const HeroHeader = () => {
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-muted-foreground hover:text-primary transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-sm"
+                      className="text-slate-600 hover:text-slate-900 dark:text-white/75 dark:hover:text-white transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-sm"
                     >
                       {item.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center gap-4 border-l pl-6">
+              <div className="flex items-center gap-4 border-l border-light-border dark:border-white/10 pl-6">
                 <AuthStatus />
                 <div className="flex items-center gap-2">
                   <ThemeToggleButton />

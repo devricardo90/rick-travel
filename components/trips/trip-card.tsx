@@ -1,20 +1,23 @@
+'use client'
+
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { format } from "date-fns";
-import { Calendar, MapPin, Users, Loader2 } from "lucide-react";
+import { Calendar, MapPin, Users, Loader2, Clock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getLocalizedField } from "@/lib/translation-service";
 import { normalizeTripImage } from "@/lib/image-utils";
 import { useLocale, useTranslations } from 'next-intl';
 import { ptBR, enUS, es, sv, type Locale } from "date-fns/locale";
+import { TourMediaBadges } from "@/components/trips/tour-media-badges";
 
 interface TripCardProps {
     trip: {
         id: string;
-        title: any; // JSON multilingual field
+        title: any;
         city: string;
         location?: string | null;
-        description?: any | null; // JSON multilingual field
+        description?: any | null;
         priceCents: number;
         imageUrl?: string | null;
         startDate?: string | Date | null;
@@ -23,10 +26,29 @@ interface TripCardProps {
         durationDays?: number;
         physicalLevel?: string;
         childrenAllowed?: boolean;
+        // Prova social — opcionais (alimentados pelo banco quando disponíveis)
+        ratingAvg?: number;
+        reviewsCount?: number;
+        bookingsCount?: number;
     };
     onReserve: (id: string) => void;
     loading?: boolean;
     reserved?: boolean;
+}
+
+function PhysicalLevelBadge({ level }: { level: string }) {
+    const labels: Record<string, { label: string; className: string; icon: string }> = {
+        LIGHT: { label: 'Leve', className: 'level-light', icon: '🌿' },
+        MODERATE: { label: 'Moderado', className: 'level-moderate', icon: '⚡' },
+        HARD: { label: 'Difícil', className: 'level-hard', icon: '🔥' },
+        EXTREME: { label: 'Extremo', className: 'level-extreme', icon: '💀' },
+    }
+    const data = labels[level] || labels.LIGHT
+    return (
+        <span className={data.className}>
+            {data.icon} {data.label}
+        </span>
+    )
 }
 
 export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) {
@@ -35,10 +57,8 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
     const startDate = trip.startDate ? new Date(trip.startDate) : null;
     const endDate = trip.endDate ? new Date(trip.endDate) : null;
 
-    // Get localized title
     const localizedTitle = getLocalizedField<string>(trip.title, locale);
 
-    // Locale mapping for date-fns
     const localeMap: Record<string, Locale> = {
         'pt': ptBR,
         'en': enUS,
@@ -47,107 +67,112 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
     };
     const dateLocale = localeMap[locale] || ptBR;
 
-    // Descriptive alt text for accessibility (WCAG 1.1.1)
     const imageAlt = `${localizedTitle} - ${trip.city}${trip.location ? ', ' + trip.location : ''}`;
 
     return (
-        <div className="group overflow-hidden rounded-2xl border bg-white dark:bg-card shadow-sm transition-all duration-500 ease-out hover:shadow-xl hover:-translate-y-1">
+        <div className="group overflow-hidden rounded-2xl border bg-white dark:bg-card shadow-sm transition-all duration-500 ease-out hover:shadow-xl hover:-translate-y-1.5">
+            {/* ── Área da Imagem ── */}
             <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-muted">
                 <OptimizedImage
                     src={normalizeTripImage(trip.imageUrl)}
                     alt={imageAlt}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     quality={75}
                 />
-                <div className="absolute top-3 right-3 rounded-full bg-white/90 dark:bg-black/50 px-3 py-1 text-xs font-medium text-black dark:text-white shadow-sm backdrop-blur-sm">
+
+                {/* Gradiente permanente na base (necessário para ratings legíveis) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+
+                {/* Badge de cidade — topo esquerdo */}
+                <div className="absolute top-3 left-3 rounded-full bg-black/40 px-2.5 py-1 text-[11px] font-medium text-white shadow-sm backdrop-blur-sm flex items-center gap-1 border border-white/10">
+                    <MapPin className="h-3 w-3" />
                     {trip.city}
                 </div>
+
+                {/* Badge +18 — topo direito (se sem botão favoritar E childrenAllowed=false) */}
+                {trip.childrenAllowed === false && (
+                    <div className="absolute top-3 right-14 rounded-full bg-red-500/85 px-2.5 py-1 text-[11px] font-bold text-white shadow-sm backdrop-blur-sm border border-white/10">
+                        +18
+                    </div>
+                )}
+
+                {/* Prova social + favoritar */}
+                <TourMediaBadges
+                    rating={trip.ratingAvg}
+                    reviews={trip.reviewsCount}
+                    bookings={trip.bookingsCount}
+                    showFavorite
+                />
             </div>
 
+            {/* ── Conteúdo ── */}
             <div className="p-5">
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-foreground">{localizedTitle}</h3>
-                        {trip.location && (
-                            <div className="mt-1 flex items-center text-sm text-muted-foreground">
-                                <MapPin className="mr-1 h-3.5 w-3.5" />
-                                {trip.location}
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <div className="mt-4 space-y-2 text-sm">
-                    {startDate && (
-                        <div className="flex items-center text-muted-foreground">
-                            <Calendar className="mr-2 h-4 w-4" />
-                            {format(startDate, "dd 'de' MMMM", { locale: dateLocale })}
-                            {endDate && ` - ${format(endDate, "dd 'de' MMMM", { locale: dateLocale })}`}
+                {/* Título e localização */}
+                <div>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-foreground leading-tight">{localizedTitle}</h3>
+                    {trip.location && (
+                        <div className="mt-1 flex items-center text-sm text-muted-foreground">
+                            <MapPin className="mr-1 h-3.5 w-3.5 shrink-0" />
+                            {trip.location}
                         </div>
                     )}
+                </div>
 
-                    <div className="flex items-center justify-between text-muted-foreground">
-                        {trip.durationDays && (
-                            <div className="flex items-center">
-                                <span className="font-semibold mr-1">Duração:</span> {trip.durationDays} {trip.durationDays === 1 ? 'dia' : 'dias'}
-                            </div>
-                        )}
-                        {trip.physicalLevel && (
-                            <div className="flex items-center">
-                                <span className="font-semibold mr-1">Nível:</span>
-                                <span className={
-                                    trip.physicalLevel === 'EXTREME' ? 'text-red-500 font-bold' :
-                                        trip.physicalLevel === 'HARD' ? 'text-orange-500' :
-                                            trip.physicalLevel === 'MODERATE' ? 'text-yellow-600' :
-                                                'text-green-600'
-                                }>
-                                    {trip.physicalLevel === 'LIGHT' ? 'Leve' :
-                                        trip.physicalLevel === 'MODERATE' ? 'Moderado' :
-                                            trip.physicalLevel === 'HARD' ? 'Difícil' : 'Extremo'}
-                                </span>
-                            </div>
-                        )}
-                    </div>
-
+                {/* Badges de info */}
+                <div className="mt-3 flex flex-wrap gap-2">
+                    {trip.durationDays && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                            <Clock className="h-3 w-3" />
+                            {trip.durationDays} {trip.durationDays === 1 ? 'dia' : 'dias'}
+                        </span>
+                    )}
+                    {trip.physicalLevel && (
+                        <PhysicalLevelBadge level={trip.physicalLevel} />
+                    )}
                     {trip.maxGuests && (
-                        <div className="flex items-center text-muted-foreground">
-                            <Users className="mr-2 h-4 w-4" />
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                            <Users className="h-3 w-3" />
                             {t('maxGuests', { count: trip.maxGuests })}
-                        </div>
+                        </span>
                     )}
                 </div>
 
-                <div className="mt-5 flex items-center justify-between">
+                {/* Data */}
+                {startDate && (
+                    <div className="mt-3 flex items-center text-sm text-muted-foreground">
+                        <Calendar className="mr-2 h-4 w-4 shrink-0" />
+                        {format(startDate, "dd 'de' MMMM", { locale: dateLocale })}
+                        {endDate && ` – ${format(endDate, "dd 'de' MMMM", { locale: dateLocale })}`}
+                    </div>
+                )}
+
+                {/* Preço e CTA */}
+                <div className="mt-5 flex items-end justify-between gap-3">
                     <div>
-                        <p className="text-sm text-muted-foreground">{t('pricePerPerson')}</p>
-                        <p className="text-2xl font-bold text-primary">
+                        <p className="text-xs text-muted-foreground">{t('pricePerPerson')}</p>
+                        <p className="text-3xl font-black text-primary leading-none mt-0.5">
                             R$ {(trip.priceCents / 100).toFixed(2).replace('.', ',')}
                         </p>
                     </div>
 
-                    {trip.childrenAllowed === false && (
-                        <div className="text-xs text-red-500 font-semibold border border-red-200 bg-red-50 px-2 py-1 rounded">
-                            +18 anos
-                        </div>
-                    )}
-
                     <Button
                         onClick={() => onReserve(trip.id)}
                         disabled={reserved || loading}
-                        className={reserved ? "bg-green-500 hover:bg-green-600" : ""}
+                        className={`shrink-0 ${reserved ? "bg-emerald-500 hover:bg-emerald-600 border-emerald-500" : ""}`}
                     >
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         {reserved ? t('reserved') : t('reserveNow')}
                     </Button>
                 </div>
 
+                {/* Link detalhes */}
                 <Link
                     href={`/tours/${trip.id}`}
-                    className="mt-3 block text-center text-sm text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-sm"
+                    className="mt-3 block text-center text-sm text-primary/80 hover:text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-sm transition-colors duration-150"
                 >
-                    {t('viewDetails')}
+                    {t('viewDetails')} →
                 </Link>
             </div>
         </div>

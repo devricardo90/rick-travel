@@ -73,15 +73,50 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
+
+  /* ── Premium Navy (Dark backgrounds) ── */
+  --color-navy-950: #071A2B;
+  --color-navy-900: #0A2238;
+  --color-navy-800: #0E2A45;
+  --color-navy-700: #163B5B;
+
+  /* ── Charcoal (Card surfaces dark) ── */
+  --color-charcoal-950: #0B0F14;
+  --color-charcoal-900: #0F1620;
+
+  /* ── Brazil accent (CTA only) ── */
+  --color-brazil-green-50: #F0FDF4;
+  --color-brazil-green-100: #DDF5E7;
+  --color-brazil-green-600: #128A4A;
+  --color-brazil-green-700: #0F6E3B;
+  --color-brazil-yellow-500: #F6C445;
+
+  /* ── Light Premium (off-white) ── */
+  --color-light-bg: #F6F7FA;
+  --color-light-surface: #FFFFFF;
+  --color-light-surface2: #F1F3F8;
+  --color-light-text: #0B1220;
+  --color-light-muted: #475569;
+  --color-light-border: #E6EAF0;
+
+  /* ── Custom Shadows ── */
+  --shadow-soft: 0 10px 25px rgba(0, 0, 0, .12);
+  --shadow-soft-light: 0 10px 25px rgba(15, 23, 42, .08);
+  --shadow-hero: 0 18px 45px rgba(0, 0, 0, .25);
 }
 
 :root {
+  /* Brand Gradients */
+  --brand-gradient: linear-gradient(135deg, oklch(0.8348 0.1302 160.9080) 0%, oklch(0.7 0.18 200) 100%);
+  --brand-gradient-dark: linear-gradient(135deg, oklch(0.4365 0.1044 156.7556) 0%, oklch(0.35 0.14 200) 100%);
+  --hero-overlay: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.0) 40%, rgba(0, 0, 0, 0.65) 100%);
   --radius: 0.5rem;
-  --background: oklch(0.9911 0 0);
+  /* ── Off-white premium (fundo Light) ── */
+  --background: #F6F7FA;
   --foreground: oklch(0.2046 0 0);
-  --card: oklch(0.9911 0 0);
+  --card: #FFFFFF;
   --card-foreground: oklch(0.2046 0 0);
-  --popover: oklch(0.9911 0 0);
+  --popover: #FFFFFF;
   --popover-foreground: oklch(0.4386 0 0);
   --primary: oklch(0.8348 0.1302 160.9080);
   --primary-foreground: oklch(0.2626 0.0147 166.4589);
@@ -92,8 +127,8 @@
   --accent: oklch(0.9461 0 0);
   --accent-foreground: oklch(0.2435 0 0);
   --destructive: oklch(0.5523 0.1927 32.7272);
-  --border: oklch(0.9037 0 0);
-  --input: oklch(0.9731 0 0);
+  --border: #E6EAF0;
+  --input: #F1F3F8;
   --ring: oklch(0.8348 0.1302 160.9080);
   --chart-1: oklch(0.8348 0.1302 160.9080);
   --chart-2: oklch(0.6231 0.1880 259.8145);
@@ -389,6 +424,147 @@
 
   .pulse-slow {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* ── About Page: Premium Dark System ─────────────────── */
+  .section-dark {
+    @apply mx-auto max-w-6xl px-6 py-16 md:py-24;
+  }
+
+  .surface-dark {
+    @apply rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .card-dark {
+    @apply rounded-3xl border border-white/10;
+    background: rgba(11, 15, 20, 0.85);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .text-muted-dark {
+    @apply text-white/70;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .icon-chip-dark {
+    @apply h-12 w-12 rounded-2xl bg-white/5 border border-white/10 grid place-items-center;
+  }
+
+  /* ── Surface Light (cards no light mode) ── */
+  .surface-light {
+    @apply rounded-3xl border bg-white;
+    border-color: #E6EAF0;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  }
+
+  /* ── Surface Dark Solid (header dark, etc) ── */
+  .surface-dark-solid {
+    @apply rounded-3xl border border-white/10;
+    background: #0A2238;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  /* ── Buttons Premium ── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-px active:translate-y-0;
+    background: #128A4A;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+  }
+
+  .btn-primary:hover {
+    background: #0F6E3B;
+  }
+
+  .btn-ghost-dark {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold text-white/90 border border-white/15 backdrop-blur transition-all duration-200 hover:bg-white/10;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold border transition-all duration-200 hover:bg-light-surface2;
+    color: #0B1220;
+    border-color: #E6EAF0;
+    background: #FFFFFF;
+  }
+
+  /* ── Pills / Chips ── */
+  .chip-dark {
+    @apply inline-flex items-center rounded-full border border-white/15 px-3 py-1.5 text-xs font-semibold text-white/85 backdrop-blur-sm;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .chip-light {
+    @apply inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold;
+    border-color: #E6EAF0;
+    background: #FFFFFF;
+    color: #0B1220;
+  }
+
+  /* ── Inputs ── */
+  .input-dark {
+    @apply w-full rounded-2xl border border-white/12 px-4 py-3 text-white placeholder:text-white/55 outline-none backdrop-blur-sm focus:border-white/25 transition-colors;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .input-light {
+    @apply w-full rounded-2xl border px-4 py-3 outline-none focus:border-slate-300 transition-colors;
+    border-color: #E6EAF0;
+    background: #FFFFFF;
+    color: #0B1220;
+  }
+
+  .input-light::placeholder {
+    color: #475569;
+  }
+
+
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 dark:bg-black/20 dark:border-white/10;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/60 border border-white/40 shadow-lg dark:bg-black/30 dark:border-white/10;
+  }
+
+  /* Trust Badge */
+  .trust-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+    @apply bg-white/20 text-white border border-white/30 backdrop-blur-sm;
+  }
+
+  /* Popular Card Highlight */
+  .card-popular {
+    @apply ring-2 ring-primary shadow-xl scale-[1.02] relative z-10;
+  }
+
+  .card-popular-badge {
+    @apply absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-4 py-1 rounded-full shadow-md whitespace-nowrap;
+  }
+
+  /* Star Rating */
+  .star-rating {
+    @apply flex items-center gap-0.5 text-amber-400;
+  }
+
+  /* Physical Level Badges */
+  .level-light {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300;
+  }
+
+  .level-moderate {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300;
+  }
+
+  .level-hard {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-300;
+  }
+
+  .level-extreme {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300;
   }
 
   /* Screen Reader Only - Acessibilidade */

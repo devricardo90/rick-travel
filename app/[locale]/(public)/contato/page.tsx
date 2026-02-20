@@ -18,10 +18,24 @@ export const metadata = {
 
 export default function ContatoPage() {
   return (
-    <main className="container mx-auto max-w-5xl px-6 pt-32 pb-20">
-      <div className="flex flex-col items-center justify-center">
-        <ContactForm />
-      </div>
-    </main>
+    /* ── Wrapper premium dark — igual ao Quem Somos ─────── */
+    <div className="relative min-h-screen bg-[#071A2B] text-white">
+
+      {/* Radial highlight superior */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 opacity-60"
+        style={{
+          background:
+            'radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,0.10), transparent 60%)',
+        }}
+      />
+
+      <main className="relative z-10 container mx-auto max-w-5xl px-6 pt-32 pb-20">
+        <div className="flex flex-col items-center justify-center">
+          <ContactForm />
+        </div>
+      </main>
+    </div>
   );
 }

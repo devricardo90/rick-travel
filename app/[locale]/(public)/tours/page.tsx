@@ -26,22 +26,36 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
   const params = await searchParams;
 
   return (
-    <main className="mx-auto max-w-7xl px-6 pt-32 pb-20">
-      <ToursHeader />
+    /* ── Wrapper premium dark — igual ao Quem Somos ─────── */
+    <div className="relative min-h-screen bg-[#071A2B] text-white">
 
-      <div className="flex flex-col lg:flex-row gap-8 mt-8">
-        {/* Sidebar de Filtros */}
-        <aside className="w-full lg:w-1/4">
-          <div className="sticky top-24">
-            <TourFilters />
-          </div>
-        </aside>
+      {/* Radial highlight superior */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 opacity-60"
+        style={{
+          background:
+            'radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,0.10), transparent 60%)',
+        }}
+      />
 
-        {/* Lista de Passeios */}
-        <section className="w-full lg:w-3/4">
-          <TripList searchParams={params} />
-        </section>
-      </div>
-    </main>
+      <main className="relative z-10 mx-auto max-w-7xl px-6 pt-32 pb-20">
+        <ToursHeader />
+
+        <div className="flex flex-col lg:flex-row gap-8 mt-8">
+          {/* Sidebar de Filtros */}
+          <aside className="w-full lg:w-1/4">
+            <div className="sticky top-24">
+              <TourFilters />
+            </div>
+          </aside>
+
+          {/* Lista de Passeios */}
+          <section className="w-full lg:w-3/4">
+            <TripList searchParams={params} />
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }

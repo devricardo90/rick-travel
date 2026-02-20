@@ -78,8 +78,8 @@ export function ContactForm() {
     return (
         <div className="mx-auto w-full max-w-md space-y-6">
             <div className="grid gap-2 text-center">
-                <h2 className="text-3xl font-bold">{tPage('title')}</h2>
-                <p className="text-balance text-muted-foreground">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] text-white">{tPage('title')}</h2>
+                <p className="text-balance text-white/70">
                     {tPage('subtitle')}
                 </p>
             </div>
