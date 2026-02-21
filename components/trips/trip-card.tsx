@@ -70,14 +70,14 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
     const imageAlt = `${localizedTitle} - ${trip.city}${trip.location ? ', ' + trip.location : ''}`;
 
     return (
-        <div className="group overflow-hidden rounded-2xl border bg-white dark:bg-card shadow-sm transition-all duration-500 ease-out hover:shadow-xl hover:-translate-y-1.5">
+        <div className="group overflow-hidden rounded-2xl border border-transparent bg-white dark:bg-[#0B2233] dark:border-white/8 shadow-sm transition-all duration-300 ease-out hover:shadow-xl hover:-translate-y-0.5 dark:hover:border-white/15 dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
             {/* ── Área da Imagem ── */}
-            <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-muted">
+            <div className="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-[#071826]">
                 <OptimizedImage
                     src={normalizeTripImage(trip.imageUrl)}
                     alt={imageAlt}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     quality={75}
                 />
@@ -123,7 +123,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                 {/* Badges de info */}
                 <div className="mt-3 flex flex-wrap gap-2">
                     {trip.durationDays && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted dark:bg-white/5 dark:border dark:border-white/10 px-2.5 py-0.5 text-xs font-medium text-muted-foreground dark:text-[#A8B7C6]">
                             <Clock className="h-3 w-3" />
                             {trip.durationDays} {trip.durationDays === 1 ? 'dia' : 'dias'}
                         </span>
@@ -132,7 +132,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                         <PhysicalLevelBadge level={trip.physicalLevel} />
                     )}
                     {trip.maxGuests && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-muted dark:bg-white/5 dark:border dark:border-white/10 px-2.5 py-0.5 text-xs font-medium text-muted-foreground dark:text-[#A8B7C6]">
                             <Users className="h-3 w-3" />
                             {t('maxGuests', { count: trip.maxGuests })}
                         </span>
@@ -149,22 +149,27 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                 )}
 
                 {/* Preço e CTA */}
-                <div className="mt-5 flex items-end justify-between gap-3">
-                    <div>
-                        <p className="text-xs text-muted-foreground">{t('pricePerPerson')}</p>
-                        <p className="text-3xl font-black text-primary leading-none mt-0.5">
-                            R$ {(trip.priceCents / 100).toFixed(2).replace('.', ',')}
-                        </p>
-                    </div>
+                <div className="mt-5 rounded-xl dark:bg-gradient-to-r dark:from-[#0B2E1E] dark:to-[#0F3B27] dark:border dark:border-[#1A4D2E]/60 p-0 dark:p-4">
+                    <div className="flex items-end justify-between gap-3">
+                        <div>
+                            <p className="text-xs text-muted-foreground dark:text-[#A8B7C6]/70">{t('pricePerPerson')}</p>
+                            <p className="text-3xl font-black text-primary dark:text-[#EAF2F7] leading-none mt-0.5">
+                                R$ {(trip.priceCents / 100).toFixed(2).replace('.', ',')}
+                            </p>
+                        </div>
 
-                    <Button
-                        onClick={() => onReserve(trip.id)}
-                        disabled={reserved || loading}
-                        className={`shrink-0 ${reserved ? "bg-emerald-500 hover:bg-emerald-600 border-emerald-500" : ""}`}
-                    >
-                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {reserved ? t('reserved') : t('reserveNow')}
-                    </Button>
+                        <Button
+                            onClick={() => onReserve(trip.id)}
+                            disabled={reserved || loading}
+                            className={`shrink-0 transition-all duration-200 ${reserved
+                                    ? "bg-emerald-700 hover:bg-emerald-800 border border-emerald-600 text-white"
+                                    : "dark:bg-transparent dark:border dark:border-white/20 dark:text-[#EAF2F7] dark:hover:bg-white/8 dark:hover:border-white/35"
+                                }`}
+                        >
+                            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {reserved ? t('reserved') : t('reserveNow')}
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Link detalhes */}

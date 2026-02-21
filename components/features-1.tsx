@@ -1,8 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Check } from 'lucide-react'
@@ -35,13 +33,13 @@ function PackageCard({
   const t = useTranslations('HomePage.Features')
 
   return (
-    <Card
-      className={`group flex flex-col shadow-sm overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${popular ? 'card-popular' : ''
+    <div
+      className={`group flex flex-col rounded-2xl overflow-hidden border border-white/8 bg-white dark:bg-[#0B2233] shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-xl dark:hover:border-white/15 dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${popular ? 'ring-2 ring-[#1A7A6E]/60 shadow-xl scale-[1.02] relative z-10' : ''
         }`}
     >
       {/* Popular badge flutuante */}
       {popular && (
-        <div className="card-popular-badge">
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#0B2E1E] to-[#0F3B27] border border-[#1A4D2E]/60 text-white/90 text-xs font-bold px-4 py-1 rounded-full shadow-md whitespace-nowrap">
           ⭐ Mais Popular
         </div>
       )}
@@ -63,23 +61,23 @@ function PackageCard({
         </div>
       </div>
 
-      <CardHeader className="pb-2 text-center">
-        <h3 className="heading-5 mt-2">{title}</h3>
+      <div className="px-6 pb-2 pt-6 text-center">
+        <h3 className="text-lg font-semibold mt-2 text-gray-900 dark:text-[#EAF2F7]">{title}</h3>
         {/* Preço de destaque */}
-        <div className="mt-1">
-          <span className="text-xs text-muted-foreground">{priceLabel}</span>
-          <p className="text-2xl font-black text-primary">{price}</p>
+        <div className="mt-2 rounded-lg dark:bg-gradient-to-r dark:from-[#0B2E1E] dark:to-[#0F3B27] dark:border dark:border-[#1A4D2E]/50 p-0 dark:py-2 dark:px-3">
+          <span className="text-xs text-muted-foreground dark:text-[#A8B7C6]/70">{priceLabel}</span>
+          <p className="text-2xl font-black text-primary dark:text-[#EAF2F7]">{price}</p>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="flex flex-1 flex-col">
-        <p className="body-sm text-muted-foreground">{description}</p>
+      <div className="flex flex-1 flex-col px-6 pb-6">
+        <p className="text-sm leading-relaxed text-muted-foreground dark:text-[#A8B7C6] mt-2">{description}</p>
 
         {/* Lista de benefícios */}
         <ul className="mt-4 space-y-1.5">
           {benefits.map((benefit, i) => (
-            <li key={i} className="flex items-center gap-2 text-sm text-foreground">
-              <Check className="h-4 w-4 text-primary shrink-0" />
+            <li key={i} className="flex items-center gap-2 text-sm text-foreground dark:text-[#EAF2F7]/85">
+              <Check className="h-4 w-4 text-[#1A7A6E] shrink-0" />
               {benefit}
             </li>
           ))}
@@ -87,13 +85,19 @@ function PackageCard({
 
         <div className="mt-auto pt-6">
           <Link href={href}>
-            <Button className={`w-full ${popular ? '' : 'variant-outline'}`} variant={popular ? 'default' : 'outline'}>
+            <button
+              className={`w-full rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px ${popular
+                ? 'text-white'
+                : 'border border-white/15 dark:text-[#EAF2F7] dark:hover:bg-white/8'
+                }`}
+              style={popular ? { background: 'linear-gradient(135deg, #0B2E1E 0%, #0F3B27 100%)', border: '1px solid rgba(26,77,46,0.5)' } : {}}
+            >
               {t('requestQuote')}
-            </Button>
+            </button>
           </Link>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 

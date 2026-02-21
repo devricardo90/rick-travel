@@ -85,7 +85,7 @@ export default function FooterSection() {
     ]
 
     return (
-        <footer className="border-t border-border/40 bg-background py-14 md:py-20">
+        <footer className="border-t border-border/40 dark:border-[#C8A86B]/15 bg-background dark:bg-[#071826] py-14 md:py-20">
             <div className="mx-auto max-w-6xl px-6">
                 {/* Topo: logo + colunas */}
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
@@ -120,7 +120,7 @@ export default function FooterSection() {
                 </div>
 
                 {/* Separador */}
-                <div className="my-10 border-t border-border/50" />
+                <div className="my-10 border-t border-border/50 dark:border-[#C8A86B]/12" />
 
                 {/* Rodapé inferior: redes sociais + copyright */}
                 <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">

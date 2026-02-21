@@ -45,9 +45,9 @@ function TrustBar() {
   ]
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+    <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
       {badges.map((badge, i) => (
-        <span key={i} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium bg-black/25 text-white/75 border border-white/10 backdrop-blur-sm">
+        <span key={i} className="inline-flex h-8 items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-semibold bg-[#071826]/75 text-white/85 border border-[#C8A86B]/18 backdrop-blur-sm">
           {badge.icon}
           {badge.text}
         </span>
@@ -64,19 +64,19 @@ function HeroContent() {
   const t = useTranslations('HomePage.Hero')
 
   return (
-    <div className="relative mx-auto flex max-w-7xl flex-col px-6 lg:px-12">
-      <div className="mx-auto max-w-4xl text-center space-y-8">
-        <h1 className="mt-8 text-balance lg:mt-16 text-white text-3xl font-bold tracking-[-0.02em] leading-[1.1] md:text-5xl lg:text-6xl xl:text-7xl">
+    <div className="relative mx-auto flex max-w-7xl flex-col px-5 lg:px-12">
+      <div className="mx-auto max-w-4xl text-center">
+        <h1 className="mx-auto max-w-[18ch] text-balance text-white text-3xl font-bold tracking-[-0.02em] leading-[1.05] md:text-5xl lg:text-6xl xl:text-7xl">
           {t('title')}
         </h1>
 
         {/* Hero Search Bar */}
-        <div className="py-4">
+        <div className="mt-5">
           <HeroSearch />
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg" className="h-12 min-w-[210px] rounded-2xl bg-brazil-green-600 hover:bg-brazil-green-700 px-6 text-base font-semibold shadow-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0">
+        <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Button asChild size="lg" className="h-12 w-full sm:w-auto sm:min-w-[210px] rounded-2xl px-6 text-[15px] font-semibold text-white shadow-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0" style={{ background: 'linear-gradient(135deg, #0B2E1E 0%, #0F3B27 100%)', border: '1px solid rgba(26,77,46,0.5)' }}>
             <Link href="#reservas">
               <span>{t('primaryButton')}</span>
               <ChevronRight className="ml-1 h-4 w-4" />
@@ -87,7 +87,7 @@ function HeroContent() {
             asChild
             size="lg"
             variant="ghost"
-            className="h-12 min-w-[210px] rounded-2xl border border-white/15 bg-white/5 text-white/90 hover:bg-white/10 hover:text-white px-6 text-base font-semibold backdrop-blur-md transition-all duration-200 hover:-translate-y-px active:translate-y-0"
+            className="h-11 w-full sm:w-auto sm:h-12 sm:min-w-[210px] rounded-2xl border border-white/15 bg-white/5 text-white/90 hover:bg-white/10 hover:text-white px-6 text-[15px] font-semibold backdrop-blur-md transition-all duration-200 hover:-translate-y-px active:translate-y-0"
           >
             <Link href="/contato">
               <span>{t('secondaryButton')}</span>

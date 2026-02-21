@@ -147,8 +147,8 @@ export function HeroSearch() {
                 <label htmlFor="hero-search-input" className="sr-only">
                     {t('placeholder')}
                 </label>
-                <div className="relative flex items-center bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/12 hover:border-white/20 focus-within:border-white/30 focus-within:ring-4 focus-within:ring-white/5 transition-all duration-300">
-                    <Search className="absolute left-6 h-5 w-5 text-white/50 pointer-events-none" aria-hidden="true" />
+                <div className="relative flex h-12 items-center bg-white/10 backdrop-blur-md rounded-2xl border border-white/12 hover:border-white/20 focus-within:border-white/30 transition-all duration-300 px-4 gap-3 group">
+                    <Search className="h-5 w-5 text-white/50 group-focus-within:text-white transition-colors" aria-hidden="true" />
 
                     <input
                         id="hero-search-input"
@@ -163,14 +163,14 @@ export function HeroSearch() {
                         aria-controls="search-suggestions"
                         aria-autocomplete="list"
                         aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
-                        className="w-full h-14 pl-14 pr-32 bg-transparent text-base text-white placeholder:text-white/40 focus:outline-none rounded-full"
+                        className="w-full bg-transparent text-base text-white placeholder:text-white/55 outline-none"
                     />
 
 
                     <button
                         type="submit"
                         disabled={query.length < 2 || isLoading}
-                        className="absolute right-2 h-10 px-6 bg-brazil-green-600 text-white rounded-full font-semibold hover:bg-brazil-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 button-press flex items-center gap-2 shadow-lg"
+                        className="h-9 sm:h-10 px-4 sm:px-6 bg-brazil-green-600 text-white rounded-full text-sm font-semibold hover:bg-brazil-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 button-press flex items-center gap-2 shadow-lg shrink-0"
                     >
                         {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                         {t('button')}
