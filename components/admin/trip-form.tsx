@@ -4,13 +4,48 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { createTrip, updateTrip } from "@/app/[locale]/admin/trips/actions";
+import { useLocale } from "next-intl";
 
 interface TripFormProps {
-    initialData?: any; // Tipar melhor depois se sobrar tempo
+    initialData?: {
+        id?: string;
+        title?: string;
+        city?: string;
+        location?: string | null;
+        description?: string | null;
+        priceCents?: number;
+        imageUrl?: string | null;
+        startDate?: string | Date | null;
+        endDate?: string | Date | null;
+        maxGuests?: number | null;
+        highlights?: string | string[] | null;
+    };
 }
 
 // Helper para garantir que highlights seja convertido corretamente
-function getHighlightsAsString(highlights: any): string {
+function getHighlightsAsString(highlights: string | string[] | null | undefined): string {
+    if (!highlights) return "";
+
+    // Se já é string, retorna direto
+    if (typeof highlights === "string") {
+        // Se parece com JSON, tenta parsear
+        if (highlights.startsWith("[") || highlights.startsWith("{")) {
+            try {
+                const parsed = JSON.parse(highlights);
+                return Array.isArray(parsed) ? parsed.join("\n") : "";
+            } catch {
+                return highlights;
+            }
+        }
+        return highlights;
+    }
+
+    // Se é array, faz join
+    if (Array.isArray(highlights)) {
+        return highlights.join("\n");
+    }
+
+    return "";
     if (!highlights) return "";
 
     // Se já é string, retorna direto
@@ -37,6 +72,7 @@ function getHighlightsAsString(highlights: any): string {
 
 export default function TripForm({ initialData }: TripFormProps) {
     const router = useRouter();
+    const locale = useLocale();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -66,10 +102,12 @@ export default function TripForm({ initialData }: TripFormProps) {
         try {
             const priceCents = Math.round(parseFloat(formData.price) * 100);
             const highlightsArray = formData.highlights.split("\n").filter((line: string) => line.trim() !== "");
+            const maxGuests = formData.maxGuests ? parseInt(formData.maxGuests.toString()) : null;
 
             const payload = {
                 ...formData,
                 priceCents,
+                maxGuests,
                 highlights: highlightsArray,
             };
 
@@ -85,61 +123,60 @@ export default function TripForm({ initialData }: TripFormProps) {
                 throw new Error(result.error);
             }
 
-            router.push("/admin/trips");
+            router.push(`/${locale}/admin/trips`);
             router.refresh();
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Erro ao salvar viagem");
         } finally {
             setLoading(false);
         }
     };
-
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-white p-6 rounded-lg shadow-sm border">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-card p-6 rounded-xl shadow-sm border border-border">
             {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+                <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm border border-destructive/20">
                     {error}
                 </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Título</label>
+                    <label className="text-sm font-semibold text-foreground/80">Título</label>
                     <input
                         name="title"
                         required
                         value={formData.title}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="Ex: Passeio de Barco"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Cidade</label>
+                    <label className="text-sm font-semibold text-foreground/80">Cidade</label>
                     <input
                         name="city"
                         required
                         value={formData.city}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="Ex: Rio de Janeiro"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Localização Específica</label>
+                    <label className="text-sm font-semibold text-foreground/80">Localização Específica</label>
                     <input
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="Ex: Marina da Glória"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Preço (R$)</label>
+                    <label className="text-sm font-semibold text-foreground/80">Preço (R$)</label>
                     <input
                         name="price"
                         type="number"
@@ -147,86 +184,86 @@ export default function TripForm({ initialData }: TripFormProps) {
                         required
                         value={formData.price}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="0.00"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Data Início</label>
+                    <label className="text-sm font-semibold text-foreground/80">Data Início</label>
                     <input
                         name="startDate"
                         type="date"
                         value={formData.startDate}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Data Fim</label>
+                    <label className="text-sm font-semibold text-foreground/80">Data Fim</label>
                     <input
                         name="endDate"
                         type="date"
                         value={formData.endDate}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Máx. Pessoas</label>
+                    <label className="text-sm font-semibold text-foreground/80">Máx. Pessoas</label>
                     <input
                         name="maxGuests"
                         type="number"
                         value={formData.maxGuests}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="Ex: 10"
                     />
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-medium">URL da Imagem</label>
+                    <label className="text-sm font-semibold text-foreground/80">URL da Imagem</label>
                     <input
                         name="imageUrl"
                         value={formData.imageUrl}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded-md"
+                        className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                         placeholder="https://exemplo.com/imagem.jpg"
                     />
                 </div>
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-medium">Descrição</label>
+                <label className="text-sm font-semibold text-foreground/80">Descrição</label>
                 <textarea
                     name="description"
                     rows={4}
                     value={formData.description}
                     onChange={handleChange}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     placeholder="Detalhes do passeio..."
                 />
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-medium">Destaques (um por linha)</label>
+                <label className="text-sm font-semibold text-foreground/80">Destaques (um por linha)</label>
                 <textarea
                     name="highlights"
                     rows={4}
                     value={formData.highlights}
                     onChange={handleChange}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                     placeholder="Café da manhã incluso&#10;Transporte ida e volta"
                 />
             </div>
 
-            <div className="flex justify-end gap-4">
-                <Button type="button" variant="outline" onClick={() => router.back()}>
+            <div className="flex justify-end gap-4 pt-4 border-t border-border mt-6">
+                <Button type="button" variant="outline" onClick={() => router.back()} className="rounded-lg">
                     Cancelar
                 </Button>
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading} className="rounded-lg px-8">
                     {loading ? "Salvando..." : "Salvar Viagem"}
                 </Button>
             </div>

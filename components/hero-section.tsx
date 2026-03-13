@@ -13,7 +13,6 @@ import { useTranslations } from 'next-intl'
 =========================== */
 
 function TrustBar() {
-  const t = useTranslations('HomePage.Hero')
   const badges = [
     { icon: <MapPin className="h-3.5 w-3.5" />, text: '500+ tours realizados' },
     { icon: <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />, text: '★ 4,9 (143 avaliações)' },

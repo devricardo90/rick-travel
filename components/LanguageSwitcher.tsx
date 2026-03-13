@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,8 +15,6 @@ export function LanguageSwitcher() {
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
-    const t = useTranslations('Navigation'); // Using Navigation namespace just to check if available, or ThemeToggle
-
     const handleLocaleChange = (newLocale: string) => {
         router.replace(pathname, { locale: newLocale });
     };

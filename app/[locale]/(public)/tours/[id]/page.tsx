@@ -1,18 +1,11 @@
 
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Calendar, MapPin, Users, Clock, CheckCircle2, ChevronLeft } from "lucide-react";
-
 import { prisma } from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
-import { TourActions } from "@/components/trips/tour-actions";
 import { TourDetailClient } from "@/components/trips/tour-detail-client";
+import { getLocalizedField } from "@/lib/translation-service";
 
 interface PageProps {
-    params: Promise<{ id: string }>;
+    params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateMetadata(props: PageProps) {
@@ -28,12 +21,15 @@ export async function generateMetadata(props: PageProps) {
         };
     }
 
+    const localizedTitle = getLocalizedField<string>(trip.title, params.locale);
+    const localizedDescription = getLocalizedField<string>(trip.description, params.locale);
+
     return {
-        title: `${trip.title} | Rick Travel`,
-        description: trip.description || `Reserve your spot on ${trip.title}`,
+        title: `${localizedTitle} | Rick Travel`,
+        description: localizedDescription || `Reserve your spot on ${localizedTitle}`,
         openGraph: {
-            title: trip.title,
-            description: trip.description,
+            title: localizedTitle,
+            description: localizedDescription,
             images: trip.imageUrl ? [trip.imageUrl] : [],
         },
     };
@@ -43,6 +39,19 @@ export default async function TourDetailsPage(props: PageProps) {
     const params = await props.params;
     const trip = await prisma.trip.findUnique({
         where: { id: params.id },
+        include: {
+            schedules: {
+                where: { status: "OPEN" },
+                orderBy: { startAt: "asc" },
+                select: {
+                    id: true,
+                    startAt: true,
+                    endAt: true,
+                    capacity: true,
+                    pricePerPersonCents: true,
+                },
+            },
+        },
     });
 
     if (!trip) {
@@ -50,9 +59,12 @@ export default async function TourDetailsPage(props: PageProps) {
     }
 
     const startDate = trip.startDate ? trip.startDate : null;
-    const endDate = trip.endDate ? trip.endDate : null;
 
-    return (
-        <TourDetailClient trip={trip} startDate={startDate} endDate={endDate} />
-    );
+    const schedules = trip.schedules.map((schedule) => ({
+        ...schedule,
+        startAt: schedule.startAt.toISOString(),
+        endAt: schedule.endAt?.toISOString() ?? null,
+    }));
+
+    return <TourDetailClient trip={trip} startDate={startDate} schedules={schedules} />;
 }

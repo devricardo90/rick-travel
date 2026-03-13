@@ -1,8 +1,5 @@
 'use client'
 
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { MyBookings } from "@/components/my-bookings";
 import { useTranslations } from 'next-intl';
 

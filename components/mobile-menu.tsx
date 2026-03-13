@@ -35,6 +35,7 @@ type Props = {
 };
 
 /* ─── WaveText: cada letra flutua em onda contínua com GSAP ─── */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function WaveText({
     text,
     className = "",

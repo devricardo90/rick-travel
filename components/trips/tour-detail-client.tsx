@@ -1,7 +1,6 @@
 'use client'
 
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR, enUS, es, sv, Locale } from "date-fns/locale";
 import { Calendar, MapPin, Users, Clock, CheckCircle2, ChevronLeft } from "lucide-react";
@@ -11,26 +10,33 @@ import { Button } from "@/components/ui/button";
 import { TourActions } from "@/components/trips/tour-actions";
 import { getLocalizedField } from "@/lib/translation-service";
 import { normalizeTripImage } from "@/lib/image-utils";
+import { Link } from "@/i18n/routing";
 
 interface Trip {
     id: string;
-    title: any; // JSON multilingual
-    description: any | null; // JSON multilingual
+    title: Record<string, string> | string;
+    description: Record<string, string> | string | null;
     imageUrl: string | null;
     city: string;
     location: string | null;
     maxGuests: number | null;
     priceCents: number;
-    highlights: any; // JSON multilingual array
+    highlights: Record<string, string[]> | string[] | null;
 }
 
 interface TourDetailClientProps {
     trip: Trip;
     startDate: Date | null;
-    endDate: Date | null;
+    schedules: Array<{
+        id: string;
+        startAt: string;
+        endAt: string | null;
+        capacity: number;
+        pricePerPersonCents: number;
+    }>;
 }
 
-export function TourDetailClient({ trip, startDate, endDate }: TourDetailClientProps) {
+export function TourDetailClient({ trip, startDate, schedules }: TourDetailClientProps) {
     const t = useTranslations('TourDetailPage');
     const locale = useLocale();
 
@@ -117,7 +123,7 @@ export function TourDetailClient({ trip, startDate, endDate }: TourDetailClientP
 
                 {/* Sidebar */}
                 <div className="space-y-6">
-                    <TourActions tripId={trip.id} priceCents={trip.priceCents} />
+                    <TourActions tripId={trip.id} priceCents={trip.priceCents} schedules={schedules} />
 
                     <div className="rounded-xl border bg-muted/30 p-6 space-y-4">
                         <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">{t('information')}</h3>

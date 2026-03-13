@@ -135,7 +135,7 @@ function TestimonialCard({
     <Card className="h-full rounded-2xl border bg-white dark:bg-card shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden">
       {/* Aspas decorativas */}
       <div className="absolute top-4 right-5 text-5xl font-serif text-primary/10 select-none leading-none" aria-hidden="true">
-        "
+        &quot;
       </div>
 
       <CardContent className="flex h-full flex-col justify-between p-6">

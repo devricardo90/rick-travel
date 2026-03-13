@@ -2,15 +2,15 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Search, Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useLocale, useTranslations } from 'next-intl'
 import { getLocalizedField } from '@/lib/translation-service'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useRouter } from '@/i18n/routing'
 
 interface Trip {
     id: string
-    title: any
-    description: any
+    title: Record<string, string> | string
+    description: Record<string, string> | string | null
     city: string
     location: string | null
 }
@@ -46,13 +46,14 @@ export function HeroSearch() {
     // Filter trips based on search query com DEBOUNCE
     useEffect(() => {
         if (query.length < 2) {
-            setSuggestions([])
-            setShowSuggestions(false)
-            setIsLoading(false)
-            return
-        }
+            const resetId = setTimeout(() => {
+                setSuggestions([])
+                setShowSuggestions(false)
+                setIsLoading(false)
+            }, 0)
 
-        setIsLoading(true)
+            return () => clearTimeout(resetId)
+        }
 
         // Debounce de 300ms
         const timeoutId = setTimeout(() => {
@@ -126,17 +127,17 @@ export function HeroSearch() {
 
         if (suggestions.length === 1) {
             // If only one result, go directly to it
-            router.push(`/tours/${suggestions[0].id}`)
+            router.push(`/${locale}/tours/${suggestions[0].id}`)
         } else if (suggestions.length > 0) {
             // Multiple results, go to tours page with search filter
-            router.push(`/tours?search=${encodeURIComponent(query)}`)
+            router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)
         }
 
         setShowSuggestions(false)
     }
 
     const handleSuggestionClick = (tripId: string) => {
-        router.push(`/tours/${tripId}`)
+        router.push(`/${locale}/tours/${tripId}`)
         setShowSuggestions(false)
         setQuery('')
     }
@@ -154,12 +155,15 @@ export function HeroSearch() {
                         id="hero-search-input"
                         type="text"
                         value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => {
+                            const nextQuery = e.target.value
+                            setQuery(nextQuery)
+                            setIsLoading(nextQuery.length >= 2)
+                        }}
                         onKeyDown={handleKeyDown}
                         onFocus={() => query.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
                         placeholder={t('placeholder')}
                         aria-label={t('placeholder')}
-                        aria-expanded={showSuggestions && query.length >= 2}
                         aria-controls="search-suggestions"
                         aria-autocomplete="list"
                         aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}

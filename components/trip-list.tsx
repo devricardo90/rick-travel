@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 import { prisma } from "@/lib/prisma";
 import { TripGrid } from "@/components/trip-grid";
 
@@ -20,7 +22,7 @@ export default async function TripList({ searchParams }: TripListProps) {
   const level = searchParams?.level && searchParams.level !== 'all' ? searchParams.level : undefined;
   const children = searchParams?.children === 'true' ? true : undefined;
 
-  const where: any = {};
+  const where: Prisma.TripWhereInput = {};
 
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.priceCents = {};

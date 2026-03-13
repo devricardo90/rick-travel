@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TripCard } from "./trips/trip-card";
-import { TripGridSkeleton } from "./trips/trip-card-skeleton";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { useLocale } from "next-intl";
@@ -32,39 +31,6 @@ interface TripGridProps {
 export function TripGrid({ trips }: TripGridProps) {
     const locale = useLocale();
     const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
-    const [reservedTripIds, setReservedTripIds] = useState<string[]>([]);
-    const [isInitialLoading, setIsInitialLoading] = useState(true);
-
-    // 🔹 carrega IDs das trips já reservadas
-    async function loadReservedTripIds() {
-        try {
-            const res = await fetch("/api/bookings/my-trip-ids", {
-                credentials: "include",
-                cache: "no-store",
-            });
-
-            if (!res.ok) return;
-
-            const ids = (await res.json()) as string[];
-            setReservedTripIds(Array.isArray(ids) ? ids : []);
-        } catch {
-            // silencioso
-        } finally {
-            setIsInitialLoading(false);
-        }
-    }
-
-    // 🔹 load inicial
-    useEffect(() => {
-        loadReservedTripIds();
-    }, []);
-
-    // 🔹 refresh automático após reservar/cancelar
-    useEffect(() => {
-        const onRefresh = () => loadReservedTripIds();
-        window.addEventListener("bookings:refresh", onRefresh);
-        return () => window.removeEventListener("bookings:refresh", onRefresh);
-    }, []);
 
     // 🔹 reservar
     async function reserve(tripId: string) {
@@ -92,9 +58,18 @@ export function TripGrid({ trips }: TripGridProps) {
 
             if (res.status === 409) {
                 toast.info("Já reservado", {
-                    description: "Você já possui uma reserva para este passeio ✅",
+                    description: data?.error ?? "Você já possui uma reserva ativa para esta data.",
                 });
-                window.dispatchEvent(new Event("bookings:refresh"));
+                return;
+            }
+
+            if (res.status === 400) {
+                toast.info("Escolha uma data", {
+                    description: data?.error ?? "Abra o detalhe do passeio para selecionar a agenda disponível.",
+                });
+                setTimeout(() => {
+                    window.location.href = `/${locale}/tours/${tripId}`;
+                }, 1200);
                 return;
             }
 
@@ -116,11 +91,6 @@ export function TripGrid({ trips }: TripGridProps) {
         } finally {
             setLoadingTripId(null);
         }
-    }
-
-    // Mostrar skeleton durante carregamento inicial
-    if (isInitialLoading) {
-        return <TripGridSkeleton count={6} />;
     }
 
     return (
@@ -160,7 +130,6 @@ export function TripGrid({ trips }: TripGridProps) {
                                 trip={trip}
                                 onReserve={reserve}
                                 loading={loadingTripId === trip.id}
-                                reserved={reservedTripIds.includes(trip.id)}
                             />
                         </motion.div>
                     ))}

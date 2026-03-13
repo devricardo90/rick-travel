@@ -13,9 +13,12 @@ type Booking = {
   guestCount: number;
   totalPriceCents: number;
   createdAt: string;
+  schedule?: {
+    startAt: string;
+  } | null;
   trip: {
     id: string;
-    title: any; // JSON multilingual
+    title: Record<string, string> | string;
     city: string;
     priceCents: number;
   };
@@ -94,7 +97,7 @@ export function MyBookings() {
       const resp = await res.json().catch(() => ({}));
 
       if (res.status === 401) {
-        window.location.href = "/login";
+        window.location.href = `/${locale}/login`;
         return;
       }
 
@@ -145,7 +148,7 @@ export function MyBookings() {
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg" className="rounded-xl px-8 font-semibold">
-            <a href="/tours">Explorar Passeios</a>
+            <a href={`/${locale}/tours`}>Explorar Passeios</a>
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-xl px-8 font-semibold">
             <a href="https://wa.me/5521971168114" target="_blank" rel="noopener noreferrer">

@@ -7,16 +7,19 @@ import { AdminLogoutButton } from "@/components/admin/logout-button";
 
 export default async function AdminLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   // 🔐 Proteção REAL de admin
   if (!session || session.user.role !== "ADMIN") {
-    redirect("/login");
+    redirect(`/${locale}/login`);
   }
 
   return (
@@ -26,9 +29,9 @@ export default async function AdminLayout({
           <h2 className="font-semibold">RickTravel Admin</h2>
 
           <nav className="flex gap-4 text-sm items-center">
-            <Link href="/admin">Dashboard</Link>
-            <Link href="/admin/trips">Trips</Link>
-            <Link href="/admin/bookings">Reservas</Link>
+            <Link href={`/${locale}/admin`}>Dashboard</Link>
+            <Link href={`/${locale}/admin/trips`}>Trips</Link>
+            <Link href={`/${locale}/admin/bookings`}>Reservas</Link>
 
             {/* Logout */}
             <AdminLogoutButton />

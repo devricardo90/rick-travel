@@ -32,6 +32,7 @@ export default function PlaneAnimation() {
     }, []);
 
     return (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
             ref={planeRef}
             src="/plane.svg"

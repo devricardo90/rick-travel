@@ -66,7 +66,7 @@ export function ContactForm() {
                     description: result.message || t('errorSubmit'),
                 })
             }
-        } catch (error) {
+        } catch {
             toast.error("Erro ao enviar", {
                 description: t('errorGeneric'),
             })

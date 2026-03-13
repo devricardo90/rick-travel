@@ -3,14 +3,13 @@
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { format } from "date-fns";
 import { Calendar, MapPin, Users, Loader2, Clock } from "lucide-react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getLocalizedField } from "@/lib/translation-service";
 import { normalizeTripImage } from "@/lib/image-utils";
 import { useLocale, useTranslations } from 'next-intl';
 import { ptBR, enUS, es, sv, type Locale } from "date-fns/locale";
 import { TourMediaBadges } from "@/components/trips/tour-media-badges";
 import { motion } from "motion/react";
+import { Link } from "@/i18n/routing";
 
 interface TripCardProps {
     trip: {
@@ -34,7 +33,6 @@ interface TripCardProps {
     };
     onReserve: (id: string) => void;
     loading?: boolean;
-    reserved?: boolean;
 }
 
 function PhysicalLevelBadge({ level }: { level: string }) {
@@ -52,14 +50,13 @@ function PhysicalLevelBadge({ level }: { level: string }) {
     )
 }
 
-export function TripCard({ trip, onReserve, loading, reserved, index = 0, viewMode = "grid" }: TripCardProps & { index?: number; viewMode?: "grid" | "list" }) {
+export function TripCard({ trip, onReserve, loading }: TripCardProps) {
     const locale = useLocale();
     const t = useTranslations('TripCard');
     const startDate = trip.startDate ? new Date(trip.startDate) : null;
     const endDate = trip.endDate ? new Date(trip.endDate) : null;
 
     const title = trip.title?.[locale] || trip.title?.['en'] || "Trip";
-    const description = trip.description?.[locale] || trip.description?.['en'] || "No description available";
 
     const localeMap: Record<string, Locale> = {
         'pt': ptBR,
@@ -163,14 +160,11 @@ export function TripCard({ trip, onReserve, loading, reserved, index = 0, viewMo
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
                                 onClick={() => onReserve(trip.id)}
-                                disabled={reserved || loading}
-                                className={`shrink-0 transition-all duration-200 ${reserved
-                                        ? "bg-emerald-700 hover:bg-emerald-800 border border-emerald-600 text-white"
-                                        : "dark:bg-transparent dark:border dark:border-white/20 dark:text-[#EAF2F7] dark:hover:bg-white/8 dark:hover:border-white/35"
-                                    }`}
+                                disabled={loading}
+                                className="shrink-0 transition-all duration-200 dark:bg-transparent dark:border dark:border-white/20 dark:text-[#EAF2F7] dark:hover:bg-white/8 dark:hover:border-white/35"
                             >
                                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {reserved ? t('reserved') : t('reserveNow')}
+                                {t('reserveNow')}
                             </Button>
                         </motion.div>
                     </div>

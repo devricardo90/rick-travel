@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
@@ -12,33 +11,47 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { SlidersHorizontal, RotateCcw } from "lucide-react";
 
 export function TourFilters() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const searchParamsString = searchParams.toString();
+    const initialFilters = useMemo(() => {
+        const params = new URLSearchParams(searchParamsString);
+        const priceMin = params.get("minPrice");
+        const priceMax = params.get("maxPrice");
+        const dur = params.get("duration");
+        const level = params.get("level");
+        const children = params.get("children");
 
-    const [priceRange, setPriceRange] = useState([0, 5000]);
-    const [duration, setDuration] = useState<string>("all");
-    const [physicalLevel, setPhysicalLevel] = useState<string>("all");
-    const [childrenAllowed, setChildrenAllowed] = useState(false);
+        return {
+            priceRange: priceMin && priceMax ? [Number(priceMin), Number(priceMax)] : [0, 5000],
+            duration: dur ?? "all",
+            physicalLevel: level ?? "all",
+            childrenAllowed: children === "true",
+        };
+    }, [searchParamsString]);
+
+    const [priceRange, setPriceRange] = useState(initialFilters.priceRange);
+    const [duration, setDuration] = useState<string>(initialFilters.duration);
+    const [physicalLevel, setPhysicalLevel] = useState<string>(initialFilters.physicalLevel);
+    const [childrenAllowed, setChildrenAllowed] = useState(initialFilters.childrenAllowed);
 
     const [debouncedPrice] = useDebounce(priceRange, 500);
 
     useEffect(() => {
-        const priceMin = searchParams.get("minPrice");
-        const priceMax = searchParams.get("maxPrice");
-        const dur = searchParams.get("duration");
-        const level = searchParams.get("level");
-        const children = searchParams.get("children");
+        const syncId = setTimeout(() => {
+            setPriceRange(initialFilters.priceRange);
+            setDuration(initialFilters.duration);
+            setPhysicalLevel(initialFilters.physicalLevel);
+            setChildrenAllowed(initialFilters.childrenAllowed);
+        }, 0);
 
-        if (priceMin && priceMax) setPriceRange([Number(priceMin), Number(priceMax)]);
-        if (dur) setDuration(dur);
-        if (level) setPhysicalLevel(level);
-        if (children === "true") setChildrenAllowed(true);
-    }, []);
+        return () => clearTimeout(syncId);
+    }, [initialFilters]);
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams.toString());
@@ -70,7 +83,7 @@ export function TourFilters() {
         }
 
         router.push(`?${params.toString()}`, { scroll: false });
-    }, [debouncedPrice, duration, physicalLevel, childrenAllowed, router]);
+    }, [childrenAllowed, debouncedPrice, duration, physicalLevel, router, searchParams]);
 
     function handleReset() {
         setPriceRange([0, 5000]);

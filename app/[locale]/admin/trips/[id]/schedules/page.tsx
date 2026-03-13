@@ -2,22 +2,35 @@ import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getLocalizedField } from "@/lib/translation-service";
-import { Trash2, Calendar, Users, DollarSign } from "lucide-react";
+import { Trash2, Calendar, Users } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
-async function deleteSchedule(id: string, tripId: string) {
+async function deleteSchedule(id: string, tripId: string, locale: string) {
     'use server';
     await prisma.tripSchedule.delete({ where: { id } });
-    revalidatePath(`/admin/trips/${tripId}/schedules`);
+    revalidatePath(`/${locale}/admin/trips/${tripId}/schedules`);
 }
 
 async function createSchedule(formData: FormData) {
     'use server';
     const tripId = formData.get('tripId') as string;
+    const locale = formData.get('locale') as string;
     const startAt = new Date(formData.get('startAt') as string);
     const endAt = new Date(formData.get('endAt') as string);
     const capacity = parseInt(formData.get('capacity') as string);
-    const priceCents = parseFloat(formData.get('price') as string) * 100;
+    const priceValue = (formData.get('price') as string | null)?.trim() ?? '';
+    const fallbackTrip = await prisma.trip.findUnique({
+        where: { id: tripId },
+        select: { priceCents: true },
+    });
+
+    if (!fallbackTrip) {
+        throw new Error("Trip não encontrada");
+    }
+
+    const pricePerPersonCents = priceValue
+        ? Math.round(parseFloat(priceValue) * 100)
+        : fallbackTrip.priceCents;
 
     await prisma.tripSchedule.create({
         data: {
@@ -25,10 +38,10 @@ async function createSchedule(formData: FormData) {
             startAt,
             endAt,
             capacity,
-            priceCents,
+            pricePerPersonCents,
         }
     });
-    revalidatePath(`/admin/trips/${tripId}/schedules`);
+    revalidatePath(`/${locale}/admin/trips/${tripId}/schedules`);
 }
 
 export default async function TripSchedulesPage({
@@ -52,7 +65,7 @@ export default async function TripSchedulesPage({
     return (
         <div className="mx-auto max-w-5xl px-6 py-8">
             <div className="flex items-center gap-4 mb-8">
-                <Link href="/admin/trips" className="text-slate-500 hover:text-slate-800">
+                <Link href={`/${locale}/admin/trips`} className="text-slate-500 hover:text-slate-800">
                     ← Voltar
                 </Link>
                 <h1 className="text-3xl font-bold">
@@ -70,6 +83,7 @@ export default async function TripSchedulesPage({
                         </h2>
                         <form action={createSchedule} className="space-y-4">
                             <input type="hidden" name="tripId" value={id} />
+                            <input type="hidden" name="locale" value={locale} />
                             
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Início</label>
@@ -133,7 +147,9 @@ export default async function TripSchedulesPage({
                                                 <div className="text-xs text-slate-500">
                                                     {new Date(sch.startAt).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} 
                                                     - 
-                                                    {new Date(sch.endAt).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}
+                                                    {sch.endAt
+                                                        ? new Date(sch.endAt).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })
+                                                        : "--:--"}
                                                 </div>
                                             </td>
                                             <td className="py-3 px-4 text-center">
@@ -146,11 +162,11 @@ export default async function TripSchedulesPage({
                                                     {new Intl.NumberFormat("pt-BR", {
                                                         style: "currency",
                                                         currency: "BRL",
-                                                    }).format(sch.priceCents / 100)}
+                                                    }).format(sch.pricePerPersonCents / 100)}
                                                 </span>
                                             </td>
                                             <td className="py-3 px-4 text-right">
-                                                <form action={deleteSchedule.bind(null, sch.id, id)}>
+                                                <form action={deleteSchedule.bind(null, sch.id, id, locale)}>
                                                     <button type="submit" className="text-red-500 hover:text-red-700 p-1">
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>

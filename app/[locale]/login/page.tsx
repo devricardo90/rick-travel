@@ -1,12 +1,15 @@
 'use client'
 
 import { useState } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link } from "@/i18n/routing";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const t = useTranslations('LoginPage');
+  const locale = useLocale();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +36,8 @@ export default function LoginPage() {
     }
 
     // ✅ sessão criada corretamente
-    window.location.href = "/";
+    const redirectTarget = searchParams.get("redirect") || `/${locale}`;
+    window.location.href = redirectTarget;
   }
 
   return (

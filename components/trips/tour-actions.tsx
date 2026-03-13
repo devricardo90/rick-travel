@@ -8,32 +8,38 @@ import { useTranslations, useLocale } from 'next-intl';
 interface TourActionsProps {
     tripId: string;
     priceCents: number;
+    schedules?: Array<{
+        id: string;
+        startAt: string;
+        endAt: string | null;
+        capacity: number;
+        pricePerPersonCents: number;
+    }>;
 }
 
-export function TourActions({ tripId, priceCents }: TourActionsProps) {
+function formatScheduleLabel(date: string, locale: string) {
+    return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : locale, {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(new Date(date));
+}
+
+export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsProps) {
     const t = useTranslations('TourActions');
     const locale = useLocale();
     const [loading, setLoading] = useState(false);
-    const [reserved, setReserved] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const [selectedScheduleId, setSelectedScheduleId] = useState<string>(schedules[0]?.id ?? "");
 
-    // Check if reserved on mount
     useEffect(() => {
-        async function checkReservation() {
-            try {
-                const res = await fetch("/api/bookings/my-trip-ids");
-                if (res.ok) {
-                    const ids = await res.json();
-                    if (Array.isArray(ids) && ids.includes(tripId)) {
-                        setReserved(true);
-                    }
-                }
-            } catch (e) {
-                console.error("Failed to check reservation", e);
-            }
-        }
-        checkReservation();
-    }, [tripId]);
+        setSelectedScheduleId(schedules[0]?.id ?? "");
+    }, [schedules]);
+
+    const selectedSchedule = schedules.find((schedule) => schedule.id === selectedScheduleId);
+    const displayedPrice = selectedSchedule?.pricePerPersonCents ?? priceCents;
 
     async function handleReserve() {
         setLoading(true);
@@ -43,27 +49,31 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
             const res = await fetch("/api/bookings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ tripId }),
+                body: JSON.stringify({
+                    tripId,
+                    scheduleId: selectedScheduleId || undefined,
+                }),
             });
 
             if (res.status === 401) {
-                window.location.href = `/${locale}/login?redirect=/tours/` + tripId;
+                window.location.href = `/${locale}/login?redirect=/${locale}/tours/${tripId}`;
                 return;
             }
 
+            const data = await res.json().catch(() => ({}));
+
             if (res.status === 409) {
-                setMessage(t('alreadyReserved'));
-                setReserved(true);
+                setMessage(data?.error ?? t('alreadyReserved'));
                 return;
             }
 
             if (!res.ok) {
-                setMessage(t('errorMessage'));
+                setMessage(data?.error ?? t('errorMessage'));
                 return;
             }
 
-            setReserved(true);
             setMessage(t('successMessage'));
+            window.dispatchEvent(new Event("bookings:refresh"));
         } catch {
             setMessage(t('connectionError'));
         } finally {
@@ -79,31 +89,48 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
                     {new Intl.NumberFormat("pt-BR", {
                         style: "currency",
                         currency: "BRL",
-                    }).format(priceCents / 100)}
+                    }).format(displayedPrice / 100)}
                 </span>
             </div>
+
+            {schedules.length > 0 && (
+                <div className="space-y-2">
+                    <label htmlFor="schedule-select" className="block text-sm font-medium text-foreground">
+                        Escolha a data
+                    </label>
+                    <select
+                        id="schedule-select"
+                        value={selectedScheduleId}
+                        onChange={(event) => setSelectedScheduleId(event.target.value)}
+                        className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
+                    >
+                        {schedules.map((schedule) => (
+                            <option key={schedule.id} value={schedule.id}>
+                                {formatScheduleLabel(schedule.startAt, locale)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
 
             <Button
                 className="w-full"
                 size="lg"
                 onClick={handleReserve}
-                disabled={loading || reserved}
-                variant={reserved ? "outline" : "default"}
+                disabled={loading || (schedules.length > 0 && !selectedScheduleId)}
             >
                 {loading ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         {t('processing')}
                     </>
-                ) : reserved ? (
-                    t('reserved')
                 ) : (
                     t('reserveNow')
                 )}
             </Button>
 
             {message && (
-                <p className={`text-center text-sm ${reserved ? "text-green-600" : "text-red-500"}`}>
+                <p className={`text-center text-sm ${message === t('successMessage') ? "text-green-600" : "text-red-500"}`}>
                     {message}
                 </p>
             )}

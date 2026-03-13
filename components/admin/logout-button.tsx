@@ -1,17 +1,20 @@
 "use client";
 
+import { useLocale } from "next-intl";
+
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 export function AdminLogoutButton() {
     const router = useRouter();
+    const locale = useLocale();
 
     const handleLogout = async () => {
         await authClient.signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    router.push("/login"); // Redireciona para login após sair
-                    router.refresh(); // Limpa cache do roteador
+                    router.push("/login", { locale });
+                    router.refresh();
                 },
             },
         });
