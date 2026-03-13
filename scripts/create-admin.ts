@@ -1,21 +1,28 @@
 
-
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import * as dotenv from 'dotenv'
 
-const prisma = new PrismaClient()
+dotenv.config()
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({
+    connectionString: process.env.DATABASE_URL!,
+  }),
+})
 
 async function createAdmin() {
-  const email = "ricardosouza@gmail.com";
-  const password = "12345678";
-  const name = "Ricardo Souza";
+  const email = "rick@gmail.com";
+  const password = "58547866";
+  const name = "Rick Admin";
 
-  console.log(` Tentando criar (ou atualizar) usuário ${email}...`);
+  console.log(`\n🚀 Iniciando processo para o usuário: ${email}`);
 
   // 1. Tentar criar usuário via API do app (que lida com o hash da senha)
   // O app precisa estar rodando em localhost:3000
   try {
-    console.log("-> Chamando API de cadastro (http://localhost:3000/api/auth/sign-up)...");
-    const res = await fetch("http://localhost:3000/api/auth/sign-up", {
+    console.log("-> Chamando API de cadastro (http://localhost:3000/api/auth/signup)...");
+    const res = await fetch("http://localhost:3000/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -25,14 +32,10 @@ async function createAdmin() {
       }),
     });
 
-    if (res.ok) {
-      console.log("-> Usuário criado via API com sucesso!");
-    } else {
-      const err = await res.text();
-      // Ignorar erro se for "usuário já existe", pois queremos promover mesmo assim
-      console.log("-> Resposta da API:", err);
-    }
-  } catch (e) {
+    console.log(`-> Status da API: ${res.status} ${res.statusText}`);
+    const data = await res.text();
+    if (data) console.log("-> Resposta da API:", data);
+  } catch {
     console.log("-> ALERTA: Não foi possível conectar na API local.");
     console.log("   Certifique-se de que o servidor está rodando (npm run dev).");
     console.log("   Se o usuário não existir, o próximo passo falhará.");
@@ -54,9 +57,10 @@ async function createAdmin() {
       data: { role: 'ADMIN' },
     });
     console.log(` SUCESSO! Usuário ${updated.email} agora é ADMIN.`);
-    // console.log(` Pode fazer login com: ${email} / ${password}`);
-  } catch (e: any) {
-    console.error("Erro ao atualizar banco:", e.message);
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error("Erro ao atualizar banco:", e.message);
+    }
   }
 }
 

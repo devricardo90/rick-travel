@@ -4,33 +4,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HeroSearch } from "@/components/hero-search";
 import { HeroHeader } from '@/components/header'
-import { InfiniteSlider } from '@/components/ui/infinite-slider'
-import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { ChevronRight, ShieldCheck, Star, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import {
-  EntretenimentosIcon,
-  VisitacoesIcon,
-  AtividadesEsportivasIcon,
-  ToursGuiadosIcon,
-  TurismoUrbanoIcon,
-} from '@/components/logos/tourism-services'
 
-
-
-const LOGOS_LIST = [
-  { component: EntretenimentosIcon, alt: 'Entretenimentos', height: 36 },
-  { component: VisitacoesIcon, alt: 'Visitações', height: 36 },
-  { component: AtividadesEsportivasIcon, alt: 'Atividades Esportivas', height: 36 },
-  { component: ToursGuiadosIcon, alt: 'Tours Guiados', height: 36 },
-  { component: TurismoUrbanoIcon, alt: 'Turismo Urbano', height: 36 },
-]
-
-const SLIDER_CONFIG = {
-  speed: 25,
-  speedOnHover: 0,
-  gap: 96,
-}
 
 /* ===========================
    TRUST BAR
@@ -77,7 +53,7 @@ function HeroContent() {
 
         <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button asChild size="lg" className="h-12 w-full sm:w-auto sm:min-w-[210px] rounded-2xl px-6 text-[15px] font-semibold text-white shadow-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0" style={{ background: 'linear-gradient(135deg, #0B2E1E 0%, #0F3B27 100%)', border: '1px solid rgba(26,77,46,0.5)' }}>
-            <Link href="#reservas">
+            <Link href="/tours">
               <span>{t('primaryButton')}</span>
               <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
@@ -89,10 +65,10 @@ function HeroContent() {
             variant="ghost"
             className="h-11 w-full sm:w-auto sm:h-12 sm:min-w-[210px] rounded-2xl border border-white/15 bg-white/5 text-white/90 hover:bg-white/10 hover:text-white px-6 text-[15px] font-semibold backdrop-blur-md transition-all duration-200 hover:-translate-y-px active:translate-y-0"
           >
-            <Link href="/contato">
+            <a href="https://wa.me/5521971168114?text=Olá! Gostaria de solicitar um orçamento para um passeio no Rio." target="_blank" rel="noopener noreferrer">
               <span>{t('secondaryButton')}</span>
               <ChevronRight className="ml-1 h-4 w-4 opacity-70" />
-            </Link>
+            </a>
           </Button>
         </div>
 
@@ -134,81 +110,7 @@ function HeroMedia() {
   )
 }
 
-/* ===========================
-   LOGO ITEM
-=========================== */
 
-interface LogoItemProps {
-  component: React.ComponentType<{ height?: number; className?: string }>
-  alt: string
-  height: number
-}
-
-function LogoItem({ component: IconComponent, alt, height }: LogoItemProps) {
-  return (
-    <div
-      className="group relative flex items-center justify-center transition-transform duration-300 hover:-translate-y-1"
-      style={{ height }}
-    >
-      <IconComponent
-        height={height}
-        className="opacity-70 transition-all duration-300 group-hover:opacity-100 group-hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
-      />
-
-      {/* Tooltip - fixed position to avoid layout shift */}
-      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-muted-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        {alt}
-      </span>
-    </div>
-  )
-}
-
-/* ===========================
-   LOGOS SECTION
-=========================== */
-
-function LogosSection() {
-  const t = useTranslations('HomePage.Logos')
-
-  return (
-    <section className="bg-background pb-4">
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center gap-6 md:flex-row">
-          <div className="md:max-w-48 md:border-r md:pr-6">
-            <p className="text-center text-sm font-medium text-muted-foreground md:text-right">
-              {t('title')}
-            </p>
-          </div>
-
-          <div className="relative w-full overflow-hidden py-6">
-            <InfiniteSlider
-              speed={SLIDER_CONFIG.speed}
-              speedOnHover={SLIDER_CONFIG.speedOnHover}
-              gap={SLIDER_CONFIG.gap}
-            >
-              {LOGOS_LIST.map((logo, index) => (
-                <LogoItem
-                  key={`${logo.alt}-${index}`}
-                  component={logo.component}
-                  alt={logo.alt}
-                  height={logo.height}
-                />
-              ))}
-            </InfiniteSlider>
-
-            {/* Fade lateral */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
-
-            {/* Blur progressivo */}
-            <ProgressiveBlur className="pointer-events-none absolute left-0 top-0 h-full w-24" direction="left" />
-            <ProgressiveBlur className="pointer-events-none absolute right-0 top-0 h-full w-24" direction="right" />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 /* ===========================
    PAGE
@@ -225,7 +127,6 @@ export default function HeroSection() {
             <HeroMedia />
           </div>
         </section>
-        <LogosSection />
       </main>
     </>
   )

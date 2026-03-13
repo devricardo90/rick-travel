@@ -4,19 +4,21 @@ import { useEffect, useState } from "react";
 import { TripCard } from "./trips/trip-card";
 import { TripGridSkeleton } from "./trips/trip-card-skeleton";
 import { toast } from "sonner";
+import { motion } from "motion/react";
+import { useLocale } from "next-intl";
 
 type Trip = {
     id: string;
-    title: any; // JSON multilingual
+    title: Record<string, string>; // JSON multilingual
     city: string;
     location?: string | null;
-    description?: any | null; // JSON multilingual
+    description?: Record<string, string> | null; // JSON multilingual
     priceCents: number;
     imageUrl?: string | null;
     startDate?: Date | string | null;
     endDate?: Date | string | null;
     maxGuests?: number | null;
-    highlights?: any; // JSON multilingual array
+    highlights?: Record<string, string[]> | null; // JSON multilingual array
     createdAt?: Date | string;
     durationDays?: number;
     physicalLevel?: string;
@@ -28,6 +30,7 @@ interface TripGridProps {
 }
 
 export function TripGrid({ trips }: TripGridProps) {
+    const locale = useLocale();
     const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
     const [reservedTripIds, setReservedTripIds] = useState<string[]>([]);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -82,7 +85,7 @@ export function TripGrid({ trips }: TripGridProps) {
                     description: "Redirecionando para a página de login...",
                 });
                 setTimeout(() => {
-                    window.location.href = "/login";
+                    window.location.href = `/${locale}/login`;
                 }, 1500);
                 return;
             }
@@ -127,17 +130,41 @@ export function TripGrid({ trips }: TripGridProps) {
                     Nenhum passeio disponível no momento.
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+                <motion.div 
+                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                            opacity: 1,
+                            transition: { staggerChildren: 0.1 }
+                        }
+                    }}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-50px" }}
+                >
                     {trips.map((trip) => (
-                        <TripCard
+                        <motion.div 
                             key={trip.id}
-                            trip={trip}
-                            onReserve={reserve}
-                            loading={loadingTripId === trip.id}
-                            reserved={reservedTripIds.includes(trip.id)}
-                        />
+                            variants={{
+                                hidden: { opacity: 0, scale: 0.95, y: 20 },
+                                show: { 
+                                    opacity: 1, 
+                                    scale: 1, 
+                                    y: 0, 
+                                    transition: { type: "spring", stiffness: 260, damping: 20 } 
+                                }
+                            }}
+                        >
+                            <TripCard
+                                trip={trip}
+                                onReserve={reserve}
+                                loading={loadingTripId === trip.id}
+                                reserved={reservedTripIds.includes(trip.id)}
+                            />
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             )}
         </div>
     );

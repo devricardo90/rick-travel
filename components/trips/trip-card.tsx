@@ -10,14 +10,15 @@ import { normalizeTripImage } from "@/lib/image-utils";
 import { useLocale, useTranslations } from 'next-intl';
 import { ptBR, enUS, es, sv, type Locale } from "date-fns/locale";
 import { TourMediaBadges } from "@/components/trips/tour-media-badges";
+import { motion } from "motion/react";
 
 interface TripCardProps {
     trip: {
         id: string;
-        title: any;
+        title: Record<string, string>;
         city: string;
         location?: string | null;
-        description?: any | null;
+        description?: Record<string, string> | null;
         priceCents: number;
         imageUrl?: string | null;
         startDate?: string | Date | null;
@@ -51,13 +52,14 @@ function PhysicalLevelBadge({ level }: { level: string }) {
     )
 }
 
-export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) {
+export function TripCard({ trip, onReserve, loading, reserved, index = 0, viewMode = "grid" }: TripCardProps & { index?: number; viewMode?: "grid" | "list" }) {
     const locale = useLocale();
     const t = useTranslations('TripCard');
     const startDate = trip.startDate ? new Date(trip.startDate) : null;
     const endDate = trip.endDate ? new Date(trip.endDate) : null;
 
-    const localizedTitle = getLocalizedField<string>(trip.title, locale);
+    const title = trip.title?.[locale] || trip.title?.['en'] || "Trip";
+    const description = trip.description?.[locale] || trip.description?.['en'] || "No description available";
 
     const localeMap: Record<string, Locale> = {
         'pt': ptBR,
@@ -67,7 +69,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
     };
     const dateLocale = localeMap[locale] || ptBR;
 
-    const imageAlt = `${localizedTitle} - ${trip.city}${trip.location ? ', ' + trip.location : ''}`;
+    const imageAlt = `${title} - ${trip.city}${trip.location ? ', ' + trip.location : ''}`;
 
     return (
         <div className="group overflow-hidden rounded-2xl border border-transparent bg-white dark:bg-[#0B2233] dark:border-white/8 shadow-sm transition-all duration-300 ease-out hover:shadow-xl hover:-translate-y-0.5 dark:hover:border-white/15 dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
@@ -111,7 +113,7 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
             <div className="p-5">
                 {/* Título e localização */}
                 <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-foreground leading-tight">{localizedTitle}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-foreground leading-tight">{title}</h3>
                     {trip.location && (
                         <div className="mt-1 flex items-center text-sm text-muted-foreground">
                             <MapPin className="mr-1 h-3.5 w-3.5 shrink-0" />
@@ -158,17 +160,19 @@ export function TripCard({ trip, onReserve, loading, reserved }: TripCardProps) 
                             </p>
                         </div>
 
-                        <Button
-                            onClick={() => onReserve(trip.id)}
-                            disabled={reserved || loading}
-                            className={`shrink-0 transition-all duration-200 ${reserved
-                                    ? "bg-emerald-700 hover:bg-emerald-800 border border-emerald-600 text-white"
-                                    : "dark:bg-transparent dark:border dark:border-white/20 dark:text-[#EAF2F7] dark:hover:bg-white/8 dark:hover:border-white/35"
-                                }`}
-                        >
-                            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {reserved ? t('reserved') : t('reserveNow')}
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button
+                                onClick={() => onReserve(trip.id)}
+                                disabled={reserved || loading}
+                                className={`shrink-0 transition-all duration-200 ${reserved
+                                        ? "bg-emerald-700 hover:bg-emerald-800 border border-emerald-600 text-white"
+                                        : "dark:bg-transparent dark:border dark:border-white/20 dark:text-[#EAF2F7] dark:hover:bg-white/8 dark:hover:border-white/35"
+                                    }`}
+                            >
+                                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                {reserved ? t('reserved') : t('reserveNow')}
+                            </Button>
+                        </motion.div>
                     </div>
                 </div>
 

@@ -10,7 +10,7 @@
             "title": "Nossos serviços"
         },
         "Search": {
-            "placeholder": "Buscar passeios...",
+            "placeholder": "Buscar passeios, atrações ou bairros...",
             "button": "Buscar",
             "noResults": "Nenhum passeio encontrado. Tente outra busca."
         },

@@ -59,8 +59,10 @@ export default async function AdminTripsPage() {
                                             : "-"}
                                     </td>
                                     <td className="py-3 px-4 text-right flex justify-end gap-2">
+                                        <Button variant="outline" size="sm" asChild>
+                                            <Link href={`/admin/trips/${trip.id}/schedules`}>Agenda</Link>
+                                        </Button>
                                         <Button variant="ghost" size="sm" asChild>
-                                            {/* TODO: Implementar edição */}
                                             <Link href={`/admin/trips/${trip.id}`}>Editar</Link>
                                         </Button>
                                         <DeleteTripButton tripId={trip.id} />

@@ -66,23 +66,87 @@ model Verification {
 }
 
 model Trip {
-  id          String    @id @default(cuid())
-  title       Json      // Multilingual: { "pt": "...", "en": "...", "es": "...", "sv": "..." }
-  city        String
-  description Json?     // Multilingual: { "pt": "...", "en": "...", "es": "...", "sv": "..." }
-  priceCents  Int
-  createdAt   DateTime  @default(now())
-  endDate     DateTime?
-  highlights  Json      // Multilingual array: { "pt": [...], "en": [...], "es": [...], "sv": [...] }
-  imageUrl    String    @default("/images/placeholder.svg")
-  location    String?
-  maxGuests   Int?
-  startDate   DateTime?
+  id              String        @id @default(cuid())
+  city            String
+  priceCents      Int
+  createdAt       DateTime      @default(now())
+  endDate         DateTime?
+  imageUrl        String        @default("/images/placeholder.svg")
+  location        String?
+  maxGuests       Int?
+  startDate       DateTime?
   updatedAt       DateTime      @updatedAt
-  bookings        Booking[]
+  title           Json
+  description     Json?
+  highlights      Json
+  childrenAllowed Boolean       @default(true)
   durationDays    Int           @default(1)
   physicalLevel   PhysicalLevel @default(LIGHT)
-  childrenAllowed Boolean       @default(true)
+  bookings        Booking[]
+  schedules       TripSchedule[]
+}
+
+model TripSchedule {
+  id                  String         @id @default(cuid())
+  tripId              String
+  startAt             DateTime
+  endAt               DateTime?
+  capacity            Int
+  pricePerPersonCents Int
+  status              String         @default("OPEN") // OPEN, CLOSED
+  trip                Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  bookings            Booking[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([tripId, startAt])
+}
+
+model Booking {
+  id              String         @id @default(cuid())
+  userId          String
+  tripId          String
+  scheduleId      String?
+  status          BookingStatus  @default(PENDING)
+  paymentStatus   PaymentStatus  @default(UNPAID)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now()) @updatedAt
+  guestCount      Int            @default(1)
+  totalPriceCents Int            @default(0)
+  schedule        TripSchedule?  @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+  trip            Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailLogs       EmailLog[]
+
+  @@unique([userId, tripId])
+  @@index([userId, createdAt])
+  @@index([tripId])
+  @@index([status])
+}
+
+model EmailLog {
+  id                String        @id @default(cuid())
+  to                String
+  template          EmailTemplate
+  status            EmailStatus   @default(QUEUED)
+  bookingId         String?
+  booking           Booking?      @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  providerMessageId String?
+  error             String?
+  createdAt         DateTime      @default(now())
+  sentAt            DateTime?
+
+  @@index([status, createdAt])
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
 }
 
 enum PhysicalLevel {
@@ -90,22 +154,6 @@ enum PhysicalLevel {
   MODERATE
   HARD
   EXTREME
-}
-
-model Booking {
-  id              String        @id @default(cuid())
-  userId          String
-  tripId          String
-  status          BookingStatus @default(PENDING)
-  createdAt       DateTime      @default(now())
-  guestCount      Int           @default(1)
-  totalPriceCents Int           @default(0)
-  trip            Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, tripId])
-  @@index([userId])
-  @@index([tripId])
 }
 
 enum BookingStatus {
@@ -119,12 +167,20 @@ enum UserRole {
   ADMIN
 }
 
-model ContactSubmission {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  phone     String?
-  message   String
-  status    String   @default("PENDING")
-  createdAt DateTime @default(now())
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+  PARTIAL
+}
+
+enum EmailStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+enum EmailTemplate {
+  BOOKING_CONFIRMED
+  PAYMENT_CONFIRMED
 }

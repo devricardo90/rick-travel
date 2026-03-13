@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface TourActionsProps {
     tripId: string;
@@ -12,6 +12,7 @@ interface TourActionsProps {
 
 export function TourActions({ tripId, priceCents }: TourActionsProps) {
     const t = useTranslations('TourActions');
+    const locale = useLocale();
     const [loading, setLoading] = useState(false);
     const [reserved, setReserved] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
@@ -46,7 +47,7 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
             });
 
             if (res.status === 401) {
-                window.location.href = "/login?redirect=/tours/" + tripId;
+                window.location.href = `/${locale}/login?redirect=/tours/` + tripId;
                 return;
             }
 
@@ -63,7 +64,7 @@ export function TourActions({ tripId, priceCents }: TourActionsProps) {
 
             setReserved(true);
             setMessage(t('successMessage'));
-        } catch (error) {
+        } catch {
             setMessage(t('connectionError'));
         } finally {
             setLoading(false);

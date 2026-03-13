@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { sendBookingConfirmationEmail } from "@/app/actions/email";
 
 export async function GET() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -16,6 +17,7 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
     include: {
       trip: { select: { id: true, title: true, city: true, priceCents: true } },
+      schedule: { select: { startAt: true } },
     },
   });
 
@@ -32,6 +34,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const userId = session.user.id;
   const tripId = typeof body?.tripId === "string" ? body.tripId.trim() : "";
+  const scheduleId = typeof body?.scheduleId === "string" ? body.scheduleId.trim() : undefined;
   const guestCount = typeof body?.guestCount === "number" && body.guestCount > 0 ? Math.floor(body.guestCount) : 1;
 
   if (!tripId) {
@@ -52,22 +55,42 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Máximo de ${trip.maxGuests} hóspedes para esta viagem.` }, { status: 400 });
     }
 
-    const totalPriceCents = trip.priceCents * guestCount;
+    let totalPriceCents = trip.priceCents * guestCount;
+
+    // Se tiver schedule, validar capacidade e usar preço do schedule se houver
+    if (scheduleId) {
+      const schedule = await prisma.tripSchedule.findUnique({
+        where: { id: scheduleId },
+        include: { _count: { select: { bookings: true } } }
+      });
+
+      if (!schedule || schedule.tripId !== tripId || schedule.status === "CLOSED") {
+        return NextResponse.json({ error: "Agenda não disponível" }, { status: 400 });
+      }
+
+      if (schedule.capacity > 0 && (schedule._count.bookings + guestCount) > schedule.capacity) {
+        return NextResponse.json({ error: "Capacidade esgotada para esta data" }, { status: 400 });
+      }
+
+      totalPriceCents = schedule.pricePerPersonCents * guestCount;
+    }
 
     const created = await prisma.booking.create({
       data: {
         userId,
         tripId,
+        scheduleId,
         guestCount,
         totalPriceCents,
-        status: "CONFIRMED" // Assumindo confirmado para simplificar, ou PENDING se tiver pagamento real
+        status: "CONFIRMED"
       },
       include: {
         trip: { select: { id: true, title: true, city: true, priceCents: true } },
       },
-      // Removida a restrição implícita de unique se o schema permitir, mas se o schema ainda tiver @@unique([userId, tripId]), isso falhará se tentar reservar a mesma trip.
-      // Vou manter o tratamento de erro P2002 para garantir.
     });
+
+    // Disparar e-mail em background (não aguardar para não travar a resposta)
+    sendBookingConfirmationEmail(created.id).catch(console.error);
 
     return NextResponse.json(created, { status: 201 });
   } catch (err: any) {

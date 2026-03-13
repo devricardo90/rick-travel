@@ -33,13 +33,13 @@ async function main() {
     for (const trip of trips) {
         try {
             // Check if already translated
-            const titleData = trip.title as any;
-            if (typeof titleData === 'object' && titleData.en) {
-                console.log(`✅ "${titleData.pt}" - Already translated, skipping`);
+            const titleData = trip.title as Record<string, string> | string | null;
+            if (titleData && typeof titleData === 'object' && titleData.en) {
+                console.log(`✅ "${(titleData as Record<string, string>).pt}" - Already translated, skipping`);
                 continue;
             }
 
-            const titlePT = typeof titleData === 'string' ? titleData : titleData.pt || '';
+            const titlePT = typeof titleData === 'string' ? titleData : (titleData as Record<string, string>)?.pt || '';
             console.log(`\n📍 Translating: "${titlePT}"`);
 
             // Translate to EN, ES, SV
@@ -57,7 +57,7 @@ async function main() {
             await prisma.trip.update({
                 where: { id: trip.id },
                 data: {
-                    title: { pt: titlePT, en, es, sv } as any,
+                    title: { pt: titlePT, en, es, sv },
                     // Keep description and highlights as-is for now
                 },
             });
