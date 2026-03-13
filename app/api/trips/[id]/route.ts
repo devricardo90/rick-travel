@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
+import { tripSchema } from '@/lib/schemas'
+import { translateArray, translateText } from '@/lib/translation-service'
+import { z } from 'zod'
 
 export async function PUT(
     req: Request,
@@ -17,55 +20,45 @@ export async function PUT(
     }
 
     const { id } = await params
-    const body = await req.json()
-
-    // Reuse validation logic or simplify for now
-    const title = typeof body?.title === 'string' ? body.title.trim() : ''
-    const city = typeof body?.city === 'string' ? body.city.trim() : ''
-    const location = typeof body?.location === 'string' ? body.location.trim() : ''
-    const description =
-        typeof body?.description === 'string' ? body.description.trim() : null
-    const imageUrl = typeof body?.imageUrl === 'string' ? body.imageUrl.trim() : null
-
-    const priceCentsRaw = body?.priceCents
-    const priceCents =
-        typeof priceCentsRaw === 'number' ? Math.trunc(priceCentsRaw) : NaN
-
-    const maxGuestsRaw = body?.maxGuests
-    const maxGuests =
-        typeof maxGuestsRaw === 'number' ? Math.trunc(maxGuestsRaw) : null
-
-    const startDate = body?.startDate ? new Date(body.startDate) : null
-    const endDate = body?.endDate ? new Date(body.endDate) : null
-
-    const highlights = Array.isArray(body?.highlights) ? body.highlights : []
-
-    if (!title || !city || !Number.isFinite(priceCents) || priceCents < 0) {
-        return NextResponse.json(
-            { error: 'Campos obrigatórios: title, city, priceCents (>= 0)' },
-            { status: 400 }
-        )
-    }
 
     try {
+        const body = await req.json()
+        const validated = tripSchema.parse(body)
+        const startDate = validated.startDate ? new Date(validated.startDate) : null
+        const endDate = validated.endDate ? new Date(validated.endDate) : null
+        const translatedTitle = await translateText(validated.title, 'pt')
+        const translatedDescription = validated.description
+            ? await translateText(validated.description, 'pt')
+            : null
+        const translatedHighlights = validated.highlights?.length
+            ? await translateArray(validated.highlights, 'pt')
+            : { pt: [], en: [], es: [], sv: [] }
+
         const updated = await prisma.trip.update({
             where: { id },
             data: {
-                title,
-                city,
-                location,
-                description,
-                priceCents,
-                imageUrl,
+                title: translatedTitle as never,
+                city: validated.city,
+                location: validated.location,
+                description: translatedDescription as never,
+                priceCents: validated.priceCents,
+                imageUrl: validated.imageUrl,
                 startDate,
                 endDate,
-                maxGuests,
-                highlights
+                maxGuests: validated.maxGuests,
+                highlights: translatedHighlights as never,
             },
         })
 
         return NextResponse.json(updated)
     } catch (error) {
+        if (error instanceof z.ZodError) {
+            return NextResponse.json(
+                { error: error.errors[0]?.message ?? 'Dados inválidos' },
+                { status: 400 }
+            )
+        }
+
         console.error('Error updating trip:', error)
         return NextResponse.json(
             { error: 'Failed to update trip' },

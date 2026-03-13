@@ -44,31 +44,89 @@ export async function POST(req: Request) {
   try {
     const trip = await prisma.trip.findUnique({
       where: { id: tripId },
-      select: { id: true, priceCents: true, maxGuests: true },
+      select: {
+        id: true,
+        priceCents: true,
+        maxGuests: true,
+        schedules: {
+          where: { status: "OPEN" },
+          select: { id: true },
+          take: 1,
+        },
+      },
     });
 
     if (!trip) {
       return NextResponse.json({ error: "Trip não encontrada" }, { status: 404 });
     }
 
+    const hasOpenSchedules = trip.schedules.length > 0;
+
+    if (hasOpenSchedules && !scheduleId) {
+      return NextResponse.json(
+        { error: "Selecione uma data disponível para concluir a reserva." },
+        { status: 400 }
+      );
+    }
+
     if (trip.maxGuests && guestCount > trip.maxGuests) {
       return NextResponse.json({ error: `Máximo de ${trip.maxGuests} hóspedes para esta viagem.` }, { status: 400 });
+    }
+
+    const duplicateBooking = await prisma.booking.findFirst({
+      where: scheduleId
+        ? {
+            userId,
+            scheduleId,
+            status: { in: ["PENDING", "CONFIRMED"] },
+          }
+        : {
+            userId,
+            tripId,
+            scheduleId: null,
+            status: { in: ["PENDING", "CONFIRMED"] },
+          },
+      select: { id: true },
+    });
+
+    if (duplicateBooking) {
+      return NextResponse.json(
+        { error: scheduleId ? "Você já possui reserva para esta data" : "Você já possui reserva para esse passeio" },
+        { status: 409 }
+      );
     }
 
     let totalPriceCents = trip.priceCents * guestCount;
 
     // Se tiver schedule, validar capacidade e usar preço do schedule se houver
     if (scheduleId) {
-      const schedule = await prisma.tripSchedule.findUnique({
-        where: { id: scheduleId },
-        include: { _count: { select: { bookings: true } } }
-      });
+      const [schedule, bookedGuests] = await Promise.all([
+        prisma.tripSchedule.findUnique({
+          where: { id: scheduleId },
+          select: {
+            id: true,
+            tripId: true,
+            capacity: true,
+            pricePerPersonCents: true,
+            status: true,
+          }
+        }),
+        prisma.booking.aggregate({
+          where: {
+            scheduleId,
+            status: { in: ["PENDING", "CONFIRMED"] },
+          },
+          _sum: { guestCount: true },
+        }),
+      ]);
 
       if (!schedule || schedule.tripId !== tripId || schedule.status === "CLOSED") {
         return NextResponse.json({ error: "Agenda não disponível" }, { status: 400 });
       }
 
-      if (schedule.capacity > 0 && (schedule._count.bookings + guestCount) > schedule.capacity) {
+      const usedCapacity = bookedGuests._sum.guestCount ?? 0;
+
+      if (schedule.capacity > 0 && (usedCapacity + guestCount) > schedule.capacity) {
         return NextResponse.json({ error: "Capacidade esgotada para esta data" }, { status: 400 });
       }
 
@@ -93,13 +151,7 @@ export async function POST(req: Request) {
     sendBookingConfirmationEmail(created.id).catch(console.error);
 
     return NextResponse.json(created, { status: 201 });
-  } catch (err: any) {
-    if (err?.code === "P2002") {
-      return NextResponse.json(
-        { error: "Você já possui reserva para esse passeio" },
-        { status: 409 }
-      );
-    }
+  } catch (err: unknown) {
     console.error(err);
     return NextResponse.json({ error: "Erro ao criar booking" }, { status: 500 });
   }

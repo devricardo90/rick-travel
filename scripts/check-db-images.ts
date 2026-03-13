@@ -19,7 +19,7 @@ async function checkImagePaths() {
         if (typeof trip.title === 'string') {
             title = trip.title;
         } else if (trip.title && typeof trip.title === 'object') {
-            const titleObj: any = trip.title;
+            const titleObj = trip.title as Record<string, string>;
             title = titleObj.pt || titleObj.en || 'N/A';
         }
 

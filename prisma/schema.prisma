@@ -118,9 +118,9 @@ model Booking {
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   emailLogs       EmailLog[]
 
-  @@unique([userId, tripId])
   @@index([userId, createdAt])
   @@index([tripId])
+  @@index([userId, tripId, scheduleId])
   @@index([status])
 }
 

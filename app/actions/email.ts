@@ -59,13 +59,13 @@ export async function sendBookingConfirmationEmail(bookingId: string) {
         providerMessageId: data?.id,
       },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Failed to send email:", err);
     await prisma.emailLog.update({
       where: { id: emailLog.id },
       data: {
         status: "FAILED",
-        error: err.message || JSON.stringify(err),
+        error: err instanceof Error ? err.message : JSON.stringify(err),
       },
     });
   }

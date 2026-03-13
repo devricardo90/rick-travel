@@ -16,8 +16,8 @@ export async function resendBookingEmail(bookingId: string) {
     try {
         await sendBookingConfirmationEmail(bookingId);
         return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error resending email:", error);
-        return { error: error.message || "Erro ao reenviar e-mail" };
+        return { error: error instanceof Error ? error.message : "Erro ao reenviar e-mail" };
     }
 }

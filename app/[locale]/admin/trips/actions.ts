@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { tripSchema, TripInput } from "@/lib/schemas";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { translateText, translateArray } from "@/lib/translation-service";
 
@@ -44,9 +45,9 @@ export async function createTrip(data: TripInput) {
 
         await prisma.trip.create({
             data: {
-                title: translatedTitle as any,
-                description: translatedDescription as any,
-                highlights: translatedHighlights as any,
+                title: translatedTitle as Prisma.InputJsonValue,
+                description: translatedDescription as Prisma.InputJsonValue,
+                highlights: translatedHighlights as Prisma.InputJsonValue,
                 city: validated.city,
                 priceCents: validated.priceCents,
                 imageUrl: validated.imageUrl,
@@ -93,9 +94,9 @@ export async function updateTrip(id: string, data: TripInput) {
         await prisma.trip.update({
             where: { id },
             data: {
-                title: translatedTitle as any,
-                description: translatedDescription as any,
-                highlights: translatedHighlights as any,
+                title: translatedTitle as Prisma.InputJsonValue,
+                description: translatedDescription as Prisma.InputJsonValue,
+                highlights: translatedHighlights as Prisma.InputJsonValue,
                 city: validated.city,
                 priceCents: validated.priceCents,
                 imageUrl: validated.imageUrl,
