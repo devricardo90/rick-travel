@@ -1,7 +1,7 @@
 import { BookingStatus, PaymentStatus, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { BookingActions } from "@/components/admin/booking-actions";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
 
 function parseDateBoundary(value: string | undefined, boundary: "start" | "end") {

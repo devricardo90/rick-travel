@@ -858,3 +858,72 @@ O formulario de contato ja persistia mensagens no banco, mas isso ainda nao exis
 - falha de traducao nao bloqueia mais cadastro ou edicao de passeio
 - o projeto passou a ter rastreabilidade do estado da traducao
 - o admin ganhou leitura minima para identificar tours que precisam revisao manual de idioma
+
+## Etapa 15 - Formulario admin com conteudo multilÃ­ngue explicito
+
+### Passo 1 - Novo contrato de input para trips
+
+- `lib/schemas.ts` passou a aceitar:
+  - `titleTranslations`
+  - `descriptionTranslations`
+  - `highlightsTranslations`
+- o campo em portugues continua obrigatorio como base editorial
+
+### Logica do passo 1
+
+- o admin agora pode informar manualmente conteudo por idioma
+- o sistema deixou de depender apenas do campo simples em PT
+- PT continua sendo a fonte principal para validacao e fallback
+
+### Passo 2 - Combinacao entre traducao manual e automatica
+
+- `lib/services/trip.service.ts` passou a combinar:
+  - traducao manual quando o idioma foi preenchido
+  - traducao automatica somente para idiomas vazios
+
+### Logica do passo 2
+
+- se EN, ES ou SV vierem preenchidos, esses valores sao preservados
+- se vierem vazios, o sistema tenta completar automaticamente a partir do PT
+- se a traducao automatica falhar, o fallback continua sendo o texto em portugues
+- isso reduz dependencia de tradutor externo sem perder agilidade operacional
+
+### Passo 3 - Formulario admin refeito
+
+- `components/admin/trip-form.tsx` foi refeito para expor:
+  - bloco de dados gerais da viagem
+  - bloco de conteudo por idioma com PT, EN, ES e SV
+- o formulario agora permite editar:
+  - titulo
+  - descricao
+  - highlights
+  por idioma
+
+### Logica do passo 3
+
+- o operador pode escrever manualmente apenas os idiomas prioritarios
+- o restante continua podendo ser completado pelo sistema
+- isso cria um modelo hibrido:
+  - curadoria manual onde importa
+  - traducao automatica como apoio
+
+### Passo 4 - Edicao carregando todas as traducoes
+
+- `app/[locale]/admin/trips/[id]/page.tsx` passou a enviar ao formulario os objetos localizados completos
+
+### Logica do passo 4
+
+- editar um passeio nao mostra mais so o PT
+- o admin agora consegue revisar e ajustar traducoes existentes diretamente no form
+- isso fecha a governanca minima de conteudo multilÃ­ngue dentro do proprio painel
+
+### Validacao executada
+
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- o admin ganhou controle real sobre o conteudo por idioma
+- a traducao automatica virou suporte, nao dependencia total
+- a base editorial do projeto ficou mais previsivel para evolucao internacional

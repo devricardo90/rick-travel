@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Search, Loader2 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
-import { getLocalizedField } from '@/lib/translation-service'
+import { getLocalizedField } from '@/lib/localized-field'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from '@/i18n/routing'
 

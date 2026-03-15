@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter } from "next/font/google"; // Removed unused Geist fonts
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextIntlClientProvider } from 'next-intl';
@@ -8,14 +7,6 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Toaster } from '@/components/ui/toaster';
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "600", "700"],
-  preload: true,
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.BETTER_AUTH_URL || "http://localhost:3000"),
@@ -77,7 +68,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://api.ricktravel.com" />
       </head>
       <body
-        className={`${inter.variable} antialiased`}
+        className="antialiased"
       >
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider

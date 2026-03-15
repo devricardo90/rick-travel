@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from 'next-intl';
 import { trackClientEvent } from "@/lib/analytics/client";
-import { getLocalizedField } from '@/lib/translation-service';
+import { getLocalizedField } from '@/lib/localized-field';
 
 type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
 

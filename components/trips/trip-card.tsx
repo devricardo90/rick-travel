@@ -10,7 +10,7 @@ import { ptBR, enUS, es, sv, type Locale } from "date-fns/locale";
 import { TourMediaBadges } from "@/components/trips/tour-media-badges";
 import { motion } from "motion/react";
 import { Link } from "@/i18n/routing";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { TripCardData } from "@/lib/types";
 
 interface TripCardProps {

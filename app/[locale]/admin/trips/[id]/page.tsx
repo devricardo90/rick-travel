@@ -1,40 +1,59 @@
-
-import { prisma } from "@/lib/prisma";
-import TripForm from "@/components/admin/trip-form";
 import { notFound } from "next/navigation";
-import { getLocalizedField } from "@/lib/translation-service";
+import TripForm from "@/components/admin/trip-form";
+import { prisma } from "@/lib/prisma";
 import { asLocalizedList, asLocalizedText } from "@/lib/types";
 
 interface EditTripPageProps {
-    params: Promise<{
-        id: string;
-    }>;
+  params: Promise<{
+    id: string;
+  }>;
 }
 
 export default async function EditTripPage({ params }: EditTripPageProps) {
-    const { id } = await params;
-    const trip = await prisma.trip.findUnique({
-        where: { id },
-    });
+  const { id } = await params;
+  const trip = await prisma.trip.findUnique({
+    where: { id },
+  });
 
-    if (!trip) {
-        notFound();
-    }
+  if (!trip) {
+    notFound();
+  }
 
-    // Serializar datas para passar para o Client Component se necessário,
-    // mas o Next.js App Router serializa automaticamente objetos simples.
-    // TripForm espera datas como strings ou Date objects que o JSON aceita.
-    // Vamos garantir que seja passável.
+  const titleTranslations = asLocalizedText(trip.title);
+  const descriptionTranslations = asLocalizedText(trip.description);
+  const highlightsTranslations = asLocalizedList(trip.highlights);
 
-    return (
-        <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">Editar Viagem</h1>
-            <TripForm initialData={{
-                ...trip,
-                title: getLocalizedField<string>(asLocalizedText(trip.title), "pt"),
-                description: getLocalizedField<string>(asLocalizedText(trip.description), "pt"),
-                highlights: getLocalizedField<string[]>(asLocalizedList(trip.highlights), "pt"),
-            }} />
-        </div>
-    );
+  return (
+    <div className="mx-auto max-w-4xl">
+      <h1 className="mb-6 text-2xl font-bold">Editar Viagem</h1>
+      <TripForm
+        initialData={{
+          id: trip.id,
+          city: trip.city,
+          location: trip.location,
+          priceCents: trip.priceCents,
+          imageUrl: trip.imageUrl,
+          startDate: trip.startDate,
+          endDate: trip.endDate,
+          maxGuests: trip.maxGuests,
+          titleTranslations:
+            titleTranslations && typeof titleTranslations === "object" && !Array.isArray(titleTranslations)
+              ? titleTranslations
+              : null,
+          descriptionTranslations:
+            descriptionTranslations &&
+            typeof descriptionTranslations === "object" &&
+            !Array.isArray(descriptionTranslations)
+              ? descriptionTranslations
+              : null,
+          highlightsTranslations:
+            highlightsTranslations &&
+            typeof highlightsTranslations === "object" &&
+            !Array.isArray(highlightsTranslations)
+              ? highlightsTranslations
+              : null,
+        }}
+      />
+    </div>
+  );
 }

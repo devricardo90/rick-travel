@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { Trash2, Calendar, Lock, LockOpen } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";

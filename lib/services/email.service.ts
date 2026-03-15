@@ -1,7 +1,7 @@
 import { EmailTemplate } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { getLocalizedField } from "@/lib/localized-field";
 import { resend } from "@/lib/resend";
-import { getLocalizedField } from "@/lib/translation-service";
 import { asLocalizedText } from "@/lib/types";
 
 type BookingEmailTemplate = "BOOKING_CONFIRMED" | "PAYMENT_CONFIRMED";

@@ -9,8 +9,8 @@ import { useTranslations, useLocale } from 'next-intl';
 
 import { trackClientEvent } from "@/lib/analytics/client";
 import { Button } from "@/components/ui/button";
+import { getLocalizedField } from "@/lib/localized-field";
 import { TourActions } from "@/components/trips/tour-actions";
-import { getLocalizedField } from "@/lib/translation-service";
 import { normalizeTripImage } from "@/lib/image-utils";
 import { Link } from "@/i18n/routing";
 

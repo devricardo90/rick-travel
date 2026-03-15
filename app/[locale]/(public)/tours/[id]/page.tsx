@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TourDetailClient } from "@/components/trips/tour-detail-client";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedList, asLocalizedText } from "@/lib/types";
 
 interface PageProps {

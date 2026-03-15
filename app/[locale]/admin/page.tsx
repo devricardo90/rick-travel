@@ -5,7 +5,7 @@ import {
   getAnalyticsAttributionSummary,
   getAnalyticsFunnelSummary,
 } from "@/lib/services/analytics.service";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
 
 function formatCurrency(cents: number) {

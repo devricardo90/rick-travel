@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { requireSession } from "@/lib/authz";
 import {
     createMercadoPagoPixPayment,

@@ -6,15 +6,18 @@ export type LocalizedList = Record<string, string[]>;
 export type TripFormDataLike = {
     id?: string;
     title?: string | LocalizedText | null;
+    titleTranslations?: LocalizedText | null;
     city?: string;
     location?: string | null;
     description?: string | LocalizedText | null;
+    descriptionTranslations?: LocalizedText | null;
     priceCents?: number;
     imageUrl?: string | null;
     startDate?: string | Date | null;
     endDate?: string | Date | null;
     maxGuests?: number | null;
     highlights?: string | string[] | LocalizedList | null;
+    highlightsTranslations?: LocalizedList | null;
 };
 
 export type TripCardData = {

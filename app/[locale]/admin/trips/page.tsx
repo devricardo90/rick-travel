@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DeleteTripButton } from "@/components/admin/delete-trip-button";
 import { prisma } from "@/lib/prisma";
-import { getLocalizedField } from "@/lib/translation-service";
+import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
 
 export default async function AdminTripsPage({
