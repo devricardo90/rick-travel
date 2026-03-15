@@ -28,25 +28,28 @@ export async function trackAnalyticsEvent(input: TrackAnalyticsEventInput) {
 }
 
 export async function getAnalyticsFunnelSummary(since: Date) {
-  const grouped = await prisma.analyticsEvent.groupBy({
-    by: ["type"],
-    where: { createdAt: { gte: since } },
-    _count: { _all: true },
-  });
+  const eventTypes: AnalyticsEventType[] = [
+    "TOUR_VIEWED",
+    "RESERVE_CLICKED",
+    "CHECKOUT_STARTED",
+    "PIX_GENERATED",
+    "PAYMENT_CONFIRMED",
+  ];
 
-  const counts: Record<AnalyticsEventType, number> = {
-    TOUR_VIEWED: 0,
-    RESERVE_CLICKED: 0,
-    CHECKOUT_STARTED: 0,
-    PIX_GENERATED: 0,
-    PAYMENT_CONFIRMED: 0,
-  };
+  const entries = await Promise.all(
+    eventTypes.map(async (type) => {
+      const count = await prisma.analyticsEvent.count({
+        where: {
+          type,
+          createdAt: { gte: since },
+        },
+      });
 
-  for (const item of grouped) {
-    counts[item.type] = item._count._all;
-  }
+      return [type, count] as const;
+    })
+  );
 
-  return counts;
+  return Object.fromEntries(entries) as Record<AnalyticsEventType, number>;
 }
 
 type AttributionRow = {
