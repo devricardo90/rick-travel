@@ -8,7 +8,7 @@ The project includes authentication, protected routes, bookings, an admin dashbo
 
 Next.js (App Router)
 
-React 18
+React 19
 
 TypeScript
 

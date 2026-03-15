@@ -1,23 +1,25 @@
 "use server";
 
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { BookingStatus } from "@prisma/client";
+import { requireAdminSession } from "@/lib/authz";
+import { sendBookingConfirmationEmail } from "@/lib/services/email.service";
+import { prisma } from "@/lib/prisma";
+import { isDomainError } from "@/lib/errors/domain-error";
 
 export async function updateBookingStatus(bookingId: string, status: BookingStatus) {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session || session.user.role !== "ADMIN") {
-        return {
-            error: "Unauthorized",
-        };
-    }
-
     try {
+        await requireAdminSession();
+
+        const previous = await prisma.booking.findUnique({
+            where: { id: bookingId },
+            select: { status: true },
+        });
+
+        if (!previous) {
+            return { error: "Booking nÃ£o encontrado" };
+        }
+
         await prisma.booking.update({
             where: {
                 id: bookingId,
@@ -27,10 +29,18 @@ export async function updateBookingStatus(bookingId: string, status: BookingStat
             },
         });
 
+        if (status === "CONFIRMED" && previous.status !== "CONFIRMED") {
+            await sendBookingConfirmationEmail(bookingId);
+        }
+
         revalidatePath("/admin/bookings");
-        revalidatePath("/admin"); // Updates dashboard stats too
+        revalidatePath("/admin");
         return { success: true };
     } catch (error) {
+        if (isDomainError(error)) {
+            return { error: error.message };
+        }
+
         console.error("Error updating booking:", error);
         return {
             error: "Failed to update booking status",

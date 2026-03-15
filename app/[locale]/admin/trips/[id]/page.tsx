@@ -2,6 +2,8 @@
 import { prisma } from "@/lib/prisma";
 import TripForm from "@/components/admin/trip-form";
 import { notFound } from "next/navigation";
+import { getLocalizedField } from "@/lib/translation-service";
+import { asLocalizedList, asLocalizedText } from "@/lib/types";
 
 interface EditTripPageProps {
     params: Promise<{
@@ -27,7 +29,12 @@ export default async function EditTripPage({ params }: EditTripPageProps) {
     return (
         <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold mb-6">Editar Viagem</h1>
-            <TripForm initialData={trip} />
+            <TripForm initialData={{
+                ...trip,
+                title: getLocalizedField<string>(asLocalizedText(trip.title), "pt"),
+                description: getLocalizedField<string>(asLocalizedText(trip.description), "pt"),
+                highlights: getLocalizedField<string[]>(asLocalizedList(trip.highlights), "pt"),
+            }} />
         </div>
     );
 }

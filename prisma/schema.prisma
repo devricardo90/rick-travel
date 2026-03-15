@@ -16,6 +16,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   role          UserRole  @default(USER)
   accounts      Account[]
+  analyticsEvents AnalyticsEvent[]
   bookings      Booking[]
   sessions      Session[]
 }
@@ -82,8 +83,10 @@ model Trip {
   childrenAllowed Boolean       @default(true)
   durationDays    Int           @default(1)
   physicalLevel   PhysicalLevel @default(LIGHT)
+  analyticsEvents  AnalyticsEvent[]
   bookings        Booking[]
   schedules       TripSchedule[]
+  translationLogs TranslationJobLog[]
 }
 
 model TripSchedule {
@@ -116,12 +119,57 @@ model Booking {
   schedule        TripSchedule?  @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
   trip            Trip           @relation(fields: [tripId], references: [id], onDelete: Cascade)
   user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analyticsEvents AnalyticsEvent[]
   emailLogs       EmailLog[]
+  paymentAttempts PaymentAttempt[]
 
   @@index([userId, createdAt])
   @@index([tripId])
   @@index([userId, tripId, scheduleId])
   @@index([status])
+}
+
+model PaymentAttempt {
+  id                String               @id @default(cuid())
+  bookingId         String
+  provider          String
+  providerPaymentId String?
+  amountCents       Int
+  currency          String               @default("BRL")
+  status            PaymentAttemptStatus @default(CREATED)
+  checkoutUrl       String?
+  providerEventId   String?
+  paidAt            DateTime?
+  metadata          Json?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  analyticsEvents    AnalyticsEvent[]
+  booking           Booking              @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId, status])
+  @@index([provider, providerPaymentId])
+}
+
+model AnalyticsEvent {
+  id               String             @id @default(cuid())
+  type             AnalyticsEventType
+  userId           String?
+  tripId           String?
+  bookingId        String?
+  paymentAttemptId String?
+  sessionId        String?
+  path             String?
+  metadata         Json?
+  createdAt        DateTime           @default(now())
+  user             User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  trip             Trip?              @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  booking          Booking?           @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  paymentAttempt   PaymentAttempt?    @relation(fields: [paymentAttemptId], references: [id], onDelete: SetNull)
+
+  @@index([type, createdAt])
+  @@index([tripId, type, createdAt])
+  @@index([bookingId, type, createdAt])
+  @@index([sessionId, createdAt])
 }
 
 model EmailLog {
@@ -149,6 +197,22 @@ model ContactSubmission {
   createdAt DateTime @default(now())
 }
 
+model TranslationJobLog {
+  id           String               @id @default(cuid())
+  tripId       String?
+  entityType   String
+  operation    TranslationOperation
+  provider     String
+  status       TranslationJobStatus
+  sourceLocale String
+  metadata     Json?
+  createdAt    DateTime             @default(now())
+  trip         Trip?                @relation(fields: [tripId], references: [id], onDelete: SetNull)
+
+  @@index([tripId, createdAt])
+  @@index([status, createdAt])
+}
+
 enum PhysicalLevel {
   LIGHT
   MODERATE
@@ -174,10 +238,38 @@ enum PaymentStatus {
   PARTIAL
 }
 
+enum PaymentAttemptStatus {
+  CREATED
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELED
+  REFUNDED
+}
+
 enum EmailStatus {
   QUEUED
   SENT
   FAILED
+}
+
+enum AnalyticsEventType {
+  TOUR_VIEWED
+  RESERVE_CLICKED
+  CHECKOUT_STARTED
+  PIX_GENERATED
+  PAYMENT_CONFIRMED
+}
+
+enum TranslationOperation {
+  CREATE
+  UPDATE
+}
+
+enum TranslationJobStatus {
+  SUCCESS
+  PARTIAL_FALLBACK
+  FULL_FALLBACK
 }
 
 enum EmailTemplate {

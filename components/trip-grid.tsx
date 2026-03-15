@@ -5,27 +5,10 @@ import { TripCard } from "./trips/trip-card";
 import { toast } from "sonner";
 import { motion } from "motion/react";
 import { useLocale } from "next-intl";
-
-type Trip = {
-    id: string;
-    title: Record<string, string>; // JSON multilingual
-    city: string;
-    location?: string | null;
-    description?: Record<string, string> | null; // JSON multilingual
-    priceCents: number;
-    imageUrl?: string | null;
-    startDate?: Date | string | null;
-    endDate?: Date | string | null;
-    maxGuests?: number | null;
-    highlights?: Record<string, string[]> | null; // JSON multilingual array
-    createdAt?: Date | string;
-    durationDays?: number;
-    physicalLevel?: string;
-    childrenAllowed?: boolean;
-};
+import { TripCardData } from "@/lib/types";
 
 interface TripGridProps {
-    trips: Trip[];
+    trips: TripCardData[];
 }
 
 export function TripGrid({ trips }: TripGridProps) {

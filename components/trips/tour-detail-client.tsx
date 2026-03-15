@@ -1,11 +1,13 @@
 'use client'
 
+import { useEffect, useRef } from "react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { format } from "date-fns";
 import { ptBR, enUS, es, sv, Locale } from "date-fns/locale";
 import { Calendar, MapPin, Users, Clock, CheckCircle2, ChevronLeft } from "lucide-react";
 import { useTranslations, useLocale } from 'next-intl';
 
+import { trackClientEvent } from "@/lib/analytics/client";
 import { Button } from "@/components/ui/button";
 import { TourActions } from "@/components/trips/tour-actions";
 import { getLocalizedField } from "@/lib/translation-service";
@@ -39,6 +41,7 @@ interface TourDetailClientProps {
 export function TourDetailClient({ trip, startDate, schedules }: TourDetailClientProps) {
     const t = useTranslations('TourDetailPage');
     const locale = useLocale();
+    const hasTrackedViewRef = useRef(false);
 
     // Map locale to date-fns locale
     const dateLocaleMap: Record<string, Locale> = {
@@ -53,6 +56,23 @@ export function TourDetailClient({ trip, startDate, schedules }: TourDetailClien
     const localizedTitle = getLocalizedField<string>(trip.title, locale);
     const localizedDescription = getLocalizedField<string>(trip.description, locale);
     const localizedHighlights = getLocalizedField<string[]>(trip.highlights, locale) || [];
+
+    useEffect(() => {
+        if (hasTrackedViewRef.current) {
+            return;
+        }
+
+        hasTrackedViewRef.current = true;
+        void trackClientEvent({
+            type: "TOUR_VIEWED",
+            tripId: trip.id,
+            metadata: {
+                locale,
+                city: trip.city,
+                hasSchedules: schedules.length > 0,
+            },
+        });
+    }, [locale, schedules.length, trip.city, trip.id]);
 
     return (
         <main className="mx-auto max-w-7xl px-6 pt-32 pb-10">

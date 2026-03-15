@@ -1,7 +1,8 @@
-import { Prisma } from "@prisma/client";
+import { PhysicalLevel, Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { TripGrid } from "@/components/trip-grid";
+import { asLocalizedList, asLocalizedText } from "@/lib/types";
 
 export const dynamic = 'force-dynamic'; // Garantir que não faça cache estático se quisermos dados frescos
 
@@ -39,7 +40,7 @@ export default async function TripList({ searchParams }: TripListProps) {
   }
 
   if (level) {
-    where.physicalLevel = level;
+    where.physicalLevel = level as PhysicalLevel;
   }
 
   if (children !== undefined) {
@@ -61,6 +62,9 @@ export default async function TripList({ searchParams }: TripListProps) {
 
   const serializedTrips = trips.map(trip => ({
     ...trip,
+    title: asLocalizedText(trip.title) ?? {},
+    description: asLocalizedText(trip.description),
+    highlights: asLocalizedList(trip.highlights),
     startDate: trip.startDate?.toISOString() ?? null,
     endDate: trip.endDate?.toISOString() ?? null,
     createdAt: trip.createdAt.toISOString(),

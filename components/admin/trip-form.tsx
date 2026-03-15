@@ -5,69 +5,49 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { createTrip, updateTrip } from "@/app/[locale]/admin/trips/actions";
 import { useLocale } from "next-intl";
+import { LocalizedList, LocalizedText, TripFormDataLike } from "@/lib/types";
 
 interface TripFormProps {
-    initialData?: {
-        id?: string;
-        title?: string;
-        city?: string;
-        location?: string | null;
-        description?: string | null;
-        priceCents?: number;
-        imageUrl?: string | null;
-        startDate?: string | Date | null;
-        endDate?: string | Date | null;
-        maxGuests?: number | null;
-        highlights?: string | string[] | null;
-    };
+    initialData?: TripFormDataLike;
 }
 
-// Helper para garantir que highlights seja convertido corretamente
-function getHighlightsAsString(highlights: string | string[] | null | undefined): string {
+function getTextValue(value: string | LocalizedText | null | undefined): string {
+    if (!value) return "";
+    if (typeof value === "string") return value;
+    return value.pt || value.en || Object.values(value)[0] || "";
+}
+
+function getHighlightsAsString(highlights: string | string[] | LocalizedList | null | undefined): string {
     if (!highlights) return "";
 
-    // Se já é string, retorna direto
     if (typeof highlights === "string") {
-        // Se parece com JSON, tenta parsear
         if (highlights.startsWith("[") || highlights.startsWith("{")) {
             try {
-                const parsed = JSON.parse(highlights);
-                return Array.isArray(parsed) ? parsed.join("\n") : "";
+                const parsed: unknown = JSON.parse(highlights);
+
+                if (Array.isArray(parsed)) {
+                    return parsed.filter((item): item is string => typeof item === "string").join("\n");
+                }
+
+                if (parsed && typeof parsed === "object") {
+                    const localized = parsed as LocalizedList;
+                    const preferred = localized.pt || localized.en || Object.values(localized)[0];
+                    return Array.isArray(preferred) ? preferred.join("\n") : "";
+                }
             } catch {
                 return highlights;
             }
         }
+
         return highlights;
     }
 
-    // Se é array, faz join
     if (Array.isArray(highlights)) {
         return highlights.join("\n");
     }
 
-    return "";
-    if (!highlights) return "";
-
-    // Se já é string, retorna direto
-    if (typeof highlights === "string") {
-        // Se parece com JSON, tenta parsear
-        if (highlights.startsWith("[") || highlights.startsWith("{")) {
-            try {
-                const parsed = JSON.parse(highlights);
-                return Array.isArray(parsed) ? parsed.join("\n") : "";
-            } catch {
-                return highlights;
-            }
-        }
-        return highlights;
-    }
-
-    // Se é array, faz join
-    if (Array.isArray(highlights)) {
-        return highlights.join("\n");
-    }
-
-    return "";
+    const preferred = highlights.pt || highlights.en || Object.values(highlights)[0];
+    return Array.isArray(preferred) ? preferred.join("\n") : "";
 }
 
 export default function TripForm({ initialData }: TripFormProps) {
@@ -77,15 +57,15 @@ export default function TripForm({ initialData }: TripFormProps) {
     const [error, setError] = useState("");
 
     const [formData, setFormData] = useState({
-        title: initialData?.title || "",
+        title: getTextValue(initialData?.title),
         city: initialData?.city || "",
         location: initialData?.location || "",
-        description: initialData?.description || "",
+        description: getTextValue(initialData?.description),
         price: initialData?.priceCents ? (initialData.priceCents / 100).toFixed(2) : "",
         imageUrl: initialData?.imageUrl || "",
-        startDate: initialData?.startDate ? new Date(initialData.startDate).toISOString().split('T')[0] : "",
-        endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "",
-        maxGuests: initialData?.maxGuests || "",
+        startDate: initialData?.startDate ? new Date(initialData.startDate).toISOString().split("T")[0] : "",
+        endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().split("T")[0] : "",
+        maxGuests: initialData?.maxGuests?.toString() || "",
         highlights: getHighlightsAsString(initialData?.highlights),
     });
 
@@ -101,23 +81,25 @@ export default function TripForm({ initialData }: TripFormProps) {
 
         try {
             const priceCents = Math.round(parseFloat(formData.price) * 100);
-            const highlightsArray = formData.highlights.split("\n").filter((line: string) => line.trim() !== "");
-            const maxGuests = formData.maxGuests ? parseInt(formData.maxGuests.toString()) : null;
+            const highlightsArray = formData.highlights.split("\n").filter((line) => line.trim() !== "");
+            const maxGuests = formData.maxGuests ? parseInt(formData.maxGuests, 10) : null;
 
             const payload = {
-                ...formData,
+                title: formData.title,
+                city: formData.city,
+                location: formData.location || undefined,
+                description: formData.description || undefined,
                 priceCents,
+                imageUrl: formData.imageUrl || undefined,
+                startDate: formData.startDate || null,
+                endDate: formData.endDate || null,
                 maxGuests,
                 highlights: highlightsArray,
             };
 
-            let result;
-
-            if (initialData?.id) {
-                result = await updateTrip(initialData.id, payload);
-            } else {
-                result = await createTrip(payload);
-            }
+            const result = initialData?.id
+                ? await updateTrip(initialData.id, payload)
+                : await createTrip(payload);
 
             if (result.error) {
                 throw new Error(result.error);
@@ -131,17 +113,18 @@ export default function TripForm({ initialData }: TripFormProps) {
             setLoading(false);
         }
     };
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl bg-card p-6 rounded-xl shadow-sm border border-border">
-            {error && (
+            {error ? (
                 <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm border border-destructive/20">
                     {error}
                 </div>
-            )}
+            ) : null}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80">Título</label>
+                    <label className="text-sm font-semibold text-foreground/80">Titulo</label>
                     <input
                         name="title"
                         required
@@ -165,18 +148,18 @@ export default function TripForm({ initialData }: TripFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80">Localização Específica</label>
+                    <label className="text-sm font-semibold text-foreground/80">Localizacao Especifica</label>
                     <input
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
                         className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        placeholder="Ex: Marina da Glória"
+                        placeholder="Ex: Marina da Gloria"
                     />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80">Preço (R$)</label>
+                    <label className="text-sm font-semibold text-foreground/80">Preco (R$)</label>
                     <input
                         name="price"
                         type="number"
@@ -190,7 +173,7 @@ export default function TripForm({ initialData }: TripFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80">Data Início</label>
+                    <label className="text-sm font-semibold text-foreground/80">Data Inicio</label>
                     <input
                         name="startDate"
                         type="date"
@@ -212,7 +195,7 @@ export default function TripForm({ initialData }: TripFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80">Máx. Pessoas</label>
+                    <label className="text-sm font-semibold text-foreground/80">Max. Pessoas</label>
                     <input
                         name="maxGuests"
                         type="number"
@@ -236,7 +219,7 @@ export default function TripForm({ initialData }: TripFormProps) {
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-semibold text-foreground/80">Descrição</label>
+                <label className="text-sm font-semibold text-foreground/80">Descricao</label>
                 <textarea
                     name="description"
                     rows={4}
@@ -255,7 +238,7 @@ export default function TripForm({ initialData }: TripFormProps) {
                     value={formData.highlights}
                     onChange={handleChange}
                     className="w-full p-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                    placeholder="Café da manhã incluso&#10;Transporte ida e volta"
+                    placeholder={"Cafe da manha incluso\nTransporte ida e volta"}
                 />
             </div>
 

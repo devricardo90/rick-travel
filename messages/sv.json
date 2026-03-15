@@ -231,7 +231,8 @@
         "reserved": "Reserverad",
         "reserveNow": "Reservera Nu",
         "alreadyReserved": "Du har redan en bokning för denna tur!",
-        "successMessage": "Bokning lyckades!",
+        "successMessage": "Bokningen bekräftades.",
+        "pendingMessage": "Bokningen skapades och väntar nu på bekräftelse.",
         "errorMessage": "Fel vid bokning.",
         "connectionError": "Anslutningsfel.",
         "freeCancellation": "Gratis avbokning upp till 24h innan."

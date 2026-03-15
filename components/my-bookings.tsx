@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from 'next-intl';
+import { trackClientEvent } from "@/lib/analytics/client";
 import { getLocalizedField } from '@/lib/translation-service';
 
 type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
@@ -10,6 +11,7 @@ type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
 type Booking = {
   id: string;
   status: BookingStatus;
+  paymentStatus: "UNPAID" | "PAID" | "REFUNDED" | "PARTIAL";
   guestCount: number;
   totalPriceCents: number;
   createdAt: string;
@@ -112,6 +114,45 @@ export function MyBookings() {
     }
   }
 
+  async function startPayment(bookingId: string) {
+    setError(null);
+    void trackClientEvent({
+      type: "CHECKOUT_STARTED",
+      bookingId,
+      metadata: { locale },
+    });
+
+    try {
+      const res = await fetch("/api/payments/checkout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId, locale }),
+      });
+
+      const resp = await res.json().catch(() => ({}));
+
+      if (res.status === 401) {
+        window.location.href = `/${locale}/login`;
+        return;
+      }
+
+      if (!res.ok) {
+        setError(resp?.error ?? "Erro ao iniciar pagamento");
+        return;
+      }
+
+      if (resp?.checkoutUrl) {
+        window.location.href = resp.checkoutUrl;
+        return;
+      }
+
+      setError("Checkout indisponivel no momento");
+    } catch {
+      setError("Erro de rede ao iniciar pagamento");
+    }
+  }
+
   useEffect(() => {
     load();
 
@@ -176,6 +217,14 @@ export function MyBookings() {
           <div className="mt-1 text-xs text-muted-foreground">
             Reservado em: {new Date(b.createdAt).toLocaleString("pt-BR")}
           </div>
+          {b.status === "PENDING" ? (
+            <div className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+              Aguardando confirmacao do pagamento ou validacao da equipe.
+            </div>
+          ) : null}
+          <div className="mt-1 text-xs text-muted-foreground">
+            Pagamento: {b.paymentStatus}
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -189,6 +238,12 @@ export function MyBookings() {
               </div>
             )}
           </div>
+
+          {b.status !== "CANCELED" && b.paymentStatus !== "PAID" ? (
+            <Button onClick={() => startPayment(b.id)}>
+              Pagar
+            </Button>
+          ) : null}
 
           {b.status === "CANCELED" ? null : (
             <Button variant="outline" onClick={() => cancelBooking(b.id)}>

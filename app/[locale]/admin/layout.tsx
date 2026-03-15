@@ -32,6 +32,7 @@ export default async function AdminLayout({
             <Link href={`/${locale}/admin`}>Dashboard</Link>
             <Link href={`/${locale}/admin/trips`}>Trips</Link>
             <Link href={`/${locale}/admin/bookings`}>Reservas</Link>
+            <Link href={`/${locale}/admin/contacts`}>Contatos</Link>
 
             {/* Logout */}
             <AdminLogoutButton />

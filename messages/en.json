@@ -303,7 +303,8 @@
         "reserved": "Reserved",
         "reserveNow": "Reserve Now",
         "alreadyReserved": "You already have a booking for this tour!",
-        "successMessage": "Booking successful!",
+        "successMessage": "Booking confirmed successfully!",
+        "pendingMessage": "Booking created successfully and is now pending confirmation.",
         "errorMessage": "Error making reservation.",
         "connectionError": "Connection error.",
         "freeCancellation": "Free cancellation up to 24h before."

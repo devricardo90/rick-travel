@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TourDetailClient } from "@/components/trips/tour-detail-client";
 import { getLocalizedField } from "@/lib/translation-service";
+import { asLocalizedList, asLocalizedText } from "@/lib/types";
 
 interface PageProps {
     params: Promise<{ id: string; locale: string }>;
@@ -21,8 +22,8 @@ export async function generateMetadata(props: PageProps) {
         };
     }
 
-    const localizedTitle = getLocalizedField<string>(trip.title, params.locale);
-    const localizedDescription = getLocalizedField<string>(trip.description, params.locale);
+    const localizedTitle = getLocalizedField<string>(asLocalizedText(trip.title), params.locale);
+    const localizedDescription = getLocalizedField<string>(asLocalizedText(trip.description), params.locale);
 
     return {
         title: `${localizedTitle} | Rick Travel`,
@@ -66,5 +67,16 @@ export default async function TourDetailsPage(props: PageProps) {
         endAt: schedule.endAt?.toISOString() ?? null,
     }));
 
-    return <TourDetailClient trip={trip} startDate={startDate} schedules={schedules} />;
+    return (
+        <TourDetailClient
+            trip={{
+                ...trip,
+                title: asLocalizedText(trip.title) ?? "",
+                description: asLocalizedText(trip.description),
+                highlights: asLocalizedList(trip.highlights),
+            }}
+            startDate={startDate}
+            schedules={schedules}
+        />
+    );
 }

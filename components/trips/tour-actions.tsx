@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { trackClientEvent } from "@/lib/analytics/client";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useTranslations, useLocale } from 'next-intl';
@@ -44,6 +45,15 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
     async function handleReserve() {
         setLoading(true);
         setMessage(null);
+        void trackClientEvent({
+            type: "RESERVE_CLICKED",
+            tripId,
+            metadata: {
+                scheduleId: selectedScheduleId || null,
+                hasSchedules: schedules.length > 0,
+                displayedPrice,
+            },
+        });
 
         try {
             const res = await fetch("/api/bookings", {
@@ -72,7 +82,7 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
                 return;
             }
 
-            setMessage(t('successMessage'));
+            setMessage(data?.status === "PENDING" ? t('pendingMessage') : t('successMessage'));
             window.dispatchEvent(new Event("bookings:refresh"));
         } catch {
             setMessage(t('connectionError'));

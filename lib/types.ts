@@ -1,0 +1,57 @@
+import { PhysicalLevel, Prisma } from "@prisma/client";
+
+export type LocalizedText = Record<string, string>;
+export type LocalizedList = Record<string, string[]>;
+
+export type TripFormDataLike = {
+    id?: string;
+    title?: string | LocalizedText | null;
+    city?: string;
+    location?: string | null;
+    description?: string | LocalizedText | null;
+    priceCents?: number;
+    imageUrl?: string | null;
+    startDate?: string | Date | null;
+    endDate?: string | Date | null;
+    maxGuests?: number | null;
+    highlights?: string | string[] | LocalizedList | null;
+};
+
+export type TripCardData = {
+    id: string;
+    title: LocalizedText | string;
+    city: string;
+    location?: string | null;
+    description?: LocalizedText | string | null;
+    priceCents: number;
+    imageUrl?: string | null;
+    startDate?: Date | string | null;
+    endDate?: Date | string | null;
+    maxGuests?: number | null;
+    highlights?: LocalizedList | string[] | null;
+    createdAt?: Date | string;
+    durationDays?: number;
+    physicalLevel?: PhysicalLevel | string;
+    childrenAllowed?: boolean;
+    ratingAvg?: number;
+    reviewsCount?: number;
+    bookingsCount?: number;
+};
+
+export function asLocalizedText(value: Prisma.JsonValue | string | null | undefined): LocalizedText | string | null {
+    if (!value) return null;
+    if (typeof value === "string") return value;
+    if (typeof value === "object" && !Array.isArray(value)) {
+        return value as LocalizedText;
+    }
+    return null;
+}
+
+export function asLocalizedList(value: Prisma.JsonValue | string[] | null | undefined): LocalizedList | string[] | null {
+    if (!value) return null;
+    if (Array.isArray(value)) return value as string[];
+    if (typeof value === "object") {
+        return value as LocalizedList;
+    }
+    return null;
+}
