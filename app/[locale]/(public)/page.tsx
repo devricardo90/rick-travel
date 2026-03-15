@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import HeroSection from "@/components/hero-section";
 import { ReservationsSection } from "@/components/reservations-section";
 import { FadeInSection } from "@/components/ui/fade-in-section";
@@ -13,6 +14,58 @@ const FAQsTwo = dynamic(() => import('@/components/faqs-2'), {
 });
 
 const FooterSection = dynamic(() => import('@/components/footer'));
+
+function getHomeMetadataCopy(locale: string) {
+    switch (locale) {
+        case "en":
+            return {
+                title: "Rick Travel | Private Tours in Rio de Janeiro",
+                description: "Book guided tours in Rio de Janeiro with a licensed team, fast WhatsApp support and a safer booking flow.",
+            };
+        case "es":
+            return {
+                title: "Rick Travel | Tours privados en Rio de Janeiro",
+                description: "Reserva tours guiados en Rio de Janeiro con equipo acreditado, soporte rapido por WhatsApp y flujo de reserva mas seguro.",
+            };
+        case "sv":
+            return {
+                title: "Rick Travel | Privata turer i Rio de Janeiro",
+                description: "Boka guidade turer i Rio de Janeiro med certifierat team, snabb WhatsApp-support och tryggare bokningsflode.",
+            };
+        default:
+            return {
+                title: "Rick Travel | Passeios exclusivos no Rio de Janeiro",
+                description: "Reserve passeios guiados no Rio com equipe credenciada, suporte rapido no WhatsApp e fluxo de reserva mais seguro.",
+            };
+    }
+}
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+    const { locale } = await params;
+    const copy = getHomeMetadataCopy(locale);
+    const path = `/${locale}`;
+
+    return {
+        title: copy.title,
+        description: copy.description,
+        alternates: {
+            canonical: path,
+        },
+        openGraph: {
+            title: copy.title,
+            description: copy.description,
+            url: path,
+        },
+        twitter: {
+            title: copy.title,
+            description: copy.description,
+        },
+    };
+}
 
 export default function Home() {
     return (

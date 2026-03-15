@@ -1,4 +1,4 @@
-
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TourDetailClient } from "@/components/trips/tour-detail-client";
@@ -9,7 +9,7 @@ interface PageProps {
     params: Promise<{ id: string; locale: string }>;
 }
 
-export async function generateMetadata(props: PageProps) {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
     const params = await props.params;
     const trip = await prisma.trip.findUnique({
         where: { id: params.id },
@@ -28,9 +28,18 @@ export async function generateMetadata(props: PageProps) {
     return {
         title: `${localizedTitle} | Rick Travel`,
         description: localizedDescription || `Reserve your spot on ${localizedTitle}`,
+        alternates: {
+            canonical: `/${params.locale}/tours/${params.id}`,
+        },
         openGraph: {
             title: localizedTitle,
             description: localizedDescription,
+            url: `/${params.locale}/tours/${params.id}`,
+            images: trip.imageUrl ? [trip.imageUrl] : [],
+        },
+        twitter: {
+            title: localizedTitle,
+            description: localizedDescription || `Reserve your spot on ${localizedTitle}`,
             images: trip.imageUrl ? [trip.imageUrl] : [],
         },
     };

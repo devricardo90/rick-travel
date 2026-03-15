@@ -927,3 +927,565 @@ O formulario de contato ja persistia mensagens no banco, mas isso ainda nao exis
 - o admin ganhou controle real sobre o conteudo por idioma
 - a traducao automatica virou suporte, nao dependencia total
 - a base editorial do projeto ficou mais previsivel para evolucao internacional
+
+## Etapa 16 - Base de testes unitarios com Vitest
+
+### Passo 1 - Configuracao inicial
+
+- `package.json` ganhou o script `test`
+- foi criado `vitest.config.ts`
+- o runner foi configurado com:
+  - ambiente `node`
+  - aliases para `@/`
+  - limpeza automatica de mocks
+
+### Logica do passo 1
+
+- a meta foi criar base minima de testes sem entrar ainda em browser ou E2E
+- o foco ficou nos services porque ali esta a regra de negocio critica
+
+### Passo 2 - Testes do booking service
+
+- foi criado `tests/booking.service.test.ts`
+- cenarios cobertos:
+  - exigencia de `scheduleId` quando a trip tem agendas abertas
+  - bloqueio de booking duplicado
+  - bloqueio por capacidade excedida
+  - criacao correta como `PENDING` e `UNPAID`
+  - bloqueio de cancelamento dentro da janela de 24h
+
+### Logica do passo 2
+
+- os testes mockam `prisma` diretamente
+- isso isola a regra do service sem depender de banco real
+- a intencao foi cobrir as regras que mais afetam reserva e operacao
+
+### Passo 3 - Testes do schedule service
+
+- foi criado `tests/schedule.service.test.ts`
+- cenarios cobertos:
+  - faixa de datas invalida
+  - preco negativo
+  - bloqueio de exclusao com reservas ativas
+  - troca de status `OPEN/CLOSED`
+  - calculo de ocupacao e vagas restantes
+
+### Logica do passo 3
+
+- o foco aqui foi validar integridade operacional de agenda
+- isso reduz risco de regressao em capacidade e disponibilidade
+
+### Passo 4 - Ajuste de mocks para Vitest
+
+- os mocks do `prisma` passaram a usar `vi.hoisted()`
+
+### Logica do passo 4
+
+- isso evita erro de hoisting do `vi.mock`
+- a suite ficou compativel com o comportamento real do `Vitest`
+
+### Validacao executada
+
+- `npm.cmd run test` passou com `10` testes verdes
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- o projeto agora tem rede minima de seguranca sobre o core de reserva e agenda
+- novas mudancas nesses services podem ser validadas antes de chegar na UI
+- a base esta pronta para crescer depois com testes de pagamento e E2E
+
+## Etapa 17 - Expansao da suite para pagamento e trips
+
+### Passo 1 - Testes do payment service
+
+- foi criado `tests/payment.service.test.ts`
+- cenarios cobertos:
+  - criacao de checkout para reserva pagavel
+  - bloqueio de Pix com CPF invalido
+  - confirmacao de booking no webhook com efeitos colaterais
+
+### Logica do passo 1
+
+- os testes isolam `payment.service` de:
+  - banco real
+  - envio de e-mail
+  - analytics
+- isso permite validar a transicao critica:
+  - pagamento aprovado
+  - reserva confirmada
+  - e-mail disparado
+  - analytics emitido
+
+### Passo 2 - Testes do trip service
+
+- foi criado `tests/trip.service.test.ts`
+- cenarios cobertos:
+  - preservacao de traducoes manuais
+  - preenchimento automatico apenas para idiomas faltantes
+  - bloqueio de exclusao de trip com bookings ativos
+
+### Logica do passo 2
+
+- a regra de conteudo agora e hibrida:
+  - manual quando houver valor
+  - automatica como preenchimento de lacuna
+- os testes garantem que o service nao sobrescreva traducao manual valida
+
+### Passo 3 - Bug real encontrado e corrigido
+
+- os testes revelaram um bug no fallback de `highlights`
+- arrays vazios em idiomas secundarios estavam impedindo o preenchimento automatico
+- `lib/services/trip.service.ts` foi corrigido para:
+  - usar o valor manual apenas quando o array tiver itens
+  - cair para auto-traducao quando o array estiver vazio
+
+### Logica do passo 3
+
+- array vazio nao deve ser tratado como traducao manual valida
+- no dominio atual, vazio significa "nao preenchido"
+- isso vale especialmente para `EN`, `ES` e `SV`
+
+### Validacao executada
+
+- `npm.cmd run test` passou com `15` testes verdes
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- o projeto agora tem cobertura dos services mais criticos:
+  - booking
+  - schedule
+  - payment
+  - trip
+- a suite ja foi util para capturar regressao real na regra de i18n
+
+## Etapa 18 - Base E2E com Playwright
+
+### Passo 1 - Configuracao do runner
+
+- `package.json` ganhou o script `test:e2e`
+- foi criado `playwright.config.ts`
+- a configuracao sobe a app local automaticamente quando `PLAYWRIGHT_BASE_URL` nao estiver definido
+
+### Logica do passo 1
+
+- a base foi pensada para rodar tanto local quanto contra ambiente ja levantado
+- `PLAYWRIGHT_BASE_URL` permite reaproveitar um servidor externo sem subir outro
+
+### Passo 2 - Helper de autenticacao admin
+
+- foi criado `e2e/helpers/auth.ts`
+- o login admin usa:
+  - `E2E_ADMIN_EMAIL`
+  - `E2E_ADMIN_PASSWORD`
+
+### Logica do passo 2
+
+- credenciais nao foram hardcoded no repositorio
+- isso evita expor senha em teste versionado
+- os cenarios autenticados so rodam quando as variaveis estiverem configuradas
+
+### Passo 3 - Cenarios iniciais
+
+- foi criado `e2e/tours.spec.ts`
+- foi criado `e2e/admin.spec.ts`
+
+### Cobertura inicial
+
+- tours publica carrega
+- `/reservas` redireciona para login sem sessao
+- `/admin` redireciona para login sem sessao
+- dashboard admin carrega com login quando as credenciais estiverem definidas
+
+### Logica do passo 3
+
+- os primeiros testes E2E cobrem acesso e protecao de rota
+- isso entrega valor rapido sem depender ainda de dados complexos de reserva
+- a parte autenticada ficou preparada para crescer quando o ambiente de teste tiver credenciais controladas
+
+### Validacao executada
+
+- `npm.cmd run test:e2e` executado com sucesso parcial:
+  - `3` testes passaram
+  - `1` teste ficou `skip`
+- cenarios verdes:
+  - tours publica carrega
+  - `/admin` redireciona sem sessao
+  - `/reservas` redireciona sem sessao
+- cenario autenticado preparado:
+  - dashboard admin apos login
+  - depende de `E2E_ADMIN_EMAIL` e `E2E_ADMIN_PASSWORD`
+
+### Resultado pratico
+
+- o projeto agora tem cobertura E2E minima de navegacao e protecao de rota
+- a infraestrutura de browser local ficou instalada e funcional
+- o proximo salto natural e transformar o teste autenticado em verde e adicionar reserva ponta a ponta
+
+## Etapa 19 - E2E autenticado com setup automatico
+
+### Passo 1 - Setup global de dados de teste
+
+- foi criado `e2e/global.setup.ts`
+- o setup agora:
+  - recria o admin E2E
+  - recria o usuario E2E
+  - promove o admin para papel `ADMIN`
+  - garante um trip e uma agenda proprios da suite
+  - limpa bookings antigos do usuario E2E nesse trip
+  - grava os ids em `.e2e-data.json`
+
+### Logica do passo 1
+
+- a suite deixou de depender de contas reais do banco
+- os dados de teste passam a ser deterministas
+- isso reduz fragilidade entre uma execucao e outra
+
+### Passo 2 - Autenticacao E2E estavel
+
+- `e2e/helpers/auth.ts` passou a usar credenciais E2E controladas
+- o login passou a usar `redirect` explicito no proprio form
+
+### Logica do passo 2
+
+- isso evita corrida entre submit e navegacao manual do teste
+- tambem alinha o fluxo com o comportamento real da pagina de login
+
+### Passo 3 - Reserva ponta a ponta
+
+- foi criado `e2e/booking.spec.ts`
+- o teste cobre:
+  - login do usuario E2E
+  - abertura do detalhe do tour E2E
+  - criacao da reserva via UI
+  - validacao da resposta `201` da API
+  - verificacao da reserva em `/reservas`
+
+### Passo 4 - Ajustes de infraestrutura E2E
+
+- `playwright.config.ts` passou a usar `localhost`
+- foi instalado o Chromium do Playwright
+- o teste do dashboard admin foi estabilizado com seletor especifico
+
+### Logica do passo 4
+
+- `localhost` precisou ser usado para alinhar o dominio do cookie com o auth
+- isso corrigiu a perda de sessao que acontecia em `127.0.0.1`
+
+### Validacao executada
+
+- `npm.cmd run test:e2e` passou com `5` testes verdes
+
+### Resultado pratico
+
+- o projeto agora tem cobertura E2E real de:
+  - acesso publico
+  - protecao de rota
+  - login admin
+  - dashboard admin
+  - reserva ponta a ponta
+
+## Etapa 20 - Tour tecnico E2E oculto da operacao
+
+### Passo 1 - Renomeacao explicita do tour de teste
+
+- a suite E2E deixou de usar um nome ambigoo como "Passeio E2E Playwright"
+- o tour tecnico passou a ser identificado como:
+  - `TESTE E2E - NAO USAR`
+
+### Logica do passo 1
+
+- o objetivo foi evitar confusao operacional no admin e no banco
+- o nome agora comunica claramente que se trata de fixture tecnica
+- isso reduz risco de alguem editar, publicar ou usar esse tour por engano
+
+### Passo 2 - Flag de publicacao na entidade Trip
+
+- foi adicionado `Trip.isPublished` em `prisma/schema.prisma`
+- foi criada a migration:
+  - `prisma/migrations/20260315194500_add_trip_is_published/migration.sql`
+- o formulario admin passou a permitir marcar um passeio como:
+  - publicado
+  - oculto
+
+### Logica do passo 2
+
+- nem todo tour existente no banco deve aparecer na vitrine publica
+- `isPublished` separa:
+  - existencia tecnica ou editorial do registro
+  - disponibilidade publica no site
+- isso tambem cria base futura para rascunho editorial e pre-lancamento
+
+### Passo 3 - Ocultacao na vitrine publica
+
+- `components/trip-list.tsx` passou a listar apenas `isPublished = true`
+- `app/api/trips/route.ts` passou a expor apenas tours publicados
+- `app/sitemap.ts` passou a indexar apenas tours publicados
+
+### Logica do passo 3
+
+- o tour E2E continua existindo no banco
+- ele deixa de poluir:
+  - listagem publica
+  - endpoints publicos de tours
+  - sitemap
+- isso preserva a utilidade tecnica do fixture sem impacto comercial
+
+### Passo 4 - Compatibilidade com a suite E2E
+
+- o `globalSetup` do Playwright agora garante que o tour tecnico:
+  - exista
+  - esteja oculto
+  - tenha titulo explicito de teste
+- o detalhe do tour continua acessivel por `id` para a suite, mesmo oculto da listagem
+
+### Logica do passo 4
+
+- o teste precisa de um tour previsivel e controlado
+- ao mesmo tempo, esse tour nao deve aparecer para usuario final
+- a decisao foi manter acesso direto por `id` para fixture interna e esconder o tour dos fluxos de descoberta publica
+
+### Passo 5 - Ajuste de infraestrutura E2E
+
+- `playwright.config.ts` passou a preferir `127.0.0.1`
+- `lib/auth.ts` passou a aceitar explicitamente origens locais de desenvolvimento no Better Auth
+- `eslint.config.mjs` passou a ignorar artefatos do Playwright e o arquivo `.e2e-data.json`
+
+### Logica do passo 5
+
+- isso evita falha intermitente por resolucao em `::1` no ambiente local
+- isso tambem evita bloqueio de login por origem local valida durante a suite E2E
+- e impede que o lint dependa da existencia fisica de pastas geradas como `test-results`
+- quando houver servidor ja rodando, `PLAYWRIGHT_BASE_URL` continua podendo sobrescrever a URL base
+
+### Validacao executada
+
+- `npx.cmd prisma generate` passou
+- `npx.cmd prisma migrate deploy` passou
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+- a suite E2E foi mantida preparada para reuso com fixture tecnica isolada
+
+### Resultado pratico
+
+- o tour de teste ficou claramente identificado
+- o fixture E2E saiu da operacao publica
+- o projeto ganhou um controle de publicacao util tambem para conteudo real
+
+## Etapa 21 - Recuperacao de abandono de checkout no admin
+
+### Passo 1 - Definicao operacional de abandono
+
+- abandono passou a ser tratado como:
+  - `Booking.status = PENDING`
+  - `Booking.paymentStatus = UNPAID`
+  - com evento `CHECKOUT_STARTED` ou `PIX_GENERATED`
+  - sem evento `PAYMENT_CONFIRMED`
+
+### Logica do passo 1
+
+- a intencao foi separar curiosidade de compra real
+- so entra na fila quem efetivamente iniciou pagamento
+- pagamento confirmado exclui o caso da recuperacao
+- a fila ficou focada em perda comercial acionavel, nao em navegacao superficial
+
+### Passo 2 - Resumo consolidado no analytics service
+
+- `lib/services/analytics.service.ts` ganhou `getAbandonedCheckoutSummary()`
+- o service agora retorna:
+  - total de abandonos
+  - quantos ficaram em `CHECKOUT_STARTED`
+  - quantos chegaram em `PIX_GENERATED`
+  - lista curta das reservas mais recentes para acao
+
+### Logica do passo 2
+
+- `PIX_GENERATED` foi tratado como etapa mais avancada do abandono
+- isso prioriza casos com maior intencao comercial
+- o resumo foi mantido em camada de service para evitar duplicar leitura de analytics nas pages
+
+### Passo 3 - Dashboard admin com fila operacional
+
+- `app/[locale]/admin/page.tsx` passou a mostrar:
+  - card de recuperacao de checkout
+  - resumo por etapa
+  - lista das reservas abandonadas mais recentes
+  - link direto para a fila completa de bookings
+
+### Logica do passo 3
+
+- a tela principal do admin agora sinaliza abandono sem depender de leitura manual do funil
+- os casos com `Pix gerado` aparecem como prioridade operacional mais alta
+- o operador consegue sair do dashboard direto para a reserva filtrada
+
+### Passo 4 - Filtro dedicado na tela de reservas
+
+- `app/[locale]/admin/bookings/page.tsx` passou a aceitar `?recovery=abandoned`
+- esse filtro isola:
+  - reservas pendentes
+  - nao pagas
+  - com checkout iniciado
+  - sem pagamento confirmado
+
+### Logica do passo 4
+
+- a fila de recuperacao foi ligada a uma tela que o time ja usa
+- isso evita criar area nova e fragmentar a operacao
+- o fluxo fica:
+  - dashboard detecta
+  - bookings filtra
+  - operador age na reserva
+
+### Validacao executada
+
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- o admin agora tem fila real de abandono de checkout
+- o funil deixou de ser apenas leitura gerencial e virou insumo operacional
+- o projeto ficou mais alinhado ao principio de reduzir risco operacional antes de expandir UX
+
+## Etapa 22 - Atualizacao automatica do pagamento em /reservas
+
+### Passo 1 - Polling condicionado por reserva pendente
+
+- `components/my-bookings.tsx` passou a refazer a leitura da API de bookings automaticamente
+- o polling so ativa quando existe ao menos uma reserva:
+  - `PENDING`
+  - `UNPAID`
+
+### Logica do passo 1
+
+- a pagina nao deve fazer polling para todo usuario o tempo inteiro
+- o refresh automatico so faz sentido enquanto ha pagamento em aberto
+- isso reduz carga desnecessaria e mantem o comportamento focado no momento de conversao
+
+### Passo 2 - Revalidacao quando a aba volta a ficar ativa
+
+- a tela agora dispara nova leitura quando:
+  - a janela recebe foco
+  - a aba volta a ficar visivel
+
+### Logica do passo 2
+
+- o usuario muitas vezes sai da aba para pagar o Pix e depois retorna
+- nesse momento, atualizar imediatamente e mais util do que esperar o proximo intervalo
+- isso reduz a necessidade de refresh manual apos pagamento
+
+### Passo 3 - Sinalizacao visual discreta
+
+- a tela de `/reservas` passou a mostrar aviso de atualizacao automatica enquanto houver pagamento pendente
+- durante o polling silencioso, a UI informa que esta verificando confirmacao
+
+### Logica do passo 3
+
+- o objetivo foi reduzir ambiguidade para o usuario
+- a interface deixa claro que o status pode mudar sozinho apos o webhook de pagamento
+- isso melhora a UX sem criar dependencia de websocket ou infra adicional
+
+### Validacao executada
+
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- o usuario nao precisa mais atualizar a pagina manualmente para ver a reserva confirmada
+- o fluxo de Pix ficou mais coerente com a confirmacao assíncrona via webhook
+- a melhoria respeitou o roadmap porque expandiu UX apenas depois de fechar o risco operacional principal
+
+## Ponto de Pausa Atual
+
+### O que ficou fechado antes da pausa
+
+- risco operacional principal tratado
+- arquitetura principal consolidada
+- admin fortalecido
+- recuperacao de abandono implementada
+- `/reservas` com atualizacao automatica de pagamento
+
+### O que ficou pausado para retomar amanha
+
+- fechamento externo do Mercado Pago
+- configuracao real de credenciais e webhook
+- validacao ponta a ponta do Pix fora do ambiente puramente local
+
+### Logica guardada da retomada
+
+- a proxima etapa nao e mais estrutural
+- ela e de integracao externa e validacao operacional real
+- o codigo-base necessario ja existe
+- a retomada deve partir de `MERCADO_PAGO_SETUP.md` e depois voltar para testes operacionais
+
+## Etapa 23 - Pacote visual comercial
+
+### Passo 1 - Home com argumento comercial mais claro
+
+- a home ganhou reforco comercial no hero e um novo bloco `HomeSalesStrip`
+- o hero agora comunica melhor:
+  - descricao de valor
+  - tempo de resposta no WhatsApp
+  - apoio humano para montar roteiro
+
+### Logica do passo 1
+
+- a home precisava vender melhor sem mexer no core
+- o objetivo foi reduzir friccao entre interesse inicial e pedido de orcamento
+- a prova social e os sinais de seguranca passaram a aparecer mais cedo na jornada
+
+### Passo 2 - Jornada de WhatsApp contextual
+
+- foi criado `lib/whatsapp.ts`
+- os links de WhatsApp passaram a ser gerados com contexto de:
+  - origem
+  - tour
+  - cidade
+  - data, quando houver
+
+### Logica do passo 2
+
+- link solto de WhatsApp converte pior e perde contexto comercial
+- agora a equipe recebe mensagem mais util para responder rapido
+- isso melhora quote assistido sem alterar a logica de reserva
+
+### Passo 3 - Pagina de detalhe mais orientada a conversao
+
+- `TourActions` ganhou CTA secundario de WhatsApp
+- a pagina de detalhe ganhou bloco de confianca comercial
+
+### Logica do passo 3
+
+- nem todo usuario quer reservar no primeiro clique
+- parte do publico precisa validar agenda, formato ou atendimento
+- o detalhe agora oferece dois caminhos claros:
+  - reservar
+  - pedir orientacao no WhatsApp
+
+### Passo 4 - SEO publico revisado
+
+- home ganhou metadata contextual por locale
+- listagem de tours ganhou metadata mais forte
+- detalhe ganhou canonical e reforco de Open Graph/Twitter
+- `robots.ts` e `sitemap.ts` foram revisados
+
+### Logica do passo 4
+
+- a revisao focou no basico que impacta descoberta e consistencia
+- o sitemap agora respeita rotas com locale
+- areas privadas e API ficaram melhor sinalizadas para robots
+
+### Validacao executada
+
+- `npx.cmd tsc --noEmit` passou
+- `npm.cmd run lint` passou
+
+### Resultado pratico
+
+- a apresentacao comercial ficou mais clara
+- a jornada de quote via WhatsApp ficou mais intencional
+- home, tours e detalhe ficaram melhores para conversao sem tocar no core operacional

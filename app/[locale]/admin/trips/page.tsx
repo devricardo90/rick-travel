@@ -43,6 +43,7 @@ export default async function AdminTripsPage({
               <th className="px-4 py-4">Cidade</th>
               <th className="px-4 py-4">Preco</th>
               <th className="px-4 py-4">Data</th>
+              <th className="px-4 py-4">Publicacao</th>
               <th className="px-4 py-4">Traducao</th>
               <th className="px-4 py-4 text-right">Acoes</th>
             </tr>
@@ -50,7 +51,7 @@ export default async function AdminTripsPage({
           <tbody className="divide-y divide-border/50">
             {trips.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-muted-foreground">
+                <td colSpan={8} className="py-8 text-center text-muted-foreground">
                   Nenhuma viagem cadastrada.
                 </td>
               </tr>
@@ -78,6 +79,17 @@ export default async function AdminTripsPage({
                     </td>
                     <td className="px-4 py-4 text-foreground/80">
                       {trip.startDate ? new Date(trip.startDate).toLocaleDateString("pt-BR") : "-"}
+                    </td>
+                    <td className="px-4 py-4">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                          trip.isPublished
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
+                            : "bg-slate-200 text-slate-800 dark:bg-slate-900/40 dark:text-slate-300"
+                        }`}
+                      >
+                        {trip.isPublished ? "Publicado" : "Oculto"}
+                      </span>
                     </td>
                     <td className="px-4 py-4">
                       {lastTranslation ? (

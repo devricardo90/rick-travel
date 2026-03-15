@@ -26,9 +26,10 @@ export default async function AdminBookingsPage({
         paymentStatus?: string;
         dateFrom?: string;
         dateTo?: string;
+        recovery?: string;
     }>;
 }) {
-    const { q, status, paymentStatus, dateFrom, dateTo } = await searchParams;
+    const { q, status, paymentStatus, dateFrom, dateTo, recovery } = await searchParams;
 
     const normalizedStatus =
         status && ["PENDING", "CONFIRMED", "CANCELED"].includes(status) ? (status as BookingStatus) : undefined;
@@ -65,6 +66,19 @@ export default async function AdminBookingsPage({
                 ...(endDate ? { lte: endDate } : {}),
             },
         });
+    }
+
+    if (recovery === "abandoned") {
+        andFilters.push(
+            { status: "PENDING" },
+            { paymentStatus: "UNPAID" },
+            {
+                analyticsEvents: {
+                    some: { type: { in: ["CHECKOUT_STARTED", "PIX_GENERATED"] } },
+                    none: { type: "PAYMENT_CONFIRMED" },
+                },
+            }
+        );
     }
 
     const bookings = await prisma.booking.findMany({
@@ -106,7 +120,14 @@ export default async function AdminBookingsPage({
             <div className="flex flex-col gap-4 mb-8">
                 <h1 className="text-3xl font-bold">Gerenciar Reservas</h1>
 
+                {recovery === "abandoned" ? (
+                    <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+                        Exibindo fila de recuperacao: reservas com checkout iniciado ou Pix gerado sem pagamento confirmado.
+                    </div>
+                ) : null}
+
                 <form className="grid gap-3 rounded-xl border bg-card p-4 md:grid-cols-5">
+                    {recovery === "abandoned" ? <input type="hidden" name="recovery" value="abandoned" /> : null}
                     <input
                         type="text"
                         name="q"

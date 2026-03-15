@@ -57,6 +57,7 @@ export default function TripForm({ initialData }: TripFormProps) {
     location: initialData?.location || "",
     price: initialData?.priceCents ? (initialData.priceCents / 100).toFixed(2) : "",
     imageUrl: initialData?.imageUrl || "",
+    isPublished: initialData?.isPublished ?? true,
     startDate: initialData?.startDate ? new Date(initialData.startDate).toISOString().split("T")[0] : "",
     endDate: initialData?.endDate ? new Date(initialData.endDate).toISOString().split("T")[0] : "",
     maxGuests: initialData?.maxGuests?.toString() || "",
@@ -99,8 +100,14 @@ export default function TripForm({ initialData }: TripFormProps) {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox" && "checked" in e.target
+          ? (e.target as HTMLInputElement).checked
+          : value,
+    }));
   };
 
   const parseList = (value: string) => value.split("\n").map((line) => line.trim()).filter(Boolean);
@@ -133,6 +140,7 @@ export default function TripForm({ initialData }: TripFormProps) {
         },
         priceCents,
         imageUrl: formData.imageUrl || undefined,
+        isPublished: formData.isPublished,
         startDate: formData.startDate || null,
         endDate: formData.endDate || null,
         maxGuests,
@@ -250,6 +258,22 @@ export default function TripForm({ initialData }: TripFormProps) {
             placeholder="https://exemplo.com/imagem.jpg"
           />
         </div>
+
+        <label className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 md:col-span-2">
+          <input
+            name="isPublished"
+            type="checkbox"
+            checked={formData.isPublished}
+            onChange={handleChange}
+            className="h-4 w-4 rounded border-border"
+          />
+          <div>
+            <div className="text-sm font-semibold text-foreground/80">Publicar na vitrine</div>
+            <div className="text-xs text-muted-foreground">
+              Quando desmarcado, o passeio fica oculto das listagens e buscas publicas.
+            </div>
+          </div>
+        </label>
       </div>
 
       <section className="space-y-4 rounded-xl border border-border/80 bg-muted/20 p-4">

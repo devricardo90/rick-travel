@@ -7,6 +7,9 @@ export const revalidate = 60
 export async function GET() {
     try {
         const trips = await prisma.trip.findMany({
+            where: {
+                isPublished: true,
+            },
             select: {
                 id: true,
                 title: true,

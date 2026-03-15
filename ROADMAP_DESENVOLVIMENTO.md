@@ -31,6 +31,66 @@ Os principais gaps atuais sao:
 - Em seguida melhorar a operacao do admin
 - So depois expandir UX, analytics e escala
 
+## Status Atual do Roadmap
+
+### 1. Corrigir risco operacional
+
+Status: `quase concluido`
+
+Ja entregue:
+
+- reservas `PENDING` e `UNPAID`
+- confirmacao por webhook
+- protecao de `/reservas`
+- validacoes de agenda e cancelamento
+- recuperacao de abandono de checkout no admin
+
+Pendente:
+
+- fechamento externo do Mercado Pago com credenciais e webhook publico
+
+### 2. Consolidar a arquitetura
+
+Status: `concluido na base principal`
+
+Ja entregue:
+
+- camada `services`
+- `authz` centralizado
+- `DomainError`
+- typecheck saneado
+- camada de e-mail
+- testes unitarios e E2E
+
+### 3. Melhorar a operacao do admin
+
+Status: `bem avancado`
+
+Ja entregue:
+
+- dashboard operacional
+- filtros de reservas
+- fila de abandono
+- contatos com workflow
+- agendas com ocupacao e fechamento
+- publicacao de passeios
+
+### 4. Expandir UX, analytics e escala
+
+Status: `iniciado`
+
+Ja entregue:
+
+- analytics de funil
+- origem de trafego
+- polling automatico em `/reservas`
+
+Pausado para depois:
+
+- CI/CD
+- observabilidade
+- refinamentos extras de UX
+
 ## Fase 1 - Estabilizacao do Core
 
 Prazo sugerido: Semana 1
@@ -243,12 +303,10 @@ Ordem sugerida de execucao:
 
 ## Proximo Passo Recomendado
 
-Iniciar pela Fase 1 com um pacote fechado de implementacao:
+Retomada planejada:
 
-1. Corrigir fluxo de booking para `PENDING`
-2. Proteger `/reservas`
-3. Endurecer validacao de agenda
-4. Revisar cancelamento
-5. Preparar base para gateway de pagamento
+1. Fechar configuracao externa do Mercado Pago
+2. Validar webhook publico
+3. Executar teste ponta a ponta do Pix real
 
-Esse pacote entrega a maior reducao de risco no menor tempo.
+Esse e o ponto correto para retomar amanha sem perder a ordem do roadmap.

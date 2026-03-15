@@ -1,5 +1,24 @@
 # Setup Mercado Pago
 
+## Estado Atual
+
+O codigo da integracao ja esta pronto no projeto.
+
+Ja implementado:
+
+- criacao de Pix
+- persistencia em `PaymentAttempt`
+- webhook para confirmar `Booking`
+- atualizacao automatica em `/reservas`
+- leitura operacional no admin
+
+O que ficou pausado para retomar depois:
+
+- configurar `MP_ACCESS_TOKEN` real
+- configurar `MP_WEBHOOK_SECRET`, se desejado
+- apontar webhook para URL publica
+- validar o fluxo externo ponta a ponta
+
 ## O que voce precisa fazer na conta
 
 1. Criar ou acessar sua aplicacao no Mercado Pago Developers.
@@ -50,3 +69,13 @@ BETTER_AUTH_URL=https://seu-dominio.com
 4. validar mudanca de status no booking
 5. validar email de confirmacao
 6. so depois trocar para credenciais de producao
+
+## Proximo Ponto de Retomada
+
+Quando voltarmos neste tema:
+
+1. confirmar ambiente de homologacao
+2. colocar `MP_ACCESS_TOKEN`
+3. expor a aplicacao com URL publica
+4. cadastrar webhook
+5. rodar teste real de pagamento

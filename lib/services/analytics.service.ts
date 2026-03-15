@@ -100,3 +100,101 @@ export async function getAnalyticsAttributionSummary(since: Date) {
     })),
   };
 }
+
+const ABANDONED_CHECKOUT_EVENT_TYPES: AnalyticsEventType[] = [
+  "CHECKOUT_STARTED",
+  "PIX_GENERATED",
+];
+
+type AbandonedCheckoutEvent = {
+  type: AnalyticsEventType;
+  createdAt: Date;
+};
+
+function getMostAdvancedAbandonedStage(events: AbandonedCheckoutEvent[]) {
+  const hasPixGenerated = events.some((event) => event.type === "PIX_GENERATED");
+
+  if (hasPixGenerated) {
+    return "PIX_GENERATED" as const;
+  }
+
+  return "CHECKOUT_STARTED" as const;
+}
+
+export async function getAbandonedCheckoutSummary(since: Date) {
+  const bookings = await prisma.booking.findMany({
+    where: {
+      createdAt: { gte: since },
+      status: "PENDING",
+      paymentStatus: "UNPAID",
+      analyticsEvents: {
+        some: {
+          type: { in: ABANDONED_CHECKOUT_EVENT_TYPES },
+          createdAt: { gte: since },
+        },
+        none: {
+          type: "PAYMENT_CONFIRMED",
+          createdAt: { gte: since },
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 10,
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      trip: {
+        select: {
+          title: true,
+          city: true,
+        },
+      },
+      schedule: {
+        select: {
+          startAt: true,
+        },
+      },
+      analyticsEvents: {
+        where: {
+          type: { in: ABANDONED_CHECKOUT_EVENT_TYPES },
+          createdAt: { gte: since },
+        },
+        orderBy: { createdAt: "desc" },
+        select: {
+          type: true,
+          createdAt: true,
+        },
+      },
+    },
+  });
+
+  const items = bookings.map((booking) => {
+    const stage = getMostAdvancedAbandonedStage(booking.analyticsEvents);
+    const lastEventAt = booking.analyticsEvents[0]?.createdAt ?? booking.updatedAt;
+
+    return {
+      id: booking.id,
+      user: booking.user,
+      trip: booking.trip,
+      schedule: booking.schedule,
+      totalPriceCents: booking.totalPriceCents,
+      createdAt: booking.createdAt,
+      abandonedStage: stage,
+      lastCheckoutEventAt: lastEventAt,
+    };
+  });
+
+  const pixGeneratedCount = items.filter((item) => item.abandonedStage === "PIX_GENERATED").length;
+  const checkoutStartedCount = items.length - pixGeneratedCount;
+
+  return {
+    total: items.length,
+    checkoutStartedCount,
+    pixGeneratedCount,
+    items,
+  };
+}

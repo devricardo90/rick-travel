@@ -23,7 +23,9 @@ export default async function TripList({ searchParams }: TripListProps) {
   const level = searchParams?.level && searchParams.level !== 'all' ? searchParams.level : undefined;
   const children = searchParams?.children === 'true' ? true : undefined;
 
-  const where: Prisma.TripWhereInput = {};
+  const where: Prisma.TripWhereInput = {
+    isPublished: true,
+  };
 
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.priceCents = {};

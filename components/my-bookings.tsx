@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from 'next-intl';
 import { trackClientEvent } from "@/lib/analytics/client";
 import { getLocalizedField } from '@/lib/localized-field';
+import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 
 type BookingStatus = "PENDING" | "CONFIRMED" | "CANCELED";
 
@@ -56,10 +57,24 @@ function StatusBadge({ status }: { status: BookingStatus }) {
 export function MyBookings() {
   const [data, setData] = useState<Booking[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const locale = useLocale();
+  const lastPendingBookingIdsRef = useRef<string>("");
+  const whatsappQuoteUrl = buildWhatsAppQuoteUrl({
+    locale,
+    source: "bookings",
+    city: "Rio de Janeiro",
+  });
 
-  async function load() {
-    setError(null);
+  async function load(options?: { silent?: boolean }) {
+    const silent = options?.silent ?? false;
+
+    if (!silent) {
+      setError(null);
+    } else {
+      setIsRefreshing(true);
+    }
+
     try {
       const res = await fetch("/api/bookings", {
         credentials: "include",
@@ -76,13 +91,26 @@ export function MyBookings() {
       }
 
       const json = await res.json();
-      setData(Array.isArray(json) ? json : []);
+      const bookings = Array.isArray(json) ? json : [];
+      setData(bookings);
+
+      const currentPendingIds = bookings
+        .filter((booking) => booking.status === "PENDING" && booking.paymentStatus === "UNPAID")
+        .map((booking) => booking.id)
+        .sort()
+        .join(",");
+
+      lastPendingBookingIdsRef.current = currentPendingIds;
     } catch (err) {
       if (err instanceof Response && err.status === 401) {
         setData([]);
       } else {
         setError("Erro ao carregar suas reservas");
         setData([]);
+      }
+    } finally {
+      if (silent) {
+        setIsRefreshing(false);
       }
     }
   }
@@ -164,6 +192,28 @@ export function MyBookings() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!data?.some((booking) => booking.status === "PENDING" && booking.paymentStatus === "UNPAID")) {
+      return;
+    }
+
+    const refreshPendingBookings = () => {
+      if (document.visibilityState === "visible") {
+        void load({ silent: true });
+      }
+    };
+
+    const intervalId = window.setInterval(refreshPendingBookings, 15000);
+    window.addEventListener("focus", refreshPendingBookings);
+    document.addEventListener("visibilitychange", refreshPendingBookings);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("focus", refreshPendingBookings);
+      document.removeEventListener("visibilitychange", refreshPendingBookings);
+    };
+  }, [data]);
+
   if (error) return <p className="text-center text-sm text-red-200">{error}</p>;
   
   if (data === null) {
@@ -192,7 +242,7 @@ export function MyBookings() {
             <a href={`/${locale}/tours`}>Explorar Passeios</a>
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-xl px-8 font-semibold">
-            <a href="https://wa.me/5521971168114" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappQuoteUrl} target="_blank" rel="noopener noreferrer">
               Solicitar orçamento no WhatsApp
             </a>
           </Button>
@@ -257,6 +307,13 @@ export function MyBookings() {
 
   return (
     <div className="space-y-10">
+      {data.some((booking) => booking.status === "PENDING" && booking.paymentStatus === "UNPAID") ? (
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+          A pagina atualiza automaticamente o status do pagamento a cada poucos segundos.
+          {isRefreshing ? " Verificando confirmacao..." : null}
+        </div>
+      ) : null}
+
       {active.length > 0 ? (
         <div className="space-y-4">
           <h4 className="text-base font-semibold">Minhas reservas</h4>

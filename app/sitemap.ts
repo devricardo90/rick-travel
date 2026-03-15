@@ -1,36 +1,33 @@
-import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma'
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
+import { routing } from "@/i18n/routing";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://ricktravel.com.br'
+  const baseUrl = "https://ricktravel.com.br";
+  const staticRoutes = ["", "/tours", "/login", "/register", "/quem-somos", "/contato"];
 
-    // Rotas estáticas
-    const routes = [
-        '',
-        '/tours',
-        '/login',
-        '/register',
-        '/quem-somos',
-        '/contato',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily' as const,
-        priority: 1,
+  const routes = routing.locales.flatMap((locale) =>
+    staticRoutes.map((route) => ({
+      url: `${baseUrl}/${locale}${route}`,
+      lastModified: new Date(),
+      changeFrequency: route === "" ? ("daily" as const) : ("weekly" as const),
+      priority: route === "" ? 1 : 0.8,
     }))
+  );
 
-    // Rotas dinâmicas (Tours)
-    // Usando createdAt como fallback para lastModified se updatedAt não estiver disponível no tipo gerado
-    const trips = await prisma.trip.findMany({
-        select: { id: true, createdAt: true }
-    })
+  const trips = await prisma.trip.findMany({
+    where: { isPublished: true },
+    select: { id: true, createdAt: true },
+  });
 
-    const tripRoutes = trips.map((trip) => ({
-        url: `${baseUrl}/tours/${trip.id}`,
-        lastModified: trip.createdAt,
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
+  const tripRoutes = routing.locales.flatMap((locale) =>
+    trips.map((trip) => ({
+      url: `${baseUrl}/${locale}/tours/${trip.id}`,
+      lastModified: trip.createdAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
     }))
+  );
 
-    return [...routes, ...tripRoutes]
+  return [...routes, ...tripRoutes];
 }

@@ -76,11 +76,14 @@ async function resolveLocalizedList(
   const manualPtValue = normalizeList(manualTranslations?.pt);
   const ptValue = manualPtValue.length > 0 ? manualPtValue : normalizeList(legacyValue);
   const autoTranslation = ptValue.length > 0 ? await translateArrayWithMeta(ptValue, "pt") : null;
+  const manualEn = normalizeList(manualTranslations?.en);
+  const manualEs = normalizeList(manualTranslations?.es);
+  const manualSv = normalizeList(manualTranslations?.sv);
   const translations = {
     pt: ptValue,
-    en: normalizeList(manualTranslations?.en) || autoTranslation?.translations.en || [],
-    es: normalizeList(manualTranslations?.es) || autoTranslation?.translations.es || [],
-    sv: normalizeList(manualTranslations?.sv) || autoTranslation?.translations.sv || [],
+    en: manualEn.length > 0 ? manualEn : autoTranslation?.translations.en || [],
+    es: manualEs.length > 0 ? manualEs : autoTranslation?.translations.es || [],
+    sv: manualSv.length > 0 ? manualSv : autoTranslation?.translations.sv || [],
   };
 
   const missingLocales = TARGET_LOCALES.filter((locale) => normalizeList(manualTranslations?.[locale]).length === 0);
@@ -129,6 +132,7 @@ async function buildTripPayload(data: TripInput) {
       city: validated.city,
       priceCents: validated.priceCents,
       imageUrl: validated.imageUrl,
+      isPublished: validated.isPublished,
       location: validated.location,
       maxGuests: validated.maxGuests,
       startDate,

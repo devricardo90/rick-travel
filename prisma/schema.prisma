@@ -80,6 +80,7 @@ model Trip {
   title           Json
   description     Json?
   highlights      Json
+  isPublished     Boolean       @default(true)
   childrenAllowed Boolean       @default(true)
   durationDays    Int           @default(1)
   physicalLevel   PhysicalLevel @default(LIGHT)

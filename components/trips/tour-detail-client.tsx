@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { format } from "date-fns";
 import { ptBR, enUS, es, sv, Locale } from "date-fns/locale";
-import { Calendar, MapPin, Users, Clock, CheckCircle2, ChevronLeft } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, CheckCircle2, ChevronLeft, ShieldCheck, BadgeCheck, MessageCircleMore } from "lucide-react";
 import { useTranslations, useLocale } from 'next-intl';
 
 import { trackClientEvent } from "@/lib/analytics/client";
@@ -38,10 +38,44 @@ interface TourDetailClientProps {
     }>;
 }
 
+function getReserveConfidenceCopy(locale: string) {
+    switch (locale) {
+        case "en":
+            return {
+                title: "Why book with Rick Travel",
+                item1: "Licensed guide operation with support before your tour",
+                item2: "Booking flow with clear payment confirmation and live status",
+                item3: "If you prefer, our team can shape the itinerary with you on WhatsApp",
+            };
+        case "es":
+            return {
+                title: "Por que reservar con Rick Travel",
+                item1: "Operacion con guia acreditado y soporte antes del tour",
+                item2: "Reserva con confirmacion clara del pago y seguimiento del estado",
+                item3: "Si prefieres, nuestro equipo puede montar el itinerario contigo por WhatsApp",
+            };
+        case "sv":
+            return {
+                title: "Varfor boka med Rick Travel",
+                item1: "Certifierad guideverksamhet med support innan din tur",
+                item2: "Bokning med tydlig betalningsbekraftelse och statusuppfoljning",
+                item3: "Om du foredrar det kan vart team forma resplanen med dig via WhatsApp",
+            };
+        default:
+            return {
+                title: "Por que reservar com a Rick Travel",
+                item1: "Operacao com guia credenciado e suporte antes do passeio",
+                item2: "Reserva com confirmacao clara de pagamento e acompanhamento do status",
+                item3: "Se preferir, nossa equipe monta um roteiro e tira duvidas pelo WhatsApp",
+            };
+    }
+}
+
 export function TourDetailClient({ trip, startDate, schedules }: TourDetailClientProps) {
     const t = useTranslations('TourDetailPage');
     const locale = useLocale();
     const hasTrackedViewRef = useRef(false);
+    const reserveConfidence = getReserveConfidenceCopy(locale);
 
     // Map locale to date-fns locale
     const dateLocaleMap: Record<string, Locale> = {
@@ -143,7 +177,33 @@ export function TourDetailClient({ trip, startDate, schedules }: TourDetailClien
 
                 {/* Sidebar */}
                 <div className="space-y-6">
-                    <TourActions tripId={trip.id} priceCents={trip.priceCents} schedules={schedules} />
+                    <TourActions
+                        tripId={trip.id}
+                        priceCents={trip.priceCents}
+                        tripTitle={String(localizedTitle)}
+                        city={trip.city}
+                        schedules={schedules}
+                    />
+
+                    <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-6">
+                        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-emerald-900">
+                            {reserveConfidence.title}
+                        </h3>
+                        <div className="space-y-3 text-sm text-emerald-900/90">
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
+                                <span>{reserveConfidence.item1}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0" />
+                                <span>{reserveConfidence.item2}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <MessageCircleMore className="mt-0.5 h-4 w-4 shrink-0" />
+                                <span>{reserveConfidence.item3}</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="rounded-xl border bg-muted/30 p-6 space-y-4">
                         <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">{t('information')}</h3>

@@ -24,6 +24,7 @@ export const tripSchema = z
     descriptionTranslations: localizedTextSchema.optional(),
     priceCents: z.coerce.number().min(0, "O preco nao pode ser negativo"),
     imageUrl: z.string().optional(),
+    isPublished: z.boolean().optional().default(true),
     startDate: z.string().optional().nullable(),
     endDate: z.string().optional().nullable(),
     maxGuests: z.coerce.number().optional().nullable(),

@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import { trackClientEvent } from "@/lib/analytics/client";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, MessageCircleMore } from "lucide-react";
 import { useTranslations, useLocale } from 'next-intl';
+import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 
 interface TourActionsProps {
     tripId: string;
     priceCents: number;
+    tripTitle?: string;
+    city?: string;
     schedules?: Array<{
         id: string;
         startAt: string;
@@ -28,9 +31,39 @@ function formatScheduleLabel(date: string, locale: string) {
     }).format(new Date(date));
 }
 
-export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsProps) {
+function getTourActionCopy(locale: string) {
+    switch (locale) {
+        case "en":
+            return {
+                selectDate: "Choose a date",
+                whatsappQuote: "Ask for itinerary on WhatsApp",
+                whatsappHelpText: "Use WhatsApp if you want to confirm dates, trip format or personalized support.",
+            };
+        case "es":
+            return {
+                selectDate: "Elige la fecha",
+                whatsappQuote: "Solicitar itinerario por WhatsApp",
+                whatsappHelpText: "Usa WhatsApp si quieres validar fecha, formato del paseo o soporte personalizado.",
+            };
+        case "sv":
+            return {
+                selectDate: "Valj datum",
+                whatsappQuote: "Begar resplan pa WhatsApp",
+                whatsappHelpText: "Anvand WhatsApp om du vill bekrfta datum, upplagg eller fa personlig hjalp.",
+            };
+        default:
+            return {
+                selectDate: "Escolha a data",
+                whatsappQuote: "Solicitar roteiro no WhatsApp",
+                whatsappHelpText: "Use o WhatsApp se quiser validar agenda, formato do passeio ou atendimento personalizado.",
+            };
+    }
+}
+
+export function TourActions({ tripId, priceCents, tripTitle, city, schedules = [] }: TourActionsProps) {
     const t = useTranslations('TourActions');
     const locale = useLocale();
+    const copy = getTourActionCopy(locale);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const [selectedScheduleId, setSelectedScheduleId] = useState<string>(schedules[0]?.id ?? "");
@@ -41,6 +74,13 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
 
     const selectedSchedule = schedules.find((schedule) => schedule.id === selectedScheduleId);
     const displayedPrice = selectedSchedule?.pricePerPersonCents ?? priceCents;
+    const whatsappUrl = buildWhatsAppQuoteUrl({
+        locale,
+        tripTitle,
+        city,
+        source: "tour_detail",
+        scheduleLabel: selectedSchedule ? formatScheduleLabel(selectedSchedule.startAt, locale) : undefined,
+    });
 
     async function handleReserve() {
         setLoading(true);
@@ -106,7 +146,7 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
             {schedules.length > 0 && (
                 <div className="space-y-2">
                     <label htmlFor="schedule-select" className="block text-sm font-medium text-foreground">
-                        Escolha a data
+                        {copy.selectDate}
                     </label>
                     <select
                         id="schedule-select"
@@ -139,6 +179,13 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
                 )}
             </Button>
 
+            <Button asChild variant="outline" className="w-full">
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    <MessageCircleMore className="mr-2 h-4 w-4" />
+                    {copy.whatsappQuote}
+                </a>
+            </Button>
+
             {message && (
                 <p className={`text-center text-sm ${message === t('successMessage') ? "text-green-600" : "text-red-500"}`}>
                     {message}
@@ -147,6 +194,9 @@ export function TourActions({ tripId, priceCents, schedules = [] }: TourActionsP
 
             <p className="text-center text-xs text-muted-foreground">
                 {t('freeCancellation')}
+            </p>
+            <p className="text-center text-xs text-muted-foreground">
+                {copy.whatsappHelpText}
             </p>
         </div>
     );

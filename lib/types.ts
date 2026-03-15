@@ -18,6 +18,7 @@ export type TripFormDataLike = {
     maxGuests?: number | null;
     highlights?: string | string[] | LocalizedList | null;
     highlightsTranslations?: LocalizedList | null;
+    isPublished?: boolean;
 };
 
 export type TripCardData = {
@@ -32,6 +33,7 @@ export type TripCardData = {
     endDate?: Date | string | null;
     maxGuests?: number | null;
     highlights?: LocalizedList | string[] | null;
+    isPublished?: boolean;
     createdAt?: Date | string;
     durationDays?: number;
     physicalLevel?: PhysicalLevel | string;

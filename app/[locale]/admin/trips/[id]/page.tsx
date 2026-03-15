@@ -33,6 +33,7 @@ export default async function EditTripPage({ params }: EditTripPageProps) {
           location: trip.location,
           priceCents: trip.priceCents,
           imageUrl: trip.imageUrl,
+          isPublished: trip.isPublished,
           startDate: trip.startDate,
           endDate: trip.endDate,
           maxGuests: trip.maxGuests,
