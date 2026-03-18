@@ -1,8 +1,9 @@
 'use client'
 
-import { RickTravelLogo } from '@/components/rick-travel-logo'
-import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+
+import { RickTravelLogo } from '@/components/rick-travel-logo'
+import { Link } from '@/i18n/routing'
 
 const socialLinks = [
     {
@@ -58,7 +59,7 @@ const socialLinks = [
 ]
 
 export default function FooterSection() {
-    const t = useTranslations('Footer');
+    const t = useTranslations('Footer')
 
     const columns = [
         {
@@ -69,7 +70,7 @@ export default function FooterSection() {
             ],
         },
         {
-            title: 'Serviços',
+            title: 'Servicos',
             links: [
                 { label: 'Tours', href: '/tours' },
                 { label: t('links.pricing'), href: '#' },
@@ -85,30 +86,27 @@ export default function FooterSection() {
     ]
 
     return (
-        <footer className="border-t border-border/40 dark:border-[#C8A86B]/15 bg-background dark:bg-[#071826] py-14 md:py-20">
+        <footer className="border-t border-border/40 bg-background py-14 dark:border-[#C8A86B]/15 dark:bg-[#071826] md:py-20">
             <div className="mx-auto max-w-6xl px-6">
-                {/* Topo: logo + colunas */}
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-                    {/* Logo e tagline */}
                     <div className="col-span-2 md:col-span-1">
-                        <Link href="/" aria-label="Rick Travel - Página inicial" className="block w-fit">
+                        <Link href="/" aria-label="Rick Travel - Pagina inicial" className="block w-fit">
                             <RickTravelLogo variant="full" size="md" />
                         </Link>
-                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-[200px]">
-                            Experiências únicas no Rio de Janeiro. Segurança e qualidade em cada passeio.
+                        <p className="mt-3 max-w-[220px] text-sm leading-relaxed text-muted-foreground">
+                            Experiencias no Rio de Janeiro com operacao mais clara, segura e personalizada.
                         </p>
                     </div>
 
-                    {/* Colunas de links */}
-                    {columns.map((col) => (
-                        <div key={col.title}>
-                            <h3 className="text-sm font-semibold text-foreground mb-4">{col.title}</h3>
+                    {columns.map((column) => (
+                        <div key={column.title}>
+                            <h3 className="mb-4 text-sm font-semibold text-foreground">{column.title}</h3>
                             <ul className="space-y-3">
-                                {col.links.map((link) => (
+                                {column.links.map((link) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-sm text-muted-foreground hover:text-primary transition-colors duration-150"
+                                            className="text-sm text-muted-foreground transition-colors duration-150 hover:text-primary"
                                         >
                                             {link.label}
                                         </Link>
@@ -119,12 +117,9 @@ export default function FooterSection() {
                     ))}
                 </div>
 
-                {/* Separador */}
                 <div className="my-10 border-t border-border/50 dark:border-[#C8A86B]/12" />
 
-                {/* Rodapé inferior: redes sociais + copyright */}
                 <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-                    {/* Redes Sociais */}
                     <div className="flex items-center gap-4">
                         {socialLinks.map((social) => (
                             <Link
@@ -140,8 +135,7 @@ export default function FooterSection() {
                         ))}
                     </div>
 
-                    {/* Copyright */}
-                    <span className="text-sm text-muted-foreground text-center">
+                    <span className="text-center text-sm text-muted-foreground">
                         © {new Date().getFullYear()} <strong className="text-foreground">Rick Travel</strong>. {t('copyright')}
                     </span>
                 </div>

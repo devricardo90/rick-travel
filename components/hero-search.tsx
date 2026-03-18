@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { Search, Loader2 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Loader2, Search } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
-import { getLocalizedField } from '@/lib/localized-field'
+
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from '@/i18n/routing'
+import { getLocalizedField } from '@/lib/localized-field'
 
 interface Trip {
     id: string
@@ -15,6 +16,39 @@ interface Trip {
     location: string | null
 }
 
+function normalizeText(value: string | null | undefined) {
+    return (value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+}
+
+function getSearchMetaCopy(locale: string) {
+    switch (locale) {
+        case 'en':
+            return {
+                helper: 'Search by destination, neighborhood or experience',
+                viewAll: 'See all matching tours',
+            }
+        case 'es':
+            return {
+                helper: 'Busca por destino, barrio o experiencia',
+                viewAll: 'Ver todos los tours relacionados',
+            }
+        case 'sv':
+            return {
+                helper: 'Sok efter destination, stadsdel eller upplevelse',
+                viewAll: 'Visa alla matchande turer',
+            }
+        default:
+            return {
+                helper: 'Busque por destino, bairro ou experiencia',
+                viewAll: 'Ver todos os passeios relacionados',
+            }
+    }
+}
+
 export function HeroSearch() {
     const [query, setQuery] = useState('')
     const [trips, setTrips] = useState<Trip[]>([])
@@ -22,12 +56,13 @@ export function HeroSearch() {
     const [showSuggestions, setShowSuggestions] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(-1)
+
     const searchRef = useRef<HTMLDivElement>(null)
     const router = useRouter()
     const locale = useLocale()
     const t = useTranslations('HomePage.Search')
+    const metaCopy = getSearchMetaCopy(locale)
 
-    // Load all trips on mount
     useEffect(() => {
         async function loadTrips() {
             try {
@@ -40,77 +75,47 @@ export function HeroSearch() {
                 console.error('Error loading trips:', error)
             }
         }
+
         loadTrips()
     }, [])
 
-    // Filter trips based on search query com DEBOUNCE
     useEffect(() => {
         if (query.length < 2) {
             const resetId = setTimeout(() => {
                 setSuggestions([])
                 setShowSuggestions(false)
                 setIsLoading(false)
+                setSelectedIndex(-1)
             }, 0)
 
             return () => clearTimeout(resetId)
         }
 
-        // Debounce de 300ms
         const timeoutId = setTimeout(() => {
-            const filtered = trips.filter(trip => {
-                const titleText = getLocalizedField<string>(trip.title, locale).toLowerCase()
-                const descriptionText = getLocalizedField<string>(trip.description, locale).toLowerCase()
-                const searchQuery = query.toLowerCase()
+            const normalizedQuery = normalizeText(query)
+            const filtered = trips.filter((trip) => {
+                const titleText = normalizeText(getLocalizedField<string>(trip.title, locale))
+                const descriptionText = normalizeText(getLocalizedField<string>(trip.description, locale))
+                const cityText = normalizeText(trip.city)
+                const locationText = normalizeText(trip.location)
 
                 return (
-                    titleText.includes(searchQuery) ||
-                    descriptionText.includes(searchQuery) ||
-                    trip.city.toLowerCase().includes(searchQuery) ||
-                    trip.location?.toLowerCase().includes(searchQuery)
+                    titleText.includes(normalizedQuery) ||
+                    descriptionText.includes(normalizedQuery) ||
+                    cityText.includes(normalizedQuery) ||
+                    locationText.includes(normalizedQuery)
                 )
             })
 
-            setSuggestions(filtered.slice(0, 5)) // Show max 5 suggestions
-            setShowSuggestions(true) // Mostrar sempre durante busca
+            setSuggestions(filtered.slice(0, 5))
+            setShowSuggestions(true)
             setIsLoading(false)
-            setSelectedIndex(-1) // Reset selection on new results
+            setSelectedIndex(-1)
         }, 300)
 
-        return () => {
-            clearTimeout(timeoutId)
-            setIsLoading(false)
-        }
-    }, [query, trips, locale])
+        return () => clearTimeout(timeoutId)
+    }, [locale, query, trips])
 
-    // Keyboard navigation
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (!showSuggestions || suggestions.length === 0) return
-
-        switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault()
-                setSelectedIndex(prev =>
-                    prev < suggestions.length - 1 ? prev + 1 : prev
-                )
-                break
-            case 'ArrowUp':
-                e.preventDefault()
-                setSelectedIndex(prev => prev > 0 ? prev - 1 : -1)
-                break
-            case 'Enter':
-                e.preventDefault()
-                if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-                    handleSuggestionClick(suggestions[selectedIndex].id)
-                }
-                break
-            case 'Escape':
-                setShowSuggestions(false)
-                setSelectedIndex(-1)
-                break
-        }
-    }
-
-    // Close suggestions when clicking outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -122,41 +127,67 @@ export function HeroSearch() {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [])
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-
-        if (suggestions.length === 1) {
-            // If only one result, go directly to it
-            router.push(`/${locale}/tours/${suggestions[0].id}`)
-        } else if (suggestions.length > 0) {
-            // Multiple results, go to tours page with search filter
-            router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)
-        }
-
-        setShowSuggestions(false)
-    }
-
     const handleSuggestionClick = (tripId: string) => {
         router.push(`/${locale}/tours/${tripId}`)
         setShowSuggestions(false)
         setQuery('')
     }
 
+    const handleSearch = (event: React.FormEvent) => {
+        event.preventDefault()
+
+        if (suggestions.length === 1) {
+            router.push(`/${locale}/tours/${suggestions[0].id}`)
+        } else if (query.trim().length >= 2) {
+            router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)
+        }
+
+        setShowSuggestions(false)
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!showSuggestions || suggestions.length === 0) {
+            return
+        }
+
+        switch (event.key) {
+            case 'ArrowDown':
+                event.preventDefault()
+                setSelectedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev))
+                break
+            case 'ArrowUp':
+                event.preventDefault()
+                setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1))
+                break
+            case 'Enter':
+                event.preventDefault()
+                if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+                    handleSuggestionClick(suggestions[selectedIndex].id)
+                }
+                break
+            case 'Escape':
+                setShowSuggestions(false)
+                setSelectedIndex(-1)
+                break
+        }
+    }
+
     return (
-        <div ref={searchRef} className="relative w-full max-w-3xl mx-auto">
+        <div ref={searchRef} className="relative mx-auto w-full max-w-3xl">
             <form onSubmit={handleSearch} role="search" className="relative">
                 <label htmlFor="hero-search-input" className="sr-only">
                     {t('placeholder')}
                 </label>
-                <div className="relative flex h-12 items-center bg-white/10 backdrop-blur-md rounded-2xl border border-white/12 hover:border-white/20 focus-within:border-white/30 transition-all duration-300 px-4 gap-3 group">
-                    <Search className="h-5 w-5 text-white/50 group-focus-within:text-white transition-colors" aria-hidden="true" />
+
+                <div className="group relative flex h-12 items-center gap-3 rounded-2xl border border-white/12 bg-white/10 px-4 backdrop-blur-md transition-all duration-300 hover:border-white/20 focus-within:border-white/30">
+                    <Search className="h-5 w-5 text-white/50 transition-colors group-focus-within:text-white" aria-hidden="true" />
 
                     <input
                         id="hero-search-input"
                         type="text"
                         value={query}
-                        onChange={(e) => {
-                            const nextQuery = e.target.value
+                        onChange={(event) => {
+                            const nextQuery = event.target.value
                             setQuery(nextQuery)
                             setIsLoading(nextQuery.length >= 2)
                         }}
@@ -170,34 +201,37 @@ export function HeroSearch() {
                         className="w-full bg-transparent text-base text-white placeholder:text-white/55 outline-none"
                     />
 
-
                     <button
                         type="submit"
                         disabled={query.length < 2 || isLoading}
-                        className="h-9 sm:h-10 px-4 sm:px-6 bg-brazil-green-600 text-white rounded-full text-sm font-semibold hover:bg-brazil-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 button-press flex items-center gap-2 shadow-lg shrink-0"
+                        className="button-press h-9 shrink-0 rounded-full bg-brazil-green-600 px-4 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:bg-brazil-green-700 disabled:cursor-not-allowed disabled:opacity-50 sm:h-10 sm:px-6"
                     >
-                        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                        {t('button')}
+                        <span className="flex items-center gap-2">
+                            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                            {t('button')}
+                        </span>
                     </button>
                 </div>
             </form>
 
-            {/* Autocomplete Suggestions com Loading Skeleton e Fade-in */}
+            <p className="mt-3 text-center text-xs font-medium text-white/60 sm:text-sm">
+                {metaCopy.helper}
+            </p>
+
             {showSuggestions && query.length >= 2 && (
                 <div
                     id="search-suggestions"
                     role="listbox"
                     aria-live="polite"
                     aria-label={t('noResults')}
-                    className="absolute z-40 w-full mt-3 bg-navy-900/95 backdrop-blur-xl rounded-2xl shadow-hero border border-white/10 overflow-hidden fade-in"
+                    className="fade-in absolute z-40 mt-3 w-full overflow-hidden rounded-2xl border border-white/10 bg-navy-900/95 shadow-hero backdrop-blur-xl"
                 >
                     <div className="p-2">
                         {isLoading ? (
-                            // Skeleton durante loading
                             <>
-                                {[1, 2, 3].map((i) => (
-                                    <div key={i} className="px-4 py-3 flex items-start gap-3">
-                                        <Skeleton className="h-4 w-4 mt-1" variant="circular" />
+                                {[1, 2, 3].map((item) => (
+                                    <div key={item} className="flex items-start gap-3 px-4 py-3">
+                                        <Skeleton className="mt-1 h-4 w-4" variant="circular" />
                                         <div className="flex-1 space-y-2">
                                             <Skeleton className="h-4 w-3/4" variant="text" />
                                             <Skeleton className="h-3 w-1/2" variant="text" />
@@ -206,42 +240,57 @@ export function HeroSearch() {
                                 ))}
                             </>
                         ) : suggestions.length > 0 ? (
-                            // Resultados
-                            suggestions.map((trip, index) => {
-                                const title = getLocalizedField<string>(trip.title, locale)
-                                return (
-                                    <button
-                                        key={trip.id}
-                                        id={`suggestion-${index}`}
-                                        type="button"
-                                        role="option"
-                                        aria-selected={index === selectedIndex}
-                                        onClick={() => handleSuggestionClick(trip.id)}
-                                        className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-150 flex items-start gap-3 group ${index === selectedIndex
-                                            ? 'bg-white/10 border-l-4 border-brazil-green-600'
-                                            : 'hover:bg-white/5'
-                                            }`}
-                                    >
-                                        <Search className={`h-4 w-4 mt-1 transition-colors ${index === selectedIndex
-                                            ? 'text-brazil-green-600'
-                                            : 'text-white/40 group-hover:text-white'
-                                            }`} />
-                                        <div className="flex-1 min-w-0">
-                                            <p className={`font-medium transition-colors line-clamp-1 ${index === selectedIndex
-                                                ? 'text-white'
-                                                : 'text-white/90 group-hover:text-white'
-                                                }`}>
-                                                {title}
-                                            </p>
-                                            <p className="text-sm text-white/50 line-clamp-1">
-                                                {trip.city}{trip.location && ` • ${trip.location}`}
-                                            </p>
-                                        </div>
-                                    </button>
-                                )
-                            })
+                            <>
+                                {suggestions.map((trip, index) => {
+                                    const title = getLocalizedField<string>(trip.title, locale)
+
+                                    return (
+                                        <button
+                                            key={trip.id}
+                                            id={`suggestion-${index}`}
+                                            type="button"
+                                            role="option"
+                                            aria-selected={index === selectedIndex}
+                                            onClick={() => handleSuggestionClick(trip.id)}
+                                            className={`group flex w-full items-start gap-3 rounded-xl px-4 py-3 text-left transition-all duration-150 ${index === selectedIndex
+                                                ? 'border-l-4 border-brazil-green-600 bg-white/10'
+                                                : 'hover:bg-white/5'
+                                                }`}
+                                        >
+                                            <Search
+                                                className={`mt-1 h-4 w-4 transition-colors ${index === selectedIndex
+                                                    ? 'text-brazil-green-600'
+                                                    : 'text-white/40 group-hover:text-white'
+                                                    }`}
+                                            />
+
+                                            <div className="min-w-0 flex-1">
+                                                <p
+                                                    className={`line-clamp-1 font-medium transition-colors ${index === selectedIndex
+                                                        ? 'text-white'
+                                                        : 'text-white/90 group-hover:text-white'
+                                                        }`}
+                                                >
+                                                    {title}
+                                                </p>
+                                                <p className="line-clamp-1 text-sm text-white/50">
+                                                    {trip.city}
+                                                    {trip.location ? ` - ${trip.location}` : ''}
+                                                </p>
+                                            </div>
+                                        </button>
+                                    )
+                                })}
+
+                                <button
+                                    type="button"
+                                    onClick={() => router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)}
+                                    className="mt-1 flex w-full items-center justify-center rounded-xl border border-white/8 px-4 py-3 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5 hover:text-white"
+                                >
+                                    {metaCopy.viewAll}
+                                </button>
+                            </>
                         ) : (
-                            // Sem resultados
                             <div className="px-4 py-6 text-center">
                                 <p className="text-muted-foreground">{t('noResults')}</p>
                             </div>

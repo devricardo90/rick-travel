@@ -9,6 +9,10 @@ const Testimonials = dynamic(() => import('@/components/testimonials'), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
 
+const Features = dynamic(() => import('@/components/features-1'), {
+    loading: () => <div className="section-spacing h-80 animate-pulse" />,
+});
+
 const FAQsTwo = dynamic(() => import('@/components/faqs-2'), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
@@ -82,6 +86,10 @@ export default function Home() {
             >
                 {/* Above-the-fold - sem FadeIn para melhor TBT */}
                 <ReservationsSection />
+
+                <FadeInSection delay={0.15}>
+                    <Features />
+                </FadeInSection>
 
                 {/* Below-the-fold - lazy load com FadeIn */}
                 <FadeInSection delay={0.2}>

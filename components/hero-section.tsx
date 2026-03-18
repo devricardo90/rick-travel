@@ -1,6 +1,6 @@
 'use client'
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { HeroSearch } from "@/components/hero-search";
 import { HeroHeader } from "@/components/header";
@@ -21,35 +21,75 @@ function getHeroSupportCopy(locale: string) {
       return {
         responseTime: "WhatsApp support replies within minutes",
         quoteNote: "Build your itinerary with our team",
+        trustBadges: [
+          "500+ curated experiences delivered",
+          "4.9 average guest rating",
+          "Licensed guides and secure operation",
+        ],
+        highlights: [
+          { value: "24/7", label: "concierge support" },
+          { value: "100%", label: "private planning" },
+          { value: "Rio", label: "local specialists" },
+        ],
       };
     case "es":
       return {
         responseTime: "Atencion por WhatsApp en pocos minutos",
         quoteNote: "Arma tu itinerario con ayuda de nuestro equipo",
+        trustBadges: [
+          "500+ tours realizados",
+          "4,9 de valoracion media",
+          "Guias acreditados y operacion segura",
+        ],
+        highlights: [
+          { value: "24/7", label: "soporte directo" },
+          { value: "100%", label: "ruta privada" },
+          { value: "Rio", label: "equipo local" },
+        ],
       };
     case "sv":
       return {
         responseTime: "WhatsApp-svar inom nagra minuter",
         quoteNote: "Bygg din resplan tillsammans med vart team",
+        trustBadges: [
+          "500+ genomforda turer",
+          "4,9 i genomsnittligt betyg",
+          "Certifierade guider och trygg drift",
+        ],
+        highlights: [
+          { value: "24/7", label: "direkt support" },
+          { value: "100%", label: "privat planering" },
+          { value: "Rio", label: "lokala experter" },
+        ],
       };
     default:
       return {
         responseTime: "Atendimento no WhatsApp em poucos minutos",
         quoteNote: "Monte seu roteiro com ajuda da nossa equipe",
+        trustBadges: [
+          "500+ tours realizados",
+          "4,9 de avaliacao media",
+          "Guias credenciados e operacao segura",
+        ],
+        highlights: [
+          { value: "24/7", label: "suporte humano" },
+          { value: "100%", label: "roteiro privado" },
+          { value: "Rio", label: "time local" },
+        ],
       };
   }
 }
 
-function TrustBar() {
-  const badges = [
-    { icon: <MapPin className="h-3.5 w-3.5" />, text: "500+ tours realizados" },
-    { icon: <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />, text: "4,9 de avaliacao media" },
-    { icon: <ShieldCheck className="h-3.5 w-3.5" />, text: "Guias credenciados e operacao segura" },
+function TrustBar({ badges }: { badges: string[] }) {
+  const items = [
+    { icon: <MapPin className="h-3.5 w-3.5" />, text: badges[0] },
+    { icon: <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />, text: badges[1] },
+    { icon: <ShieldCheck className="h-3.5 w-3.5" />, text: badges[2] },
   ];
 
   return (
     <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-      {badges.map((badge) => (
+      {items.map((badge) => (
         <span
           key={badge.text}
           className="inline-flex h-8 items-center gap-2 rounded-full border border-[#C8A86B]/18 bg-[#071826]/75 px-3 py-1.5 text-[12px] font-semibold text-white/85 backdrop-blur-sm"
@@ -128,7 +168,19 @@ function HeroContent() {
           </span>
         </div>
 
-        <TrustBar />
+        <TrustBar badges={supportCopy.trustBadges} />
+
+        <div className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-3">
+          {supportCopy.highlights.map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-white/10 bg-white/8 px-4 py-4 text-left shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-md"
+            >
+              <div className="text-lg font-bold text-white">{item.value}</div>
+              <div className="mt-1 text-sm text-white/68">{item.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -144,12 +196,19 @@ function HeroMedia() {
         playsInline
         className="absolute inset-0 h-full w-full object-cover brightness-75"
         src="/videos/video-site-hero.mp4"
+        poster="/videos/imagem-rio-perfil.jpg"
         preload="auto"
       />
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80" />
       <div className="absolute inset-0 bg-[radial-gradient(1000px_400px_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.4)_100%)]" />
+      <div className="absolute inset-x-10 bottom-8 hidden rounded-3xl border border-white/10 bg-black/25 px-5 py-4 text-white/80 backdrop-blur-xl lg:block">
+        <div className="text-xs uppercase tracking-[0.22em] text-[#C8A86B]">Rio de Janeiro curated travel</div>
+        <div className="mt-1 max-w-xl text-sm leading-6">
+          Private tours, local guidance and flexible planning for travelers who want a cleaner booking flow.
+        </div>
+      </div>
     </div>
   );
 }
