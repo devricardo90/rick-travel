@@ -196,7 +196,7 @@ function HeroMedia() {
         loop
         playsInline
         className="absolute inset-0 h-full w-full object-cover brightness-[0.62] saturate-[0.9]"
-        src="/videos/video-site-hero.mp4"
+        src="/videos/newhero.mp4"
         poster="/videos/imagem-rio-perfil.jpg"
         preload="auto"
       />

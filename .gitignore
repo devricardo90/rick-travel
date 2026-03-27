@@ -12,9 +12,6 @@
 
 # testing
 /coverage
-/test-results
-/playwright-report
-.e2e-data.json
 
 # next.js
 /.next/
@@ -26,14 +23,12 @@
 # misc
 .DS_Store
 *.pem
-Thumbs.db
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-logs/*.runtime.log
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -44,26 +39,3 @@ logs/*.runtime.log
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-/lib/generated/prisma
-
-# Kombai
-.kombai/
-
-# ─── Arquivos temporários de desenvolvimento ───
-# Docs de planejamento local que não fazem parte do produto
-ASSETS_NEEDED.md
-**/ASSETS_NEEDED.md
-
-# ─── Vídeos grandes (usar Git LFS ou CDN em produção) ───
-# Mantenha apenas SVG/imagens otimizadas no repositório.
-# Para vídeos, use storage externo (S3, Cloudflare R2, etc.)
-# ou Git LFS: git lfs track "public/videos/*.mp4"
-public/videos/*.mp4
-public/videos/*.webm
-public/videos/*.mov
-
-# ─── Imagens brutas / não otimizadas ───
-# Prefira manter apenas versões finais otimizadas (WebP, AVIF)
-# Arquivos JPEG/PNG grandes devem ser comprimidos antes do commit
-**/*.JPEG

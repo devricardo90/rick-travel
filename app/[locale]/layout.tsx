@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextIntlClientProvider } from 'next-intl';
@@ -7,6 +8,16 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Toaster } from '@/components/ui/toaster';
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.BETTER_AUTH_URL || "http://localhost:3000"),
@@ -67,9 +78,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://api.ricktravel.com" />
         <link rel="dns-prefetch" href="https://api.ricktravel.com" />
       </head>
-      <body
-        className="antialiased"
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
