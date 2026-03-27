@@ -3,7 +3,6 @@
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { HeroSearch } from "@/components/hero-search";
-import { HeroHeader } from "@/components/header";
 import {
   ChevronRight,
   ShieldCheck,
@@ -88,12 +87,9 @@ function TrustBar({ badges }: { badges: string[] }) {
   ];
 
   return (
-    <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+    <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
       {items.map((badge) => (
-        <span
-          key={badge.text}
-          className="inline-flex h-8 items-center gap-2 rounded-full border border-[#C8A86B]/18 bg-[#071826]/75 px-3 py-1.5 text-[12px] font-semibold text-white/85 backdrop-blur-sm"
-        >
+        <span key={badge.text} className="chip-dark min-h-9 px-3.5 text-[12px]">
           {badge.icon}
           {badge.text}
         </span>
@@ -114,27 +110,32 @@ function HeroContent() {
 
   return (
     <div className="relative mx-auto flex max-w-7xl flex-col px-5 lg:px-12">
-      <div className="mx-auto max-w-4xl text-center">
-        <h1 className="mx-auto max-w-[18ch] text-balance text-3xl font-bold leading-[1.05] tracking-[-0.02em] text-white md:text-5xl lg:text-6xl xl:text-7xl">
+      <div className="mx-auto max-w-5xl text-center">
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#d8c18f] backdrop-blur-md">
+          <ShieldCheck className="h-3.5 w-3.5" />
+          Guia credenciado e operação local
+        </div>
+
+        <h1 className="mx-auto mt-7 max-w-[15ch] text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.045em] text-white md:text-6xl lg:text-[5rem]">
           {t("title")}
         </h1>
 
-        <p className="mx-auto mt-5 max-w-3xl text-balance text-sm leading-7 text-white/72 md:text-lg">
+        <p className="mx-auto mt-6 max-w-3xl text-balance text-[15px] leading-7 text-white/72 md:text-lg md:leading-8">
           {t("description")}
         </p>
 
-        <div className="mt-6">
+        <div className="mt-8">
           <HeroSearch />
         </div>
 
-        <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
             asChild
             size="lg"
-            className="h-12 w-full rounded-2xl px-6 text-[15px] font-semibold text-white shadow-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0 sm:min-w-[230px] sm:w-auto"
+            className="h-12 w-full rounded-2xl px-6 text-[15px] font-semibold text-white shadow-[0_18px_40px_rgba(18,58,40,0.32)] transition-all duration-200 hover:-translate-y-px active:translate-y-0 sm:min-w-[230px] sm:w-auto"
             style={{
-              background: "linear-gradient(135deg, #0B2E1E 0%, #0F3B27 100%)",
-              border: "1px solid rgba(26,77,46,0.5)",
+              background: "linear-gradient(135deg, #123A28 0%, #184731 100%)",
+              border: "1px solid rgba(56, 122, 91, 0.4)",
             }}
           >
             <Link href="/tours">
@@ -147,7 +148,7 @@ function HeroContent() {
             asChild
             size="lg"
             variant="ghost"
-            className="h-11 w-full rounded-2xl border border-white/15 bg-white/5 px-6 text-[15px] font-semibold text-white/90 backdrop-blur-md transition-all duration-200 hover:-translate-y-px hover:bg-white/10 hover:text-white active:translate-y-0 sm:h-12 sm:min-w-[230px] sm:w-auto"
+            className="h-11 w-full rounded-2xl border border-white/14 bg-white/[0.05] px-6 text-[15px] font-semibold text-white/90 backdrop-blur-md transition-all duration-200 hover:-translate-y-px hover:bg-white/[0.09] hover:text-white active:translate-y-0 sm:h-12 sm:min-w-[230px] sm:w-auto"
           >
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
               <span>{t("secondaryButton")}</span>
@@ -156,7 +157,7 @@ function HeroContent() {
           </Button>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-medium text-white/70 md:text-sm">
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-xs font-medium text-white/70 md:text-sm">
           <span className="inline-flex items-center gap-2">
             <Clock3 className="h-4 w-4 text-[#C8A86B]" />
             {supportCopy.responseTime}
@@ -170,14 +171,14 @@ function HeroContent() {
 
         <TrustBar badges={supportCopy.trustBadges} />
 
-        <div className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-3">
+        <div className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-3">
           {supportCopy.highlights.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-white/10 bg-white/8 px-4 py-4 text-left shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-md"
+              className="rounded-[22px] border border-white/10 bg-white/[0.06] px-5 py-4 text-left shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-md"
             >
-              <div className="text-lg font-bold text-white">{item.value}</div>
-              <div className="mt-1 text-sm text-white/68">{item.label}</div>
+              <div className="text-xl font-semibold text-white">{item.value}</div>
+              <div className="mt-1 text-sm leading-6 text-white/66">{item.label}</div>
             </div>
           ))}
         </div>
@@ -188,24 +189,23 @@ function HeroContent() {
 
 function HeroMedia() {
   return (
-    <div className="absolute inset-1 -z-10 aspect-[2/3] overflow-hidden rounded-3xl border border-black/10 lg:aspect-video lg:rounded-[3rem] dark:border-white/5">
+    <div className="absolute inset-1 -z-10 aspect-[2/3] overflow-hidden rounded-[2rem] border border-white/6 lg:aspect-video lg:rounded-[3rem]">
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 h-full w-full object-cover brightness-75"
+        className="absolute inset-0 h-full w-full object-cover brightness-[0.62] saturate-[0.9]"
         src="/videos/video-site-hero.mp4"
         poster="/videos/imagem-rio-perfil.jpg"
         preload="auto"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80" />
-      <div className="absolute inset-0 bg-[radial-gradient(1000px_400px_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.4)_100%)]" />
-      <div className="absolute inset-x-10 bottom-8 hidden rounded-3xl border border-white/10 bg-black/25 px-5 py-4 text-white/80 backdrop-blur-xl lg:block">
-        <div className="text-xs uppercase tracking-[0.22em] text-[#C8A86B]">Rio de Janeiro curated travel</div>
-        <div className="mt-1 max-w-xl text-sm leading-6">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,14,24,0.08),rgba(4,14,24,0.22)_32%,rgba(4,14,24,0.82)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(900px_360px_at_50%_0%,rgba(255,255,255,0.08),transparent_68%)]" />
+      <div className="absolute inset-x-8 bottom-8 hidden rounded-[26px] border border-white/10 bg-[#0a1d2b]/56 px-6 py-5 text-white/78 backdrop-blur-xl lg:block">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A86B]">Rio de Janeiro curated travel</div>
+        <div className="mt-2 max-w-xl text-sm leading-6">
           Private tours, local guidance and flexible planning for travelers who want a cleaner booking flow.
         </div>
       </div>
@@ -215,16 +215,11 @@ function HeroMedia() {
 
 export default function HeroSection() {
   return (
-    <>
-      <HeroHeader />
-      <main className="overflow-x-hidden">
-        <section>
-          <div className="relative py-24 md:pb-32 lg:pb-36 lg:pt-72">
-            <HeroContent />
-            <HeroMedia />
-          </div>
-        </section>
-      </main>
-    </>
+    <section className="overflow-x-hidden bg-[#071826]">
+      <div className="relative py-24 md:pb-32 lg:pb-36 lg:pt-56">
+        <HeroContent />
+        <HeroMedia />
+      </div>
+    </section>
   );
 }

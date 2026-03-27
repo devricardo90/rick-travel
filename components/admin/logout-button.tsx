@@ -21,7 +21,10 @@ export function AdminLogoutButton() {
     };
 
     return (
-        <button onClick={handleLogout} className="text-red-500 hover:underline">
+        <button
+            onClick={handleLogout}
+            className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white/72 transition-colors hover:bg-white/[0.08] hover:text-white"
+        >
             Sair
         </button>
     );

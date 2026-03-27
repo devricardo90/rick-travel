@@ -76,7 +76,7 @@ export function BookingActions({
         size="icon"
         variant="outline"
         className={cn(
-          "h-8 w-8 text-blue-600 hover:bg-blue-50 hover:text-blue-700",
+          "h-9 w-9 rounded-2xl border-white/10 bg-white/[0.04] text-white/72 hover:bg-white/[0.08] hover:text-white",
           isEmailSending && "opacity-50"
         )}
         onClick={handleResendEmail}
@@ -91,7 +91,7 @@ export function BookingActions({
           size="icon"
           variant="outline"
           className={cn(
-            "h-8 w-8 text-green-600 hover:bg-green-50 hover:text-green-700",
+            "h-9 w-9 rounded-2xl border-emerald-400/18 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/16 hover:text-emerald-100",
             isLoading && "opacity-50"
           )}
           onClick={() => handleStatusChange("CONFIRMED")}
@@ -107,7 +107,7 @@ export function BookingActions({
           size="icon"
           variant="outline"
           className={cn(
-            "h-8 w-8 text-red-600 hover:bg-red-50 hover:text-red-700",
+            "h-9 w-9 rounded-2xl border-red-400/18 bg-red-500/10 text-red-200 hover:bg-red-500/16 hover:text-red-100",
             isLoading && "opacity-50"
           )}
           onClick={() => handleStatusChange("CANCELED")}

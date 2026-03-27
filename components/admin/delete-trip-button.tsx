@@ -35,6 +35,7 @@ export function DeleteTripButton({ tripId }: DeleteTripButtonProps) {
             size="sm"
             onClick={handleDelete}
             disabled={isPending}
+            className="h-9 rounded-2xl border border-red-400/18 bg-red-500/10 px-4 text-red-200 shadow-none transition-colors hover:bg-red-500/16 hover:text-red-100"
         >
             <Trash2 className="w-4 h-4 mr-1" />
             {isPending ? "Excluindo..." : "Excluir"}

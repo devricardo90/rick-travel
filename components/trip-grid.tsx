@@ -15,7 +15,6 @@ export function TripGrid({ trips }: TripGridProps) {
     const locale = useLocale();
     const [loadingTripId, setLoadingTripId] = useState<string | null>(null);
 
-    // 🔹 reservar
     async function reserve(tripId: string) {
         setLoadingTripId(tripId);
 
@@ -48,7 +47,7 @@ export function TripGrid({ trips }: TripGridProps) {
 
             if (res.status === 400) {
                 toast.info("Escolha uma data", {
-                    description: data?.error ?? "Abra o detalhe do passeio para selecionar a agenda disponível.",
+                    description: data?.error ?? "Abra o detalhe do passeio para selecionar a agenda disponivel.",
                 });
                 setTimeout(() => {
                     window.location.href = `/${locale}/tours/${tripId}`;
@@ -63,7 +62,7 @@ export function TripGrid({ trips }: TripGridProps) {
                 return;
             }
 
-            toast.success("Reserva criada com sucesso! 🎉", {
+            toast.success("Reserva criada com sucesso!", {
                 description: "Você pode ver suas reservas em suas informações",
             });
             window.dispatchEvent(new Event("bookings:refresh"));
@@ -77,14 +76,14 @@ export function TripGrid({ trips }: TripGridProps) {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-7">
             {trips.length === 0 ? (
-                <div className="text-center text-muted-foreground py-10">
-                    Nenhum passeio disponível no momento.
+                <div className="surface-dark px-6 py-12 text-center text-white/62">
+                    Nenhum passeio disponivel no momento.
                 </div>
             ) : (
-                <motion.div 
-                    className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8"
+                <motion.div
+                    className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7"
                     variants={{
                         hidden: { opacity: 0 },
                         show: {
@@ -97,15 +96,15 @@ export function TripGrid({ trips }: TripGridProps) {
                     viewport={{ once: true, margin: "-50px" }}
                 >
                     {trips.map((trip) => (
-                        <motion.div 
+                        <motion.div
                             key={trip.id}
                             variants={{
                                 hidden: { opacity: 0, scale: 0.95, y: 20 },
-                                show: { 
-                                    opacity: 1, 
-                                    scale: 1, 
-                                    y: 0, 
-                                    transition: { type: "spring", stiffness: 260, damping: 20 } 
+                                show: {
+                                    opacity: 1,
+                                    scale: 1,
+                                    y: 0,
+                                    transition: { type: "spring", stiffness: 260, damping: 20 }
                                 }
                             }}
                         >

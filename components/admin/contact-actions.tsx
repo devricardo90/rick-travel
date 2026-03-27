@@ -46,7 +46,10 @@ export function ContactActions({ contactId, currentStatus }: ContactActionsProps
             <Button
                 size="icon"
                 variant="outline"
-                className={cn("h-8 w-8 text-slate-600 hover:text-slate-700 hover:bg-slate-50", isLoading("PENDING") && "opacity-50")}
+                className={cn(
+                    "h-9 w-9 rounded-2xl border-white/10 bg-white/[0.04] text-white/72 hover:bg-white/[0.08] hover:text-white",
+                    isLoading("PENDING") && "opacity-50"
+                )}
                 onClick={() => handleUpdate("PENDING")}
                 disabled={Boolean(loadingStatus)}
                 title="Marcar como pendente"
@@ -57,7 +60,10 @@ export function ContactActions({ contactId, currentStatus }: ContactActionsProps
             <Button
                 size="icon"
                 variant="outline"
-                className={cn("h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50", isLoading("READ") && "opacity-50")}
+                className={cn(
+                    "h-9 w-9 rounded-2xl border-sky-400/18 bg-sky-500/10 text-sky-200 hover:bg-sky-500/16 hover:text-sky-100",
+                    isLoading("READ") && "opacity-50"
+                )}
                 onClick={() => handleUpdate("READ")}
                 disabled={Boolean(loadingStatus)}
                 title="Marcar como lido"
@@ -68,7 +74,10 @@ export function ContactActions({ contactId, currentStatus }: ContactActionsProps
             <Button
                 size="icon"
                 variant="outline"
-                className={cn("h-8 w-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50", isLoading("REPLIED") && "opacity-50")}
+                className={cn(
+                    "h-9 w-9 rounded-2xl border-emerald-400/18 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/16 hover:text-emerald-100",
+                    isLoading("REPLIED") && "opacity-50"
+                )}
                 onClick={() => handleUpdate("REPLIED")}
                 disabled={Boolean(loadingStatus)}
                 title="Marcar como respondido"

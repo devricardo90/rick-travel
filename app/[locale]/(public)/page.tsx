@@ -2,22 +2,21 @@ import type { Metadata } from "next";
 import HeroSection from "@/components/hero-section";
 import { ReservationsSection } from "@/components/reservations-section";
 import { FadeInSection } from "@/components/ui/fade-in-section";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-// Code Splitting: Lazy load below-the-fold components
-const Testimonials = dynamic(() => import('@/components/testimonials'), {
+const Testimonials = dynamic(() => import("@/components/testimonials"), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
 
-const Features = dynamic(() => import('@/components/features-1'), {
+const Features = dynamic(() => import("@/components/features-1"), {
     loading: () => <div className="section-spacing h-80 animate-pulse" />,
 });
 
-const FAQsTwo = dynamic(() => import('@/components/faqs-2'), {
+const FAQsTwo = dynamic(() => import("@/components/faqs-2"), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
 
-const FooterSection = dynamic(() => import('@/components/footer'));
+const FooterSection = dynamic(() => import("@/components/footer"));
 
 function getHomeMetadataCopy(locale: string) {
     switch (locale) {
@@ -76,22 +75,22 @@ export default function Home() {
         <>
             <HeroSection />
 
-            {/* ── Wrapper premium dark (igual ao Quem Somos e Tours) ── */}
             <div
-                className="relative bg-[#071A2B] text-white"
+                className="relative overflow-hidden bg-[#071826] text-white"
                 style={{
                     backgroundImage:
-                        'radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.07), transparent 55%)',
+                        "radial-gradient(1200px 560px at 50% 0%, rgba(255,255,255,0.07), transparent 58%), linear-gradient(180deg, #081b2a 0%, #071826 32%, #0a1f30 100%)",
                 }}
             >
-                {/* Above-the-fold - sem FadeIn para melhor TBT */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[linear-gradient(180deg,rgba(200,168,107,0.08),transparent)]" />
+                <div className="pointer-events-none absolute inset-x-0 top-[30rem] h-px bg-white/8" />
+
                 <ReservationsSection />
 
                 <FadeInSection delay={0.15}>
                     <Features />
                 </FadeInSection>
 
-                {/* Below-the-fold - lazy load com FadeIn */}
                 <FadeInSection delay={0.2}>
                     <Testimonials />
                 </FadeInSection>

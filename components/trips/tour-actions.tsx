@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { trackClientEvent } from "@/lib/analytics/client";
 import { Button } from "@/components/ui/button";
-import { Loader2, MessageCircleMore } from "lucide-react";
+import { Loader2, MessageCircleMore, CalendarDays } from "lucide-react";
 import { useTranslations, useLocale } from 'next-intl';
 import { buildWhatsAppQuoteUrl } from "@/lib/whatsapp";
 
@@ -132,72 +132,79 @@ export function TourActions({ tripId, priceCents, tripTitle, city, schedules = [
     }
 
     return (
-        <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
-            <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">{t('pricePerPerson')}</span>
-                <span className="text-2xl font-bold text-primary">
+        <div className="rounded-[28px] border border-white/8 bg-[#0d2436] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.24)]">
+            <div className="rounded-[22px] border border-white/8 bg-[#091d2c] p-4">
+                <div className="text-xs font-semibold uppercase tracking-[0.14em] text-white/46">{t('pricePerPerson')}</div>
+                <div className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">
                     {new Intl.NumberFormat("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                     }).format(displayedPrice / 100)}
-                </span>
+                </div>
             </div>
 
             {schedules.length > 0 && (
-                <div className="space-y-2">
-                    <label htmlFor="schedule-select" className="block text-sm font-medium text-foreground">
+                <div className="mt-5 space-y-2">
+                    <label htmlFor="schedule-select" className="block text-sm font-medium text-white/74">
                         {copy.selectDate}
                     </label>
-                    <select
-                        id="schedule-select"
-                        value={selectedScheduleId}
-                        onChange={(event) => setSelectedScheduleId(event.target.value)}
-                        className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
-                    >
-                        {schedules.map((schedule) => (
-                            <option key={schedule.id} value={schedule.id}>
-                                {formatScheduleLabel(schedule.startAt, locale)}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="relative">
+                        <CalendarDays className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/42" />
+                        <select
+                            id="schedule-select"
+                            value={selectedScheduleId}
+                            onChange={(event) => setSelectedScheduleId(event.target.value)}
+                            className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-11 py-2 text-sm text-white outline-none transition-colors hover:bg-white/[0.06] focus:border-white/20"
+                        >
+                            {schedules.map((schedule) => (
+                                <option key={schedule.id} value={schedule.id} className="bg-[#10283c] text-white">
+                                    {formatScheduleLabel(schedule.startAt, locale)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             )}
 
-            <Button
-                className="w-full"
-                size="lg"
-                onClick={handleReserve}
-                disabled={loading || (schedules.length > 0 && !selectedScheduleId)}
-            >
-                {loading ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        {t('processing')}
-                    </>
-                ) : (
-                    t('reserveNow')
-                )}
-            </Button>
+            <div className="mt-5 space-y-3">
+                <Button
+                    className="h-12 w-full rounded-2xl"
+                    size="lg"
+                    onClick={handleReserve}
+                    disabled={loading || (schedules.length > 0 && !selectedScheduleId)}
+                >
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {t('processing')}
+                        </>
+                    ) : (
+                        t('reserveNow')
+                    )}
+                </Button>
 
-            <Button asChild variant="outline" className="w-full">
-                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                    <MessageCircleMore className="mr-2 h-4 w-4" />
-                    {copy.whatsappQuote}
-                </a>
-            </Button>
+                <Button asChild variant="outline" className="h-12 w-full rounded-2xl border-white/12 bg-white/[0.03] text-white hover:bg-white/[0.07] hover:text-white">
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        <MessageCircleMore className="mr-2 h-4 w-4" />
+                        {copy.whatsappQuote}
+                    </a>
+                </Button>
+            </div>
 
             {message && (
-                <p className={`text-center text-sm ${message === t('successMessage') ? "text-green-600" : "text-red-500"}`}>
+                <p className={`mt-4 text-center text-sm ${message === t('successMessage') ? "text-emerald-300" : "text-red-300"}`}>
                     {message}
                 </p>
             )}
 
-            <p className="text-center text-xs text-muted-foreground">
-                {t('freeCancellation')}
-            </p>
-            <p className="text-center text-xs text-muted-foreground">
-                {copy.whatsappHelpText}
-            </p>
+            <div className="mt-5 space-y-2 border-t border-white/8 pt-5 text-center">
+                <p className="text-xs text-white/52">
+                    {t('freeCancellation')}
+                </p>
+                <p className="text-xs leading-6 text-white/44">
+                    {copy.whatsappHelpText}
+                </p>
+            </div>
         </div>
     );
 }

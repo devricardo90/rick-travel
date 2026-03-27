@@ -12,7 +12,6 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { useTranslations } from 'next-intl'
 import dynamic from 'next/dynamic'
 
-// Carrega o MobileMenu apenas no cliente (usa GSAP e refs)
 const MobileMenu = dynamic(() => import('@/components/mobile-menu'), { ssr: false })
 
 export const HeroHeader = () => {
@@ -45,20 +44,16 @@ export const HeroHeader = () => {
       >
         <div
           className={cn(
-            'mx-auto max-w-7xl px-6 transition-all duration-300 lg:px-12 lg:rounded-3xl',
+            'mx-auto max-w-7xl px-5 transition-all duration-300 lg:px-12 lg:rounded-[28px]',
             scrolled
               ? [
-                // Light scrolled: branco glass premium
-                'bg-white/80 backdrop-blur-xl border-b border-black/5 shadow-[0_10px_25px_rgba(15,23,42,0.08)] py-2',
-                // Dark scrolled: navy glass
-                'dark:bg-navy-900/80 dark:border-white/10 dark:shadow-[0_10px_25px_rgba(0,0,0,0.25)]',
-                'lg:border-b-0 lg:border lg:border-black/5 dark:lg:border-white/10',
+                'bg-[#f7f8fa]/88 py-2 shadow-[0_12px_30px_rgba(16,32,51,0.08)] backdrop-blur-xl dark:bg-[#0b2233]/82',
+                'border-b border-black/5 dark:border-white/10 lg:border lg:border-black/5 dark:lg:border-white/10',
               ].join(' ')
               : 'lg:bg-transparent'
           )}
         >
           <div className="relative flex items-center justify-between py-3 lg:py-4">
-            {/* Logo */}
             <Link
               href="/"
               aria-label="Rick Travel - Página inicial"
@@ -67,32 +62,30 @@ export const HeroHeader = () => {
               <RickTravelLogo variant="full" size="sm" />
             </Link>
 
-            {/* Botão hamburguer mobile */}
             <button
               onClick={() => setMenuOpen(true)}
               aria-label={t('openMenu')}
               aria-expanded={menuOpen}
               aria-controls="mobile-navigation"
-              className="touch-target relative z-50 lg:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg text-slate-700 dark:text-white/80"
+              className="touch-target relative z-50 rounded-lg text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:text-white/80 lg:hidden"
             >
               <Menu className="h-6 w-6" />
             </button>
 
-            {/* Desktop Menu */}
             <div className="hidden lg:flex lg:items-center lg:gap-8">
-              <ul className="flex gap-8 text-sm font-medium">
+              <ul className="flex gap-7 text-sm font-medium">
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className="text-slate-600 hover:text-slate-900 dark:text-white/75 dark:hover:text-white transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary rounded-sm"
+                      className="rounded-sm text-slate-700 transition-colors duration-200 hover:text-slate-950 dark:text-white/74 dark:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
                     >
                       {item.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center gap-4 border-l border-light-border dark:border-white/10 pl-6">
+              <div className="flex items-center gap-4 border-l border-light-border/90 pl-6 dark:border-white/10">
                 <AuthStatus />
                 <div className="flex items-center gap-2">
                   <ThemeToggleButton />
@@ -103,7 +96,6 @@ export const HeroHeader = () => {
           </div>
         </div>
 
-        {/* Bottom Sheet Menu Mobile */}
         <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       </nav>
     </header>

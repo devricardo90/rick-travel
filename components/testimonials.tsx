@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState } from 'react'
@@ -24,12 +23,15 @@ export default function Testimonials() {
   const t = useTranslations('HomePage.Testimonials');
   return (
     <section className="section-spacing">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mx-auto mb-12 max-w-2xl text-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] text-white">
+      <div className="mx-auto max-w-6xl px-5 lg:px-6">
+        <div className="mx-auto mb-12 max-w-2xl space-y-4 text-center">
+          <div className="inline-flex rounded-full border border-white/10 bg-white/[0.05] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#c8a86b]">
+            Depoimentos reais
+          </div>
+          <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
             {t('title')}
           </h2>
-          <p className="text-white/65">
+          <p className="text-[15px] leading-7 text-white/64">
             {t('subtitle')}
           </p>
         </div>
@@ -132,18 +134,16 @@ function TestimonialCard({
   const canExpand = fullText.length > text.length
 
   return (
-    <Card className="h-full rounded-2xl border bg-white dark:bg-card shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden">
-      {/* Aspas decorativas */}
-      <div className="absolute top-4 right-5 text-5xl font-serif text-primary/10 select-none leading-none" aria-hidden="true">
+    <Card className="relative h-full overflow-hidden rounded-[28px] border-white/8 bg-[#0d2436] text-white shadow-[0_20px_55px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-1 hover:border-white/14 hover:shadow-[0_28px_70px_rgba(0,0,0,0.28)]">
+      <div className="absolute right-5 top-4 select-none font-serif text-5xl leading-none text-white/8" aria-hidden="true">
         &quot;
       </div>
 
       <CardContent className="flex h-full flex-col justify-between p-6">
-        <div className="space-y-2">
-          {/* 5 estrelas */}
+        <div className="space-y-3">
           <StarRating />
 
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-7 text-white/68">
             {expanded ? fullText : text}
           </p>
 
@@ -153,7 +153,7 @@ function TestimonialCard({
               size="sm"
               onClick={() => setExpanded(!expanded)}
               aria-expanded={expanded}
-              className="h-auto px-2 py-1 text-xs font-medium text-primary hover:bg-primary/10 hover:text-primary rounded-md transition-all duration-200 flex items-center gap-1"
+              className="flex h-auto items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-[#d8c18f] transition-all duration-200 hover:bg-white/[0.05] hover:text-[#f0ddaf]"
             >
               {expanded ? t('readLess') : t('readMore')}
               <ChevronDown
@@ -164,7 +164,7 @@ function TestimonialCard({
           )}
         </div>
 
-        <div className="mt-6 flex items-center gap-3 border-t pt-4">
+        <div className="mt-6 flex items-center gap-3 border-t border-white/8 pt-4">
           <Avatar className="size-11">
             {avatarUrl && (
               <AvatarImage
@@ -175,15 +175,15 @@ function TestimonialCard({
                 }}
               />
             )}
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+            <AvatarFallback className="bg-white/8 font-semibold text-[#d8c18f]">
               {initials}
             </AvatarFallback>
           </Avatar>
 
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight">{author}</p>
-            <p className="text-xs text-muted-foreground">{role}</p>
-            <p className="text-xs text-primary">{instagram}</p>
+            <p className="text-sm font-semibold leading-tight text-white">{author}</p>
+            <p className="text-xs text-white/54">{role}</p>
+            <p className="text-xs text-[#d8c18f]">{instagram}</p>
           </div>
         </div>
       </CardContent>

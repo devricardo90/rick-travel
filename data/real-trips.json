@@ -1,0 +1,133 @@
+[
+  {
+    "matchByTitlePt": "Passeio Confeitaria Colombo",
+    "nome": "Confeitaria Colombo + City Tour Rio",
+    "slug": "confeitaria-colombo-city-tour",
+    "descricao": "Explore o principal cartão-postal do Brasil com visita a confeitaria colombo r e passeio pelos pontos históricos do Rio de Janeiro. Inclui transporte confortável e guia credenciado.",
+    "duracao": "5 horas",
+    "preco_base": 245,
+    "local": "Rio de Janeiro",
+    "categoria": "City Tour",
+    "highlights": [
+      "Cristo Redentor",
+      "Vista panorâmica da cidade",
+      "Centro histórico",
+      "Guia bilíngue"
+    ],
+    "inclusoes": [
+      "Transporte ida e volta",
+      "Guia turístico credenciado",
+      "Paradas para fotos"
+    ],
+    "exclusoes": [
+      "Alimentação",
+      "Ingresso opcional trem ou van"
+    ],
+    "imageUrl": "/images/trips/confeitaria-colombo-city-tour.jpeg",
+    "location": "Centro histórico do Rio de Janeiro"
+  },
+  {
+    "matchByTitlePt": "Rio Escadaria selarao",
+    "nome": "Cristo Redentor + Pão de Açúcar",
+    "slug": "cristo-pao-de-acucar",
+    "descricao": "Visite os dois pontos turísticos mais famosos do Rio em um único passeio com transporte, guia e ingressos inclusos.",
+    "duracao": "5 a 6 horas",
+    "preco_base": 385,
+    "local": "Rio de Janeiro",
+    "categoria": "Passeio Clássico",
+    "highlights": [
+      "Cristo Redentor",
+      "Bondinho do Pão de Açúcar",
+      "Vista da Baía de Guanabara"
+    ],
+    "inclusoes": [
+      "Transporte em van",
+      "Guia turístico",
+      "Ingresso Cristo Redentor",
+      "Ingresso Pão de Açúcar"
+    ],
+    "exclusoes": [
+      "Alimentação"
+    ],
+    "imageUrl": "/images/trips/imagem-pao-de-acucar.jpg",
+    "location": "Rio de Janeiro"
+  },
+  {
+    "matchByTitlePt": "Tour centro do Rio",
+    "nome": "Tour Privado Premium Rio de Janeiro",
+    "slug": "tour-privado-rio",
+    "descricao": "Experiência exclusiva e personalizada pelos principais pontos do Rio com guia privado e veículo confortável.",
+    "duracao": "8 horas",
+    "preco_base": 900,
+    "local": "Rio de Janeiro",
+    "categoria": "Premium",
+    "highlights": [
+      "Roteiro personalizado",
+      "Cristo Redentor",
+      "Pão de Açúcar",
+      "Santa Teresa",
+      "Escadaria Selarón"
+    ],
+    "inclusoes": [
+      "Guia privado",
+      "Transporte executivo",
+      "Flexibilidade total de roteiro"
+    ],
+    "exclusoes": [
+      "Ingressos",
+      "Alimentação"
+    ],
+    "imageUrl": "/images/trips/imagem-igreja-centro-rio.jpg",
+    "location": "Rio de Janeiro"
+  },
+  {
+    "matchByTitlePt": "Tour buzios ",
+    "nome": "Passeio de Barco Sunset em Buzios",
+    "slug": "passeio-barco-sunset",
+    "descricao": "Desfrute de um passeio de barco ao pôr do sol com vista para os principais cartões-postais de Buzios.",
+    "duracao": "2 a 3 horas",
+    "preco_base": 350,
+    "local": "Buzios",
+    "categoria": "Experiência Premium",
+    "highlights": [
+      "Pôr do sol na Baía de Guanabara",
+      "Vista do Cristo Redentor",
+      "Vista do Pão de Açúcar"
+    ],
+    "inclusoes": [
+      "Passeio de barco",
+      "Bebidas",
+      "Guia"
+    ],
+    "exclusoes": [
+      "Transporte até o local"
+    ],
+    "imageUrl": "/images/trips/imagem-buzios-praia.jpg",
+    "location": "Buzios"
+  },
+  {
+    "matchByTitlePt": "Tour Favela",
+    "nome": "Tour Favela Rocinha com Guia Local",
+    "slug": "tour-favela-rocinha",
+    "descricao": "Conheça a cultura local da maior favela do Brasil com guia especializado e experiência segura.",
+    "duracao": "3 a 4 horas",
+    "preco_base": 120,
+    "local": "Rio de Janeiro",
+    "categoria": "Experiência Cultural",
+    "highlights": [
+      "Vista panorâmica da Rocinha",
+      "Interação com comunidade local",
+      "Cultura e história"
+    ],
+    "inclusoes": [
+      "Guia local",
+      "Transporte",
+      "Passeio guiado"
+    ],
+    "exclusoes": [
+      "Alimentação"
+    ],
+    "imageUrl": "/images/trips/imagem-tour-favela-rocinha.jpg",
+    "location": "Rocinha, Rio de Janeiro"
+  }
+]

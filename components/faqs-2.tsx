@@ -1,4 +1,3 @@
-
 'use client'
 
 import {
@@ -43,25 +42,23 @@ export default function FAQsTwo() {
 
   return (
     <section className="section-spacing">
-      <div className="mx-auto max-w-5xl px-6">
-        {/* Header com ícone de suporte */}
-        <div className="mx-auto max-w-2xl text-center space-y-4">
+      <div className="mx-auto max-w-5xl px-5 lg:px-6">
+        <div className="mx-auto max-w-2xl space-y-4 text-center">
           <div className="flex justify-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/70">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-medium text-white/70">
               <MessageCircle className="h-4 w-4" />
               Suporte &amp; Perguntas
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] text-white text-balance">
+          <h2 className="text-balance text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
             {t('title')}
           </h2>
-          <p className="text-white/65 text-balance">
+          <p className="text-balance text-[15px] leading-7 text-white/64">
             {t('subtitle')}
           </p>
         </div>
 
-        {/* Accordion */}
-        <div className="mx-auto mt-14 max-w-2xl">
+        <div className="mx-auto mt-14 max-w-3xl">
           <Accordion
             type="single"
             collapsible
@@ -73,24 +70,23 @@ export default function FAQsTwo() {
                 value={item.id}
                 className="border-b border-white/10 last:border-none"
               >
-                <AccordionTrigger className="text-sm text-left font-semibold text-white hover:no-underline hover:text-white/80 transition-colors duration-200">
+                <AccordionTrigger className="py-5 text-left text-[15px] font-semibold text-white transition-colors duration-200 hover:text-white/80 hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-white/65 leading-relaxed">
+                <AccordionContent className="pb-5 text-sm leading-7 text-white/64">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
 
-          {/* CTA */}
-          <div className="mt-8 text-center space-y-2">
+          <div className="mt-8 space-y-2 text-center">
             <p className="text-sm text-white/55">
               {t('stillHaveQuestions')}
             </p>
             <Link
               href="#contato"
-              className="text-sm inline-block text-white/80 hover:text-white font-medium transition-colors"
+              className="inline-block text-sm font-medium text-[#d8c18f] transition-colors hover:text-[#f0ddaf]"
             >
               {t('contactTeam')} →
             </Link>

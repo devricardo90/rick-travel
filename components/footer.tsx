@@ -19,7 +19,7 @@ const socialLinks = [
     {
         label: 'TikTok',
         href: '#',
-        color: 'hover:text-foreground',
+        color: 'hover:text-white',
         icon: (
             <svg className="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48" />
@@ -86,27 +86,27 @@ export default function FooterSection() {
     ]
 
     return (
-        <footer className="border-t border-border/40 bg-background py-14 dark:border-[#C8A86B]/15 dark:bg-[#071826] md:py-20">
-            <div className="mx-auto max-w-6xl px-6">
+        <footer className="border-t border-white/8 bg-[#071826] py-14 md:py-18">
+            <div className="mx-auto max-w-6xl px-5 lg:px-6">
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" aria-label="Rick Travel - Pagina inicial" className="block w-fit">
                             <RickTravelLogo variant="full" size="md" />
                         </Link>
-                        <p className="mt-3 max-w-[220px] text-sm leading-relaxed text-muted-foreground">
+                        <p className="mt-4 max-w-[260px] text-sm leading-7 text-white/62">
                             Experiencias no Rio de Janeiro com operacao mais clara, segura e personalizada.
                         </p>
                     </div>
 
                     {columns.map((column) => (
                         <div key={column.title}>
-                            <h3 className="mb-4 text-sm font-semibold text-foreground">{column.title}</h3>
+                            <h3 className="mb-4 text-sm font-semibold text-white">{column.title}</h3>
                             <ul className="space-y-3">
                                 {column.links.map((link) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-sm text-muted-foreground transition-colors duration-150 hover:text-primary"
+                                            className="text-sm text-white/58 transition-colors duration-150 hover:text-white"
                                         >
                                             {link.label}
                                         </Link>
@@ -117,7 +117,7 @@ export default function FooterSection() {
                     ))}
                 </div>
 
-                <div className="my-10 border-t border-border/50 dark:border-[#C8A86B]/12" />
+                <div className="my-10 border-t border-white/8" />
 
                 <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
                     <div className="flex items-center gap-4">
@@ -128,15 +128,15 @@ export default function FooterSection() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={social.label}
-                                className={`text-muted-foreground transition-colors duration-200 ${social.color}`}
+                                className={`text-white/48 transition-colors duration-200 ${social.color}`}
                             >
                                 {social.icon}
                             </Link>
                         ))}
                     </div>
 
-                    <span className="text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} <strong className="text-foreground">Rick Travel</strong>. {t('copyright')}
+                    <span className="text-center text-sm text-white/50">
+                        © {new Date().getFullYear()} <strong className="text-white">Rick Travel</strong>. {t('copyright')}
                     </span>
                 </div>
             </div>

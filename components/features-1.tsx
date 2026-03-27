@@ -35,11 +35,11 @@ function PackageCard({
 
   return (
     <div
-      className={`group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/8 bg-white/95 shadow-[0_24px_60px_rgba(15,23,42,0.12)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_32px_80px_rgba(15,23,42,0.18)] dark:bg-[#0B2233] dark:hover:border-white/15 dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${popular ? 'z-10 scale-[1.02] ring-2 ring-[#1A7A6E]/60' : ''
+      className={`group relative flex h-full flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[#0d2436] shadow-[0_24px_70px_rgba(0,0,0,0.24)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/16 hover:shadow-[0_32px_90px_rgba(0,0,0,0.3)] ${popular ? 'z-10 scale-[1.02] ring-1 ring-[#c8a86b]/50' : ''
         }`}
     >
       {popular && (
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#1A4D2E]/60 bg-gradient-to-r from-[#0B2E1E] to-[#0F3B27] px-4 py-1 text-xs font-bold text-white/90 shadow-md">
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#c8a86b]/35 bg-[#102938] px-4 py-1 text-xs font-semibold text-[#f1dfb7] shadow-md">
           Mais popular
         </div>
       )}
@@ -54,30 +54,30 @@ function PackageCard({
           quality={75}
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
         <div className="absolute right-3 top-3">
           {badge}
         </div>
       </div>
 
       <div className="px-6 pb-2 pt-6">
-        <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-900 dark:border-white/10 dark:bg-white/5 dark:text-white/70">
+        <div className="inline-flex rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#d8c18f]">
           Rio signature
         </div>
-        <h3 className="mt-4 text-xl font-semibold text-gray-900 dark:text-[#EAF2F7]">{title}</h3>
-        <div className="mt-3 rounded-2xl border border-slate-200/70 bg-slate-50/80 p-3 dark:border-[#1A4D2E]/50 dark:bg-gradient-to-r dark:from-[#0B2E1E] dark:to-[#0F3B27]">
-          <span className="text-xs text-muted-foreground dark:text-[#A8B7C6]/70">{priceLabel}</span>
-          <p className="text-2xl font-black text-primary dark:text-[#EAF2F7]">{price}</p>
+        <h3 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white">{title}</h3>
+        <div className="mt-4 rounded-[22px] border border-white/8 bg-[#091d2c] p-4">
+          <span className="text-xs text-white/52">{priceLabel}</span>
+          <p className="text-2xl font-semibold text-white">{price}</p>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col px-6 pb-6">
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground dark:text-[#A8B7C6]">{description}</p>
+        <p className="mt-2 text-sm leading-7 text-white/66">{description}</p>
 
-        <ul className="mt-4 space-y-1.5">
+        <ul className="mt-5 space-y-2">
           {benefits.map((benefit, index) => (
-            <li key={index} className="flex items-center gap-2 text-sm text-foreground dark:text-[#EAF2F7]/85">
-              <Check className="h-4 w-4 shrink-0 text-[#1A7A6E]" />
+            <li key={index} className="flex items-center gap-2 text-sm text-white/84">
+              <Check className="h-4 w-4 shrink-0 text-[#d8c18f]" />
               {benefit}
             </li>
           ))}
@@ -86,11 +86,11 @@ function PackageCard({
         <div className="mt-auto pt-6">
           <Link
             href={href}
-            className={`flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 hover:-translate-y-px ${popular
+            className={`flex w-full items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-200 hover:-translate-y-px ${popular
               ? 'text-white'
-              : 'border border-slate-200 bg-slate-50 text-slate-900 hover:bg-slate-100 dark:border-white/15 dark:bg-transparent dark:text-[#EAF2F7] dark:hover:bg-white/8'
+              : 'border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08]'
               }`}
-            style={popular ? { background: 'linear-gradient(135deg, #0B2E1E 0%, #0F3B27 100%)', border: '1px solid rgba(26,77,46,0.5)' } : {}}
+            style={popular ? { background: 'linear-gradient(135deg, #123A28 0%, #184731 100%)', border: '1px solid rgba(56, 122, 91, 0.4)' } : {}}
           >
             {t('requestQuote')}
           </Link>
@@ -105,20 +105,20 @@ export default function Features() {
 
   return (
     <section className="section-spacing-sm">
-      <div className="@container mx-auto max-w-5xl px-6">
+      <div className="@container mx-auto max-w-6xl px-5 lg:px-6">
         <div className="space-y-4 text-center">
-          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A86B]">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/[0.05] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A86B]">
             Curated packages
           </span>
-          <h2 className="text-balance text-3xl font-bold tracking-[-0.02em] text-white md:text-4xl">
+          <h2 className="text-balance text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
             {t('title')}
           </h2>
-          <p className="mx-auto max-w-2xl text-white/65">
+          <p className="mx-auto max-w-2xl text-[15px] leading-7 text-white/64">
             {t('subtitle')}
           </p>
         </div>
 
-        <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm items-start gap-6 md:mt-14">
+        <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-10 grid max-w-sm items-start gap-6 md:mt-14">
           <PackageCard
             title={t('package1.title')}
             description={t('package1.description')}

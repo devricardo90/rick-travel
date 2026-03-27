@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Loader2, CheckCircle2 } from "lucide-react"
+import { Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { toast } from "sonner"
 
@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { submitContactForm } from "@/app/actions/contact"
-
 
 export function ContactForm() {
     const t = useTranslations('ContactPage.form');
@@ -54,12 +53,10 @@ export function ContactForm() {
 
             if (result.success) {
                 setShowSuccess(true)
-                toast.success("Mensagem enviada com sucesso! 🎉", {
+                toast.success("Mensagem enviada com sucesso!", {
                     description: result.message || "Entraremos em contato em breve",
                 })
                 reset()
-
-                // Esconder animação de sucesso após 3 segundos
                 setTimeout(() => setShowSuccess(false), 3000)
             } else {
                 toast.error("Erro ao enviar mensagem", {
@@ -76,71 +73,86 @@ export function ContactForm() {
     }
 
     return (
-        <div className="mx-auto w-full max-w-md space-y-6">
-            <div className="grid gap-2 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] text-white">{tPage('title')}</h2>
-                <p className="text-balance text-white/70">
-                    {tPage('subtitle')}
-                </p>
+        <div className="rounded-[28px] border border-white/8 bg-[#0d2436] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.24)] md:p-7">
+            <div className="flex items-start justify-between gap-4">
+                <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#d8c18f]">
+                        <ShieldCheck className="h-3.5 w-3.5" />
+                        Contato seguro
+                    </div>
+                    <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white">{tPage('title')}</h2>
+                    <p className="mt-3 text-sm leading-7 text-white/62">
+                        {tPage('subtitle')}
+                    </p>
+                </div>
             </div>
 
             {showSuccess && (
-                <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 dark:bg-green-900/30 p-4 text-green-700 dark:text-green-400 fade-in">
-                    <CheckCircle2 className="h-5 w-5 animate-bounce" />
-                    <p className="font-medium">Mensagem enviada!</p>
+                <div className="fade-in mt-5 flex items-center gap-3 rounded-[20px] border border-emerald-400/20 bg-emerald-500/10 p-4 text-emerald-100">
+                    <CheckCircle2 className="h-5 w-5 shrink-0" />
+                    <p className="text-sm font-medium">Mensagem enviada! Nossa equipe entrará em contato em breve.</p>
                 </div>
             )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid gap-2">
-                    <Label htmlFor="name">{t('name')}</Label>
-                    <Input
-                        id="name"
-                        placeholder={t('namePlaceholder')}
-                        {...register("name")}
-                        className={`transition-all duration-200 ${errors.name ? "border-red-500 dark:border-red-700 shake" : ""}`}
-                    />
-                    {errors.name && (
-                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.name.message}</p>
-                    )}
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                    <div className="grid gap-2">
+                        <Label htmlFor="name" className="text-sm text-white/78">{t('name')}</Label>
+                        <Input
+                            id="name"
+                            placeholder={t('namePlaceholder')}
+                            {...register("name")}
+                            className={`h-12 rounded-2xl border-white/10 bg-white/[0.04] px-4 text-white placeholder:text-white/40 focus-visible:ring-white/20 ${errors.name ? "border-red-400/40" : ""}`}
+                        />
+                        {errors.name && (
+                            <p className="fade-in text-sm text-red-300">{errors.name.message}</p>
+                        )}
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="email" className="text-sm text-white/78">{t('email')}</Label>
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder={t('emailPlaceholder')}
+                            {...register("email")}
+                            className={`h-12 rounded-2xl border-white/10 bg-white/[0.04] px-4 text-white placeholder:text-white/40 focus-visible:ring-white/20 ${errors.email ? "border-red-400/40" : ""}`}
+                        />
+                        {errors.email && (
+                            <p className="fade-in text-sm text-red-300">{errors.email.message}</p>
+                        )}
+                    </div>
                 </div>
+
                 <div className="grid gap-2">
-                    <Label htmlFor="email">{t('email')}</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        placeholder={t('emailPlaceholder')}
-                        {...register("email")}
-                        className={`transition-all duration-200 ${errors.email ? "border-red-500 dark:border-red-700 shake" : ""}`}
-                    />
-                    {errors.email && (
-                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.email.message}</p>
-                    )}
-                </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="phone">{t('phone')}</Label>
+                    <Label htmlFor="phone" className="text-sm text-white/78">{t('phone')}</Label>
                     <Input
                         id="phone"
                         type="tel"
                         placeholder={t('phonePlaceholder')}
                         {...register("phone")}
-                        className="transition-all duration-200"
+                        className="h-12 rounded-2xl border-white/10 bg-white/[0.04] px-4 text-white placeholder:text-white/40 focus-visible:ring-white/20"
                     />
                 </div>
+
                 <div className="grid gap-2">
-                    <Label htmlFor="message">{t('message')}</Label>
+                    <Label htmlFor="message" className="text-sm text-white/78">{t('message')}</Label>
                     <Textarea
                         id="message"
                         placeholder={t('messagePlaceholder')}
                         {...register("message")}
-                        className={`transition-all duration-200 ${errors.message ? "border-red-500 dark:border-red-700 shake" : ""}`}
+                        className={`min-h-[160px] rounded-2xl border-white/10 bg-white/[0.04] px-4 py-3 text-white placeholder:text-white/40 focus-visible:ring-white/20 ${errors.message ? "border-red-400/40" : ""}`}
                     />
                     {errors.message && (
-                        <p className="text-sm text-red-500 dark:text-red-400 fade-in">{errors.message.message}</p>
+                        <p className="fade-in text-sm text-red-300">{errors.message.message}</p>
                     )}
                 </div>
 
-                <Button type="submit" className="w-full button-press" disabled={isSubmitting}>
+                <div className="rounded-[20px] border border-white/8 bg-[#091d2c] px-4 py-4 text-sm leading-7 text-white/58">
+                    Use este formulário para pedir orçamento, validar disponibilidade ou explicar o perfil da sua viagem. Quanto mais contexto você enviar, melhor o time consegue orientar.
+                </div>
+
+                <Button type="submit" className="h-12 w-full rounded-2xl button-press" disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

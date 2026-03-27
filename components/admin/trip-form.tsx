@@ -168,118 +168,132 @@ export default function TripForm({ initialData }: TripFormProps) {
     }
   };
 
+  const activeLocaleKey = activeLocale.charAt(0).toUpperCase() + activeLocale.slice(1);
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 rounded-[30px] border border-white/8 bg-[#0d2436] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.22)] md:p-8"
+    >
       {error ? (
-        <div className="rounded-md border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive">
+        <div className="rounded-[22px] border border-red-400/20 bg-red-500/10 p-4 text-sm text-red-100">
           {error}
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Cidade</label>
-          <input
-            name="city"
-            required
-            value={formData.city}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-            placeholder="Ex: Rio de Janeiro"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Preco (R$)</label>
-          <input
-            name="price"
-            type="number"
-            step="0.01"
-            required
-            value={formData.price}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-            placeholder="0.00"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Localizacao especifica</label>
-          <input
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-            placeholder="Ex: Marina da Gloria"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Max. pessoas</label>
-          <input
-            name="maxGuests"
-            type="number"
-            value={formData.maxGuests}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-            placeholder="Ex: 10"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Data inicio</label>
-          <input
-            name="startDate"
-            type="date"
-            value={formData.startDate}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground/80">Data fim</label>
-          <input
-            name="endDate"
-            type="date"
-            value={formData.endDate}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-
-        <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-semibold text-foreground/80">URL da imagem</label>
-          <input
-            name="imageUrl"
-            value={formData.imageUrl}
-            onChange={handleChange}
-            className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-            placeholder="https://exemplo.com/imagem.jpg"
-          />
-        </div>
-
-        <label className="flex items-center gap-3 rounded-lg border border-border bg-background p-3 md:col-span-2">
-          <input
-            name="isPublished"
-            type="checkbox"
-            checked={formData.isPublished}
-            onChange={handleChange}
-            className="h-4 w-4 rounded border-border"
-          />
-          <div>
-            <div className="text-sm font-semibold text-foreground/80">Publicar na vitrine</div>
-            <div className="text-xs text-muted-foreground">
-              Quando desmarcado, o passeio fica oculto das listagens e buscas publicas.
-            </div>
-          </div>
-        </label>
-      </div>
-
-      <section className="space-y-4 rounded-xl border border-border/80 bg-muted/20 p-4">
+      <section className="space-y-5 rounded-[26px] border border-white/8 bg-[#091d2c] p-5">
         <div>
-          <h2 className="text-lg font-semibold">Conteudo por idioma</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-lg font-semibold tracking-[-0.03em] text-white">Dados principais</h2>
+          <p className="mt-2 text-sm leading-7 text-white/56">
+            Informacoes base do passeio para exibicao, precificacao e enquadramento editorial.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Cidade</label>
+            <input
+              name="city"
+              required
+              value={formData.city}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
+              placeholder="Ex: Rio de Janeiro"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Preco (R$)</label>
+            <input
+              name="price"
+              type="number"
+              step="0.01"
+              required
+              value={formData.price}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
+              placeholder="0.00"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Localizacao especifica</label>
+            <input
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
+              placeholder="Ex: Marina da Gloria"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Max. pessoas</label>
+            <input
+              name="maxGuests"
+              type="number"
+              value={formData.maxGuests}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
+              placeholder="Ex: 10"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Data inicio</label>
+            <input
+              name="startDate"
+              type="date"
+              value={formData.startDate}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors hover:bg-white/[0.06] focus:border-white/18"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white/74">Data fim</label>
+            <input
+              name="endDate"
+              type="date"
+              value={formData.endDate}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors hover:bg-white/[0.06] focus:border-white/18"
+            />
+          </div>
+
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium text-white/74">URL da imagem</label>
+            <input
+              name="imageUrl"
+              value={formData.imageUrl}
+              onChange={handleChange}
+              className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
+              placeholder="https://exemplo.com/imagem.jpg"
+            />
+          </div>
+
+          <label className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-white/[0.04] p-4 md:col-span-2">
+            <input
+              name="isPublished"
+              type="checkbox"
+              checked={formData.isPublished}
+              onChange={handleChange}
+              className="h-4 w-4 rounded border-white/20 bg-transparent"
+            />
+            <div>
+              <div className="text-sm font-semibold text-white/82">Publicar na vitrine</div>
+              <div className="text-xs leading-6 text-white/48">
+                Quando desmarcado, o passeio fica oculto das listagens e buscas publicas.
+              </div>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <section className="space-y-5 rounded-[26px] border border-white/8 bg-[#091d2c] p-5">
+        <div>
+          <h2 className="text-lg font-semibold tracking-[-0.03em] text-white">Conteudo por idioma</h2>
+          <p className="mt-2 text-sm leading-7 text-white/56">
             PT e a base editorial. EN, ES e SV podem ser preenchidos manualmente; se ficarem vazios, o sistema completa com traducao automatica e fallback.
           </p>
         </div>
@@ -290,10 +304,10 @@ export default function TripForm({ initialData }: TripFormProps) {
               key={item}
               type="button"
               onClick={() => setActiveLocale(item)}
-              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 activeLocale === item
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border bg-background text-foreground/80 hover:bg-muted"
+                  ? "bg-[#123a28] text-white"
+                  : "border border-white/10 bg-white/[0.04] text-white/68 hover:bg-white/[0.08] hover:text-white"
               }`}
             >
               {localeLabels[item]}
@@ -303,64 +317,63 @@ export default function TripForm({ initialData }: TripFormProps) {
 
         <div className="grid grid-cols-1 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground/80">
+            <label className="text-sm font-medium text-white/74">
               Titulo ({localeLabels[activeLocale]})
             </label>
             <input
-              name={`title${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}`}
+              name={`title${activeLocaleKey}`}
               required={activeLocale === "pt"}
-              value={
-                formData[`title${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}` as keyof typeof formData] as string
-              }
+              value={formData[`title${activeLocaleKey}` as keyof typeof formData] as string}
               onChange={handleChange}
-              className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="min-h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
               placeholder={activeLocale === "pt" ? "Ex: Passeio de Barco" : "Opcional"}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground/80">
+            <label className="text-sm font-medium text-white/74">
               Descricao ({localeLabels[activeLocale]})
             </label>
             <textarea
-              name={`description${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}`}
+              name={`description${activeLocaleKey}`}
               rows={4}
-              value={
-                formData[
-                  `description${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}` as keyof typeof formData
-                ] as string
-              }
+              value={formData[`description${activeLocaleKey}` as keyof typeof formData] as string}
               onChange={handleChange}
-              className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-[22px] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm leading-7 text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
               placeholder={activeLocale === "pt" ? "Detalhes do passeio..." : "Opcional"}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground/80">
+            <label className="text-sm font-medium text-white/74">
               Destaques ({localeLabels[activeLocale]}) - um por linha
             </label>
             <textarea
-              name={`highlights${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}`}
+              name={`highlights${activeLocaleKey}`}
               rows={5}
-              value={
-                formData[
-                  `highlights${activeLocale.charAt(0).toUpperCase()}${activeLocale.slice(1)}` as keyof typeof formData
-                ] as string
-              }
+              value={formData[`highlights${activeLocaleKey}` as keyof typeof formData] as string}
               onChange={handleChange}
-              className="w-full rounded-lg border border-border bg-background p-2.5 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="w-full rounded-[22px] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm leading-7 text-white outline-none transition-colors placeholder:text-white/34 hover:bg-white/[0.06] focus:border-white/18"
               placeholder={activeLocale === "pt" ? "Cafe da manha incluso\nTransporte ida e volta" : "Opcional"}
             />
           </div>
         </div>
       </section>
 
-      <div className="mt-6 flex justify-end gap-4 border-t border-border pt-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} className="rounded-lg">
+      <div className="mt-6 flex flex-col justify-end gap-3 border-t border-white/8 pt-5 sm:flex-row">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          className="h-12 rounded-2xl border-white/10 bg-white/[0.04] px-5 text-white/72 hover:bg-white/[0.08] hover:text-white"
+        >
           Cancelar
         </Button>
-        <Button type="submit" disabled={loading} className="rounded-lg px-8">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="h-12 rounded-2xl bg-[#123a28] px-8 text-white transition-colors hover:bg-[#184731]"
+        >
           {loading ? "Salvando..." : "Salvar viagem"}
         </Button>
       </div>

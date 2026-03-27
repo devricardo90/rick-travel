@@ -1,4 +1,3 @@
-
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
@@ -17,30 +16,63 @@ export default async function AdminLayout({
     headers: await headers(),
   });
 
-  // 🔐 Proteção REAL de admin
   if (!session || session.user.role !== "ADMIN") {
     redirect(`/${locale}/login`);
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <header className="border-b bg-background">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <h2 className="font-semibold">RickTravel Admin</h2>
+    <div className="min-h-screen bg-[#071826] text-white">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 opacity-80"
+        style={{
+          background:
+            "radial-gradient(1200px 560px at 50% -10%, rgba(255,255,255,0.08), transparent 58%), linear-gradient(180deg, rgba(200,168,107,0.05) 0%, transparent 18%)",
+        }}
+      />
 
-          <nav className="flex gap-4 text-sm items-center">
-            <Link href={`/${locale}/admin`}>Dashboard</Link>
-            <Link href={`/${locale}/admin/trips`}>Trips</Link>
-            <Link href={`/${locale}/admin/bookings`}>Reservas</Link>
-            <Link href={`/${locale}/admin/contacts`}>Contatos</Link>
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#071826]/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#d8c18f]">
+              Rick Travel
+            </p>
+            <h2 className="mt-1 text-lg font-semibold tracking-[-0.03em] text-white">
+              Painel administrativo
+            </h2>
+          </div>
 
-            {/* Logout */}
+          <nav className="flex flex-wrap items-center gap-2 text-sm">
+            <Link
+              href={`/${locale}/admin`}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-white/72 transition-colors hover:bg-white/[0.08] hover:text-white"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href={`/${locale}/admin/trips`}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-white/72 transition-colors hover:bg-white/[0.08] hover:text-white"
+            >
+              Trips
+            </Link>
+            <Link
+              href={`/${locale}/admin/bookings`}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-white/72 transition-colors hover:bg-white/[0.08] hover:text-white"
+            >
+              Reservas
+            </Link>
+            <Link
+              href={`/${locale}/admin/contacts`}
+              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-white/72 transition-colors hover:bg-white/[0.08] hover:text-white"
+            >
+              Contatos
+            </Link>
             <AdminLogoutButton />
           </nav>
         </div>
       </header>
 
-      <main>{children}</main>
+      <main className="relative z-10">{children}</main>
     </div>
   );
 }

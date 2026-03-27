@@ -56,8 +56,13 @@ export default async function TripList({ searchParams }: TripListProps) {
 
   if (trips.length === 0) {
     return (
-      <div className="text-center py-10">
-        <p className="text-muted-foreground text-lg">Nenhum passeio encontrado com esses filtros.</p>
+      <div className="surface-dark px-6 py-16 text-center">
+        <div className="mx-auto max-w-md">
+          <h3 className="text-xl font-semibold tracking-[-0.03em] text-white">Nenhum passeio encontrado</h3>
+          <p className="mt-3 text-[15px] leading-7 text-white/60">
+            Ajuste os filtros para ampliar a busca e encontrar o roteiro ideal para sua viagem no Rio.
+          </p>
+        </div>
       </div>
     );
   }
