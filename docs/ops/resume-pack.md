@@ -27,12 +27,15 @@ Funcionando por evidencia:
 - `npm.cmd run build`: PASS fora do sandbox.
 - `npm.cmd run test`: PASS com 15 testes.
 - `npm.cmd run test:e2e`: PASS com 5/5.
+- Provider de staging: Vercel.
+- Projeto Vercel Rick Travel: BLOCKED; `npx.cmd vercel project ls` nao lista o projeto.
+- Dominio de staging: BLOCKED; `npx.cmd vercel domains ls` retorna 0 dominios.
 
 Pendente por evidencia:
 
 - `npm audit` ainda reporta 3 vulnerabilidades moderadas em cadeia Prisma dev tooling.
 - `npm.cmd run check:env -- --target=staging` bloqueia corretamente sem envs reais de staging.
-- Mercado Pago externo e staging/producao continuam UNKNOWN/BLOCKED.
+- Mercado Pago externo, banco staging, dominio staging e producao continuam BLOCKED por acoes externas.
 
 ## Decisoes de dominio
 
@@ -95,9 +98,11 @@ Pendente por evidencia:
 
 ### Fase 3 - Staging real
 
-- Escolher provider.
-- Criar banco staging.
-- Configurar env vars.
+- Provider Vercel. DONE.
+- Criar/importar projeto Rick Travel na Vercel. BLOCKED.
+- Cadastrar dominio proprio e `staging.<dominio-do-projeto>`. BLOCKED.
+- Criar banco staging. BLOCKED.
+- Configurar env vars. BLOCKED.
 - Rodar `npm run preflight:staging`.
 - Validar `/api/health` e `/api/health?deep=1`.
 - Configurar Mercado Pago sandbox e Resend staging.

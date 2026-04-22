@@ -25,11 +25,18 @@ Nenhum segredo real deve ser commitado. Use `.env.example` como contrato publico
 ### Staging
 
 - `DATABASE_URL`
-- `BETTER_AUTH_URL`
+- `BETTER_AUTH_URL` com `https://staging.<dominio-do-projeto>`
 - `BETTER_AUTH_SECRET`
 - `RESEND_API_KEY`
 - `MP_ACCESS_TOKEN`
 - `MP_WEBHOOK_SECRET` recomendado.
+
+Observacoes:
+
+- `DATABASE_URL` deve apontar para banco PostgreSQL isolado de staging.
+- `RESEND_API_KEY` deve usar chave/remetente permitidos para staging.
+- `MP_ACCESS_TOKEN` deve ser sandbox/teste, nao producao.
+- `MP_WEBHOOK_SECRET` deve corresponder ao webhook configurado no Mercado Pago para staging.
 
 ### Producao
 

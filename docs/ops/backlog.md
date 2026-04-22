@@ -164,24 +164,27 @@ Evidencia esperada: `npm.cmd run test:e2e` 5/5 verde.
 
 ## RT-010 Deploy/staging
 
-Estado: READY
+Estado: BLOCKED
 
 Objetivo: preparar ambiente de homologacao.
 
 Tarefas:
 
-- RT-010.1 Definir provider de deploy. Estado: BLOCKED.
+- RT-010.1 Definir provider de deploy. Estado: DONE.
 - RT-010.2 Definir banco staging. Estado: BLOCKED.
 - RT-010.3 Configurar env vars staging. Estado: BLOCKED.
 - RT-010.4 Resolver build offline/fonts. Estado: DONE.
 - RT-010.5 Criar checklist operacional de staging. Estado: DONE.
 - RT-010.6 Criar preflight de staging. Estado: DONE.
 - RT-010.7 Criar healthcheck profundo com DB. Estado: DONE.
+- RT-010.8 Criar/importar projeto Rick Travel na Vercel. Estado: BLOCKED.
+- RT-010.9 Cadastrar dominio proprio e subdominio `staging.<dominio-do-projeto>`. Estado: BLOCKED.
+- RT-010.10 Validar staging publico com `/api/health`, `/api/health?deep=1` e auth. Estado: BLOCKED.
 
 Criterios de aceite: staging publica com healthcheck, auth, DB e webhook testaveis.
 Dependencias: RT-002, RT-003, RT-008.
 Risco: medio.
-Evidencia esperada: checklist, preflight e healthcheck prontos; URL staging e smoke test dependem de provider/envs externos.
+Evidencia esperada: checklist, preflight e healthcheck prontos; URL staging e smoke test dependem de projeto Vercel, dominio, banco e envs externos.
 
 ## RT-011 Producao
 

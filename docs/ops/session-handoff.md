@@ -4,11 +4,27 @@ Data: 2026-04-22
 
 ## Contexto
 
-Sessao dedicada a executar a Fase 2 - Higiene Operacional e Preparo de Staging seguindo o Protocolo Rick.
+Sessao atualizada ate a Fase 3 - Staging Real Controlado seguindo o Protocolo Rick.
 
 Fase 1 permanece REVIEW.
+Fase 2 esta DONE no que dependia do repositorio.
+Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar staging na Vercel.
 
 ## O que foi feito
+
+### Fase 3
+
+- Provider confirmado: Vercel.
+- Estrategia de dominio registrada: previews tecnicos em `.vercel.app`; staging em `staging.<dominio-do-projeto>`; producao separada.
+- Vercel CLI validado via `npx vercel`.
+- Conta autenticada: `devricardo90`.
+- Ausencia de projeto `rick-travel` na Vercel confirmada.
+- Ausencia de dominios cadastrados na Vercel confirmada.
+- Contrato de staging reforcado em `docs/ops/secrets.md` e `docs/ops/staging-checklist.md`.
+- Documento operacional `docs/ops/vercel-staging.md` criado.
+- Runtime Node definido em `package.json` como `22.x` para alinhar Vercel com `.nvmrc`.
+
+### Fase 2
 
 - E2E autenticado diagnosticado e estabilizado.
 - `playwright.config.ts` passou a usar `workers: 1`.
@@ -22,49 +38,51 @@ Fase 1 permanece REVIEW.
 
 ## Evidencias importantes
 
-- E2E completo agora passa 5/5.
-- Staging esta READY do ponto de vista de checklist/preflight, mas BLOCKED por definicoes externas.
+- Fase 3 nao publicou staging porque a conta Vercel nao possui projeto Rick Travel nem dominio cadastrado.
+- O repositorio esta READY para staging do ponto de vista de build e documentacao operacional.
+- E2E completo passou 5/5 na Fase 2.
 - `.env` e `.env.local` seguem ignorados pelo Git; apenas `.env.example` e rastreavel.
 - Audit residual Prisma e de tooling/dev dependency.
 
 ## Comandos executados
 
-- `npx.cmd playwright test e2e/booking.spec.ts --workers=1`
-- `npm.cmd run test:e2e`
-- `npm.cmd run check:env -- --target=local`
+- `npx.cmd vercel --version`
+- `npx.cmd vercel whoami`
+- `npx.cmd vercel project ls`
+- `npx.cmd vercel domains ls`
 - `npm.cmd run check:env -- --target=staging`
-- `npm.cmd run check:db`
+- `npm.cmd run preflight:staging`
 - `npm.cmd run lint`
 - `npm.cmd run typecheck`
 - `npm.cmd run build`
-- `npm.cmd run test`
-- `npm.cmd audit --audit-level=moderate`
-- `git ls-files .env .env.local .env.example`
-- `git check-ignore -v .env .env.local .env.example`
+- `npm.cmd run check:db`
+- `npm.cmd test -- --run`
+- `npm.cmd install --package-lock-only`
 
 ## Resultados
 
-- `npm.cmd run check:env -- --target=local`: PASS.
+- `npx.cmd vercel project ls`: PASS; nao existe projeto Rick Travel na conta.
+- `npx.cmd vercel domains ls`: PASS; 0 dominios encontrados.
 - `npm.cmd run check:env -- --target=staging`: BLOCKED esperado por envs reais ausentes/URL local.
-- `npm.cmd run check:db`: PASS.
+- `npm.cmd run preflight:staging`: BLOCKED no primeiro passo por env staging incompleta.
 - `npm.cmd run lint`: PASS.
 - `npm.cmd run typecheck`: PASS.
 - `npm.cmd run build`: PASS fora do sandbox.
-- `npm.cmd run test`: PASS, 4 arquivos e 15 testes.
-- `npm.cmd run test:e2e`: PASS, 5/5.
-- `npm.cmd audit --audit-level=moderate`: FAIL, 3 vulnerabilidades moderadas remanescentes em cadeia Prisma dev tooling.
+- `npm.cmd run check:db`: PASS com banco local.
+- `npm.cmd test -- --run`: PASS, 4 arquivos e 15 testes.
 
 ## Bloqueios e pendencias
 
-- Provider de deploy: UNKNOWN.
-- Banco staging: UNKNOWN.
-- Dominio/subdominio de staging: UNKNOWN.
-- `MP_ACCESS_TOKEN` de staging: BLOCKED.
+- Projeto Vercel Rick Travel: BLOCKED.
+- Banco staging: BLOCKED.
+- Dominio/subdominio de staging: BLOCKED.
+- `MP_ACCESS_TOKEN` de staging sandbox: BLOCKED.
 - `BETTER_AUTH_URL` de staging precisa URL publica, nao localhost.
+- Resend staging/remetente: BLOCKED ate configuracao externa.
 - `npm audit` moderado remanescente deve ser tratado em janela controlada.
 
 ## Proxima acao recomendada
 
-1. Escolher provider de deploy e banco de staging.
-2. Configurar envs reais de staging e rodar `npm run preflight:staging`.
-3. Abrir janela controlada para avaliar Prisma tooling/audit sem downgrade forçado.
+1. Criar/importar projeto `rick-travel` na Vercel a partir de `devricardo90/rick-travel`.
+2. Cadastrar dominio e apontar `staging.<dominio-do-projeto>`.
+3. Configurar envs reais de staging e rodar `npm run preflight:staging`.
