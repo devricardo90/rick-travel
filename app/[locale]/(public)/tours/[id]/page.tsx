@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { TripSchedule } from "@prisma/client";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TourDetailClient } from "@/components/trips/tour-detail-client";
@@ -10,10 +9,13 @@ interface PageProps {
     params: Promise<{ id: string; locale: string }>;
 }
 
-type PublicTourSchedule = Pick<
-    TripSchedule,
-    "id" | "startAt" | "endAt" | "capacity" | "pricePerPersonCents"
->;
+type PublicTourSchedule = {
+    id: string;
+    startAt: Date;
+    endAt: Date | null;
+    capacity: number;
+    pricePerPersonCents: number;
+};
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
     const params = await props.params;
