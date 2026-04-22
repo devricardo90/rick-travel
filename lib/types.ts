@@ -1,8 +1,9 @@
-import type { Prisma } from "@prisma/client";
+import { PhysicalLevel } from "@prisma/client";
+
+export type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
 
 export type LocalizedText = Record<string, string>;
 export type LocalizedList = Record<string, string[]>;
-type PhysicalLevel = Prisma.TripGetPayload<{ select: { physicalLevel: true } }>["physicalLevel"];
 
 export type TripFormDataLike = {
     id?: string;
@@ -44,7 +45,7 @@ export type TripCardData = {
     bookingsCount?: number;
 };
 
-export function asLocalizedText(value: Prisma.JsonValue | string | null | undefined): LocalizedText | string | null {
+export function asLocalizedText(value: unknown): LocalizedText | string | null {
     if (!value) return null;
     if (typeof value === "string") return value;
     if (typeof value === "object" && !Array.isArray(value)) {
@@ -53,7 +54,7 @@ export function asLocalizedText(value: Prisma.JsonValue | string | null | undefi
     return null;
 }
 
-export function asLocalizedList(value: Prisma.JsonValue | string[] | null | undefined): LocalizedList | string[] | null {
+export function asLocalizedList(value: unknown): LocalizedList | string[] | null {
     if (!value) return null;
     if (Array.isArray(value)) return value as string[];
     if (typeof value === "object") {

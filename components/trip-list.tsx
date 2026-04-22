@@ -1,8 +1,10 @@
-import type { Prisma } from "@prisma/client";
+import { PhysicalLevel } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { TripGrid } from "@/components/trip-grid";
 import { asLocalizedList, asLocalizedText } from "@/lib/types";
+
+type TripWhereInput = NonNullable<Parameters<typeof prisma.trip.findMany>[0]>["where"];
 
 export const dynamic = 'force-dynamic'; // Garantir que não faça cache estático se quisermos dados frescos
 
@@ -16,8 +18,6 @@ interface TripListProps {
   };
 }
 
-type PhysicalLevel = Prisma.TripGetPayload<{ select: { physicalLevel: true } }>["physicalLevel"];
-
 export default async function TripList({ searchParams }: TripListProps) {
   const minPrice = searchParams?.minPrice ? Number(searchParams.minPrice) : undefined;
   const maxPrice = searchParams?.maxPrice ? Number(searchParams.maxPrice) : undefined;
@@ -25,7 +25,7 @@ export default async function TripList({ searchParams }: TripListProps) {
   const level = searchParams?.level && searchParams.level !== 'all' ? searchParams.level : undefined;
   const children = searchParams?.children === 'true' ? true : undefined;
 
-  const where: Prisma.TripWhereInput = {
+  const where: TripWhereInput = {
     isPublished: true,
   };
 

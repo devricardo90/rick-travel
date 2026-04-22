@@ -1,13 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { Prisma } from "@prisma/client";
+import { BookingStatus } from "@prisma/client";
 import { requireAdminSession } from "@/lib/authz";
 import { sendBookingConfirmationEmail } from "@/lib/services/email.service";
 import { prisma } from "@/lib/prisma";
 import { isDomainError } from "@/lib/errors/domain-error";
-
-type BookingStatus = Prisma.BookingGetPayload<{ select: { status: true } }>["status"];
 
 export async function updateBookingStatus(bookingId: string, status: BookingStatus) {
     try {

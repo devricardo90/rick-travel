@@ -1,7 +1,5 @@
-import type { Prisma } from "@prisma/client";
+import { AnalyticsEventType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-
-type AnalyticsEventType = Prisma.AnalyticsEventGetPayload<{ select: { type: true } }>["type"];
 
 type TrackAnalyticsEventInput = {
   type: AnalyticsEventType;
@@ -11,7 +9,7 @@ type TrackAnalyticsEventInput = {
   paymentAttemptId?: string;
   sessionId?: string;
   path?: string;
-  metadata?: Prisma.InputJsonValue;
+  metadata?: unknown;
 };
 
 export async function trackAnalyticsEvent(input: TrackAnalyticsEventInput) {
@@ -24,7 +22,7 @@ export async function trackAnalyticsEvent(input: TrackAnalyticsEventInput) {
       paymentAttemptId: input.paymentAttemptId,
       sessionId: input.sessionId,
       path: input.path,
-      metadata: input.metadata,
+      metadata: input.metadata as Parameters<typeof prisma.analyticsEvent.create>[0]["data"]["metadata"],
     },
   });
 }

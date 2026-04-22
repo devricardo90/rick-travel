@@ -1,14 +1,11 @@
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
-import type { Prisma } from "@prisma/client";
+import { PaymentAttemptStatus, PaymentStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { DomainError } from "@/lib/errors/domain-error";
 import { sendPaymentConfirmedEmail } from "@/lib/services/email.service";
 import { trackAnalyticsEvent } from "@/lib/services/analytics.service";
 
 const MERCADO_PAGO_PROVIDER = "MERCADO_PAGO";
-
-type PaymentAttemptStatus = Prisma.PaymentAttemptGetPayload<{ select: { status: true } }>["status"];
-type PaymentStatus = Prisma.BookingGetPayload<{ select: { paymentStatus: true } }>["paymentStatus"];
 
 type MercadoPagoPaymentResponse = {
     id: number | string;

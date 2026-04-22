@@ -1,11 +1,8 @@
-import type { Prisma } from "@prisma/client";
+import { BookingStatus, PaymentStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { BookingActions } from "@/components/admin/booking-actions";
 import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
-
-type BookingStatus = Prisma.BookingGetPayload<{ select: { status: true } }>["status"];
-type PaymentStatus = Prisma.BookingGetPayload<{ select: { paymentStatus: true } }>["paymentStatus"];
 
 function isBookingStatus(value: string | undefined): value is BookingStatus {
     return value === "PENDING" || value === "CONFIRMED" || value === "CANCELED";
@@ -14,6 +11,8 @@ function isBookingStatus(value: string | undefined): value is BookingStatus {
 function isPaymentStatus(value: string | undefined): value is PaymentStatus {
     return value === "UNPAID" || value === "PAID" || value === "REFUNDED" || value === "PARTIAL";
 }
+
+type BookingWhereInput = NonNullable<Parameters<typeof prisma.booking.findMany>[0]>["where"];
 
 function parseDateBoundary(value: string | undefined, boundary: "start" | "end") {
     if (!value) return undefined;
@@ -65,7 +64,7 @@ export default async function AdminBookingsPage({
     const startDate = parseDateBoundary(dateFrom, "start");
     const endDate = parseDateBoundary(dateTo, "end");
 
-    const andFilters: Prisma.BookingWhereInput[] = [];
+    const andFilters: NonNullable<BookingWhereInput>[] = [];
 
     if (q) {
         andFilters.push({

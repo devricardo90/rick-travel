@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import type { Prisma } from "@prisma/client";
+import { AnalyticsEventType } from "@prisma/client";
 import { NextResponse } from "next/server";
 import {
   ANALYTICS_ATTRIBUTION_COOKIE,
@@ -8,8 +8,6 @@ import {
 import { auth } from "@/lib/auth";
 import { ANALYTICS_EVENT_TYPES } from "@/lib/analytics/events";
 import { trackAnalyticsEvent } from "@/lib/services/analytics.service";
-
-type AnalyticsEventType = Prisma.AnalyticsEventGetPayload<{ select: { type: true } }>["type"];
 
 function isAnalyticsEventType(value: string): value is AnalyticsEventType {
   return ANALYTICS_EVENT_TYPES.includes(value as AnalyticsEventType);
@@ -52,7 +50,7 @@ export async function POST(req: Request) {
       metadata: {
         ...(attribution ?? {}),
         ...(requestMetadata ?? {}),
-      } as Prisma.InputJsonValue,
+      },
     });
 
     return NextResponse.json({ ok: true });

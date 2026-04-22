@@ -1,10 +1,8 @@
 import "server-only";
-import type { Prisma } from "@prisma/client";
+import { TranslationJobStatus, TranslationOperation } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type SupportedLocale = "pt" | "en" | "es" | "sv";
-type TranslationJobStatus = Prisma.TranslationJobLogGetPayload<{ select: { status: true } }>["status"];
-type TranslationOperation = Prisma.TranslationJobLogGetPayload<{ select: { operation: true } }>["operation"];
 
 type TranslationResult = Record<SupportedLocale, string>;
 type TranslationArrayResult = Record<SupportedLocale, string[]>;
@@ -187,7 +185,7 @@ export async function logTranslationJob(input: {
         parts: input.parts,
         failures: aggregatedFailures,
         failureCount: aggregatedFailures.length,
-      } as Prisma.InputJsonValue,
+      },
     },
   });
 }

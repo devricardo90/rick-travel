@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { type SupportedLocale, tripSchema, TripInput } from "@/lib/schemas";
@@ -126,9 +125,9 @@ async function buildTripPayload(data: TripInput) {
 
   return {
     payload: {
-      title: title.translations as Prisma.InputJsonValue,
-      description: description.translations as Prisma.InputJsonValue,
-      highlights: highlights.translations as Prisma.InputJsonValue,
+      title: title.translations,
+      description: description.translations,
+      highlights: highlights.translations,
       city: validated.city,
       priceCents: validated.priceCents,
       imageUrl: validated.imageUrl,

@@ -1,6 +1,7 @@
-import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ContactActions } from "@/components/admin/contact-actions";
+
+type ContactSubmissionWhereInput = NonNullable<NonNullable<Parameters<typeof prisma.contactSubmission.findMany>[0]>["where"]>;
 
 function buildDateRange(dateFrom?: string, dateTo?: string) {
     const createdAt: { gte?: Date; lte?: Date } = {};
@@ -40,8 +41,8 @@ export default async function AdminContactsPage({
 }) {
     const { q, status, dateFrom, dateTo } = await searchParams;
 
-    const where: Prisma.ContactSubmissionWhereInput = {};
-    const andFilters: Prisma.ContactSubmissionWhereInput[] = [];
+    const where: ContactSubmissionWhereInput = {};
+    const andFilters: ContactSubmissionWhereInput[] = [];
 
     if (q) {
         andFilters.push({
