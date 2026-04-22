@@ -25,6 +25,33 @@ function formatRate(current: number, previous: number) {
   return `${Math.round((current / previous) * 100)}%`;
 }
 
+async function getRecentBookings(since: Date) {
+  return prisma.booking.findMany({
+    where: { createdAt: { gte: since } },
+    orderBy: { createdAt: "desc" },
+    take: 6,
+    include: {
+      user: { select: { name: true } },
+      trip: { select: { city: true, title: true } },
+    },
+  });
+}
+
+async function getUpcomingSchedules(now: Date) {
+  return prisma.tripSchedule.findMany({
+    where: { startAt: { gte: now } },
+    orderBy: { startAt: "asc" },
+    take: 6,
+    include: {
+      trip: { select: { title: true, city: true } },
+      bookings: {
+        where: { status: { in: ["PENDING", "CONFIRMED"] } },
+        select: { guestCount: true },
+      },
+    },
+  });
+}
+
 export default async function AdminPage() {
   await requireAdminSession();
 
@@ -33,6 +60,11 @@ export default async function AdminPage() {
   sevenDaysAgo.setDate(now.getDate() - 7);
   const thirtyDaysAgo = new Date(now);
   thirtyDaysAgo.setDate(now.getDate() - 30);
+
+  type AbandonedCheckoutItem = Awaited<ReturnType<typeof getAbandonedCheckoutSummary>>["items"][number];
+  type RecentBooking = Awaited<ReturnType<typeof getRecentBookings>>[number];
+  type UpcomingSchedule = Awaited<ReturnType<typeof getUpcomingSchedules>>[number];
+  type RecentContact = Awaited<ReturnType<typeof prisma.contactSubmission.findMany>>[number];
 
   const [
     usersCount,
@@ -72,27 +104,8 @@ export default async function AdminPage() {
       where: { paymentStatus: "UNPAID", status: { in: ["PENDING", "CONFIRMED"] } },
       _sum: { totalPriceCents: true },
     }),
-    prisma.booking.findMany({
-      where: { createdAt: { gte: sevenDaysAgo } },
-      orderBy: { createdAt: "desc" },
-      take: 6,
-      include: {
-        user: { select: { name: true } },
-        trip: { select: { city: true, title: true } },
-      },
-    }),
-    prisma.tripSchedule.findMany({
-      where: { startAt: { gte: now } },
-      orderBy: { startAt: "asc" },
-      take: 6,
-      include: {
-        trip: { select: { title: true, city: true } },
-        bookings: {
-          where: { status: { in: ["PENDING", "CONFIRMED"] } },
-          select: { guestCount: true },
-        },
-      },
-    }),
+    getRecentBookings(sevenDaysAgo),
+    getUpcomingSchedules(now),
     prisma.contactSubmission.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
@@ -234,7 +247,7 @@ export default async function AdminPage() {
               Nenhum abandono relevante nos ultimos 30 dias.
             </div>
           ) : (
-            abandonedCheckout.items.slice(0, 5).map((item) => {
+            abandonedCheckout.items.slice(0, 5).map((item: AbandonedCheckoutItem) => {
               const title = getLocalizedField<string>(asLocalizedText(item.trip.title), "pt") || "Passeio";
 
               return (
@@ -364,7 +377,7 @@ export default async function AdminPage() {
             {recentBookings.length === 0 ? (
               <div className="px-5 py-8 text-sm text-white/56">Nenhuma reserva recente.</div>
             ) : (
-              recentBookings.map((booking) => (
+              recentBookings.map((booking: RecentBooking) => (
                 <div key={booking.id} className="px-5 py-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -411,8 +424,8 @@ export default async function AdminPage() {
             {upcomingSchedules.length === 0 ? (
               <div className="px-5 py-8 text-sm text-white/56">Nenhuma agenda futura.</div>
             ) : (
-              upcomingSchedules.map((schedule) => {
-                const used = schedule.bookings.reduce((sum, booking) => sum + booking.guestCount, 0);
+              upcomingSchedules.map((schedule: UpcomingSchedule) => {
+                const used = schedule.bookings.reduce((sum: number, b) => sum + b.guestCount, 0);
                 const remaining = Math.max(schedule.capacity - used, 0);
                 const title = getLocalizedField<string>(asLocalizedText(schedule.trip.title), "pt") || "Passeio";
 
@@ -461,7 +474,7 @@ export default async function AdminPage() {
           {recentContacts.length === 0 ? (
             <div className="px-5 py-8 text-sm text-white/56">Nenhum contato recente.</div>
           ) : (
-            recentContacts.map((contact) => (
+            recentContacts.map((contact: RecentContact) => (
               <div key={contact.id} className="px-5 py-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
