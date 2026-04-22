@@ -15,6 +15,43 @@ function isPaymentStatus(value: string | undefined): value is PaymentStatus {
 }
 
 type BookingWhereInput = NonNullable<Parameters<typeof prisma.booking.findMany>[0]>["where"];
+type BookingWithRelations = Awaited<ReturnType<typeof getAdminBookings>>[number];
+
+async function getAdminBookings(where: any) {
+    return prisma.booking.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    email: true,
+                },
+            },
+            trip: {
+                select: {
+                    title: true,
+                    city: true,
+                },
+            },
+            schedule: {
+                select: {
+                    startAt: true,
+                },
+            },
+            emailLogs: {
+                orderBy: { createdAt: "desc" },
+                take: 1,
+                select: {
+                    template: true,
+                    status: true,
+                    sentAt: true,
+                    error: true,
+                },
+            },
+        },
+    });
+}
 
 function parseDateBoundary(value: string | undefined, boundary: "start" | "end") {
     if (!value) return undefined;
@@ -107,39 +144,7 @@ export default async function AdminBookingsPage({
         );
     }
 
-    const bookings = await prisma.booking.findMany({
-        where: andFilters.length > 0 ? { AND: andFilters } : {},
-        orderBy: { createdAt: "desc" },
-        include: {
-            user: {
-                select: {
-                    name: true,
-                    email: true,
-                },
-            },
-            trip: {
-                select: {
-                    title: true,
-                    city: true,
-                },
-            },
-            schedule: {
-                select: {
-                    startAt: true,
-                },
-            },
-            emailLogs: {
-                orderBy: { createdAt: "desc" },
-                take: 1,
-                select: {
-                    template: true,
-                    status: true,
-                    sentAt: true,
-                    error: true,
-                },
-            },
-        },
-    });
+    const bookings = await getAdminBookings(andFilters.length > 0 ? { AND: andFilters } : {});
 
     return (
         <div className="mx-auto max-w-7xl px-6 py-8 md:py-10">
@@ -241,7 +246,7 @@ export default async function AdminBookingsPage({
                     </div>
                 ) : (
                     <div className="divide-y divide-white/8">
-                        {bookings.map((booking) => {
+                        {bookings.map((booking: BookingWithRelations) => {
                             const lastEmail = booking.emailLogs[0];
                             const tripTitle = getLocalizedField<string>(asLocalizedText(booking.trip.title), "pt");
 
