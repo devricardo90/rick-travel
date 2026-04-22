@@ -1,8 +1,10 @@
-import { BookingStatus, PaymentStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { BookingActions } from "@/components/admin/booking-actions";
 import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
+
+type BookingStatus = NonNullable<Awaited<ReturnType<typeof prisma.booking.findUnique>>>["status"];
+type PaymentStatus = NonNullable<Awaited<ReturnType<typeof prisma.booking.findUnique>>>["paymentStatus"];
 
 function isBookingStatus(value: string | undefined): value is BookingStatus {
     return value === "PENDING" || value === "CONFIRMED" || value === "CANCELED";

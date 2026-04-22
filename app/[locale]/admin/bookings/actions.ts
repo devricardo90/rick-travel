@@ -1,11 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { BookingStatus } from "@prisma/client";
 import { requireAdminSession } from "@/lib/authz";
 import { sendBookingConfirmationEmail } from "@/lib/services/email.service";
 import { prisma } from "@/lib/prisma";
 import { isDomainError } from "@/lib/errors/domain-error";
+
+type BookingStatus = NonNullable<Awaited<ReturnType<typeof prisma.booking.findUnique>>>["status"];
 
 export async function updateBookingStatus(bookingId: string, status: BookingStatus) {
     try {
