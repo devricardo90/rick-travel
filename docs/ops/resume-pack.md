@@ -58,7 +58,6 @@ Pendente por evidencia:
 
 ### Engenharia
 
-- Provider de deploy.
 - Banco staging/producao.
 - Observabilidade.
 - Rotacao/governanca final de segredos.
@@ -91,7 +90,7 @@ Pendente por evidencia:
 - E2E autenticado. DONE.
 - Classificacao audit Prisma. DONE/REVIEW.
 - Checklist/preflight de staging. DONE.
-- Provider de deploy. BLOCKED.
+- Provider de deploy definido na Fase 3: Vercel.
 - Banco staging. BLOCKED.
 - Env vars staging. BLOCKED.
 - Smoke tests de staging. BLOCKED ate ambiente existir.
