@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { AnalyticsEventType } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import {
   ANALYTICS_ATTRIBUTION_COOKIE,
@@ -8,6 +8,8 @@ import {
 import { auth } from "@/lib/auth";
 import { ANALYTICS_EVENT_TYPES } from "@/lib/analytics/events";
 import { trackAnalyticsEvent } from "@/lib/services/analytics.service";
+
+type AnalyticsEventType = NonNullable<Parameters<typeof prisma.analyticsEvent.create>[0]["data"]["type"]>;
 
 function isAnalyticsEventType(value: string): value is AnalyticsEventType {
   return ANALYTICS_EVENT_TYPES.includes(value as AnalyticsEventType);
