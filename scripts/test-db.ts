@@ -2,7 +2,6 @@
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import dotenv from 'dotenv'
-import pg from 'pg'
 
 dotenv.config()
 
@@ -13,23 +12,18 @@ async function main() {
         process.exit(1)
     }
 
-    console.log('Testing DB connection with adapter...')
+    console.log('Testing DB connection...')
 
-    const pool = new pg.Pool({ connectionString })
-    const adapter = new PrismaPg(pool)
+    const adapter = new PrismaPg({ connectionString })
     const prisma = new PrismaClient({ adapter })
 
     try {
-        const submission = await prisma.contactSubmission.create({
-            data: {
-                name: 'Test Script',
-                email: 'test-script@example.com',
-                message: 'Test message from script with adapter',
-            },
-        })
-        console.log('Successfully created submission:', submission)
+        await prisma.$queryRaw`SELECT 1`
+        console.log('Database connection OK')
     } catch (e) {
-        console.error('Error creating submission:', e)
+        console.error('Database connection failed')
+        console.error(e)
+        process.exitCode = 1
     } finally {
         await prisma.$disconnect()
     }

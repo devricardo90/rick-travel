@@ -4,62 +4,71 @@ Data: 2026-04-22
 
 ## Protocolo Rick
 
-Fase atual: Fase 1 - Estabilizacao da Base.
+Fase atual: Fase 2 - Higiene Operacional e Preparo de Staging.
 
-Status da fase: REVIEW.
+Status da fase: DONE.
 
-Evidencia minima coletada:
-
-- Estrutura real do repositorio: `app`, `components`, `lib`, `prisma`, `tests`, `e2e`, `docs`, `public`.
-- Stack real: `package.json`, `prisma/schema.prisma`, `next.config.ts`, `playwright.config.ts`, `vitest.config.ts`.
-- Documentacao existente: `README.md`, `docs/README.md`, `docs/ROADMAP_DESENVOLVIMENTO.md`, `docs/IMPLEMENTACAO_LOGICA.md`, `docs/MERCADO_PAGO_SETUP.md`, `docs/analysis_and_growth_plan.md`.
-- Validacoes finais: lint, typecheck, build e unit tests passaram.
+Fase 1 permanece: REVIEW.
 
 ## Estado reconstruido
 
 Rick Travel e uma plataforma web de turismo para tours no Rio de Janeiro, com vitrine publica, reserva autenticada, pagamento Pix via Mercado Pago, painel admin, i18n e analytics interno.
 
-O codigo indica um app Next.js App Router com Prisma/PostgreSQL, Better Auth, next-intl, componentes React, services de dominio e rotas API.
+## Fase 2 - Diagnostico por item
 
-## O que existe
+### E2E autenticado
 
-- Catalogo publico de tours.
-- Paginas publicas localizadas: home, tours, detalhe, reservas, contato, quem somos.
-- Auth por email/senha com Better Auth.
-- Painel admin para dashboard, tours, agendas, bookings e contatos.
-- Modelos Prisma para usuarios, sessoes, trips, schedules, bookings, payments, analytics, emails e contatos.
-- Integracao Mercado Pago Pix implementada no codigo.
-- Webhook de pagamento implementado.
-- Email transacional via Resend implementado.
-- Analytics interno em banco.
-- Testes unitarios e E2E presentes como arquivos.
+- Sintoma: suite completa falhava no booking autenticado, enquanto testes publicos passavam.
+- Causa exata: concorrencia/timeout de E2E em execucao paralela por arquivo. O teste `e2e/booking.spec.ts` passou isolado com `--workers=1`, provando que nao era fixture, seed, env, auth flow, locale, redirect ou selector.
+- Acao aplicada: `playwright.config.ts` foi serializado com `workers: 1`.
+- Resultado: `npm.cmd run test:e2e` passou com 5/5.
+- Severidade: P1.
+- Status: DONE.
 
-## Fase 1 - Problemas tratados
+### Governanca de secrets
 
-- P0: `package.json` ativo nao declarava scripts/dependencias usadas por testes e codigo. Acao: package ativo mantido como canonico e ampliado com scripts `typecheck`, `test`, `test:e2e`, `optimize-images` e dependencias necessarias.
-- P0: build bloqueado por `next/font/google`. Acao: removida dependencia de fonte remota e adotadas fontes de sistema em CSS.
-- P0: rota raiz `app/page.tsx` sem root layout quebrava build. Acao: removida rota raiz duplicada; rotas localizadas permanecem como entrada real do app.
-- P0: vulnerabilidade critica em `next@16.0.1`. Acao: atualizado para `next@16.2.4` e `eslint-config-next@16.2.4`.
-- P1: typecheck carregava artefatos `.next` duplicados. Acao: limpeza estrutural, build regenerado e typecheck verde.
-- P1: scripts/test runners ausentes. Acao: instalados `vitest` e `@playwright/test`.
-- P1: residuos e duplicatas `(2)` em configs/package/assets. Acao: duplicatas textuais e assets starter removidos; `.gitignore` atualizado.
-- P1: segredos reais em `.env` local. Acao: criado `.env.example`; valores reais nao foram expostos.
+- Sintoma: `.env` local possui valores reais.
+- Impacto: risco operacional se valores forem compartilhados, copiados ou vazarem em logs.
+- Acao aplicada: `.env.example` existe, `.env*` continua ignorado, `docs/ops/secrets.md` criado, `scripts/validate-env.ts` criado e scripts `check:env` adicionados.
+- Evidencia: `git ls-files .env .env.local .env.example` rastreia apenas `.env.example`; `git check-ignore` confirma `.env` e `.env.local` ignorados.
+- Severidade: P1.
+- Status: DONE para governanca minima; rotacao segue READY.
 
-## Estado de verificacao
+### Prisma audit residual
 
+- Sintoma: `npm.cmd audit --audit-level=moderate` ainda reporta 3 vulnerabilidades moderadas.
+- Pacotes: `prisma` -> `@prisma/dev` -> `@hono/node-server`.
+- Impacto: tooling/dev dependency, nao evidenciado como runtime direto da aplicacao Next.
+- Decisao: aceitar temporariamente com justificativa e backlogar para janela controlada. Nao usar `npm audit fix --force`, porque a propria saida do npm sugere instalar `prisma@6.19.3`, mudanca breaking/downgrade em relacao a Prisma 7.
+- Severidade: P1.
+- Status: REVIEW.
+
+### Preparo de staging
+
+- Acao aplicada: `docs/ops/staging-checklist.md`, `npm run check:env`, `npm run check:db`, `npm run preflight:staging`, healthcheck profundo `/api/health?deep=1`.
+- Resultado local: `check:env -- --target=local` PASS; `check:db` PASS.
+- Resultado staging simulado com env local: BLOCKED esperado por `MP_ACCESS_TOKEN` ausente e `BETTER_AUTH_URL` apontando para localhost.
+- Severidade: P1.
+- Status: READY para configurar quando provider/envs externos existirem.
+
+## Estado de verificacao final
+
+- `npm.cmd run check:env -- --target=local`: PASS.
+- `npm.cmd run check:env -- --target=staging`: BLOCKED esperado; faltam envs reais de staging e URL nao local.
+- `npm.cmd run check:db`: PASS.
 - `npm.cmd run lint`: PASS.
 - `npm.cmd run typecheck`: PASS.
-- `npm.cmd run build`: PASS fora do sandbox; dentro do sandbox falhava por `spawn EPERM`.
-- `npm.cmd run test`: PASS fora do sandbox; 4 arquivos, 15 testes.
-- `npm.cmd run test:e2e`: PARTIAL. 3 testes publicos passaram; 2 testes autenticados falharam em login/helper quando executados contra servidor dev existente.
-- `npm.cmd audit --audit-level=moderate`: FAIL. Restam 3 vulnerabilidades moderadas ligadas a `prisma`/`@prisma/dev`; `npm audit fix --force` sugere mudanca breaking.
+- `npm.cmd run build`: PASS fora do sandbox.
+- `npm.cmd run test`: PASS, 4 arquivos, 15 testes.
+- `npm.cmd run test:e2e`: PASS, 5/5.
+- `npm.cmd audit --audit-level=moderate`: FAIL residual, 3 moderadas em Prisma dev tooling.
 
 ## Riscos remanescentes
 
-- P1: E2E autenticado ainda nao esta verde.
-- P1: `npm audit` ainda reporta 3 vulnerabilidades moderadas em cadeia Prisma dev tooling.
-- P1: segredos locais precisam de governanca e possivel rotacao antes de staging/producao.
-- P2: webhook Mercado Pago sem validacao real em ambiente publico impede fechamento comercial, mas nao pertence a Fase 1.
+- P1: `npm audit` residual em Prisma dev tooling precisa janela controlada.
+- P1: secrets locais devem ser rotacionados se houve compartilhamento fora da maquina.
+- P1: staging real segue BLOCKED por definicoes externas: provider, banco, dominio/subdominio, envs reais, Mercado Pago sandbox e Resend.
+- P2: Mercado Pago externo segue fora da Fase 2 ate existir ambiente publico.
 
 ## Decisoes que nao devem ser quebradas
 
@@ -69,3 +78,4 @@ O codigo indica um app Next.js App Router com Prisma/PostgreSQL, Better Auth, ne
 - Regras de dominio devem ficar em `lib/services`.
 - Conteudo multilanguage usa JSON por locale com fallback em PT.
 - Tour tecnico E2E deve ficar oculto da vitrine publica.
+- Staging deve passar por preflight antes de qualquer promocao.

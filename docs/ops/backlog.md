@@ -145,7 +145,7 @@ Evidencia esperada: pagamento ponta a ponta em sandbox.
 
 ## RT-009 Testes
 
-Estado: REVIEW
+Estado: DONE
 
 Objetivo: recuperar suite automatizada.
 
@@ -154,17 +154,17 @@ Tarefas:
 - RT-009.1 Restaurar `vitest` e `@playwright/test` no package ativo. Estado: DONE.
 - RT-009.2 Rodar unit tests. Estado: DONE.
 - RT-009.3 Rodar E2E publico. Estado: DONE.
-- RT-009.4 Rodar E2E autenticado. Estado: REVIEW.
+- RT-009.4 Rodar E2E autenticado. Estado: DONE.
 - RT-009.5 Adicionar scripts `test` e `test:e2e`. Estado: DONE.
 
 Criterios de aceite: lint, typecheck, build, unit e E2E verdes.
 Dependencias: RT-002.
 Risco: medio.
-Evidencia esperada: unit verde; E2E autenticado ainda pendente.
+Evidencia esperada: `npm.cmd run test:e2e` 5/5 verde.
 
 ## RT-010 Deploy/staging
 
-Estado: BLOCKED
+Estado: READY
 
 Objetivo: preparar ambiente de homologacao.
 
@@ -174,11 +174,14 @@ Tarefas:
 - RT-010.2 Definir banco staging. Estado: BLOCKED.
 - RT-010.3 Configurar env vars staging. Estado: BLOCKED.
 - RT-010.4 Resolver build offline/fonts. Estado: DONE.
+- RT-010.5 Criar checklist operacional de staging. Estado: DONE.
+- RT-010.6 Criar preflight de staging. Estado: DONE.
+- RT-010.7 Criar healthcheck profundo com DB. Estado: DONE.
 
 Criterios de aceite: staging publica com healthcheck, auth, DB e webhook testaveis.
 Dependencias: RT-002, RT-003, RT-008.
-Risco: alto.
-Evidencia esperada: URL staging e smoke test.
+Risco: medio.
+Evidencia esperada: checklist, preflight e healthcheck prontos; URL staging e smoke test dependem de provider/envs externos.
 
 ## RT-011 Producao
 
@@ -227,7 +230,9 @@ Tarefas:
 - RT-013.2 Criar `.env.example`. Estado: DONE.
 - RT-013.3 Revisar webhook secret Mercado Pago. Estado: READY.
 - RT-013.4 Revisar dados sensiveis em logs. Estado: READY.
-- RT-013.5 Resolver audit moderado remanescente em Prisma dev tooling. Estado: READY.
+- RT-013.5 Classificar audit moderado remanescente em Prisma dev tooling. Estado: DONE.
+- RT-013.6 Resolver audit moderado remanescente em janela controlada. Estado: READY.
+- RT-013.7 Documentar contrato de secrets por ambiente. Estado: DONE.
 
 Criterios de aceite: nenhum segredo versionado; webhook validado; rotas privadas protegidas.
 Dependencias: RT-003.

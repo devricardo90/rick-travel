@@ -4,12 +4,6 @@
 
 Rick Travel e uma plataforma web de turismo para venda/reserva de passeios no Rio de Janeiro com guia credenciado Cadastur.
 
-Proposta atual evidenciada: permitir que turistas descubram tours, reservem online, paguem via Pix e recebam atendimento/apoio comercial; admin gerencia passeios, agendas, reservas, contatos e abandono.
-
-ASSUMPTION: persona primaria inclui turistas nacionais e internacionais interessados em tours guiados no Rio.
-
-UNKNOWN: priorizacao comercial oficial, canais de aquisicao, metricas de sucesso e modelo de suporte.
-
 ## Stack
 
 - Frontend: Next.js 16.2.4 App Router, React 19, TypeScript, Tailwind 4, Radix, lucide, motion/GSAP.
@@ -20,24 +14,24 @@ UNKNOWN: priorizacao comercial oficial, canais de aquisicao, metricas de sucesso
 - Pagamento: Mercado Pago Pix.
 - Email: Resend.
 - Analytics: tabela propria `AnalyticsEvent`.
-- Testes: Vitest e Playwright configurados no package canonico.
+- Testes: Vitest e Playwright configurados; E2E roda serializado para estabilidade.
 
 ## Estado tecnico real
 
-O repositorio foi estabilizado na Fase 1 para a trilha minima de qualidade, mas ainda nao deve ir a deploy sem Fase 2.
-
 Funcionando por evidencia:
 
+- `npm.cmd run check:env -- --target=local`: PASS.
+- `npm.cmd run check:db`: PASS.
 - `npm.cmd run lint`: PASS.
 - `npm.cmd run typecheck`: PASS.
 - `npm.cmd run build`: PASS fora do sandbox.
 - `npm.cmd run test`: PASS com 15 testes.
-- E2E publico: 3 testes passaram.
+- `npm.cmd run test:e2e`: PASS com 5/5.
 
 Pendente por evidencia:
 
-- E2E autenticado ainda falha em login/helper ou servidor dev existente.
 - `npm audit` ainda reporta 3 vulnerabilidades moderadas em cadeia Prisma dev tooling.
+- `npm.cmd run check:env -- --target=staging` bloqueia corretamente sem envs reais de staging.
 - Mercado Pago externo e staging/producao continuam UNKNOWN/BLOCKED.
 
 ## Decisoes de dominio
@@ -53,61 +47,21 @@ Pendente por evidencia:
 
 ### Produto
 
-Respondido pelo projeto:
-
-- Produto e turismo/tours no Rio.
-- Fluxos principais: descobrir tour, reservar, pagar Pix, acompanhar reserva, contato/WhatsApp.
-
-Precisa ser definido pelo owner:
-
 - Persona primaria.
 - MVP comercial fechado.
 - Prioridade entre reserva online e venda assistida por WhatsApp.
 - Roadmap de features futuras.
 - Metricas de sucesso.
 
-### Design/UX
-
-Respondido pelo projeto:
-
-- Existem paginas publicas e componentes de UI.
-- I18n em quatro idiomas.
-- Assets e videos em `public`.
-
-Precisa ser definido pelo owner:
-
-- Identidade visual final.
-- Criterios de acessibilidade.
-- Fluxos mobile prioritarios.
-- Conteudo final por idioma.
-- Padrao visual oficial/design system.
-
 ### Engenharia
-
-Respondido pelo projeto:
-
-- Stack atual identificada.
-- Banco e modelos existem.
-- Auth, payment, email e analytics existem no codigo.
-- Package canonico definido.
-
-Precisa ser definido/resolvido:
 
 - Provider de deploy.
 - Banco staging/producao.
 - Observabilidade.
-- Rotacao/governanca de segredos.
-- E2E autenticado.
-- Audit moderado Prisma.
+- Rotacao/governanca final de segredos.
+- Janela controlada para Prisma audit.
 
 ### Operacao
-
-Respondido pelo projeto:
-
-- Setup local usa Postgres Docker em `localhost:5433`.
-- Mercado Pago precisa webhook publico.
-
-Precisa ser definido pelo owner:
 
 - Dominio.
 - Ambiente staging.
@@ -117,59 +71,33 @@ Precisa ser definido pelo owner:
 - Monitoramento e alertas.
 - Custo esperado.
 
-### Comercial/negocio
-
-Respondido pelo projeto:
-
-- Venda de tours/reservas.
-- WhatsApp e contato existem como canais.
-- Analytics de funil existe.
-
-Precisa ser definido pelo owner:
-
-- Monetizacao detalhada.
-- Politica de cancelamento/reembolso.
-- CRM.
-- Canais de aquisicao.
-- Retencao e suporte.
-- SLAs de atendimento.
-
 ## Plano ate deploy
 
 ### Fase 1 - Entendimento e estabilizacao
 
 - Reconciliar `package.json`. DONE.
-- Remover duplicatas `(2)` com criterio. DONE para duplicatas textuais e assets starter.
+- Remover duplicatas `(2)` com criterio. DONE.
 - Criar `.env.example`. DONE.
-- Congelar Node. DONE em `.nvmrc`.
+- Congelar Node. DONE.
 - Typecheck, lint, build e unit tests verdes. DONE.
-- E2E autenticado. REVIEW.
+- Status final: REVIEW, por audit residual e necessidade de staging real.
 
 ### Fase 2 - Higiene operacional e staging
 
-- Governanca de secrets.
-- Provider de deploy.
-- Banco staging.
-- Env vars staging.
-- Smoke tests de staging.
+- Governanca de secrets. DONE.
+- E2E autenticado. DONE.
+- Classificacao audit Prisma. DONE/REVIEW.
+- Checklist/preflight de staging. DONE.
+- Provider de deploy. BLOCKED.
+- Banco staging. BLOCKED.
+- Env vars staging. BLOCKED.
+- Smoke tests de staging. BLOCKED ate ambiente existir.
 
-### Fase 3 - MVP funcional
+### Fase 3 - Staging real
 
-- Validar catalogo, detalhe, auth, reserva e minhas reservas.
-- Validar admin basico.
-- Validar banco limpo com migrations/seed.
-- Validar pagamento sandbox.
-
-### Fase 4 - Qualidade
-
-- Estabilizar E2E autenticado.
-- Revisar audit moderado do Prisma.
-- Validar autorizacao, erros, logs e webhooks.
-
-### Fase 5 - Deploy
-
-- Criar staging.
+- Escolher provider.
+- Criar banco staging.
 - Configurar env vars.
-- Configurar Mercado Pago webhook.
-- Rodar checklist pos deploy.
-- Promover para producao.
+- Rodar `npm run preflight:staging`.
+- Validar `/api/health` e `/api/health?deep=1`.
+- Configurar Mercado Pago sandbox e Resend staging.
