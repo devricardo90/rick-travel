@@ -65,6 +65,7 @@ export default async function AdminPage() {
   type RecentBooking = Awaited<ReturnType<typeof getRecentBookings>>[number];
   type UpcomingSchedule = Awaited<ReturnType<typeof getUpcomingSchedules>>[number];
   type RecentContact = Awaited<ReturnType<typeof prisma.contactSubmission.findMany>>[number];
+  type AttributionItem = Awaited<ReturnType<typeof getAnalyticsAttributionSummary>>["sources"][number];
 
   const [
     usersCount,
@@ -317,7 +318,7 @@ export default async function AdminPage() {
             {analyticsAttribution.sources.length === 0 ? (
               <div className="px-5 py-8 text-sm text-white/56">Sem dados de origem ainda.</div>
             ) : (
-              analyticsAttribution.sources.map((item) => (
+              analyticsAttribution.sources.map((item: AttributionItem) => (
                 <div key={item.label} className="flex items-center justify-between px-5 py-4">
                   <span className="text-sm text-white/76">{item.label}</span>
                   <span className="text-sm font-semibold text-white">{item.count}</span>
@@ -336,7 +337,7 @@ export default async function AdminPage() {
             {analyticsAttribution.campaigns.length === 0 ? (
               <div className="px-5 py-8 text-sm text-white/56">Sem dados de campanha ainda.</div>
             ) : (
-              analyticsAttribution.campaigns.map((item) => (
+              analyticsAttribution.campaigns.map((item: AttributionItem) => (
                 <div key={item.label} className="flex items-center justify-between px-5 py-4">
                   <span className="text-sm text-white/76">{item.label}</span>
                   <span className="text-sm font-semibold text-white">{item.count}</span>
@@ -355,7 +356,7 @@ export default async function AdminPage() {
             {analyticsAttribution.referrers.length === 0 ? (
               <div className="px-5 py-8 text-sm text-white/56">Sem dados de referrer ainda.</div>
             ) : (
-              analyticsAttribution.referrers.map((item) => (
+              analyticsAttribution.referrers.map((item: AttributionItem) => (
                 <div key={item.label} className="flex items-center justify-between px-5 py-4">
                   <span className="text-sm text-white/76">{item.label}</span>
                   <span className="text-sm font-semibold text-white">{item.count}</span>
