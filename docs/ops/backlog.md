@@ -180,6 +180,7 @@ Tarefas:
 - RT-010.8 Criar/importar projeto Rick Travel na Vercel. Estado: BLOCKED.
 - RT-010.9 Cadastrar dominio proprio e subdominio `staging.<dominio-do-projeto>`. Estado: BLOCKED.
 - RT-010.10 Validar staging publico com `/api/health`, `/api/health?deep=1` e auth. Estado: BLOCKED.
+- RT-010.11 Permitir `BETTER_AUTH_URL` em `trustedOrigins` para staging publico. Estado: DONE.
 
 Criterios de aceite: staging publica com healthcheck, auth, DB e webhook testaveis.
 Dependencias: RT-002, RT-003, RT-008.

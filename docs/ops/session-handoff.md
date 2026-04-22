@@ -23,6 +23,7 @@ Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar st
 - Contrato de staging reforcado em `docs/ops/secrets.md` e `docs/ops/staging-checklist.md`.
 - Documento operacional `docs/ops/vercel-staging.md` criado.
 - Runtime Node definido em `package.json` como `22.x` para alinhar Vercel com `.nvmrc`.
+- `lib/auth.ts` passou a incluir `BETTER_AUTH_URL` em `trustedOrigins` quando definido, mantendo localhost/127.0.0.1.
 
 ### Fase 2
 
@@ -58,6 +59,8 @@ Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar st
 - `npm.cmd run check:db`
 - `npm.cmd test -- --run`
 - `npm.cmd install --package-lock-only`
+- `npm.cmd run lint`
+- `npm.cmd run typecheck`
 
 ## Resultados
 
@@ -70,6 +73,8 @@ Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar st
 - `npm.cmd run build`: PASS fora do sandbox.
 - `npm.cmd run check:db`: PASS com banco local.
 - `npm.cmd test -- --run`: PASS, 4 arquivos e 15 testes.
+- `npm.cmd run lint`: PASS apos ajuste de auth.
+- `npm.cmd run typecheck`: PASS apos ajuste de auth.
 
 ## Bloqueios e pendencias
 
@@ -77,7 +82,7 @@ Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar st
 - Banco staging: BLOCKED.
 - Dominio/subdominio de staging: BLOCKED.
 - `MP_ACCESS_TOKEN` de staging sandbox: BLOCKED.
-- `BETTER_AUTH_URL` de staging precisa URL publica, nao localhost.
+- `BETTER_AUTH_URL` de staging precisa URL publica, nao localhost; suporte em `trustedOrigins` esta READY no codigo.
 - Resend staging/remetente: BLOCKED ate configuracao externa.
 - `npm audit` moderado remanescente deve ser tratado em janela controlada.
 

@@ -30,6 +30,7 @@ Funcionando por evidencia:
 - Provider de staging: Vercel.
 - Projeto Vercel Rick Travel: BLOCKED; `npx.cmd vercel project ls` nao lista o projeto.
 - Dominio de staging: BLOCKED; `npx.cmd vercel domains ls` retorna 0 dominios.
+- Auth staging: `BETTER_AUTH_URL` e incorporado a `trustedOrigins` quando definido, preservando localhost.
 
 Pendente por evidencia:
 
@@ -102,6 +103,7 @@ Pendente por evidencia:
 - Cadastrar dominio proprio e `staging.<dominio-do-projeto>`. BLOCKED.
 - Criar banco staging. BLOCKED.
 - Configurar env vars. BLOCKED.
+- Compatibilizar Better Auth com `BETTER_AUTH_URL` em staging. DONE.
 - Rodar `npm run preflight:staging`.
 - Validar `/api/health` e `/api/health?deep=1`.
 - Configurar Mercado Pago sandbox e Resend staging.

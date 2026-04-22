@@ -87,7 +87,7 @@ Rick Travel e uma plataforma web de turismo para tours no Rio de Janeiro, com vi
 - `npx.cmd vercel domains ls`: PASS; confirma ausencia de dominio cadastrado.
 - `/api/health` em URL publica: BLOCKED ate existir deploy de staging.
 - `/api/health?deep=1` em URL publica: BLOCKED ate existir deploy de staging e banco de staging.
-- Auth com `BETTER_AUTH_URL` publico: BLOCKED ate existir `https://staging.<dominio-do-projeto>`.
+- Auth com `BETTER_AUTH_URL` publico: READY no codigo; `lib/auth.ts` incorpora `BETTER_AUTH_URL` em `trustedOrigins` quando definido.
 
 ### Bloqueio externo preciso
 
