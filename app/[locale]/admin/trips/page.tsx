@@ -23,13 +23,10 @@ function translationLabel(status: string) {
   return "Fallback total";
 }
 
-export default async function AdminTripsPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  const trips = await prisma.trip.findMany({
+type TripWithRelations = Awaited<ReturnType<typeof getAdminTrips>>[number];
+
+async function getAdminTrips() {
+  return prisma.trip.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       translationLogs: {
@@ -42,6 +39,15 @@ export default async function AdminTripsPage({
       },
     },
   });
+}
+
+export default async function AdminTripsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const trips = await getAdminTrips();
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8 md:py-10">
@@ -85,7 +91,7 @@ export default async function AdminTripsPage({
           </div>
         ) : (
           <div className="divide-y divide-white/8">
-            {trips.map((trip) => {
+            {trips.map((trip: TripWithRelations) => {
               const lastTranslation = trip.translationLogs[0];
 
               return (

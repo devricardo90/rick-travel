@@ -17,7 +17,7 @@ function isPaymentStatus(value: string | undefined): value is PaymentStatus {
 type BookingWhereInput = NonNullable<Parameters<typeof prisma.booking.findMany>[0]>["where"];
 type BookingWithRelations = Awaited<ReturnType<typeof getAdminBookings>>[number];
 
-async function getAdminBookings(where: any) {
+async function getAdminBookings(where: BookingWhereInput) {
     return prisma.booking.findMany({
         where,
         orderBy: { createdAt: "desc" },

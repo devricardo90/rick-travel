@@ -2,6 +2,14 @@ import { prisma } from "@/lib/prisma";
 import { ContactActions } from "@/components/admin/contact-actions";
 
 type ContactSubmissionWhereInput = NonNullable<NonNullable<Parameters<typeof prisma.contactSubmission.findMany>[0]>["where"]>;
+type ContactWithRelations = Awaited<ReturnType<typeof getAdminContacts>>[number];
+
+async function getAdminContacts(where: ContactSubmissionWhereInput) {
+    return prisma.contactSubmission.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+    });
+}
 
 function buildDateRange(dateFrom?: string, dateTo?: string) {
     const createdAt: { gte?: Date; lte?: Date } = {};
@@ -67,10 +75,7 @@ export default async function AdminContactsPage({
         where.AND = andFilters;
     }
 
-    const contacts = await prisma.contactSubmission.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-    });
+    const contacts = await getAdminContacts(where);
 
     const totalContacts = await prisma.contactSubmission.count();
     const pendingContacts = await prisma.contactSubmission.count({
@@ -171,7 +176,7 @@ export default async function AdminContactsPage({
                     </div>
                 ) : (
                     <div className="divide-y divide-white/8">
-                        {contacts.map((contact) => (
+                        {contacts.map((contact: ContactWithRelations) => (
                             <div
                                 key={contact.id}
                                 className="grid gap-5 px-5 py-5 transition-colors hover:bg-white/[0.02] lg:grid-cols-[1fr_1.8fr_0.65fr_0.85fr_0.75fr] lg:items-start"
