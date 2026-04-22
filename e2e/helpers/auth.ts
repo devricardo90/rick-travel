@@ -8,13 +8,21 @@ import {
 
 async function login(page: Page, email: string, password: string, redirectTo: string) {
   await page.goto(`/pt/login?redirect=${encodeURIComponent(redirectTo)}`);
-  await page.getByPlaceholder(/email/i).fill(email);
-  await page.getByPlaceholder(/senha|password/i).fill(password);
-  const signInResponse = page.waitForResponse(
-    (response) => response.url().includes("/api/auth/sign-in/email") && response.request().method() === "POST"
-  );
-  await page.getByRole("button", { name: /entrar|login/i }).click();
-  await signInResponse;
+  await page.waitForLoadState("networkidle");
+
+  const emailInput = page.getByPlaceholder(/email/i);
+  const passwordInput = page.getByPlaceholder(/senha|password/i);
+
+  await emailInput.fill(email);
+  await passwordInput.fill(password);
+
+  await Promise.all([
+    page.waitForResponse(
+      (response) => response.url().includes("/api/auth/sign-in/email") && response.request().method() === "POST"
+    ),
+    page.getByRole("button", { name: /entrar|login/i }).click(),
+  ]);
+
   await page.waitForLoadState("networkidle");
   await page.goto(redirectTo);
 }

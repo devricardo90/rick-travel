@@ -117,7 +117,7 @@ async function createScheduleAction(formData: FormData) {
     }
 }
 
-function scheduleStatusClass(status: "OPEN" | "CLOSED") {
+function scheduleStatusClass(status: string) {
     return status === "OPEN"
         ? "border-emerald-400/18 bg-emerald-500/10 text-emerald-200"
         : "border-slate-300/14 bg-slate-400/10 text-slate-200";
