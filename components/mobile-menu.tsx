@@ -408,7 +408,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                                 </div>
 
                                 {/* Admin — ghost, sem verde */}
-                                {user.role === "ADMIN" && (
+                                {/* {user.role === "ADMIN" && (
                                     <Link
                                         data-item
                                         href="/admin"
@@ -418,7 +418,7 @@ export default function MobileMenu({ open, onClose }: Props) {
                                         <ShieldCheck size={15} />
                                         Painel Admin
                                     </Link>
-                                )}
+                                )} */}
                             </div>
                         ) : (
                             /* ── Deslogado ── */

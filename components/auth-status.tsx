@@ -82,11 +82,11 @@ export function AuthStatus() {
         <Link href="/reservas">Minhas reservas</Link>
       </Button>
 
-      {user.role === "ADMIN" && (
+      {/* {user.role === "ADMIN" && (
         <Button asChild variant="outline" size="sm">
           <Link href="/admin">Admin</Link>
         </Button>
-      )}
+      )} */}
 
       <Button onClick={logout} size="sm">
         Logout
