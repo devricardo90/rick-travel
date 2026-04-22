@@ -289,11 +289,11 @@ export function MyBookings() {
             )}
           </div>
 
-          {b.status !== "CANCELED" && b.paymentStatus !== "PAID" ? (
+          {/* {b.status !== "CANCELED" && b.paymentStatus !== "PAID" ? (
             <Button onClick={() => startPayment(b.id)}>
               Pagar
             </Button>
-          ) : null}
+          ) : null} */}
 
           {b.status === "CANCELED" ? null : (
             <Button variant="outline" onClick={() => cancelBooking(b.id)} className="border-white/15 bg-white/[0.03] text-white hover:bg-white/[0.07] hover:text-white">
