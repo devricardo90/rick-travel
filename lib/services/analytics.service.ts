@@ -1,5 +1,7 @@
-import { Prisma, type AnalyticsEventType } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+
+type AnalyticsEventType = Prisma.AnalyticsEventGetPayload<{ select: { type: true } }>["type"];
 
 type TrackAnalyticsEventInput = {
   type: AnalyticsEventType;

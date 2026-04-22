@@ -1,4 +1,3 @@
-import { EmailTemplate } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getLocalizedField } from "@/lib/localized-field";
 import { resend } from "@/lib/resend";
@@ -131,11 +130,11 @@ export async function sendBookingEmail(bookingId: string, template: BookingEmail
 }
 
 export async function sendBookingConfirmationEmail(bookingId: string) {
-  return sendBookingEmail(bookingId, EmailTemplate.BOOKING_CONFIRMED);
+  return sendBookingEmail(bookingId, "BOOKING_CONFIRMED");
 }
 
 export async function sendPaymentConfirmedEmail(bookingId: string) {
-  return sendBookingEmail(bookingId, EmailTemplate.PAYMENT_CONFIRMED);
+  return sendBookingEmail(bookingId, "PAYMENT_CONFIRMED");
 }
 
 export async function getRecommendedBookingEmailTemplate(bookingId: string): Promise<BookingEmailTemplate | null> {

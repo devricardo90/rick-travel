@@ -1,4 +1,4 @@
-import { PhysicalLevel, Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { TripGrid } from "@/components/trip-grid";
@@ -15,6 +15,8 @@ interface TripListProps {
     children?: string;
   };
 }
+
+type PhysicalLevel = Prisma.TripGetPayload<{ select: { physicalLevel: true } }>["physicalLevel"];
 
 export default async function TripList({ searchParams }: TripListProps) {
   const minPrice = searchParams?.minPrice ? Number(searchParams.minPrice) : undefined;

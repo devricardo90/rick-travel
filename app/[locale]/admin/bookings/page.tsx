@@ -1,8 +1,19 @@
-import { BookingStatus, PaymentStatus, Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { BookingActions } from "@/components/admin/booking-actions";
 import { getLocalizedField } from "@/lib/localized-field";
 import { asLocalizedText } from "@/lib/types";
+
+type BookingStatus = Prisma.BookingGetPayload<{ select: { status: true } }>["status"];
+type PaymentStatus = Prisma.BookingGetPayload<{ select: { paymentStatus: true } }>["paymentStatus"];
+
+function isBookingStatus(value: string | undefined): value is BookingStatus {
+    return value === "PENDING" || value === "CONFIRMED" || value === "CANCELED";
+}
+
+function isPaymentStatus(value: string | undefined): value is PaymentStatus {
+    return value === "UNPAID" || value === "PAID" || value === "REFUNDED" || value === "PARTIAL";
+}
 
 function parseDateBoundary(value: string | undefined, boundary: "start" | "end") {
     if (!value) return undefined;
@@ -49,12 +60,8 @@ export default async function AdminBookingsPage({
 }) {
     const { q, status, paymentStatus, dateFrom, dateTo, recovery } = await searchParams;
 
-    const normalizedStatus =
-        status && ["PENDING", "CONFIRMED", "CANCELED"].includes(status) ? (status as BookingStatus) : undefined;
-    const normalizedPaymentStatus =
-        paymentStatus && ["UNPAID", "PAID", "REFUNDED", "PARTIAL"].includes(paymentStatus)
-            ? (paymentStatus as PaymentStatus)
-            : undefined;
+    const normalizedStatus = isBookingStatus(status) ? status : undefined;
+    const normalizedPaymentStatus = isPaymentStatus(paymentStatus) ? paymentStatus : undefined;
     const startDate = parseDateBoundary(dateFrom, "start");
     const endDate = parseDateBoundary(dateTo, "end");
 

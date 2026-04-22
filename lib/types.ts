@@ -1,7 +1,8 @@
-import { PhysicalLevel, Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 export type LocalizedText = Record<string, string>;
 export type LocalizedList = Record<string, string[]>;
+type PhysicalLevel = Prisma.TripGetPayload<{ select: { physicalLevel: true } }>["physicalLevel"];
 
 export type TripFormDataLike = {
     id?: string;

@@ -1,8 +1,10 @@
 import "server-only";
-import { Prisma, TranslationJobStatus, TranslationOperation } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type SupportedLocale = "pt" | "en" | "es" | "sv";
+type TranslationJobStatus = Prisma.TranslationJobLogGetPayload<{ select: { status: true } }>["status"];
+type TranslationOperation = Prisma.TranslationJobLogGetPayload<{ select: { operation: true } }>["operation"];
 
 type TranslationResult = Record<SupportedLocale, string>;
 type TranslationArrayResult = Record<SupportedLocale, string[]>;

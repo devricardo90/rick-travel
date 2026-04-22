@@ -1,4 +1,4 @@
-import { Prisma, TranslationOperation } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { type SupportedLocale, tripSchema, TripInput } from "@/lib/schemas";
@@ -148,7 +148,7 @@ export async function createTripRecord(data: TripInput) {
     const trip = await prisma.trip.create({ data: payload });
     await logTranslationJob({
       tripId: trip.id,
-      operation: TranslationOperation.CREATE,
+      operation: "CREATE",
       parts: translationParts,
     });
     return trip;
@@ -172,7 +172,7 @@ export async function updateTripRecord(id: string, data: TripInput) {
     });
     await logTranslationJob({
       tripId: trip.id,
-      operation: TranslationOperation.UPDATE,
+      operation: "UPDATE",
       parts: translationParts,
     });
     return trip;
