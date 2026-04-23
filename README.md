@@ -1,232 +1,147 @@
 # Rick Travel
 
-Plataforma de turismo para passeios no Rio de Janeiro. Site para reserva de city tours com guia credenciado Cadastur.
+Rick Travel is a tourism web platform focused on presenting travel experiences and supporting a modern booking flow for public users.
 
-## Sobre o Projeto
+This project is being developed as a real-world MVP with a strong delivery and validation process, using a structured execution framework called **Protocolo Rick**.
 
-Rick Travel é uma plataforma web para reserva de passeios turísticos no Rio de Janeiro. O sistema permite que turistas conheçam os passeios disponíveis, façam reservas e pagamentos online. Inclui um painel administrativo para gerenciamento de passeios, reservas e contato com clientes.
+## Project Status
 
-### Funcionalidades Principais
+**Current stage:** MVP publicly deployed and under active stabilization.
 
-- **Listagem de Passeios**: Exibição de tours com filtros e busca
-- **Reserva Online**: Sistema completo de reserva com seleção de datas/horários
-- **Pagamento via PIX**: Integração com MercadoPago para pagamentos
-- **Multilíngue**: Suporte a 4 idiomas (PT, EN, ES, SV)
-- **Autenticação**: Sistema de login/registro com better-auth
-- **Painel Admin**: Gerenciamento de passeios, reservas e contatos
-- **Analytics**: Rastreamento de eventos para análise de funil
-- **SEO**: Sitemap dinâmico e metadados otimizados
+Current focus:
+- public experience
+- tours catalog
+- booking core
+- authentication base
+- deployment hardening
+- technical cleanup after first deployment
 
-## Stack Tecnológica
+Temporarily out of scope for this public MVP stage:
+- admin module
+- Mercado Pago integration
+- E2E pipeline in deployment flow
 
-### Frontend
+## Goals
 
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| Next.js | 16.0.1 | Framework React com App Router |
-| React | 19.2.0 | Biblioteca de UI |
-| TypeScript | 5.x | Tipagem estática |
-| Tailwind CSS | 4.x | Framework CSS utility-first |
-| Radix UI | - | Componentes primitivos acessíveis |
-| Motion | 11.x | Animações (antigo Framer Motion) |
-| GSAP | 3.12.x | Animações avançadas |
-| Lucide React | 0.460.x | Ícones |
-| next-intl | 4.x | Internacionalização |
-| Sonner | 1.5.x | Notificações toast |
+The project aims to provide:
+- a public travel and tours experience
+- multilingual content support
+- a booking-oriented user flow
+- a scalable base for future operational and payment features
 
-### Backend
+## Tech Stack
 
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| Prisma | 7.5.x | ORM para PostgreSQL |
-| PostgreSQL | - | Banco de dados relacional |
-| better-auth | 1.2.x | Autenticação |
-| Zod | - | Validação de schemas |
+- **Next.js**
+- **React**
+- **TypeScript**
+- **Prisma**
+- **PostgreSQL**
+- **Vercel**
 
-### Serviços Externos
+## Main Features
 
-| Serviço | Propósito |
-|---------|-----------|
-| MercadoPago | Processamento de pagamentos (PIX) |
-| Resend | Envio de emails transacionais |
-| MyMemory API | Tradução automática de conteúdo |
+### Public MVP
+- public pages for travel experiences
+- multilingual routing structure
+- tour listing and presentation
+- core booking flow
+- sitemap generation
+- deployment on Vercel
 
-## Arquitetura do Projeto
+### In Progress / Planned
+- stronger runtime validation
+- admin redesign and reintroduction
+- payment integration reactivation
+- technical cleanup and architecture hardening
+- broader automated validation coverage
 
-```
-rick-travel/
-├── app/                          # Next.js App Router
-│   ├── api/                      # API Routes
-│   │   ├── auth/                 # Autenticação (better-auth)
-│   │   ├── bookings/             # CRUD de reservas
-│   │   ├── trips/                # Listagem de passeios
-│   │   ├── payments/             # Checkout e webhook MercadoPago
-│   │   ├── analytics/            # Tracking de eventos
-│   │   └── users/                # Gerenciamento de usuários
-│   ├── [locale]/                 # Rotas internacionalizadas
-│   │   ├── (public)/            # Páginas públicas
-│   │   │   ├── page.tsx         # Home
-│   │   │   ├── tours/           # Detalhes de passeios
-│   │   │   ├── reservas/        # Reservas do usuário
-│   │   │   ├── quem-somos/      # Sobre nós
-│   │   │   └── contato/         # Formulário de contato
-│   │   ├── admin/                # Painel administrativo (protegido)
-│   │   ├── login/                # Login
-│   │   └── register/            # Registro
-│   └── actions/                  # Server Actions
-├── components/                   # Componentes React
-│   ├── ui/                       # Primitivos UI (Radix + Tailwind)
-│   ├── trips/                    # Componentes de passeios
-│   └── admin/                     # Componentes do admin
-├── lib/                          # Lógica de negócio
-│   ├── services/                 # Serviços (trip, booking, payment, etc.)
-│   ├── auth.ts                   # Configuração better-auth
-│   ├── prisma.ts                 # Cliente PostgreSQL
-│   ├── schemas.ts                # Validação Zod
-│   └── types.ts                  # Tipos TypeScript
-├── i18n/                         # Configuração de i18n
-│   ├── routing.ts               # Configuração de rotas
-│   └── request.ts               # Handler de locale
-├── messages/                     # Traduções estáticas
-│   ├── pt.json                  # Português (default)
-│   ├── en.json                  # Inglês
-│   ├── es.json                  # Espanhol
-│   └── sv.json                  # Sueco
-├── prisma/                       # Schema e migrações
-│   ├── schema.prisma            # Modelos do banco
-│   └── migrations/              # Histórico de migrações
-└── public/                       # Assets estáticos
-```
+## Development Approach
 
-## Banco de Dados
+This project follows a disciplined execution model with emphasis on:
+- evidence-based delivery
+- minimal, reversible changes
+- scope control
+- validation before claiming completion
+- separation between active MVP scope and deferred modules
 
-### Modelos Principais
+That means the repository may contain modules that are intentionally frozen or temporarily excluded from the active deployment scope while the public MVP is stabilized.
 
-| Modelo | Descrição |
-|--------|-----------|
-| `User` | Usuários com roles (USER/ADMIN) |
-| `Session` | Sessões de autenticação |
-| `Trip` | Passeios com campos multilíngues |
-| `TripSchedule` | Horários disponíveis por passeio |
-| `Booking` | Reservas dos usuários |
-| `PaymentAttempt` | Tentativas de pagamento |
-| `AnalyticsEvent` | Eventos de analytics |
-| `ContactSubmission` | Formulários de contato |
+## Deployment Notes
 
-### Fluxo de Reserva
+The project is currently deployed on Vercel.
 
-1. Usuário seleciona passeio e opcionalmente horário
-2. Booking criado com status `PENDING`
-3. Pagamento iniciado via MercadoPago PIX
-4. Webhook confirma pagamento
-5. Status do booking atualizado para `CONFIRMED`
-6. Email de confirmação enviado via Resend
+The first public deployment focused on getting the **public MVP** online while isolating unstable or incomplete modules that should not block delivery.
 
-## Internacionalização
+## Repository Philosophy
 
-O sistema suporta 4 idiomas:
-- **PT** - Português (padrão)
-- **EN** - English
-- **ES** - Español
-- **SV** - Svenska
+This is not just a demo repository.  
+It is being treated as a real product foundation.
 
-### Estratégia de Tradução
+The strategy is:
+1. deploy the public core
+2. validate the runtime
+3. stabilize the technical base
+4. reintroduce frozen modules with better quality standards
 
-1. **UI Estática**: Traduções em `messages/*.json`
-2. **Conteúdo Dinâmico**: Campos JSON no banco com chaves de locale
-3. **Auto-tradução**: API MyMemory para traduzir conteúdo de passeios
-4. **Fallback**: Português quando tradução falha
+## Roadmap
 
-## Variáveis de Ambiente
+### Short Term
+- stabilize public runtime
+- improve environment handling
+- clean up remaining warnings
+- validate booking flows more deeply
 
-```env
-# Banco de dados
-DATABASE_URL="postgresql://user:password@localhost:5433/ricktravel"
+### Mid Term
+- redesign and re-enable admin
+- re-enable payment integration
+- improve data and operational flows
 
-# Autenticação
-BETTER_AUTH_URL="http://localhost:3000"
-BETTER_AUTH_SECRET="sua-chave-secreta"
+### Long Term
+- evolve into a more complete travel operations platform
+- strengthen observability, testing, and maintainability
+- improve business-facing workflows
 
-# MercadoPago
-MP_ACCESS_TOKEN="seu-token-mercadopago"
-MP_WEBHOOK_SECRET="webhook-secret"
+## Local Development
 
-# Resend (Email)
-RESEND_API_KEY="sua-api-key-resend"
-
-# API Externa (opcional)
-BETTER_AUTH_URL="http://localhost:3000"
-```
-
-## Instalação
+Clone the repository and install dependencies:
 
 ```bash
-# Instalar dependências
 npm install
+Run Prisma generation:
 
-# Gerar cliente Prisma
 npx prisma generate
 
-# Rodar migrações
-npx prisma migrate dev
+Run the development server:
 
-# Iniciar servidor de desenvolvimento
 npm run dev
-```
 
-## Scripts Disponíveis
+Build locally:
 
-```bash
-npm run dev      # Servidor de desenvolvimento
-npm run build    # Build de produção
-npm run start    # Servidor de produção
-npm run lint     # Linting
-```
+npm run build
 
-## Fluxo de Pagamento
+Type check:
 
-```
-┌─────────────┐    ┌──────────────┐    ┌─────────────┐
-│   Booking   │───▶│   Checkout   │───▶│ MercadoPago │
-│  (PENDING)  │    │    API       │    │    PIX      │
-└─────────────┘    └──────────────┘    └──────┬──────┘
-                                                │
-                      ┌──────────────┐          │
-                      │   Webhook    │◀─────────┘
-                      │  Handler     │
-                      └──────┬───────┘
-                             │
-                      ┌──────▼───────┐
-                      │   Booking    │
-                      │ (CONFIRMED)  │
-                      └──────┬───────┘
-                             │
-                      ┌──────▼───────┐
-                      │    Email     │
-                      │   (Resend)   │
-                      └──────────────┘
-```
+npm run typecheck
 
-## API Endpoints
+Lint:
 
-| Endpoint | Método | Descrição |
-|----------|--------|-----------|
-| `/api/auth/[...all]` | GET/POST | Handlers de autenticação |
-| `/api/trips` | GET | Lista passeios publicados |
-| `/api/trips/[id]` | GET | Detalhes do passeio |
-| `/api/bookings` | GET/POST | Reservas do usuário |
-| `/api/bookings/[id]` | DELETE | Cancelar reserva |
-| `/api/payments/checkout` | POST | Iniciar pagamento |
-| `/api/payments/webhook` | POST | Webhook MercadoPago |
-| `/api/analytics` | POST | Registrar evento |
+npm run lint
+Environment Variables
 
-## Segurança
+The project uses environment variables for runtime services such as:
 
-- **Autenticação**: better-auth com sessões (24h, refresh 30min)
-- **Autorização**: Middleware para rotas admin
-- **Validação**: Zod schemas em todas as entradas
-- **CSRF**: Proteção nativa do better-auth
+database connection
+authentication
+email provider
+deployment-specific configuration
 
-## Licença
+A local .env is required for full runtime behavior.
 
-Privado - Todos os direitos reservados.
+Important Note
+
+Some modules may exist in the repository but may not be part of the active public deployment scope at a given moment.
+This is intentional and follows the current MVP stabilization strategy.
+
+Author
+
+Built by Ricardo Souza as part of a real-world product and portfolio journey focused on shipping structured, maintainable digital products.
