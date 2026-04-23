@@ -67,7 +67,9 @@ export default async function TripList({ searchParams }: TripListProps) {
     );
   }
 
-  const serializedTrips = trips.map(trip => ({
+  type TripRecord = (typeof trips)[number];
+
+  const serializedTrips = trips.map((trip: TripRecord) => ({
     ...trip,
     title: asLocalizedText(trip.title) ?? {},
     description: asLocalizedText(trip.description),
