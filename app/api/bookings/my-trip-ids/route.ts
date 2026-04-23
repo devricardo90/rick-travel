@@ -4,6 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+type BookingTripRef = {
+  tripId: string;
+};
+
 export async function GET() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -13,7 +17,7 @@ export async function GET() {
     return NextResponse.json([], { status: 200 });
   }
 
-  const bookings = await prisma.booking.findMany({
+  const bookings: BookingTripRef[] = await prisma.booking.findMany({
     where: {
       userId: session.user.id,
       status: { in: ["PENDING", "CONFIRMED"] },
