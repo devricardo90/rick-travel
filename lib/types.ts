@@ -1,9 +1,8 @@
-import { PhysicalLevel } from "@prisma/client";
-
 export type JsonValue = string | number | boolean | null | { [key: string]: JsonValue } | JsonValue[];
 
 export type LocalizedText = Record<string, string>;
 export type LocalizedList = Record<string, string[]>;
+export type PhysicalLevel = "LIGHT" | "MODERATE" | "HARD" | "EXTREME";
 
 export type TripFormDataLike = {
     id?: string;

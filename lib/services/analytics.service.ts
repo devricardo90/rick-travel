@@ -1,8 +1,8 @@
-import { AnalyticsEventType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { ANALYTICS_EVENT_TYPES, type AnalyticsEventName } from "@/lib/analytics/events";
 
 type TrackAnalyticsEventInput = {
-  type: AnalyticsEventType;
+  type: AnalyticsEventName;
   userId?: string;
   tripId?: string;
   bookingId?: string;
@@ -28,13 +28,7 @@ export async function trackAnalyticsEvent(input: TrackAnalyticsEventInput) {
 }
 
 export async function getAnalyticsFunnelSummary(since: Date) {
-  const eventTypes: AnalyticsEventType[] = [
-    "TOUR_VIEWED",
-    "RESERVE_CLICKED",
-    "CHECKOUT_STARTED",
-    "PIX_GENERATED",
-    "PAYMENT_CONFIRMED",
-  ];
+  const eventTypes = ANALYTICS_EVENT_TYPES;
 
   const entries = await Promise.all(
     eventTypes.map(async (type) => {
@@ -49,7 +43,7 @@ export async function getAnalyticsFunnelSummary(since: Date) {
     })
   );
 
-  return Object.fromEntries(entries) as Record<AnalyticsEventType, number>;
+  return Object.fromEntries(entries) as Record<AnalyticsEventName, number>;
 }
 
 type AttributionRow = {
@@ -101,13 +95,13 @@ export async function getAnalyticsAttributionSummary(since: Date) {
   };
 }
 
-const ABANDONED_CHECKOUT_EVENT_TYPES: AnalyticsEventType[] = [
+const ABANDONED_CHECKOUT_EVENT_TYPES: AnalyticsEventName[] = [
   "CHECKOUT_STARTED",
   "PIX_GENERATED",
 ];
 
 type AbandonedCheckoutEvent = {
-  type: AnalyticsEventType;
+  type: AnalyticsEventName;
   createdAt: Date;
 };
 

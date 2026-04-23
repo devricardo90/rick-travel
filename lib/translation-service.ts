@@ -1,8 +1,9 @@
 import "server-only";
-import { TranslationJobStatus, TranslationOperation } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 type SupportedLocale = "pt" | "en" | "es" | "sv";
+type TranslationJobStatus = "SUCCESS" | "PARTIAL_FALLBACK" | "FULL_FALLBACK";
+type TranslationOperation = "CREATE" | "UPDATE";
 
 type TranslationResult = Record<SupportedLocale, string>;
 type TranslationArrayResult = Record<SupportedLocale, string[]>;

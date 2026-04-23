@@ -2,6 +2,11 @@ import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { routing } from "@/i18n/routing";
 
+type SitemapTrip = {
+  id: string;
+  createdAt: Date;
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://ricktravel.com.br";
   const staticRoutes = ["", "/tours", "/login", "/register", "/quem-somos", "/contato"];
@@ -15,10 +20,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   );
 
-  const trips = await prisma.trip.findMany({
-    where: { isPublished: true },
-    select: { id: true, createdAt: true },
-  });
+  let trips: SitemapTrip[] = [];
+
+  try {
+    trips = await prisma.trip.findMany({
+      where: { isPublished: true },
+      select: { id: true, createdAt: true },
+    });
+  } catch (error) {
+    console.error("Error fetching trips for sitemap:", error);
+  }
 
   const tripRoutes = routing.locales.flatMap((locale) =>
     trips.map((trip) => ({

@@ -1,8 +1,6 @@
-import { PhysicalLevel } from "@prisma/client";
-
 import { prisma } from "@/lib/prisma";
 import { TripGrid } from "@/components/trip-grid";
-import { asLocalizedList, asLocalizedText } from "@/lib/types";
+import { asLocalizedList, asLocalizedText, type PhysicalLevel } from "@/lib/types";
 
 type TripWhereInput = NonNullable<Parameters<typeof prisma.trip.findMany>[0]>["where"];
 

@@ -91,7 +91,7 @@ export function MyBookings() {
       }
 
       const json = await res.json();
-      const bookings = Array.isArray(json) ? json : [];
+      const bookings = Array.isArray(json) ? (json as Booking[]) : [];
       setData(bookings);
 
       const currentPendingIds = bookings
