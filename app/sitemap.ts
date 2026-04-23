@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { routing } from "@/i18n/routing";
+import { PUBLIC_SITE_URL } from "@/lib/public-site-url";
 
 type SitemapTrip = {
   id: string;
@@ -8,7 +9,7 @@ type SitemapTrip = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://ricktravel.com.br";
+  const baseUrl = PUBLIC_SITE_URL;
   const staticRoutes = ["", "/tours", "/login", "/register", "/quem-somos", "/contato"];
 
   const routes = routing.locales.flatMap((locale) =>

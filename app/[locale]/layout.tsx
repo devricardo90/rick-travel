@@ -7,9 +7,10 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Toaster } from '@/components/ui/toaster';
+import { PUBLIC_SITE_URL } from "@/lib/public-site-url";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.BETTER_AUTH_URL || "http://localhost:3000"),
+  metadataBase: new URL(PUBLIC_SITE_URL),
   title: "Rick Travel — City Tour no Rio",
   description: "Guia credenciado Cadastur. PT/EN/ES.",
   authors: [{ name: "Rick Travel" }],
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://ricktravel.com.br",
+    url: PUBLIC_SITE_URL,
     title: "Rick Travel | City Tour no Rio de Janeiro",
     description: "Descubra o Rio de Janeiro com passeios exclusivos e guias credenciados.",
     siteName: "Rick Travel",

@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { PUBLIC_SITE_URL } from "@/lib/public-site-url";
 
 export default function robots(): MetadataRoute.Robots {
     return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: ["/admin/", "/api/"],
         },
-        sitemap: "https://ricktravel.com.br/sitemap.xml",
+        sitemap: `${PUBLIC_SITE_URL}/sitemap.xml`,
     };
 }

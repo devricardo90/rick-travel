@@ -92,56 +92,58 @@ Evidencia esperada: banco local recriado e healthcheck ok.
 
 ## RT-006 Fluxos principais do app
 
-Estado: READY
+Estado: IN_PROGRESS
 
-Objetivo: validar fluxo publico ate reserva.
+Objetivo: estabilizar o fluxo publico ja deployado.
 
 Tarefas:
 
-- RT-006.1 Home/listagem/detalhe de tour. Estado: READY.
-- RT-006.2 Reserva autenticada com agenda/capacidade. Estado: READY.
-- RT-006.3 Minhas reservas com status e polling. Estado: READY.
+- RT-006.1 Home/listagem/detalhe de tour em runtime publicado. Estado: READY.
+- RT-006.2 Reserva autenticada com agenda/capacidade em runtime publicado. Estado: READY.
+- RT-006.3 Minhas reservas com status e polling em runtime publicado. Estado: READY.
+- RT-006.4 Rodar smoke pos-deploy nos fluxos publicos prioritarios. Estado: READY.
+- RT-006.5 Registrar gaps reais encontrados no runtime publicado. Estado: READY.
 
-Criterios de aceite: usuario cria reserva `PENDING/UNPAID` e visualiza status correto.
+Criterios de aceite: MVP publico permanece acessivel e sem regressao critica nos fluxos publicos.
 Dependencias: RT-004, RT-005.
 Risco: alto.
-Evidencia esperada: E2E booking verde.
+Evidencia esperada: smoke pos-deploy e registro objetivo de ocorrencias.
 
 ## RT-007 Painel/admin
 
-Estado: READY
+Estado: BLOCKED
 
-Objetivo: validar rotina operacional.
+Objetivo: manter escopo admin congelado nesta fase.
 
 Tarefas:
 
-- RT-007.1 Dashboard admin. Estado: READY.
-- RT-007.2 CRUD tours e agenda. Estado: READY.
-- RT-007.3 Bookings e contatos. Estado: READY.
-- RT-007.4 Recuperacao de abandono. Estado: READY.
+- RT-007.1 Dashboard admin. Estado: BLOCKED.
+- RT-007.2 CRUD tours e agenda. Estado: BLOCKED.
+- RT-007.3 Bookings e contatos. Estado: BLOCKED.
+- RT-007.4 Recuperacao de abandono. Estado: BLOCKED.
 
-Criterios de aceite: admin consegue operar tours, agendas, reservas e contatos sem acesso indevido.
-Dependencias: RT-004, RT-005.
+Criterios de aceite: nenhuma retomada sem justificativa explicita de escopo.
+Dependencias: decisao de produto/operacao.
 Risco: medio.
-Evidencia esperada: smoke admin e E2E admin.
+Evidencia esperada: nao aplicavel nesta fase.
 
 ## RT-008 Integracoes
 
 Estado: BLOCKED
 
-Objetivo: fechar integracoes externas reais.
+Objetivo: manter integracoes externas congeladas fora do escopo atual.
 
 Tarefas:
 
-- RT-008.1 Mercado Pago sandbox: token, Pix, webhook publico. Estado: BLOCKED.
+- RT-008.1 Mercado Pago sandbox/producao: token, Pix e webhook publico. Estado: BLOCKED.
 - RT-008.2 Resend: dominio/remetente e email de confirmacao. Estado: READY.
 - RT-008.3 MyMemory/traducao: validar limite/fallback. Estado: READY.
 - RT-008.4 WhatsApp: confirmar numero e mensagem comercial. Estado: READY.
 
-Criterios de aceite: Pix real confirma booking via webhook e email e enviado.
-Dependencias: credenciais e dominio/tunnel.
+Criterios de aceite: nenhuma retomada de Mercado Pago sem justificativa operacional especifica.
+Dependencias: decisao de escopo e credenciais externas.
 Risco: alto.
-Evidencia esperada: pagamento ponta a ponta em sandbox.
+Evidencia esperada: nao aplicavel nesta fase para Mercado Pago.
 
 ## RT-009 Testes
 
@@ -164,46 +166,57 @@ Evidencia esperada: `npm.cmd run test:e2e` 5/5 verde.
 
 ## RT-010 Deploy/staging
 
-Estado: BLOCKED
+Estado: DONE
 
-Objetivo: preparar ambiente de homologacao.
+Objetivo: concluir deploy tecnico e publicacao inicial.
 
 Tarefas:
 
 - RT-010.1 Definir provider de deploy. Estado: DONE.
-- RT-010.2 Definir banco staging. Estado: BLOCKED.
-- RT-010.3 Configurar env vars staging. Estado: BLOCKED.
+- RT-010.2 Definir banco staging. Estado: DONE.
+- RT-010.3 Configurar env vars staging/deploy inicial. Estado: DONE.
 - RT-010.4 Resolver build offline/fonts. Estado: DONE.
 - RT-010.5 Criar checklist operacional de staging. Estado: DONE.
 - RT-010.6 Criar preflight de staging. Estado: DONE.
 - RT-010.7 Criar healthcheck profundo com DB. Estado: DONE.
-- RT-010.8 Criar/importar projeto Rick Travel na Vercel. Estado: BLOCKED.
-- RT-010.9 Cadastrar dominio proprio e subdominio `staging.<dominio-do-projeto>`. Estado: BLOCKED.
-- RT-010.10 Validar staging publico com `/api/health`, `/api/health?deep=1` e auth. Estado: BLOCKED.
-- RT-010.11 Permitir `BETTER_AUTH_URL` em `trustedOrigins` para staging publico. Estado: DONE.
+- RT-010.8 Criar/importar projeto Rick Travel na Vercel. Estado: DONE.
+- RT-010.9 Publicar projeto na Vercel. Estado: DONE.
+- RT-010.10 Validar runtime inicial ate o ponto atual. Estado: DONE.
+- RT-010.11 Permitir `BETTER_AUTH_URL` em `trustedOrigins` para ambiente publicado. Estado: DONE.
 
-Criterios de aceite: staging publica com healthcheck, auth, DB e webhook testaveis.
-Dependencias: RT-002, RT-003, RT-008.
+Criterios de aceite: deploy tecnico concluido, app publicada e runtime inicial validado ate o ponto atual.
+Dependencias: RT-002, RT-003.
 Risco: medio.
-Evidencia esperada: checklist, preflight e healthcheck prontos; URL staging e smoke test dependem de projeto Vercel, dominio, banco e envs externos.
+Evidencia esperada: `vercel inspect` do alias publico, healthchecks `200` e validacao objetiva da URL publicada.
 
-## RT-011 Producao
+## RT-011 Pos-deploy/estabilizacao
 
-Estado: BLOCKED
+Estado: IN_PROGRESS
 
-Objetivo: publicar com dominio e credenciais reais.
+Objetivo: estabilizar o MVP publico apos a publicacao.
 
 Tarefas:
 
-- RT-011.1 Definir dominio. Estado: BLOCKED.
-- RT-011.2 Configurar env vars producao. Estado: BLOCKED.
-- RT-011.3 Configurar Mercado Pago producao. Estado: BLOCKED.
-- RT-011.4 Checklist release. Estado: READY.
+- RT-011.1 Executar smoke pos-deploy focado no fluxo publico. Estado: DONE.
+- RT-011.2 Revisar logs, healthchecks e erros do ambiente publicado. Estado: DONE.
+- RT-011.3 Registrar incidentes e regressões reais observadas apos deploy. Estado: DONE.
+- RT-011.4 Alinhar dominio canonico publico com a URL operacional real. Estado: DONE.
+- RT-011.5 Diagnosticar catalogo publico vazio. Estado: DONE.
+- RT-011.6 Corrigir exposicao publica do catalogo se houver incidente funcional. Estado: BLOCKED.
+- RT-011.7 Registrar vazio operacional como estado esperado. Estado: DONE.
+- RT-011.8 Formalizar checklist minima de validacao pos-publicacao e rollback. Estado: READY.
 
-Criterios de aceite: release aprovado com rollback conhecido.
+Criterios de aceite: fase atual com leitura objetiva do runtime publicado e sem reabertura indevida de escopo congelado.
 Dependencias: RT-010.
 Risco: alto.
-Evidencia esperada: release notes e validacao pos deploy.
+Evidencia esperada: smoke em `rick-travel.vercel.app`, healthchecks `200`, amostra de logs Vercel e ocorrencias reais documentadas.
+
+Notas operacionais:
+
+- RT-011.4 validado em producao com `GET /robots.txt = 200`, `GET /sitemap.xml = 200` e artefatos publicos apontando para `https://rick-travel.vercel.app`.
+- RT-011.5 concluiu `EXPECTED_EMPTY_STATE`.
+- RT-011.6 permanece bloqueado porque a dependencia `FUNCTIONAL_INCIDENT` nao ocorreu.
+- RT-011.7 documenta que o vazio atual decorre de ausencia de conteudo publicavel: banco validado com `0` trips e `0` trips publicadas.
 
 ## RT-012 Observabilidade
 
@@ -218,7 +231,7 @@ Tarefas:
 - RT-012.3 Monitoramento de erro. Estado: BLOCKED.
 
 Criterios de aceite: falhas criticas aparecem em logs/alertas.
-Dependencias: provider de deploy.
+Dependencias: ambiente publicado.
 Risco: medio.
 Evidencia esperada: painel/logs acessiveis.
 
@@ -226,22 +239,22 @@ Evidencia esperada: painel/logs acessiveis.
 
 Estado: REVIEW
 
-Objetivo: reduzir risco antes do deploy.
+Objetivo: reduzir risco pos-publicacao.
 
 Tarefas:
 
 - RT-013.1 Rotacionar segredos locais se necessario. Estado: READY.
 - RT-013.2 Criar `.env.example`. Estado: DONE.
-- RT-013.3 Revisar webhook secret Mercado Pago. Estado: READY.
+- RT-013.3 Revisar webhook secret Mercado Pago. Estado: BLOCKED.
 - RT-013.4 Revisar dados sensiveis em logs. Estado: READY.
 - RT-013.5 Classificar audit moderado remanescente em Prisma dev tooling. Estado: DONE.
 - RT-013.6 Resolver audit moderado remanescente em janela controlada. Estado: READY.
 - RT-013.7 Documentar contrato de secrets por ambiente. Estado: DONE.
 
-Criterios de aceite: nenhum segredo versionado; webhook validado; rotas privadas protegidas.
+Criterios de aceite: nenhum segredo versionado; logs revisados; escopo congelado preservado.
 Dependencias: RT-003.
 Risco: alto.
-Evidencia esperada: git clean sem env, checklist seguranca.
+Evidencia esperada: checklist seguranca e plano de janela controlada.
 
 ## RT-014 UX/UI polish
 
@@ -264,7 +277,7 @@ Evidencia esperada: screenshots e checklist UX.
 
 Estado: READY
 
-Objetivo: consolidar proposta comercial e canais.
+Objetivo: consolidar proposta comercial e canais sem ampliar escopo tecnico atual.
 
 Tarefas:
 

@@ -1,93 +1,70 @@
 # Session Handoff - Rick Travel
 
-Data: 2026-04-22
+Data: 2026-04-23
 
 ## Contexto
 
-Sessao atualizada ate a Fase 3 - Staging Real Controlado seguindo o Protocolo Rick.
+Sessao atualizada ate a Fase 4 - Estabilizacao Pos-Deploy seguindo o Protocolo Rick.
 
 Fase 1 permanece REVIEW.
 Fase 2 esta DONE no que dependia do repositorio.
-Fase 3 esta BLOCKED por acoes externas, com repositorio READY para configurar staging na Vercel.
+Fase 3 saiu de BLOCKED e foi concluida no recorte tecnico de deploy/publicacao inicial.
+Fase 4 esta IN_PROGRESS com foco exclusivo em estabilizacao pos-deploy.
 
-## O que foi feito
+## O que foi registrado nesta atualizacao
 
-### Fase 3
+- O deploy tecnico do Rick Travel foi concluido.
+- O MVP publico foi publicado na Vercel.
+- O build saiu da fase de bloqueio e esta estabilizado.
+- O runtime inicial ja foi validado ate o ponto atual.
+- Admin continua fora do escopo atual.
+- Mercado Pago continua fora do escopo atual.
 
-- Provider confirmado: Vercel.
-- Estrategia de dominio registrada: previews tecnicos em `.vercel.app`; staging em `staging.<dominio-do-projeto>`; producao separada.
-- Vercel CLI validado via `npx vercel`.
-- Conta autenticada: `devricardo90`.
-- Ausencia de projeto `rick-travel` na Vercel confirmada.
-- Ausencia de dominios cadastrados na Vercel confirmada.
-- Contrato de staging reforcado em `docs/ops/secrets.md` e `docs/ops/staging-checklist.md`.
-- Documento operacional `docs/ops/vercel-staging.md` criado.
-- Runtime Node definido em `package.json` como `22.x` para alinhar Vercel com `.nvmrc`.
-- `lib/auth.ts` passou a incluir `BETTER_AUTH_URL` em `trustedOrigins` quando definido, mantendo localhost/127.0.0.1.
+## Leitura operacional atual
 
-### Fase 2
-
-- E2E autenticado diagnosticado e estabilizado.
-- `playwright.config.ts` passou a usar `workers: 1`.
-- `next.config.ts` passou a aceitar qualidade de imagem `90`, removendo warning de E2E.
-- `scripts/validate-env.ts` criado.
-- `scripts/test-db.ts` tornado nao destrutivo.
-- `app/api/health/route.ts` ganhou healthcheck profundo com banco via `?deep=1`.
-- Scripts `check:env`, `check:db` e `preflight:staging` adicionados.
-- `docs/ops/secrets.md` e `docs/ops/staging-checklist.md` criados.
-- Docs operacionais atualizados.
+- O projeto nao esta mais aguardando criacao de projeto Vercel para seguir.
+- O gargalo principal deixou de ser build/deploy e passou a ser estabilizacao do runtime publicado.
+- A documentacao operacional foi atualizada para refletir a publicacao real, sem reabrir frentes congeladas.
 
 ## Evidencias importantes
 
-- Fase 3 nao publicou staging porque a conta Vercel nao possui projeto Rick Travel nem dominio cadastrado.
-- O repositorio esta READY para staging do ponto de vista de build e documentacao operacional.
-- E2E completo passou 5/5 na Fase 2.
-- `.env` e `.env.local` seguem ignorados pelo Git; apenas `.env.example` e rastreavel.
-- Audit residual Prisma e de tooling/dev dependency.
-
-## Comandos executados
-
-- `npx.cmd vercel --version`
-- `npx.cmd vercel whoami`
-- `npx.cmd vercel project ls`
-- `npx.cmd vercel domains ls`
-- `npm.cmd run check:env -- --target=staging`
-- `npm.cmd run preflight:staging`
-- `npm.cmd run lint`
-- `npm.cmd run typecheck`
-- `npm.cmd run build`
-- `npm.cmd run check:db`
-- `npm.cmd test -- --run`
-- `npm.cmd install --package-lock-only`
-- `npm.cmd run lint`
-- `npm.cmd run typecheck`
-
-## Resultados
-
-- `npx.cmd vercel project ls`: PASS; nao existe projeto Rick Travel na conta.
-- `npx.cmd vercel domains ls`: PASS; 0 dominios encontrados.
-- `npm.cmd run check:env -- --target=staging`: BLOCKED esperado por envs reais ausentes/URL local.
-- `npm.cmd run preflight:staging`: BLOCKED no primeiro passo por env staging incompleta.
+- `npm.cmd run check:env -- --target=local`: PASS.
+- `npm.cmd run check:db`: PASS.
 - `npm.cmd run lint`: PASS.
 - `npm.cmd run typecheck`: PASS.
 - `npm.cmd run build`: PASS fora do sandbox.
-- `npm.cmd run check:db`: PASS com banco local.
-- `npm.cmd test -- --run`: PASS, 4 arquivos e 15 testes.
-- `npm.cmd run lint`: PASS apos ajuste de auth.
-- `npm.cmd run typecheck`: PASS apos ajuste de auth.
+- `npm.cmd run test`: PASS, 4 arquivos e 15 testes.
+- `npm.cmd run test:e2e`: PASS, 5/5.
+- `npx.cmd vercel inspect rick-travel.vercel.app`: PASS; alias publico canonico agora aponta para o deployment `dpl_4vxzDoDd7Du1qLxtTBbyPgYFb36F`, status `Ready`.
+- `GET https://rick-travel.vercel.app`: `200`.
+- `GET https://rick-travel.vercel.app/api/health`: `200`.
+- `GET https://rick-travel.vercel.app/api/health?deep=1`: `200`, database `ok`.
+- `npx.cmd vercel logs dpl_EALNcKfyquenXcV5j6voQBgeS86C --scope devricardo90s-projects --no-follow --limit 50 --json`: amostra sem erro runtime explicito.
+- `GET https://rick-travel.vercel.app/robots.txt`: `200`, sitemap apontando para `https://rick-travel.vercel.app/sitemap.xml`.
+- `GET https://rick-travel.vercel.app/sitemap.xml`: `200`, URLs publicadas em `https://rick-travel.vercel.app/...`.
+- Banco local consultado para diagnostico do catalogo: `0` trips totais, `0` trips publicadas.
 
-## Bloqueios e pendencias
+## O que continua pendente
 
-- Projeto Vercel Rick Travel: BLOCKED.
-- Banco staging: BLOCKED.
-- Dominio/subdominio de staging: BLOCKED.
-- `MP_ACCESS_TOKEN` de staging sandbox: BLOCKED.
-- `BETTER_AUTH_URL` de staging precisa URL publica, nao localhost; suporte em `trustedOrigins` esta READY no codigo.
-- Resend staging/remetente: BLOCKED ate configuracao externa.
-- `npm audit` moderado remanescente deve ser tratado em janela controlada.
+- checklist minima de validacao pos-publicacao e rollback;
+- conteudo/publicacao para sair do catalogo vazio;
+- janela controlada para o residual de `npm audit`.
+
+## Incidentes reais registrados
+
+- Resolvido: inconsistencia de dominio canonico publico.
+  Os artefatos publicos foram alinhados para `https://rick-travel.vercel.app`.
+- Classificacao final do catalogo vazio: `EXPECTED_EMPTY_STATE`.
+  `api/trips` retorna `[]` porque nao ha trips publicadas no ambiente validado, nao por bug funcional de filtro.
+
+## O que continua congelado
+
+- escopo admin;
+- integracao externa real do Mercado Pago;
+- ampliacao de produto/comercial alem do MVP publico atual.
 
 ## Proxima acao recomendada
 
-1. Criar/importar projeto `rick-travel` na Vercel a partir de `devricardo90/rick-travel`.
-2. Cadastrar dominio e apontar `staging.<dominio-do-projeto>`.
-3. Configurar envs reais de staging e rodar `npm run preflight:staging`.
+1. Formalizar checklist curta de release/rollback e validacao pos-publicacao.
+2. Registrar dependencia de conteudo/publicacao como proximo desbloqueio do catalogo.
+3. Manter smoke publico e healthchecks como rotina minima da fase atual.
