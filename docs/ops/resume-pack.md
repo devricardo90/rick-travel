@@ -2,7 +2,7 @@
 
 ## Produto
 
-Rick Travel e uma plataforma web de turismo para venda/reserva de passeios no Rio de Janeiro com guia credenciado Cadastur.
+Rick Travel e uma plataforma web de turismo para venda/reserva de passeios no Rio de Janeiro com MVP publico ja deployado.
 
 ## Stack
 
@@ -11,7 +11,7 @@ Rick Travel e uma plataforma web de turismo para venda/reserva de passeios no Ri
 - Banco: PostgreSQL via Prisma.
 - Auth: Better Auth.
 - I18n: next-intl com PT, EN, ES, SV.
-- Pagamento: Mercado Pago Pix.
+- Pagamento: Mercado Pago Pix no repositorio, fora do escopo atual.
 - Email: Resend.
 - Analytics: tabela propria `AnalyticsEvent`.
 - Testes: Vitest e Playwright configurados; E2E roda serializado para estabilidade.
@@ -27,25 +27,25 @@ Funcionando por evidencia:
 - `npm.cmd run build`: PASS fora do sandbox.
 - `npm.cmd run test`: PASS com 15 testes.
 - `npm.cmd run test:e2e`: PASS com 5/5.
-- Provider de staging: Vercel.
-- Projeto Vercel Rick Travel: BLOCKED; `npx.cmd vercel project ls` nao lista o projeto.
-- Dominio de staging: BLOCKED; `npx.cmd vercel domains ls` retorna 0 dominios.
-- Auth staging: `BETTER_AUTH_URL` e incorporado a `trustedOrigins` quando definido, preservando localhost.
+- Deploy tecnico concluido.
+- MVP publico publicado na Vercel.
+- Runtime inicial validado ate o ponto atual.
 
 Pendente por evidencia:
 
-- `npm audit` ainda reporta 3 vulnerabilidades moderadas em cadeia Prisma dev tooling.
-- `npm.cmd run check:env -- --target=staging` bloqueia corretamente sem envs reais de staging.
-- Mercado Pago externo, banco staging, dominio staging e producao continuam BLOCKED por acoes externas.
+- estabilizacao pos-deploy do ambiente publicado;
+- `npm audit` ainda reporta 3 vulnerabilidades moderadas em cadeia Prisma dev tooling;
+- admin continua fora do escopo atual;
+- Mercado Pago continua fora do escopo atual.
 
 ## Decisoes de dominio
 
 - Booking nasce pendente e nao pago.
 - Confirmacao depende de pagamento.
 - Services concentram regra de negocio.
-- Admin exige role `ADMIN`.
+- Admin exige role `ADMIN`, mas nao faz parte do foco atual.
 - Conteudo localizado tem fallback em PT.
-- Mercado Pago e o gateway atual para Pix.
+- Mercado Pago nao deve ser reaberto nesta fase sem justificativa.
 
 ## Dados faltantes para dominar o projeto Rick Travel
 
@@ -59,51 +59,35 @@ Pendente por evidencia:
 
 ### Engenharia
 
-- Banco staging/producao.
-- Observabilidade.
-- Rotacao/governanca final de segredos.
-- Janela controlada para Prisma audit.
+- rotina de observabilidade do ambiente publicado;
+- politica de release/rollback pos-publicacao;
+- rotacao/governanca final de segredos;
+- janela controlada para Prisma audit.
 
 ### Operacao
 
-- Dominio.
-- Ambiente staging.
-- Ambiente producao.
-- Politica de release.
-- Backup do banco.
-- Monitoramento e alertas.
-- Custo esperado.
+- checklist curta de smoke pos-deploy;
+- monitoramento e alertas;
+- backup do banco;
+- custo esperado.
 
-## Plano ate deploy
+## Plano da fase atual
 
-### Fase 1 - Entendimento e estabilizacao
+### Curto prazo
 
-- Reconciliar `package.json`. DONE.
-- Remover duplicatas `(2)` com criterio. DONE.
-- Criar `.env.example`. DONE.
-- Congelar Node. DONE.
-- Typecheck, lint, build e unit tests verdes. DONE.
-- Status final: REVIEW, por audit residual e necessidade de staging real.
+- estabilizar o MVP publico ja deployado;
+- rodar smoke operacional focado no fluxo publico;
+- revisar logs/healthchecks/erros do runtime publicado;
+- registrar apenas gaps reais observados apos a publicacao.
 
-### Fase 2 - Higiene operacional e staging
+### Medio prazo
 
-- Governanca de secrets. DONE.
-- E2E autenticado. DONE.
-- Classificacao audit Prisma. DONE/REVIEW.
-- Checklist/preflight de staging. DONE.
-- Provider de deploy definido na Fase 3: Vercel.
-- Banco staging. BLOCKED.
-- Env vars staging. BLOCKED.
-- Smoke tests de staging. BLOCKED ate ambiente existir.
+- fortalecer observabilidade minima;
+- formalizar rotina de release e rollback;
+- tratar residual de `npm audit` em janela controlada.
 
-### Fase 3 - Staging real
+### Congelado
 
-- Provider Vercel. DONE.
-- Criar/importar projeto Rick Travel na Vercel. BLOCKED.
-- Cadastrar dominio proprio e `staging.<dominio-do-projeto>`. BLOCKED.
-- Criar banco staging. BLOCKED.
-- Configurar env vars. BLOCKED.
-- Compatibilizar Better Auth com `BETTER_AUTH_URL` em staging. DONE.
-- Rodar `npm run preflight:staging`.
-- Validar `/api/health` e `/api/health?deep=1`.
-- Configurar Mercado Pago sandbox e Resend staging.
+- admin;
+- Mercado Pago;
+- ampliacao de escopo comercial/operacional fora da estabilizacao pos-deploy.
