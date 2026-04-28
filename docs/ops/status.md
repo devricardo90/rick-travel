@@ -1,10 +1,10 @@
 # Status Operacional - Rick Travel
 
-Data: 2026-04-23
+Data: 2026-04-28
 
 ## Protocolo Rick
 
-Fase atual: Fase 4 - Estabilizacao Pos-Deploy.
+Fase atual: Fase 3 - Operacao publica controlada do MVP.
 
 Status da fase: IN_PROGRESS.
 
@@ -40,6 +40,11 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `https://rick-travel.vercel.app/api/health?deep=1`: PASS `200`, body `{\"ok\":true,\"service\":\"rick-travel\",\"checks\":{\"app\":\"ok\",\"database\":\"ok\"}}`.
 - `npx.cmd vercel logs dpl_EALNcKfyquenXcV5j6voQBgeS86C --scope devricardo90s-projects --no-follow --limit 50 --json`: amostra sem erro runtime explicito; requests publicos observados com `200`.
 - `npx.cmd vercel deploy --prod --yes --scope devricardo90s-projects`: PASS; hotfix minima de canonical publicada e aliased em `https://rick-travel.vercel.app`.
+- Slice de estabilizacao publicado em `main`.
+- `git pull --rebase origin main`: PASS, sem conflito.
+- `git push origin main`: PASS.
+- Remoto `origin/main` atualizado ate `cd14311`.
+- RT-011.8: runbook minimo criado em `docs/ops/release-rollback-runbook.md`; validacoes executadas em 2026-04-28: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
 
 ## Novo status geral do projeto
 
@@ -81,7 +86,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - executar smoke operacional focado nos fluxos publicos ja expostos;
 - revisar logs/healthchecks/erros do runtime publicado;
 - registrar dependencia operacional de conteudo/publicacao para sair do estado de catalogo vazio;
-- formalizar runbook minimo de release/rollback.
+- usar o runbook minimo de release/rollback em qualquer proxima release publica controlada.
 
 ### Medio prazo
 

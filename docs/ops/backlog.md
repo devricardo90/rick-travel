@@ -204,7 +204,7 @@ Tarefas:
 - RT-011.5 Diagnosticar catalogo publico vazio. Estado: DONE.
 - RT-011.6 Corrigir exposicao publica do catalogo se houver incidente funcional. Estado: BLOCKED.
 - RT-011.7 Registrar vazio operacional como estado esperado. Estado: DONE.
-- RT-011.8 Formalizar checklist minima de validacao pos-publicacao e rollback. Estado: READY.
+- RT-011.8 Formalizar checklist minima de validacao pos-publicacao e rollback. Estado: DONE.
 
 Criterios de aceite: fase atual com leitura objetiva do runtime publicado e sem reabertura indevida de escopo congelado.
 Dependencias: RT-010.
@@ -217,6 +217,9 @@ Notas operacionais:
 - RT-011.5 concluiu `EXPECTED_EMPTY_STATE`.
 - RT-011.6 permanece bloqueado porque a dependencia `FUNCTIONAL_INCIDENT` nao ocorreu.
 - RT-011.7 documenta que o vazio atual decorre de ausencia de conteudo publicavel: banco validado com `0` trips e `0` trips publicadas.
+- RT-011.8 formalizou o runbook minimo em `docs/ops/release-rollback-runbook.md`, com validacao local, smoke pos-deploy, rollback e regra de `EXPECTED_EMPTY_STATE`.
+- Slice atual ja foi publicado em `main`.
+- Sincronizacao Git concluida com `git pull --rebase origin main` sem conflito e `git push origin main` com sucesso.
 
 ## RT-012 Observabilidade
 

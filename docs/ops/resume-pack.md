@@ -60,12 +60,12 @@ Pendente por evidencia:
 ### Engenharia
 
 - rotina de observabilidade do ambiente publicado;
-- politica de release/rollback pos-publicacao;
 - rotacao/governanca final de segredos;
 - janela controlada para Prisma audit.
 
 ### Operacao
 
+- uso do runbook minimo de release/rollback em `docs/ops/release-rollback-runbook.md`;
 - checklist curta de smoke pos-deploy;
 - monitoramento e alertas;
 - backup do banco;
@@ -83,7 +83,7 @@ Pendente por evidencia:
 ### Medio prazo
 
 - fortalecer observabilidade minima;
-- formalizar rotina de release e rollback;
+- usar a rotina formalizada de release e rollback;
 - tratar residual de `npm audit` em janela controlada.
 
 ### Congelado

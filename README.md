@@ -72,6 +72,8 @@ The project is currently deployed on Vercel.
 
 The first public deployment focused on getting the **public MVP** online while isolating unstable or incomplete modules that should not block delivery.
 
+Operational release and rollback steps are documented in [docs/ops/release-rollback-runbook.md](docs/ops/release-rollback-runbook.md).
+
 ## Repository Philosophy
 
 This is not just a demo repository.  
