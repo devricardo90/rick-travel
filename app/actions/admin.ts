@@ -1,22 +1,34 @@
 'use server'
 
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { requireAdminSession } from "@/lib/authz";
 import {
     getRecommendedBookingEmailTemplate,
     sendBookingEmail,
 } from "@/lib/services/email.service";
+import { listAllBookings } from "@/lib/services/booking.service";
 
-export async function resendBookingEmail(bookingId: string) {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session || session.user.role !== "ADMIN") {
-        return { error: "Não autorizado" };
-    }
-
+/**
+ * Busca todas as reservas para o painel administrativo.
+ * Apenas leitura (RT-013C).
+ */
+export async function getBookingsAction() {
+    await requireAdminSession();
     try {
+        return await listAllBookings();
+    } catch (error) {
+        console.error("Error fetching bookings:", error);
+        throw new Error("Falha ao carregar reservas.");
+    }
+}
+
+/**
+ * Reenvia e-mail de reserva.
+ * Mantido para compatibilidade, agora usando requireAdminSession para consistência.
+ */
+export async function resendBookingEmail(bookingId: string) {
+    try {
+        await requireAdminSession();
+
         const template = await getRecommendedBookingEmailTemplate(bookingId);
 
         if (!template) {

@@ -371,3 +371,21 @@ Criterios de aceite: rota `/admin` existe mas e inacessivel para nao-admins; sem
 Dependencias: RT-013A.
 Risco: medio.
 Evidencia esperada: smoke test de acesso negado para usuario comum.
+
+## RT-013C Admin Bookings Read-Only
+
+Estado: DONE
+
+Objetivo: implementar listagem e visualizacao somente leitura de reservas no Admin MVP.
+
+Tarefas:
+
+- RT-013C.1 Criar service `listAllBookings` em `booking.service.ts`. Estado: DONE.
+- RT-013C.2 Criar server action `getBookingsAction` em `app/actions/admin.ts` protegida. Estado: DONE.
+- RT-013C.3 Criar pagina `/[locale]/admin/bookings` com listagem em tabela. Estado: DONE.
+- RT-013C.4 Tratar empty state e erros basicos. Estado: DONE.
+
+Criterios de aceite: admins conseguem listar todas as reservas; dados do cliente e viagem visiveis; sem mutacao permitida.
+Dependencias: RT-013B.
+Risco: baixo.
+Evidencia esperada: pagina `/admin/bookings` funcional para admins.

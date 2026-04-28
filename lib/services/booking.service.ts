@@ -20,6 +20,17 @@ export async function listBookingsForUser(userId: string) {
     });
 }
 
+export async function listAllBookings() {
+    return prisma.booking.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+            trip: { select: { id: true, title: true, city: true, priceCents: true } },
+            schedule: { select: { startAt: true } },
+            user: { select: { name: true, email: true } },
+        },
+    });
+}
+
 export async function createBookingForUser(userId: string, input: CreateBookingInput) {
     const tripId = typeof input.tripId === "string" ? input.tripId.trim() : "";
     const scheduleId = typeof input.scheduleId === "string" ? input.scheduleId.trim() : undefined;
