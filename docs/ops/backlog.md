@@ -389,3 +389,21 @@ Criterios de aceite: admins conseguem listar todas as reservas; dados do cliente
 Dependencias: RT-013B.
 Risco: baixo.
 Evidencia esperada: pagina `/admin/bookings` funcional para admins.
+
+## RT-013D Admin Contacts Read-Only
+
+Estado: DONE
+
+Objetivo: implementar listagem e visualizacao somente leitura de contatos/mensagens no Admin MVP.
+
+Tarefas:
+
+- RT-013D.1 Criar service `listAllContacts` em `contact.service.ts`. Estado: DONE.
+- RT-013D.2 Criar server action `getContactsAction` em `app/actions/admin.ts` protegida. Estado: DONE.
+- RT-013D.3 Criar pagina `/[locale]/admin/contacts` com listagem em tabela. Estado: DONE.
+- RT-013D.4 Tratar empty state e erros basicos. Estado: DONE.
+
+Criterios de aceite: admins conseguem listar todas as mensagens de contato; dados do remetente e mensagem visiveis; sem mutacao permitida.
+Dependencias: RT-013B.
+Risco: baixo.
+Evidencia esperada: pagina `/admin/contacts` funcional para admins.

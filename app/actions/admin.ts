@@ -6,6 +6,7 @@ import {
     sendBookingEmail,
 } from "@/lib/services/email.service";
 import { listAllBookings } from "@/lib/services/booking.service";
+import { listAllContacts } from "@/lib/services/contact.service";
 
 /**
  * Busca todas as reservas para o painel administrativo.
@@ -18,6 +19,20 @@ export async function getBookingsAction() {
     } catch (error) {
         console.error("Error fetching bookings:", error);
         throw new Error("Falha ao carregar reservas.");
+    }
+}
+
+/**
+ * Busca todas as mensagens de contato para o painel administrativo.
+ * Apenas leitura (RT-013D).
+ */
+export async function getContactsAction() {
+    await requireAdminSession();
+    try {
+        return await listAllContacts();
+    } catch (error) {
+        console.error("Error fetching contacts:", error);
+        throw new Error("Falha ao carregar contatos.");
     }
 }
 
