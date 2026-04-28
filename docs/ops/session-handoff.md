@@ -8,21 +8,19 @@ Sessao atualizada ate a Fase 3 - Operacao publica controlada do MVP seguindo o P
 
 RT-013D concluida: listagem de contatos somente leitura no Admin MVP.
 RT-013E concluida: marcar contato como lido no Admin MVP.
+RT-013F concluida: navegacao e dashboard do admin aprimorados.
 
 ## O que foi registrado nesta atualizacao
 
-- Criado service `lib/services/contact.service.ts` com as funcoes `listAllContacts` e `markContactAsRead`.
-- Implementadas server actions `getContactsAction` e `markContactAsReadAction` em `app/actions/admin.ts`.
-- Criada pagina `/[locale]/admin/contacts/page.tsx` com listagem e acoes de contato.
-- Criado componente cliente `app/[locale]/admin/contacts/mark-as-read-button.tsx`.
-- Backlog, Status e Handoff atualizados para RT-013E DONE.
+- Aprimorado o `AdminLayout` com menu de navegacao (Dashboard, Reservas, Contatos).
+- Aprimorada a `AdminPage` com hub de links rapidos e status do MVP.
+- Backlog, Status e Handoff atualizados para RT-013F DONE.
 
 ## Evidencias importantes
 
-- `lib/services/contact.service.ts`: centraliza queries de `ContactSubmission` incluindo `markContactAsRead`.
-- `app/actions/admin.ts`: possui `markContactAsReadAction` protegida.
-- `app/[locale]/admin/contacts/page.tsx`: funcional para admins, inclui botao de acao.
-- Working tree sujo com as mudancas da RT-013E.
+- `app/[locale]/admin/layout.tsx`: possui navegacao integrada.
+- `app/[locale]/admin/page.tsx`: dashboard funcional com hub de links.
+- Working tree sujo com as mudancas da RT-013F.
 - Nenhuma migration/deploy/seed executado.
 
 ## O que continua pendente
@@ -32,4 +30,5 @@ RT-013E concluida: marcar contato como lido no Admin MVP.
 
 ## Proxima acao recomendada
 
-1. Commitar e dar push da RT-013E.
+1. Executar validacoes obrigatorias (lint, typecheck, test, build).
+2. Commitar e dar push da RT-013F.

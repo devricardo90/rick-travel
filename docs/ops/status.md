@@ -48,7 +48,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-013C DONE remoto: listagem de reservas somente leitura implementada no Admin MVP; commit pendente.
 - RT-013D DONE: listagem de contatos somente leitura implementada.
 - RT-013E DONE: acao de marcar contato como lido implementada.
-- Working tree sujo com alteracoes da RT-013E.
+- RT-013F DONE: navegacao e dashboard do admin aprimorados.
+- Working tree sujo com alteracoes da RT-013F.
 - Nenhuma migration/deploy/seed executado.
 
 ## Novo status geral do projeto
@@ -56,7 +57,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A/B/C/D/E concluidas).
+- Admin: em reconstrucao controlada (RT-013A/B/C/D/E/F concluidas).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
 
 

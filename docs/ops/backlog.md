@@ -424,3 +424,20 @@ Criterios de aceite: admins podem marcar mensagens como lidas; status visual atu
 Dependencias: RT-013D.
 Risco: baixo.
 Evidencia esperada: botao funcional na listagem de contatos.
+
+## RT-013F Admin Navigation and Dashboard Minimal Polish
+
+Estado: DONE
+
+Objetivo: melhorar a navegacao e a pagina inicial do Admin MVP.
+
+Tarefas:
+
+- RT-013F.1 Adicionar menu de navegacao no `AdminLayout`. Estado: DONE.
+- RT-013F.2 Implementar hub de links rapidos na `AdminPage`. Estado: DONE.
+- RT-013F.3 Atualizar copy de status do MVP. Estado: DONE.
+
+Criterios de aceite: navegacao clara entre Dashboard, Reservas e Contatos; dashboard util com cards clicaveis.
+Dependencias: RT-013E.
+Risco: baixo.
+Evidencia esperada: menu funcional e dashboard populado.
