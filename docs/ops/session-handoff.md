@@ -45,16 +45,22 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 - Slice de estabilizacao ja publicado em `main`.
 - `git pull --rebase origin main`: concluido sem conflito.
 - `git push origin main`: concluido com sucesso.
-- Remoto atualizado ate `cd14311`.
+- Remoto atualizado ate `2ea0324`.
 - RT-011.8 concluida em 2026-04-28 com runbook minimo em `docs/ops/release-rollback-runbook.md`.
 - Validacoes RT-011.8: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
-- RT-012A concluida e publicada em `origin/main` no commit `128e095 security: remove hardcoded admin bootstrap credentials`.
+- RT-012A DONE remoto: risco de bootstrap ADMIN removido. Commit: `128e095 security: remove hardcoded admin bootstrap credentials`.
 - Validacoes RT-012A: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
-- RT-012B concluida: `e2e/admin.spec.ts` agora esta skipped explicitamente enquanto admin estiver congelado fora do MVP publico.
+- RT-012B DONE remoto: admin e2e neutralizado com skip. Commit: `2ea0324 test: align admin e2e with frozen scope`.
 - Validacoes RT-012B: `npx.cmd playwright test e2e/admin.spec.ts --list` lista 1 teste coletavel, `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
+- RT-013A DONE documental: decisao formal do Admin Discussion Gate registrada.
+- Decisao: B) Reconstruir Admin MVP minimo e seguro, focado em operacao essencial (Bookings e Contatos).
+- Guardrails: reconstrucao controlada (nao restauracao completa), login obrigatorio Better Auth, role ADMIN obrigatoria, protecao em layout/page/actions, sem bootstrap de senha em script, promocao manual via e-mail.
+- Working tree limpo (codigo).
+- Nenhuma migration/deploy/seed executado.
 
 ## O que continua pendente
 
+- RT-013B: esqueleto de protecao de rotas do novo Admin MVP;
 - conteudo/publicacao para sair do catalogo vazio;
 - janela controlada para o residual de `npm audit`.
 
@@ -67,7 +73,6 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 
 ## O que continua congelado
 
-- escopo admin;
 - integracao externa real do Mercado Pago;
 - ampliacao de produto/comercial alem do MVP publico atual.
 
@@ -76,7 +81,9 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 - A credencial removida na RT-012A deve ser considerada potencialmente exposta.
 - Recomenda-se rotacao manual da senha em qualquer ambiente onde tenha sido usada.
 - A senha removida nao deve ser repetida em documentacao.
+- Bootstrap de ADMIN: deve ser feito via promocao de e-mail de usuario ja cadastrado (sem senha em script).
 
 ## Proxima acao recomendada
 
-1. Registrar dependencia de conteudo/publicacao como proximo desbloqueio do catalogo.
+1. Executar RT-013B — Admin MVP Route Protection Skeleton.
+2. Registrar dependencia de conteudo/publicacao como proximo desbloqueio do catalogo.

@@ -14,7 +14,7 @@ Leitura objetiva da fase:
 - MVP publico publicado na Vercel;
 - build estabilizado;
 - runtime inicial validado ate o ponto atual;
-- admin continua fora do escopo atual;
+- decisao Admin Discussion Gate: B) Reconstruir Admin MVP minimo e seguro;
 - Mercado Pago continua fora do escopo atual.
 
 Fase 1 permanece: REVIEW.
@@ -23,7 +23,7 @@ Fase 1 permanece: REVIEW.
 
 Rick Travel e uma plataforma web de turismo para tours no Rio de Janeiro, com vitrine publica, reserva autenticada, i18n e analytics interno.
 
-O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de staging. O estado real agora e de publicacao tecnica concluida, com foco operacional em estabilizacao pos-deploy.
+O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de staging. O estado real agora e de publicacao tecnica concluida, com foco operacional em estabilizacao pos-deploy e reconstrucao controlada do painel admin.
 
 ## Evidencia operacional consolidada
 
@@ -43,10 +43,12 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Slice de estabilizacao publicado em `main`.
 - `git pull --rebase origin main`: PASS, sem conflito.
 - `git push origin main`: PASS.
-- Remoto `origin/main` atualizado ate `cd14311`.
+- Remoto `origin/main` atualizado ate `2ea0324`.
 - RT-011.8: runbook minimo criado em `docs/ops/release-rollback-runbook.md`; validacoes executadas em 2026-04-28: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
-- RT-012A: risco de bootstrap ADMIN com credencial hardcoded removido; commit `128e095 security: remove hardcoded admin bootstrap credentials` publicado em `origin/main`; validacoes: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
-- RT-012B: `e2e/admin.spec.ts` neutralizado com skip explicito porque admin esta congelado fora do MVP publico; nao cria `/admin`, dashboard ou credenciais; validacoes: `npx.cmd playwright test e2e/admin.spec.ts --list` lista 1 teste coletavel, `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
+- RT-012A DONE remoto: risco de bootstrap ADMIN com credencial hardcoded removido; commit `128e095 security: remove hardcoded admin bootstrap credentials` publicado em `origin/main`; validacoes: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
+- RT-012B DONE remoto: `e2e/admin.spec.ts` neutralizado com skip explicito porque admin esta congelado fora do MVP publico; commit `2ea0324 test: align admin e2e with frozen scope` publicado em `origin/main`; validacoes: `npx.cmd playwright test e2e/admin.spec.ts --list` lista 1 teste coletavel, `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
+- Working tree limpo.
+- Nenhuma migration/deploy/seed executado.
 
 ## Novo status geral do projeto
 
@@ -84,6 +86,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
+- reconstruir o Admin MVP minimo e seguro (RT-013A/B);
 - consolidar checklist de estabilizacao pos-deploy do MVP publico;
 - executar smoke operacional focado nos fluxos publicos ja expostos;
 - revisar logs/healthchecks/erros do runtime publicado;
@@ -98,7 +101,6 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Continua congelado
 
-- escopo admin;
 - integracao externa real do Mercado Pago;
 - qualquer reabertura de escopo comercial ou operacional alem do MVP publico atual.
 
@@ -108,7 +110,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - P1: o MVP publico esta acessivel, mas o catalogo atual nao exibe inventario porque nao ha trips publicadas no ambiente validado.
 - P1: `npm audit` residual em Prisma dev tooling segue pendente para janela controlada.
 - P1: a credencial de bootstrap ADMIN removida deve ser considerada potencialmente exposta; recomenda-se rotacao manual da senha em qualquer ambiente onde tenha sido usada.
-- P2: reabrir admin ou Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.
+- P2: reabrir Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.
 
 ## Decisoes que nao devem ser quebradas
 

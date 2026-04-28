@@ -111,21 +111,21 @@ Evidencia esperada: smoke pos-deploy e registro objetivo de ocorrencias.
 
 ## RT-007 Painel/admin
 
-Estado: BLOCKED
+Estado: READY
 
-Objetivo: manter escopo admin congelado nesta fase.
+Objetivo: reconstruir o Admin MVP de forma controlada e segura.
 
 Tarefas:
 
-- RT-007.1 Dashboard admin. Estado: BLOCKED.
-- RT-007.2 CRUD tours e agenda. Estado: BLOCKED.
-- RT-007.3 Bookings e contatos. Estado: BLOCKED.
-- RT-007.4 Recuperacao de abandono. Estado: BLOCKED.
+- RT-007.1 Reativar protecao de rotas e auth skeleton. Estado: READY.
+- RT-007.2 Dashboard simples com stats basicos. Estado: READY.
+- RT-007.3 Listagem e visualizacao de bookings. Estado: READY.
+- RT-007.4 Listagem e triagem de contatos. Estado: READY.
 
-Criterios de aceite: nenhuma retomada sem justificativa explicita de escopo.
-Dependencias: decisao de produto/operacao.
-Risco: medio.
-Evidencia esperada: nao aplicavel nesta fase.
+Criterios de aceite: acesso restrito a role ADMIN; codigo reconstruido com auditoria; sem regressao de seguranca.
+Dependencias: RT-013A.
+Risco: alto.
+Evidencia esperada: painel admin funcional e seguro.
 
 ## RT-008 Integracoes
 
@@ -336,3 +336,38 @@ Criterios de aceite: jornada e metricas aprovadas pelo owner.
 Dependencias: input de negocio.
 Risco: medio.
 Evidencia esperada: documento de produto validado.
+
+## RT-013A Admin MVP Scope and Guardrails
+
+Estado: DONE
+
+Objetivo: definir escopo, guardrails e plano tecnico do Admin MVP antes de qualquer implementacao.
+
+Tarefas:
+
+- RT-013A.1 Registrar decisao formal de reconstrucao do Admin MVP. Estado: DONE.
+- RT-013A.2 Definir escopo permitido e proibido do Admin MVP. Estado: DONE.
+- RT-013A.3 Definir regras de seguranca para auth/RBAC/bootstrap. Estado: DONE.
+- RT-013A.4 Atualizar documentacao operacional (backlog, status, handoff). Estado: DONE.
+
+Criterios de aceite: documentacao reflete a decisao; guardrails claros; sem alteracao de codigo de aplicacao.
+Dependencias: decisao do owner no Admin Discussion Gate.
+Risco: baixo.
+Evidencia esperada: `docs/ops/backlog.md`, `docs/ops/status.md` e `docs/ops/session-handoff.md` atualizados.
+
+## RT-013B Admin MVP Route Protection Skeleton
+
+Estado: READY
+
+Objetivo: implementar o esqueleto de protecao de rotas para o novo Admin MVP.
+
+Tarefas:
+
+- RT-013B.1 Criar esqueleto de rota `/[locale]/admin`. Estado: READY.
+- RT-013B.2 Garantir protecao em layout/page com `requireAdminSession()`. Estado: READY.
+- RT-013B.3 Validar que usuarios sem role ADMIN sao bloqueados. Estado: READY.
+
+Criterios de aceite: rota `/admin` existe mas e inacessivel para nao-admins; sem dashboard ou logica complexa ainda.
+Dependencias: RT-013A.
+Risco: medio.
+Evidencia esperada: smoke test de acesso negado para usuario comum.
