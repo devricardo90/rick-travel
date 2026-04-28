@@ -1,7 +1,15 @@
-export const E2E_ADMIN_EMAIL =
-  process.env.E2E_ADMIN_EMAIL ?? "e2e-admin@ricktravel.local";
-export const E2E_ADMIN_PASSWORD =
-  process.env.E2E_ADMIN_PASSWORD ?? "E2E_Admin_123!";
+function requireE2EEnv(name: string) {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`${name} must be set explicitly before running E2E setup.`);
+  }
+
+  return value;
+}
+
+export const E2E_ADMIN_EMAIL = requireE2EEnv("E2E_ADMIN_EMAIL");
+export const E2E_ADMIN_PASSWORD = requireE2EEnv("E2E_ADMIN_PASSWORD");
 
 export const E2E_USER_EMAIL =
   process.env.E2E_USER_EMAIL ?? "e2e-user@ricktravel.local";

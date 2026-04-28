@@ -1,6 +1,6 @@
 # Secrets e Ambientes - Rick Travel
 
-Data: 2026-04-22
+Data: 2026-04-28
 
 ## Regra operacional
 
@@ -10,6 +10,8 @@ Nenhum segredo real deve ser commitado. Use `.env.example` como contrato publico
 
 - P1: o ambiente local possui `.env` com valores reais.
 - Acao nesta fase: `.env.example` existe e `.env*` continua ignorado pelo Git.
+- Acao nesta fase: bootstrap inseguro de ADMIN com credencial hardcoded foi removido; qualquer novo bootstrap de ADMIN deve ser redesenhado em task propria, sem email/senha literal e sem valor padrao.
+- Acao nesta fase: credenciais de ADMIN E2E deixaram de ter fallback hardcoded; `E2E_ADMIN_EMAIL` e `E2E_ADMIN_PASSWORD` devem ser definidos explicitamente antes de E2E.
 - Acao pendente: rotacionar qualquer segredo que tenha sido compartilhado fora do ambiente local ou exposto em logs.
 
 ## Variaveis por ambiente
@@ -53,3 +55,16 @@ npm run check:env -- --target=production
 ```
 
 O validador verifica existencia, placeholders, URL de auth, connection string PostgreSQL e tamanho minimo do segredo de auth.
+
+## Bootstrap de ADMIN
+
+Nao existe script operacional aprovado para criar ou promover ADMIN nesta fase.
+
+Regras para um bootstrap futuro:
+
+- nao versionar email, senha, token ou segredo real;
+- nao fornecer valor padrao para credenciais;
+- exigir variaveis de ambiente explicitas ou outro fluxo controlado;
+- nao registrar senha em log;
+- usar apenas ambiente local/controlado;
+- manter o admin congelado ate existir contrato tecnico aprovado.
