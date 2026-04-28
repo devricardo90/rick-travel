@@ -11,7 +11,7 @@ test.describe("Admin Route Protection", () => {
     await expect(page.url()).toContain("callbackUrl=%2Fpt%2Fadmin");
   });
 
-  test("regular user should be blocked (403 or redirect)", async ({ page }) => {
+  test("regular user should be blocked (403 or redirect)", async () => {
     // Este teste exigiria login como usuário comum, o que depende de env vars.
     // Como o objetivo da RT-013B é apenas o esqueleto, vamos focar no anon -> login por enquanto.
     test.skip(!process.env.E2E_USER_EMAIL, "E2E_USER_EMAIL not set");
