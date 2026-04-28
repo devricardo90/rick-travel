@@ -357,15 +357,15 @@ Evidencia esperada: `docs/ops/backlog.md`, `docs/ops/status.md` e `docs/ops/sess
 
 ## RT-013B Admin MVP Route Protection Skeleton
 
-Estado: READY
+Estado: DONE
 
 Objetivo: implementar o esqueleto de protecao de rotas para o novo Admin MVP.
 
 Tarefas:
 
-- RT-013B.1 Criar esqueleto de rota `/[locale]/admin`. Estado: READY.
-- RT-013B.2 Garantir protecao em layout/page com `requireAdminSession()`. Estado: READY.
-- RT-013B.3 Validar que usuarios sem role ADMIN sao bloqueados. Estado: READY.
+- RT-013B.1 Criar esqueleto de rota `/[locale]/admin`. Estado: DONE.
+- RT-013B.2 Garantir protecao em layout/page com `requireAdminSession()`. Estado: DONE.
+- RT-013B.3 Validar que usuarios sem role ADMIN sao bloqueados. Estado: DONE.
 
 Criterios de aceite: rota `/admin` existe mas e inacessivel para nao-admins; sem dashboard ou logica complexa ainda.
 Dependencias: RT-013A.
