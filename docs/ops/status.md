@@ -45,6 +45,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `git push origin main`: PASS.
 - Remoto `origin/main` atualizado ate `cd14311`.
 - RT-011.8: runbook minimo criado em `docs/ops/release-rollback-runbook.md`; validacoes executadas em 2026-04-28: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
+- RT-012A: risco de bootstrap ADMIN com credencial hardcoded removido; commit `128e095 security: remove hardcoded admin bootstrap credentials` publicado em `origin/main`; validacoes: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
 
 ## Novo status geral do projeto
 
@@ -105,7 +106,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - P1: estabilizacao pos-deploy ainda depende de evidencias operacionais continuas no ambiente publicado.
 - P1: o MVP publico esta acessivel, mas o catalogo atual nao exibe inventario porque nao ha trips publicadas no ambiente validado.
 - P1: `npm audit` residual em Prisma dev tooling segue pendente para janela controlada.
+- P1: a credencial de bootstrap ADMIN removida deve ser considerada potencialmente exposta; recomenda-se rotacao manual da senha em qualquer ambiente onde tenha sido usada.
 - P2: reabrir admin ou Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.
+- P2: `e2e/admin.spec.ts` ainda precisa ser alinhado ao escopo congelado do admin via RT-012B.
 
 ## Decisoes que nao devem ser quebradas
 

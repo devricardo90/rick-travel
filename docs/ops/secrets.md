@@ -12,7 +12,9 @@ Nenhum segredo real deve ser commitado. Use `.env.example` como contrato publico
 - Acao nesta fase: `.env.example` existe e `.env*` continua ignorado pelo Git.
 - Acao nesta fase: bootstrap inseguro de ADMIN com credencial hardcoded foi removido; qualquer novo bootstrap de ADMIN deve ser redesenhado em task propria, sem email/senha literal e sem valor padrao.
 - Acao nesta fase: credenciais de ADMIN E2E deixaram de ter fallback hardcoded; `E2E_ADMIN_EMAIL` e `E2E_ADMIN_PASSWORD` devem ser definidos explicitamente antes de E2E.
+- Acao nesta fase: commit `128e095 security: remove hardcoded admin bootstrap credentials` publicado em `origin/main`.
 - Acao pendente: rotacionar qualquer segredo que tenha sido compartilhado fora do ambiente local ou exposto em logs.
+- Acao pendente: considerar a credencial ADMIN removida como potencialmente exposta e rotacionar manualmente a senha em qualquer ambiente onde tenha sido usada.
 
 ## Variaveis por ambiente
 

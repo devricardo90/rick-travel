@@ -48,11 +48,14 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 - Remoto atualizado ate `cd14311`.
 - RT-011.8 concluida em 2026-04-28 com runbook minimo em `docs/ops/release-rollback-runbook.md`.
 - Validacoes RT-011.8: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
+- RT-012A concluida e publicada em `origin/main` no commit `128e095 security: remove hardcoded admin bootstrap credentials`.
+- Validacoes RT-012A: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
 
 ## O que continua pendente
 
 - conteudo/publicacao para sair do catalogo vazio;
 - janela controlada para o residual de `npm audit`.
+- RT-012B para alinhar `e2e/admin.spec.ts` ao escopo congelado do admin.
 
 ## Incidentes reais registrados
 
@@ -67,7 +70,12 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 - integracao externa real do Mercado Pago;
 - ampliacao de produto/comercial alem do MVP publico atual.
 
+## Observacao de seguranca
+
+- A credencial removida na RT-012A deve ser considerada potencialmente exposta.
+- Recomenda-se rotacao manual da senha em qualquer ambiente onde tenha sido usada.
+- A senha removida nao deve ser repetida em documentacao.
+
 ## Proxima acao recomendada
 
-1. Registrar dependencia de conteudo/publicacao como proximo desbloqueio do catalogo.
-2. Manter smoke publico e healthchecks como rotina minima da fase atual.
+1. Executar RT-012B para neutralizar o E2E admin desalinhado com o escopo congelado.

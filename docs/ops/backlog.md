@@ -238,6 +238,50 @@ Dependencias: ambiente publicado.
 Risco: medio.
 Evidencia esperada: painel/logs acessiveis.
 
+## RT-012A Remove unsafe hardcoded admin bootstrap
+
+Estado: DONE
+
+Objetivo: remover ou neutralizar risco de credencial hardcoded em bootstrap de ADMIN.
+
+Tarefas:
+
+- RT-012A.1 Inspecionar `scripts/create-admin.ts`. Estado: DONE.
+- RT-012A.2 Procurar credenciais hardcoded relacionadas a admin/setup. Estado: DONE.
+- RT-012A.3 Remover script inseguro nao referenciado pelo `package.json`. Estado: DONE.
+- RT-012A.4 Remover fallback hardcoded de credenciais ADMIN E2E. Estado: DONE.
+- RT-012A.5 Registrar regra operacional para bootstrap futuro de ADMIN. Estado: DONE.
+- RT-012A.6 Publicar commit de contencao no remoto. Estado: DONE.
+
+Criterios de aceite: nenhuma credencial real de bootstrap admin versionada; admin continua congelado; checks seguros passam.
+Dependencias: auditoria tecnica do admin.
+Risco: alto.
+Evidencia esperada: commit `128e095 security: remove hardcoded admin bootstrap credentials` publicado em `origin/main`; `lint` PASS com warnings existentes; `typecheck` PASS; `test` PASS; `build` PASS; `git diff --check` PASS com warnings LF/CRLF.
+
+Notas operacionais:
+
+- A credencial removida deve ser considerada potencialmente exposta.
+- Recomenda-se rotacao manual da senha em qualquer ambiente onde ela tenha sido usada.
+- A senha removida nao deve ser repetida em documentacao.
+
+## RT-012B Align admin E2E with frozen admin scope
+
+Estado: READY
+
+Objetivo: resolver o desalinhamento entre o escopo atual do MVP e `e2e/admin.spec.ts`, que espera `/pt/admin` com dashboard ativo.
+
+Tarefas:
+
+- RT-012B.1 Auditar `e2e/admin.spec.ts`. Estado: READY.
+- RT-012B.2 Confirmar admin fora de escopo/congelado no MVP. Estado: READY.
+- RT-012B.3 Neutralizar, remover ou marcar como skipped o teste admin de forma explicita e documentada. Estado: READY.
+- RT-012B.4 Atualizar backlog, status e handoff com a decisao. Estado: READY.
+
+Criterios de aceite: teste admin nao falha por esperar funcionalidade fora do escopo; documentacao explica que admin esta congelado no MVP; lint, typecheck, test e build passam; git status final limpo; commit separado.
+Dependencias: RT-012A.
+Risco: medio.
+Evidencia esperada: commit separado da RT-012B e checks verdes.
+
 ## RT-013 Seguranca
 
 Estado: REVIEW
