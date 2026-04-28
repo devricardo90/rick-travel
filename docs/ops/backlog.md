@@ -266,21 +266,21 @@ Notas operacionais:
 
 ## RT-012B Align admin E2E with frozen admin scope
 
-Estado: READY
+Estado: DONE
 
 Objetivo: resolver o desalinhamento entre o escopo atual do MVP e `e2e/admin.spec.ts`, que espera `/pt/admin` com dashboard ativo.
 
 Tarefas:
 
-- RT-012B.1 Auditar `e2e/admin.spec.ts`. Estado: READY.
-- RT-012B.2 Confirmar admin fora de escopo/congelado no MVP. Estado: READY.
-- RT-012B.3 Neutralizar, remover ou marcar como skipped o teste admin de forma explicita e documentada. Estado: READY.
-- RT-012B.4 Atualizar backlog, status e handoff com a decisao. Estado: READY.
+- RT-012B.1 Auditar `e2e/admin.spec.ts`. Estado: DONE.
+- RT-012B.2 Confirmar admin fora de escopo/congelado no MVP. Estado: DONE.
+- RT-012B.3 Neutralizar, remover ou marcar como skipped o teste admin de forma explicita e documentada. Estado: DONE.
+- RT-012B.4 Atualizar backlog, status e handoff com a decisao. Estado: DONE.
 
 Criterios de aceite: teste admin nao falha por esperar funcionalidade fora do escopo; documentacao explica que admin esta congelado no MVP; lint, typecheck, test e build passam; git status final limpo; commit separado.
 Dependencias: RT-012A.
 Risco: medio.
-Evidencia esperada: commit separado da RT-012B e checks verdes.
+Evidencia esperada: `e2e/admin.spec.ts` marcado como skipped explicitamente porque admin esta congelado fora do MVP publico; `npx.cmd playwright test e2e/admin.spec.ts --list` lista 1 teste coletavel; `npm.cmd run lint` PASS com warnings existentes; `npm.cmd run typecheck` PASS; `npm.cmd run test` PASS fora do sandbox; `npm.cmd run build` PASS fora do sandbox; commit separado da RT-012B.
 
 ## RT-013 Seguranca
 

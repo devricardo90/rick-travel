@@ -1,15 +1,8 @@
-import { expect, test } from "@playwright/test";
-import { loginAsAdmin } from "./helpers/auth";
+import { test } from "@playwright/test";
 
-test("redirects admin to login when unauthenticated", async ({ page }) => {
-  await page.goto("/pt/admin");
-
-  await expect(page).toHaveURL(/\/pt\/login/);
-});
-
-test("loads admin dashboard after login", async ({ page }) => {
-  await loginAsAdmin(page, "/pt/admin");
-
-  await expect(page).toHaveURL(/\/pt\/admin/);
-  await expect(page.getByRole("heading", { level: 1, name: /Dashboard Admin/i })).toBeVisible();
+test("admin dashboard is frozen outside the current MVP scope", () => {
+  test.skip(
+    true,
+    "RT-012B: admin is frozen outside the public MVP scope; do not expect /pt/admin until RT-007 is reopened."
+  );
 });

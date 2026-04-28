@@ -50,12 +50,13 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 - Validacoes RT-011.8: `npm.cmd run lint` PASS com 2 warnings, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
 - RT-012A concluida e publicada em `origin/main` no commit `128e095 security: remove hardcoded admin bootstrap credentials`.
 - Validacoes RT-012A: `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox, `git diff --check` PASS com warnings LF/CRLF.
+- RT-012B concluida: `e2e/admin.spec.ts` agora esta skipped explicitamente enquanto admin estiver congelado fora do MVP publico.
+- Validacoes RT-012B: `npx.cmd playwright test e2e/admin.spec.ts --list` lista 1 teste coletavel, `npm.cmd run lint` PASS com 2 warnings existentes, `npm.cmd run typecheck` PASS, `npm.cmd run test` PASS fora do sandbox com 3 arquivos e 12 testes, `npm.cmd run build` PASS fora do sandbox.
 
 ## O que continua pendente
 
 - conteudo/publicacao para sair do catalogo vazio;
 - janela controlada para o residual de `npm audit`.
-- RT-012B para alinhar `e2e/admin.spec.ts` ao escopo congelado do admin.
 
 ## Incidentes reais registrados
 
@@ -78,4 +79,4 @@ Fase 3 esta IN_PROGRESS com foco exclusivo em operacao publica controlada e esta
 
 ## Proxima acao recomendada
 
-1. Executar RT-012B para neutralizar o E2E admin desalinhado com o escopo congelado.
+1. Registrar dependencia de conteudo/publicacao como proximo desbloqueio do catalogo.
