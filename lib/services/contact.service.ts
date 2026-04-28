@@ -13,3 +13,13 @@ export async function listAllContacts() {
         orderBy: { createdAt: "desc" },
     });
 }
+
+/**
+ * Marca uma mensagem de contato como lida.
+ */
+export async function markContactAsRead(id: string) {
+    return prisma.contactSubmission.update({
+        where: { id },
+        data: { status: "READ" },
+    });
+}

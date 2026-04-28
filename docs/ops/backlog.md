@@ -407,3 +407,20 @@ Criterios de aceite: admins conseguem listar todas as mensagens de contato; dado
 Dependencias: RT-013B.
 Risco: baixo.
 Evidencia esperada: pagina `/admin/contacts` funcional para admins.
+
+## RT-013E Admin Contact Mark as Read
+
+Estado: DONE
+
+Objetivo: adicionar acao para marcar mensagem de contato como lida no Admin MVP.
+
+Tarefas:
+
+- RT-013E.1 Adicionar `markContactAsRead` em `contact.service.ts`. Estado: DONE.
+- RT-013E.2 Adicionar `markContactAsReadAction` em `app/actions/admin.ts`. Estado: DONE.
+- RT-013E.3 Adicionar botao de acao na pagina de contatos. Estado: DONE.
+
+Criterios de aceite: admins podem marcar mensagens como lidas; status visual atualiza; protecao de rota mantida.
+Dependencias: RT-013D.
+Risco: baixo.
+Evidencia esperada: botao funcional na listagem de contatos.

@@ -1,5 +1,6 @@
 import { getContactsAction } from "@/app/actions/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MarkAsReadButton } from "./mark-as-read-button";
 
 /**
  * RT-013D: Admin Contacts Read-Only
@@ -38,7 +39,7 @@ export default async function AdminContactsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Mensagens de Contato (Somente Leitura)</CardTitle>
+          <CardTitle>Mensagens de Contato</CardTitle>
         </CardHeader>
         <CardContent>
           {contacts.length === 0 ? (
@@ -53,6 +54,7 @@ export default async function AdminContactsPage({
                     <th className="py-3 px-4 font-semibold">E-mail / Telefone</th>
                     <th className="py-3 px-4 font-semibold">Mensagem</th>
                     <th className="py-3 px-4 font-semibold">Status</th>
+                    <th className="py-3 px-4 font-semibold text-right">Acoes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,6 +91,11 @@ export default async function AdminContactsPage({
                         }`}>
                           {contact.status || 'PENDING'}
                         </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        {contact.status !== 'READ' && contact.status !== 'REPLIED' && (
+                          <MarkAsReadButton id={contact.id} />
+                        )}
                       </td>
                     </tr>
                   ))}

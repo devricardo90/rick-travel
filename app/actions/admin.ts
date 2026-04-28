@@ -1,12 +1,13 @@
 'use server'
 
 import { requireAdminSession } from "@/lib/authz";
+import { revalidatePath } from "next/cache";
 import {
     getRecommendedBookingEmailTemplate,
     sendBookingEmail,
 } from "@/lib/services/email.service";
 import { listAllBookings } from "@/lib/services/booking.service";
-import { listAllContacts } from "@/lib/services/contact.service";
+import { listAllContacts, markContactAsRead } from "@/lib/services/contact.service";
 
 /**
  * Busca todas as reservas para o painel administrativo.
@@ -33,6 +34,22 @@ export async function getContactsAction() {
     } catch (error) {
         console.error("Error fetching contacts:", error);
         throw new Error("Falha ao carregar contatos.");
+    }
+}
+
+/**
+ * Marca uma mensagem de contato como lida.
+ * (RT-013E).
+ */
+export async function markContactAsReadAction(id: string) {
+    await requireAdminSession();
+    try {
+        await markContactAsRead(id);
+        revalidatePath("/admin/contacts");
+        return { success: true };
+    } catch (error) {
+        console.error("Error marking contact as read:", error);
+        return { error: "Falha ao marcar como lido." };
     }
 }
 
