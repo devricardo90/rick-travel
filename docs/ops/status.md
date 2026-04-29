@@ -50,7 +50,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-013E DONE: acao de marcar contato como lido implementada.
 - RT-013F DONE remoto: navegacao e dashboard do admin aprimorados.
 - RT-013G DONE remoto: pagina de detalhe de reserva somente leitura; commit `09ffcb0` em `origin/main`.
-- RT-014A DONE local: regras de cancelamento admin definidas e registradas; commit documental pendente de push.
+- RT-014A DONE remoto: regras de cancelamento admin definidas e registradas.
+- RT-014B DONE local: acao de cancelamento admin implementada; commit pendente de push.
 - Nenhuma migration/deploy/seed executado.
 
 ## Novo status geral do projeto
@@ -58,7 +59,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A/B/C/D/E/F/G e RT-014A concluidas).
+- Admin: em reconstrucao controlada (RT-013A/B/C/D/E/F/G, RT-014A e RT-014B concluidas).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
 
 
@@ -78,7 +79,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
-- executar RT-014B: implementar cancelamento de booking pelo admin (regras definidas em RT-014A);
+- aguardar proxima task (RT-014B concluida);
 - consolidar checklist de estabilizacao pos-deploy do MVP publico.
 
 ### Medio prazo

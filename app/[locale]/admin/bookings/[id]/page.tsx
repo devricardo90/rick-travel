@@ -4,10 +4,12 @@ import { getBookingByIdAction } from "@/app/actions/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLocalizedField } from "@/lib/localized-field";
 import { ArrowLeft } from "lucide-react";
+import { CancelBookingButton } from "./cancel-booking-button";
 
 /**
  * RT-013G: Admin Booking Detail Read-Only
- * Página de detalhe de uma reserva individual — somente leitura.
+ * RT-014B: Admin Booking Cancellation Action
+ * Página de detalhe de uma reserva individual.
  */
 export default async function AdminBookingDetailPage({
   params,
@@ -90,21 +92,26 @@ export default async function AdminBookingDetailPage({
           <h1 className="text-3xl font-bold tracking-tight">Detalhe da Reserva</h1>
           <p className="text-xs text-muted-foreground font-mono mt-1">{booking.id}</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span
-            className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
-              statusColors[booking.status] ?? statusColors.PENDING
-            }`}
-          >
-            {booking.status}
-          </span>
-          <span
-            className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
-              paymentStatusColors[booking.paymentStatus] ?? paymentStatusColors.UNPAID
-            }`}
-          >
-            {booking.paymentStatus}
-          </span>
+        <div className="flex flex-col items-end gap-3">
+          <div className="flex items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+                statusColors[booking.status] ?? statusColors.PENDING
+              }`}
+            >
+              {booking.status}
+            </span>
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+                paymentStatusColors[booking.paymentStatus] ?? paymentStatusColors.UNPAID
+              }`}
+            >
+              {booking.paymentStatus}
+            </span>
+          </div>
+          {(booking.status === "PENDING" || booking.status === "CONFIRMED") && (
+            <CancelBookingButton bookingId={booking.id} locale={locale} />
+          )}
         </div>
       </div>
 

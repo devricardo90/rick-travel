@@ -54,6 +54,58 @@ export async function getBookingById(id: string) {
     });
 }
 
+/**
+ * Cancela uma reserva pelo admin. Somente PENDING ou CONFIRMED podem ser cancelados.
+ * Reservas ja CANCELED sao tratadas como idempotente.
+ * Nao altera paymentStatus. Nao envia e-mail. Nao registra analytics.
+ * Admin nao segue janela de 24h. Funcao separada de cancelBookingForUser (RT-014B).
+ */
+export async function cancelBookingByAdmin(bookingId: string) {
+    const normalizedId = typeof bookingId === "string" ? bookingId.trim() : "";
+
+    if (!normalizedId) {
+        throw new DomainError("bookingId invalido", {
+            code: "INVALID_BOOKING_ID",
+            status: 400,
+        });
+    }
+
+    const booking = await prisma.booking.findUnique({
+        where: { id: normalizedId },
+        select: { id: true, status: true },
+    });
+
+    if (!booking) {
+        throw new DomainError("Reserva nao encontrada", {
+            code: "BOOKING_NOT_FOUND",
+            status: 404,
+        });
+    }
+
+    // Idempotente: ja cancelada
+    if (booking.status === "CANCELED") {
+        return { id: booking.id, status: "CANCELED" as const };
+    }
+
+    // Apenas PENDING e CONFIRMED sao permitidos
+    if (booking.status !== "PENDING" && booking.status !== "CONFIRMED") {
+        throw new DomainError(
+            `Cancelamento nao permitido para o status atual da reserva`,
+            {
+                code: "INVALID_STATUS_FOR_CANCELLATION",
+                status: 400,
+            }
+        );
+    }
+
+    // Altera apenas booking.status — paymentStatus permanece intacto
+    return prisma.booking.update({
+        where: { id: normalizedId },
+        data: { status: "CANCELED" },
+        select: { id: true, status: true },
+    });
+}
+
 export async function createBookingForUser(userId: string, input: CreateBookingInput) {
     const tripId = typeof input.tripId === "string" ? input.tripId.trim() : "";
     const scheduleId = typeof input.scheduleId === "string" ? input.scheduleId.trim() : undefined;

@@ -524,3 +524,21 @@ Separacao tecnica para RT-014B:
 - Nao alterar `cancelBookingForUser`.
 - Nao alterar schema Prisma.
 - Nao criar migration.
+
+## RT-014B Admin Booking Cancellation Action
+
+Estado: DONE
+
+Objetivo: implementar acao de cancelamento de reserva pelo admin usando as regras documentadas em RT-014A.
+
+Tarefas:
+
+- RT-014B.1 Criar `cancelBookingByAdmin` em `lib/services/booking.service.ts`. Estado: DONE.
+- RT-014B.2 Criar `cancelBookingByAdminAction` em `app/actions/admin.ts` protegida por `requireAdminSession`. Estado: DONE.
+- RT-014B.3 Criar `CancelBookingButton` client component em `app/[locale]/admin/bookings/[id]/cancel-booking-button.tsx`. Estado: DONE.
+- RT-014B.4 Integrar botao na pagina de detalhe, exibindo somente para PENDING/CONFIRMED. Estado: DONE.
+
+Criterios de aceite: cancelamento altera apenas `booking.status`; `paymentStatus` nao e alterado; `cancelBookingForUser` permanece intacto; botao exibido apenas para status permitidos; schema Prisma nao alterado.
+Dependencias: RT-014A.
+Risco: baixo.
+Evidencia esperada: commit em `origin/main`; build, lint, typecheck e tests passando.

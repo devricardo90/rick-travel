@@ -6,35 +6,33 @@ Data: 2026-04-29
 
 Sessao atualizada ate a Fase 3 - Operacao publica controlada do MVP seguindo o Protocolo Rick.
 
-RT-013G concluida e remota: pagina de detalhe de reserva somente leitura no Admin MVP.
-RT-014A concluida: regras de cancelamento admin definidas e registradas (documentacao pura, sem codigo).
+RT-014A DONE remoto: regras de cancelamento admin definidas.
+RT-014B DONE local: acao de cancelamento admin implementada.
 
 ## O que foi registrado nesta atualizacao
 
-- Adicionados `getBookingById` (service) e `getBookingByIdAction` (action admin).
-- Criada pagina `/[locale]/admin/bookings/[id]` com detalhe completo da reserva.
-- Link "Ver detalhes" adicionado na listagem de bookings.
-- Commit `09ffcb0` publicado em `origin/main` (RT-013G).
-- Regras de cancelamento admin definidas e registradas em `docs/ops/backlog.md` (RT-014A).
+- Adicionada funcao `cancelBookingByAdmin` em `lib/services/booking.service.ts`.
+- Adicionada `cancelBookingByAdminAction` em `app/actions/admin.ts` protegida por `requireAdminSession`.
+- Criado `CancelBookingButton` client component com confirmacao via `window.confirm`.
+- Pagina `/[locale]/admin/bookings/[id]` atualizada com botao de cancelar (apenas para PENDING/CONFIRMED).
+- Documentacao operacional atualizada.
 
 ## Evidencias importantes
 
-- `app/[locale]/admin/bookings/[id]/page.tsx`: pagina de detalhe somente leitura.
-- `lib/services/booking.service.ts`: funcao `getBookingById` presente.
-- `app/actions/admin.ts`: `getBookingByIdAction` protegida por `requireAdminSession`.
-- `docs/ops/backlog.md`: entrada RT-014A com todas as regras decididas.
-- Working tree limpa (ou com commit documental da RT-014A pendente de push).
+- `lib/services/booking.service.ts`: `cancelBookingByAdmin` separado de `cancelBookingForUser`.
+- `app/actions/admin.ts`: `cancelBookingByAdminAction` com `requireAdminSession`.
+- `app/[locale]/admin/bookings/[id]/cancel-booking-button.tsx`: client component.
+- `app/[locale]/admin/bookings/[id]/page.tsx`: botao integrado condicionalmente.
+- `paymentStatus` nao e alterado pelo cancelamento admin.
 - Nenhuma migration/deploy/seed executado.
 
 ## O que continua pendente
 
-- Push do commit documental da RT-014A.
-- RT-014B: implementacao do cancelamento admin (aguardando autorizacao do Trigger).
+- Push do commit da RT-014B (aguardando autorizacao do Trigger).
 - Consolidar checklist de estabilizacao pos-deploy do MVP publico.
 - Janela controlada para o residual de `npm audit`.
 
 ## Proxima acao recomendada
 
-1. Push do commit documental RT-014A (se ainda nao executado).
-2. Aguardar autorizacao do Trigger para abrir RT-014B.
-3. RT-014B: criar `cancelBookingByAdmin` em `booking.service.ts`, action em `admin.ts`, botao na pagina de detalhe.
+1. Push do commit RT-014B apos autorizacao do Trigger.
+2. Definir proxima task com o Trigger.

@@ -6,7 +6,7 @@ import {
     getRecommendedBookingEmailTemplate,
     sendBookingEmail,
 } from "@/lib/services/email.service";
-import { listAllBookings, getBookingById } from "@/lib/services/booking.service";
+import { listAllBookings, getBookingById, cancelBookingByAdmin } from "@/lib/services/booking.service";
 import { listAllContacts, markContactAsRead } from "@/lib/services/contact.service";
 
 /**
@@ -34,6 +34,23 @@ export async function getBookingByIdAction(id: string) {
     } catch (error) {
         console.error("Error fetching booking by id:", error);
         throw new Error("Falha ao carregar reserva.");
+    }
+}
+
+/**
+ * Cancela uma reserva pelo admin.
+ * Somente PENDING e CONFIRMED. Nao altera paymentStatus. (RT-014B).
+ */
+export async function cancelBookingByAdminAction(id: string) {
+    await requireAdminSession();
+    try {
+        await cancelBookingByAdmin(id);
+        revalidatePath(`/admin/bookings/${id}`);
+        revalidatePath("/admin/bookings");
+        return { success: true };
+    } catch (error) {
+        console.error("Error canceling booking:", error);
+        return { error: "Falha ao cancelar reserva." };
     }
 }
 
