@@ -441,3 +441,86 @@ Criterios de aceite: navegacao clara entre Dashboard, Reservas e Contatos; dashb
 Dependencias: RT-013E.
 Risco: baixo.
 Evidencia esperada: menu funcional e dashboard populado.
+
+## RT-013G Admin Booking Detail Read-Only
+
+Estado: DONE
+
+Objetivo: criar pagina protegida de detalhe de reserva no admin, somente leitura.
+
+Tarefas:
+
+- RT-013G.1 Adicionar `getBookingById` em `lib/services/booking.service.ts`. Estado: DONE.
+- RT-013G.2 Adicionar `getBookingByIdAction` em `app/actions/admin.ts` protegida por `requireAdminSession`. Estado: DONE.
+- RT-013G.3 Criar pagina `/[locale]/admin/bookings/[id]` com dados completos da reserva. Estado: DONE.
+- RT-013G.4 Adicionar link "Ver detalhes" na listagem de bookings. Estado: DONE.
+
+Criterios de aceite: pagina de detalhe existe; rota protegida por admin; listagem aponta para detalhe; nenhuma mutation criada.
+Dependencias: RT-013F.
+Risco: baixo.
+Evidencia esperada: rota `ƒ /[locale]/admin/bookings/[id]` no build; commit `09ffcb0` em `origin/main`.
+
+## RT-014A Admin Booking Cancellation Rules
+
+Estado: DONE
+
+Objetivo: definir a regra minima de cancelamento de reservas pelo admin antes de implementar qualquer mutation.
+
+Tarefas:
+
+- RT-014A.1 Decidir status cancelaveis pelo admin. Estado: DONE.
+- RT-014A.2 Decidir comportamento de `paymentStatus` no cancelamento admin. Estado: DONE.
+- RT-014A.3 Decidir sobre envio de e-mail no cancelamento admin. Estado: DONE.
+- RT-014A.4 Decidir sobre motivo de cancelamento (`cancelReason`). Estado: DONE.
+- RT-014A.5 Decidir sobre analytics/log de cancelamento admin. Estado: DONE.
+- RT-014A.6 Registrar autorizacao e separacao tecnica da funcao admin. Estado: DONE.
+- RT-014A.7 Atualizar documentacao operacional. Estado: DONE.
+
+Criterios de aceite: todas as dimensoes de regra decididas e registradas; nenhum arquivo de codigo alterado; documento serve de especificacao direta para RT-014B.
+Dependencias: RT-013G.
+Risco: baixo.
+Evidencia esperada: este registro em `docs/ops/backlog.md`; commit documental em `origin/main`.
+
+Notas operacionais — Regras decididas pelo Trigger:
+
+Status cancelaveis pelo admin:
+- PENDING: permitido.
+- CONFIRMED: permitido.
+- CANCELED: tratar como idempotente/no-op (reserva ja cancelada).
+- Qualquer outro status (COMPLETED, EXPIRED, REFUNDED ou futuro): bloqueado ate existir regra explicita.
+
+Janela de 24h:
+- Admin nao esta sujeito a janela de 24h aplicada ao usuario.
+- A funcao `cancelBookingForUser` permanece separada e intacta.
+- A futura RT-014B deve criar funcao admin separada (`cancelBookingByAdmin`) sem contaminar a logica do usuario.
+
+paymentStatus:
+- A acao admin NAO deve alterar `paymentStatus`.
+- Reserva PAID cancelada pelo admin: `booking.status` muda para CANCELED; `paymentStatus` permanece PAID.
+- Reembolso nao e automatico.
+- Reembolso via Mercado Pago fica fora do MVP e deve virar task futura especifica.
+
+Motivo de cancelamento:
+- Nao adicionar `cancelReason` agora.
+- Schema Prisma nao deve ser alterado nesta serie de tasks.
+- Motivo persistido pode ser avaliado em task futura com migration propria.
+
+E-mail:
+- Nao enviar e-mail automatico no MVP.
+- Nao criar template BOOKING_CANCELED agora.
+- Comunicacao ao cliente fica manual por enquanto.
+
+Analytics/log:
+- Nao adicionar `AnalyticsEvent` de cancelamento admin nesta task.
+- Nao existe tipo `BOOKING_CANCELED` no schema atual; nao criar agora.
+
+Autorizacao:
+- Somente ADMIN pode cancelar via `requireAdminSession` (padrao ja existente).
+
+Separacao tecnica para RT-014B:
+- Criar funcao `cancelBookingByAdmin(bookingId)` em `booking.service.ts`.
+- Criar server action `cancelBookingByAdminAction(id)` em `app/actions/admin.ts`.
+- Adicionar botao de cancelar na pagina de detalhe `/admin/bookings/[id]` com confirmacao simples.
+- Nao alterar `cancelBookingForUser`.
+- Nao alterar schema Prisma.
+- Nao criar migration.
