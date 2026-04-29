@@ -541,4 +541,13 @@ Tarefas:
 Criterios de aceite: cancelamento altera apenas `booking.status`; `paymentStatus` nao e alterado; `cancelBookingForUser` permanece intacto; botao exibido apenas para status permitidos; schema Prisma nao alterado.
 Dependencias: RT-014A.
 Risco: baixo.
-Evidencia esperada: commit em `origin/main`; build, lint, typecheck e tests passando.
+Evidencia esperada: commit `08a3de2 feat: implement admin booking cancellation action (RT-014B)` em `origin/main`; Vercel Production Deployment `Ready`; admin production validado; bookings admin empty state validado.
+
+Notas operacionais:
+
+- GitHub `main` aponta para `08a3de2`.
+- Vercel production esta `Ready` com `08a3de2`.
+- Admin acessado com sucesso em `https://rick-travel.vercel.app/pt/admin`.
+- Bookings admin carregou `https://rick-travel.vercel.app/pt/admin/bookings` com empty state: nenhuma reserva encontrada.
+- Neon production: usuario `ricardo@gmail.com` promovido manualmente para `ADMIN` e `emailVerified = true`; alteracao feita no banco, nao no codigo.
+- Proximo passo: criar booking de teste pelo fluxo publico em producao e validar listagem, detalhe e cancelamento admin apenas nessa reserva de teste.

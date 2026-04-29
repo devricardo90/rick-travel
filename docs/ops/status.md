@@ -51,7 +51,12 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-013F DONE remoto: navegacao e dashboard do admin aprimorados.
 - RT-013G DONE remoto: pagina de detalhe de reserva somente leitura; commit `09ffcb0` em `origin/main`.
 - RT-014A DONE remoto: regras de cancelamento admin definidas e registradas.
-- RT-014B DONE local: acao de cancelamento admin implementada; commit pendente de push.
+- RT-014B DONE remoto: acao de cancelamento admin implementada; commit `08a3de2` no topo de `main`/`origin/main`.
+- GitHub `main` aponta para `08a3de2 feat: implement admin booking cancellation action (RT-014B)`.
+- Vercel Production Deployment do commit `08a3de2` esta `Ready`.
+- Admin em producao acessado com sucesso em `https://rick-travel.vercel.app/pt/admin`.
+- Admin bookings em producao carregou em `https://rick-travel.vercel.app/pt/admin/bookings` com empty state: nenhuma reserva encontrada.
+- Neon production: usuario `ricardo@gmail.com` atualizado manualmente para `role = ADMIN` e `emailVerified = true`; alteracao feita diretamente no banco, sem mudanca de codigo.
 - Nenhuma migration/deploy/seed executado.
 
 ## Novo status geral do projeto
@@ -79,7 +84,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
-- aguardar proxima task (RT-014B concluida);
+- criar booking de teste pelo fluxo publico em producao e validar a listagem/detalhe/cancelamento no Admin;
 - consolidar checklist de estabilizacao pos-deploy do MVP publico.
 
 ### Medio prazo
