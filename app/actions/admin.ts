@@ -6,7 +6,7 @@ import {
     getRecommendedBookingEmailTemplate,
     sendBookingEmail,
 } from "@/lib/services/email.service";
-import { listAllBookings } from "@/lib/services/booking.service";
+import { listAllBookings, getBookingById } from "@/lib/services/booking.service";
 import { listAllContacts, markContactAsRead } from "@/lib/services/contact.service";
 
 /**
@@ -20,6 +20,20 @@ export async function getBookingsAction() {
     } catch (error) {
         console.error("Error fetching bookings:", error);
         throw new Error("Falha ao carregar reservas.");
+    }
+}
+
+/**
+ * Busca uma reserva pelo ID para o painel administrativo.
+ * Apenas leitura (RT-013G).
+ */
+export async function getBookingByIdAction(id: string) {
+    await requireAdminSession();
+    try {
+        return await getBookingById(id);
+    } catch (error) {
+        console.error("Error fetching booking by id:", error);
+        throw new Error("Falha ao carregar reserva.");
     }
 }
 

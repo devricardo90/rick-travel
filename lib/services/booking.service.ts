@@ -31,6 +31,29 @@ export async function listAllBookings() {
     });
 }
 
+/**
+ * Busca uma reserva pelo ID com todos os dados relevantes para visualizacao admin.
+ * Somente leitura (RT-013G).
+ */
+export async function getBookingById(id: string) {
+    return prisma.booking.findUnique({
+        where: { id },
+        include: {
+            user: { select: { name: true, email: true } },
+            trip: { select: { id: true, title: true, city: true, location: true, priceCents: true } },
+            schedule: { select: { startAt: true, endAt: true, capacity: true, pricePerPersonCents: true, status: true } },
+            paymentAttempts: {
+                select: { id: true, provider: true, status: true, amountCents: true, currency: true, paidAt: true, createdAt: true },
+                orderBy: { createdAt: "desc" },
+            },
+            emailLogs: {
+                select: { id: true, template: true, status: true, sentAt: true, createdAt: true },
+                orderBy: { createdAt: "desc" },
+            },
+        },
+    });
+}
+
 export async function createBookingForUser(userId: string, input: CreateBookingInput) {
     const tripId = typeof input.tripId === "string" ? input.tripId.trim() : "";
     const scheduleId = typeof input.scheduleId === "string" ? input.scheduleId.trim() : undefined;

@@ -1,6 +1,7 @@
 import { getBookingsAction } from "@/app/actions/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLocalizedField } from "@/lib/localized-field";
+import Link from "next/link";
 
 /**
  * RT-013C: Admin Bookings Read-Only
@@ -56,6 +57,7 @@ export default async function AdminBookingsPage({
                     <th className="py-3 px-4 font-semibold">Hospedes</th>
                     <th className="py-3 px-4 font-semibold">Total</th>
                     <th className="py-3 px-4 font-semibold">Status</th>
+                    <th className="py-3 px-4 font-semibold text-right">Acoes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,6 +93,14 @@ export default async function AdminBookingsPage({
                         }`}>
                           {booking.status}
                         </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <Link
+                          href={`/${locale}/admin/bookings/${booking.id}`}
+                          className="text-xs text-primary hover:underline"
+                        >
+                          Ver detalhes
+                        </Link>
                       </td>
                     </tr>
                   ))}
