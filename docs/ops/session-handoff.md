@@ -18,7 +18,8 @@ RT-017B DONE remoto + production smoke validated: listagem somente leitura de to
 RT-017C DONE remoto + production smoke manual validated: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional e validada em producao pelo Trigger.
 
 RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b59c92`; fluxo publico PASS; admin anonimo PASS; admin non-admin FAIL; login ADMIN BLOCKED por ausencia de credencial no ambiente.
-RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e validado localmente; production smoke pos-deploy ainda pendente.
+RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin Authorization Handling publicado no commit `bcf8119`; usuario comum recebe "Acesso negado" nas rotas admin, sem 500.
+RT-018C BLOCKED: Production Admin Access validation confirmou producao `bcf8119` Ready, mas nao havia credencial ADMIN utilizavel no ambiente; nenhuma alteracao manual no banco foi feita.
 
 ## O que foi registrado nesta atualizacao
 
@@ -45,6 +46,14 @@ RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e va
   - Protecao preservada: `requireAdminSession()` continua sendo a entrada central; paginas e actions admin nao receberam duplicacao de RBAC.
   - Validacao local: `tests/admin-layout.test.tsx` cobre anonimo -> redirect para login, USER -> acesso negado controlado, ADMIN -> conteudo renderizado.
   - Sem alteracao em regras de booking, tour, contact, schema, seed, migration, deploy manual ou banco manual.
+- RT-018C:
+  - Git antes da validacao: working tree limpa; `main...origin/main`; topo `bcf8119`.
+  - Producao confirmada: Vercel Ready, branch `main`, commit `bcf8119`.
+  - Credencial ADMIN: BLOCKED; variaveis `E2E_ADMIN_EMAIL`, `E2E_ADMIN_PASSWORD`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_USER` e `ADMIN_USERNAME` ausentes no processo e env local pesquisado.
+  - Rotas admin com ADMIN real: NOT TESTED/BLOCKED (`/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings`, `/pt/admin/contacts`).
+  - Booking `cmoli78ld000204js1agra4il` no admin: BLOCKED porque login ADMIN real nao foi possivel.
+  - Sem promocao manual de usuario; sem alteracao direta no banco; sem schema, seed, migration, deploy manual ou codigo nesta RT.
+  - Metodo controlado recomendado: promover usuario existente conhecido para ADMIN via Neon SQL Editor somente com autorizacao explicita do Trigger, ou criar task separada para fluxo seguro de promocao ADMIN.
 
 - RT-017B: adicionado `listAllTrips` em `trip.service.ts`; adicionado link "Tours" no menu admin; criada pagina `/[locale]/admin/tours` com listagem read-only; validado que apenas admins acessam via `AdminLayout`; smoke visual PASS em producao via deploy automatico Vercel.
 - RT-017D/E permanecem PLANNED; nenhuma READY aberta.
@@ -82,8 +91,8 @@ RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e va
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `6b59c92` antes desta atualizacao documental.
-- Vercel production: commit `6b59c92` validado para RT-018A.
+- GitHub `main`: `bcf8119` antes desta atualizacao documental.
+- Vercel production: commit `bcf8119` validado como Ready para RT-018C.
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 - Working tree: contem correcao RT-018B em `AdminLayout`, teste unitario e documentacao operacional desta atualizacao ate o commit.
 
@@ -94,7 +103,7 @@ RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e va
 - `paymentStatus` nao e alterado pelo cancelamento admin (confirmado em smoke).
 - RT-016A nao inicia checkout nem promete pagamento online; pagamento aparece como etapa manual a combinar com a equipe.
 - RT-016B nao executou seed; apenas preparou `prisma/seed.ts` para proxima execucao autorizada.
-- RT-018B corrige localmente o bug P1 identificado na RT-018A; validar em producao apos deploy automatico do commit.
+- RT-018B corrigiu o bug P1 identificado na RT-018A; smoke em producao confirmou usuario comum com "Acesso negado" e sem 500.
 - Nenhuma migration executada.
 - Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
 
@@ -105,4 +114,4 @@ RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e va
 
 ## Proxima acao recomendada
 
-Definir proxima tarefa READY em Discussion Gate. Candidatos planejados: RT-017D (edicao/admin update), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Sistema permanece operacional sem novas READY abertas nesta atualizacao.
+Definir proxima tarefa READY em Discussion Gate. Candidata operacional imediata: desbloquear credencial ADMIN/procedimento controlado para concluir RT-018C. Outros candidatos planejados: RT-017D (edicao/admin update), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Sistema permanece operacional sem novas READY abertas nesta atualizacao.

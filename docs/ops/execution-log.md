@@ -5,6 +5,42 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-018C Validate Production Admin Access
+
+**Executado por:** Codex (validacao operacional)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit Vercel:** `bcf8119 fix: handle non-admin admin access`
+**Status Vercel:** Ready
+
+**Resultado resumido:**
+
+| Area | Resultado | Evidencia |
+|---|---|---|
+| Git inicial | PASS | working tree limpa; `main...origin/main`; topo `bcf8119` |
+| Producao | PASS | Vercel Ready no commit `bcf8119` |
+| Credencial ADMIN disponivel | BLOCKED | nenhuma variavel ADMIN utilizavel encontrada no processo/env local pesquisado |
+| Login ADMIN | BLOCKED | sem credencial ADMIN disponivel |
+| `/pt/admin` com ADMIN | BLOCKED | login ADMIN nao executado |
+| `/pt/admin/tours` com ADMIN | BLOCKED | login ADMIN nao executado |
+| `/pt/admin/bookings` com ADMIN | BLOCKED | login ADMIN nao executado |
+| `/pt/admin/contacts` com ADMIN | BLOCKED | login ADMIN nao executado |
+| Booking `cmoli78ld000204js1agra4il` visivel no admin | BLOCKED | login ADMIN nao executado |
+
+**Restricoes mantidas:**
+
+- Nenhuma credencial foi exposta.
+- Nenhum usuario foi promovido.
+- Nenhuma alteracao manual no banco foi executada.
+- Nenhum schema alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhum codigo alterado.
+
+**Proximo desbloqueio recomendado:** disponibilizar credencial ADMIN valida para producao ou autorizar explicitamente uma promocao controlada de usuario existente via Neon SQL Editor; alternativa: criar task separada para fluxo seguro de promocao ADMIN.
+
+---
+
 ## 2026-04-30 - RT-018B Fix Admin Non-Admin Authorization Handling
 
 **Executado por:** Codex (correcao local + validacoes)
@@ -39,7 +75,7 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 - Nenhuma alteracao manual no banco executada.
 - Nenhuma regra de booking, tour ou contact alterada fora do necessario para auth admin.
 
-**Status:** DONE local; production smoke pos-deploy automatico ainda pendente.
+**Status:** DONE; commit `bcf8119` publicado por deploy automatico Vercel e smoke em producao confirmou usuario comum com "Acesso negado" nas rotas admin, sem 500.
 
 ---
 

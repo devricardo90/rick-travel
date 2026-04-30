@@ -846,6 +846,32 @@ Notas operacionais:
 - A correcao ficou centralizada no `AdminLayout`; paginas e actions admin continuam usando a protecao existente.
 - Nenhuma regra de booking, tour, contact, schema, seed, migration, banco manual ou deploy manual foi alterada.
 
+## RT-018C Validate Production Admin Access
+
+Estado: BLOCKED
+
+Objetivo: validar acesso ADMIN real em producao e confirmar que o painel administrativo renderiza para leitura/gestao basica.
+
+Tarefas:
+
+- RT-018C.1 Validar Git limpo e sincronizado. Estado: DONE.
+- RT-018C.2 Confirmar Vercel production Ready no commit esperado. Estado: DONE.
+- RT-018C.3 Verificar existencia de credencial ADMIN utilizavel sem expor segredo. Estado: BLOCKED.
+- RT-018C.4 Login ADMIN em producao. Estado: BLOCKED.
+- RT-018C.5 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts`. Estado: BLOCKED.
+- RT-018C.6 Verificar booking `cmoli78ld000204js1agra4il` no admin. Estado: BLOCKED.
+
+Criterios de aceite: ADMIN real consegue acessar painel e rotas principais; booking de smoke fica visivel em admin bookings ou detalhe equivalente; nenhuma acao destrutiva executada.
+Dependencias: credencial ADMIN valida para producao ou promocao controlada autorizada.
+Risco: medio.
+Evidencia: Vercel production Ready no commit `bcf8119`; credenciais ADMIN ausentes no processo e env local pesquisado; nenhuma alteracao manual no banco realizada.
+
+Notas operacionais:
+
+- Nao promover usuario sem autorizacao explicita do Trigger.
+- Opcoes de desbloqueio: promover usuario existente conhecido para ADMIN via Neon SQL Editor com autorizacao explicita; ou criar task separada para fluxo seguro de promocao ADMIN.
+- Nao executar seed, migration, deploy manual ou alteracao de schema para desbloquear esta validacao.
+
 ## Proxima READY
 
-A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidatas planejadas: RT-017D e RT-017E; tambem ha follow-ups de conteudo/imagem e hydration observados na RT-018A. Nao abrir nova READY automaticamente.
+A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidata operacional imediata: desbloquear RT-018C com credencial ADMIN/procedimento controlado. Candidatas planejadas: RT-017D e RT-017E; tambem ha follow-ups de conteudo/imagem e hydration observados na RT-018A. Nao abrir nova READY automaticamente.
