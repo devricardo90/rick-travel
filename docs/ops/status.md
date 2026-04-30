@@ -61,10 +61,10 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-016C DONE remoto + production smoke validated: seed controlado executado manualmente pelo Trigger contra Neon production para aplicar imagem real ao tour existente; imagem `/images/trips/imagem-morro-pao-de-acucar.jpg` validada em producao na Home e tours; agenda renovada para 90 dias; nenhum novo tour adicionado; sem schema, migration ou code change.
 - RT-017A DONE: regras e escopo do Admin Tour Manager MVP definidos e documentados em `docs/ops/admin-tour-manager-rules.md`; backlog fatiado em RT-017B/C/D/E.
 - RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada no admin; acesso via `/[locale]/admin/tours`; link "Tours" ativo no menu; tour "Cristo Redentor + Mirante Dona Marta" exibido com imagem, preco R$ 245,00 e 1 agenda; status PUBLICADO; sem acoes mutaveis (create/edit/delete/publish/schedule); deploy automatico Vercel verificado; proteção herdada do AdminLayout (teste explícito com não-admin pendente).
-- RT-017C DONE remoto: criação de novos tours implementada via formulário em `/[locale]/admin/tours/new`; novos tours nascem obrigatoriamente como rascunho (`isPublished: false`); validação de campos i18n (PT obrigatório) e preço incluída; redirecionamento após criação funcional.
-- GitHub `main` aponta para `1bfe782`.
-- Vercel production validada pelo Trigger com RT-016C.
-- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED).
+- RT-017C DONE remoto + production smoke manual validated: commit `4c3e3fe feat: add admin tour draft creation` publicado em producao Vercel; smoke manual executado pelo Trigger com credencial ADMIN privada, sem compartilhar credenciais com agente; tour real "Pao de Acucar ao Entardecer" criado como rascunho; ID `cmolfs9eu000004l2trz4q8bf`; cidade `rio de janeiro`; preco R$ 245,00; status RASCUNHO / `isPublished=false`; 0 agendas; aparece em `/pt/admin/tours`; nao aparece em `/pt/tours`, onde permanece visivel apenas o tour publicado "Cristo Redentor + Mirante Dona Marta"; nenhum deploy manual, migration, seed ou alteracao direta no banco executado pelo agente.
+- GitHub `main` aponta para `4c3e3fe`.
+- Vercel production validada pelo Trigger com RT-017C no commit `4c3e3fe`.
+- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED), e 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas.
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
 
 ## Novo status geral do projeto
@@ -72,9 +72,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluídas).
+- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluidas e RT-017C validada com smoke manual de producao).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
-- Gerenciamento de Tours: listagem e criação funcional (RT-017B/C); regras do MVP definidas (RT-017A); foco em edição segura sem hard delete ou upload binário.
+- Gerenciamento de Tours: listagem e criacao funcional (RT-017B/C); criacao de rascunho validada em producao com tour real; regras do MVP definidas (RT-017A); foco futuro em edicao segura sem hard delete ou upload binario.
 
 
 ## Validacao publica objetiva
@@ -86,6 +86,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /pt/quem-somos`: `200`.
 - `GET /pt/contato`: `200`.
 - `GET /api/trips`: `200`, retorno com 1 trip publicada (Cristo Redentor + Mirante Dona Marta).
+- RT-017C production smoke manual PASS: novo tour "Pao de Acucar ao Entardecer" criado como rascunho no admin e ausente do catalogo publico `/pt/tours`, confirmando `isPublished=false`.
 - `GET /robots.txt`: `200`.
 - `GET /sitemap.xml`: `200`.
 - RT-016A production smoke PASS: `/pt/tours` abre; detalhe do tour abre; booking cria; usuario redireciona para `/pt/reservas/{bookingId}`; pagina de confirmacao funciona; mensagem de pre-reserva/confirmacao manual esta clara; `/pt/reservas` lista a reserva; "Ver detalhes" abre o detalhe; payment status nao exibe enum cru; admin booking list segue funcional.
@@ -95,7 +96,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 ### Curto prazo
 
 - definir proxima tarefa READY em Discussion Gate;
-- candidatos planejados: criacao e edicao de tours no admin (RT-017C/D).
+- candidatos planejados: edicao de tours no admin (RT-017D) e agendas (RT-017E), ainda sem READY aberta.
 
 
 ### Medio prazo

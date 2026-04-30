@@ -5,6 +5,48 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-017C Smoke Manual - Criacao de Tour como Rascunho
+
+**Executado por:** Trigger (manual, browser em producao)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit Vercel:** `4c3e3fe feat: add admin tour draft creation`
+**Credencial:** ADMIN privada do Trigger; nenhuma credencial compartilhada com o agente.
+**Pre-requisito:** RT-017C deployada automaticamente pela Vercel; sem deploy manual.
+
+**Passos e resultados:**
+
+| Passo | URL / Acao | Resultado |
+|---|---|---|
+| 1 | Verificar Vercel production | Producao no commit `4c3e3fe` |
+| 2 | `/pt/admin/tours` | Botao "Novo Tour" visivel |
+| 3 | `/pt/admin/tours/new` | Formulario renderiza |
+| 4 | Criar tour real | "Pao de Acucar ao Entardecer" criado |
+| 5 | Pos-criacao | Redirecionou para `/pt/admin/tours` |
+| 6 | Listagem admin | Tour aparece com ID `cmolfs9eu000004l2trz4q8bf` |
+| 7 | Dados exibidos | Cidade `rio de janeiro`; preco R$ 245,00; status RASCUNHO / `isPublished=false`; 0 agendas |
+| 8 | `/pt/tours` | Novo tour nao aparece |
+| 9 | Catalogo publico | Apenas "Cristo Redentor + Mirante Dona Marta" aparece como tour publicado |
+
+**Status do smoke:** PASS.
+
+**Observacoes:**
+
+- O preco planejado anteriormente era R$ 295,00, mas o tour foi criado com R$ 245,00.
+- A cidade ficou em minusculo: `rio de janeiro`.
+- Nao corrigir manualmente agora; ajustes futuros devem aguardar task de edicao/admin update.
+- RT-017D/E continuam PLANNED; nenhuma READY aberta.
+
+**Restricoes mantidas:**
+
+- Nenhum deploy manual executado pelo agente.
+- Nenhuma migration executada.
+- Nenhum seed executado.
+- Nenhuma alteracao direta no banco executada pelo agente.
+- Tour nao publicado.
+- Nenhuma agenda criada.
+
+---
+
 ## 2026-04-30 — RT-015B Seed de Producao
 
 **Executado por:** Trigger (manual)

@@ -15,14 +15,16 @@ RT-016B DONE remoto + production smoke validated: Home consolidada no catalogo r
 RT-016C DONE remoto + production smoke validated: seed controlado executado; imagem real aplicada ao tour existente; agenda renovada; smoke PASS em producao.
 RT-017A DONE: regras e fatiamento do Admin Tour Manager MVP documentados em `docs/ops/admin-tour-manager-rules.md`.
 RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada e validada visualmente em producao; link "Tours" ativo; tour real exibido com contagem de agendas.
-RT-017C DONE remoto: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional.
+RT-017C DONE remoto + production smoke manual validated: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional e validada em producao pelo Trigger.
 
 ## O que foi registrado nesta atualizacao
 
-- RT-017C: criada `createTripAction` protegida em `admin.ts`; implementada página de criação com formulário, validação de Título PT e conversão de preço; botão "Novo Tour" adicionado à listagem.
+- RT-017C: criada `createTripAction` protegida em `admin.ts`; implementada página de criação com formulário, validação de Título PT e conversão de preço; botão "Novo Tour" adicionado à listagem; commit remoto `4c3e3fe`.
+- RT-017C production smoke manual: Vercel production estava no commit `4c3e3fe`; Trigger executou o smoke com credencial ADMIN privada; credenciais nao foram compartilhadas com o agente; tour real "Pao de Acucar ao Entardecer" criado como rascunho com ID `cmolfs9eu000004l2trz4q8bf`, cidade `rio de janeiro`, preco R$ 245,00, status RASCUNHO / `isPublished=false` e 0 agendas; tour aparece em `/pt/admin/tours`; tour nao aparece em `/pt/tours`, que exibe apenas "Cristo Redentor + Mirante Dona Marta"; nenhum deploy manual, migration, seed ou alteracao direta no banco foi executado pelo agente.
+- Observacoes do smoke RT-017C: preco planejado anteriormente era R$ 295,00, mas o tour foi criado com R$ 245,00; cidade ficou em minusculo (`rio de janeiro`); nao corrigir agora; ajustes futuros devem aguardar task de edicao/admin update.
 
 - RT-017B: adicionado `listAllTrips` em `trip.service.ts`; adicionado link "Tours" no menu admin; criada pagina `/[locale]/admin/tours` com listagem read-only; validado que apenas admins acessam via `AdminLayout`; smoke visual PASS em producao via deploy automatico Vercel.
-- RT-017C/D/E permanecem PLANNED; nenhuma READY aberta.
+- RT-017D/E permanecem PLANNED; nenhuma READY aberta.
 
 - RT-015A: auditoria confirmou 0 trips em Neon production; causa do vazio: ausencia de dados (schema correto, filtro correto); campo `slug` inexistente em `Trip`.
 - RT-015B: criado `prisma/seed.ts` com IDs deterministicos (`seed-001-cristo-dona-marta`, `seed-001-schedule-001`); adicionado `prisma.seed` em `package.json`; commit `cf0f96f feat: add idempotent minimal seed for RT-015B` publicado; seed executado manualmente pelo Trigger contra Neon production.
@@ -57,10 +59,10 @@ RT-017C DONE remoto: criação de novos tours (rascunho) via formulário em `/[l
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `bd5e644`.
-- Vercel production: RT-016C validada pelo Trigger.
-- Neon production: 1 Trip com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED).
-- Working tree: contem listagem de tours admin (RT-017B).
+- GitHub `main`: `4c3e3fe`.
+- Vercel production: commit `4c3e3fe` validado para RT-017C pelo Trigger.
+- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), e 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas.
+- Working tree: apenas documentacao operacional desta atualizacao, sem alteracao de codigo.
 
 ## Evidencias importantes
 
@@ -75,8 +77,8 @@ RT-017C DONE remoto: criação de novos tours (rascunho) via formulário em `/[l
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao.
+- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-017D/E como READY ainda.
 
 ## Proxima acao recomendada
 
-Definir proxima tarefa READY em Discussion Gate. Candidatos planejados em RT-017B/C/D para gerenciamento de tours no admin. Sistema permanece operacional sem novas READY abertas nesta atualizacao.
+Definir proxima tarefa READY em Discussion Gate. Candidatos planejados: RT-017D (edicao/admin update) e RT-017E (agendas), ainda sem READY aberta. Sistema permanece operacional sem novas READY abertas nesta atualizacao.
