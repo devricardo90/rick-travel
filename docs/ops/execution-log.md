@@ -66,6 +66,36 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 — RT-016C — Controlled Production Seed for Existing Tour Image
+
+**Executado por:** Trigger (manual)
+**Comando:** `DATABASE_URL=<neon-prod> npx tsx prisma/seed.ts`
+**Commit base:** `5e120a4 chore: simplify home catalog entry point`
+**Estrategia:** upsert controlado para aplicar imagem real e renovar agenda; sem deleteMany; sem migration.
+
+**Resultado:**
+
+- Seed started: PASS.
+- Trip upserted: PASS (`seed-001-cristo-dona-marta`).
+- Schedule upserted: PASS (`seed-001-schedule-001`).
+- imageUrl applied: `/images/trips/imagem-morro-pao-de-acucar.jpg`.
+- Nenhuma linha deletada.
+- DATABASE_URL cleared: PASS.
+
+**Verificacao pos-seed:**
+
+- Home / Passeios disponíveis: exibe imagem real.
+- `/pt/tours`: tour visivel com imagem real.
+- Agenda: renovada para 90 dias a partir da execucao.
+
+**Estado pos-smoke:**
+
+- Neon production: 1 Trip com imagem real, 1 TripSchedule OPEN renovado, 1 Booking (CANCELED).
+- Git status: clean.
+- Main sync: PASS.
+
+---
+
 ## 2026-04-30 - RT-016A Smoke - Confirmacao de Reserva do Usuario
 
 **Executado por:** Trigger (manual, browser em producao)

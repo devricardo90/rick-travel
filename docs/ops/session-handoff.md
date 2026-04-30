@@ -11,7 +11,8 @@ RT-015B DONE: seed de producao criado e executado manualmente.
 RT-015C-FIX DONE: bug critico de click interception corrigido.
 RT-015C DONE: smoke completo de producao validado pelo Trigger.
 RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
-RT-016B DONE local: Home consolidada no catalogo real; package cards antigos removidos da renderizacao; seed preparado com imagem real sem execucao.
+RT-016B DONE remoto + production smoke validated: Home consolidada no catalogo real; package cards antigos removidos da renderizacao; commit `5e120a4`.
+RT-016C DONE remoto + production smoke validated: seed controlado executado; imagem real aplicada ao tour existente; agenda renovada; smoke PASS em producao.
 
 ## O que foi registrado nesta atualizacao
 
@@ -48,10 +49,10 @@ RT-016B DONE local: Home consolidada no catalogo real; package cards antigos rem
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `76ea025`.
-- Vercel production: RT-016A validada pelo Trigger com commit `799698c`.
-- Neon production: 1 Trip publicada, 1 TripSchedule OPEN (29/07/2026), 1 Booking de teste (CANCELED apos smoke).
-- Working tree: contem alteracoes locais da RT-016B aguardando revisao/commit.
+- GitHub `main`: `5e120a4`.
+- Vercel production: RT-016C validada pelo Trigger.
+- Neon production: 1 Trip com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED).
+- Working tree: limpa.
 
 ## Evidencias importantes
 

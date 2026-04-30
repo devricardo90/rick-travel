@@ -57,10 +57,11 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-015C-FIX DONE: bug critico corrigido — bottom sheet do mobile-menu interceptava cliques invisivelmente (`opacity: 0` sem `pointer-events: none`); commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
 - RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED na listagem; detalhe pos-cancelamento: "Nenhuma tentativa de pagamento registrada."; payment attempts remained absent — no payment gateway/refund/payment mutation was triggered in the MVP flow).
 - RT-016A DONE remoto + production smoke validated: commit `799698c feat: polish booking confirmation flow`; fluxo user-side pos-reserva polido para pre-reserva com confirmacao manual; redirect para `/pt/reservas/{bookingId}` validado em producao; `/pt/reservas` lista a reserva e "Ver detalhes" abre o detalhe; payment status nao aparece mais como enum cru `UNPAID`; admin booking list permanece funcional; nenhum gateway, schema, migration, seed, env ou regra admin alterados.
-- RT-016B DONE local: Home deixou de renderizar os package cards comerciais antigos que apontavam para contato; `Passeios disponiveis` permanece como catalogo real principal; seed preparado para usar imagem real local `/images/trips/imagem-morro-pao-de-acucar.jpg`; seed nao executado; sem schema, migration, Neon, gateway, admin, auth/env/provider.
-- GitHub `main` aponta para `76ea025`.
-- Vercel production validada pelo Trigger com RT-016A (`799698c`).
-- Neon production: 1 Trip publicada, 1 TripSchedule OPEN, 1 Booking de teste (status CANCELED apos smoke).
+- RT-016B DONE remoto + production smoke validated: commit `5e120a4 chore: simplify home catalog entry point`; Home deixou de renderizar os package cards comerciais antigos que apontavam para contato; `Passeios disponiveis` permanece como catalogo real principal; seed preparado para usar imagem real local `/images/trips/imagem-morro-pao-de-acucar.jpg`; seed nao executado; sem schema, migration, Neon, gateway, admin, auth/env/provider.
+- RT-016C DONE remoto + production smoke validated: seed controlado executado manualmente pelo Trigger contra Neon production para aplicar imagem real ao tour existente; imagem `/images/trips/imagem-morro-pao-de-acucar.jpg` validada em producao na Home e tours; agenda renovada para 90 dias; nenhum novo tour adicionado; sem schema, migration ou code change.
+- GitHub `main` aponta para `5e120a4`.
+- Vercel production validada pelo Trigger com RT-016C.
+- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED).
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
 
 ## Novo status geral do projeto

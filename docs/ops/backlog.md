@@ -682,7 +682,7 @@ Notas operacionais:
 
 ## RT-016B Remove Confusing Package Cards and Promote Real Catalog
 
-Estado: DONE local
+Estado: DONE
 
 Objetivo: remover da Home os cards comerciais antigos que pareciam tours reais, mas apontavam para contato, mantendo `Passeios disponiveis` como caminho principal para catalogo real, detalhe e reserva.
 
@@ -696,11 +696,23 @@ Tarefas:
 Criterios de aceite: Home nao mostra mais os cards comerciais antigos apontando para contato; `/tours` segue como catalogo oficial; seed fica preparado com imagem real sem execucao; nenhuma mudanca de schema/migration/gateway/admin/auth/env.
 Dependencias: RT-016A.
 Risco: baixo.
-Evidencia esperada: `app/[locale]/(public)/page.tsx` nao importa/renderiza a secao legada; componente legado removido; `prisma/seed.ts` usa `/images/trips/imagem-morro-pao-de-acucar.jpg`.
+Evidencia esperada: commit `5e120a4`.
 
-Notas operacionais:
+## RT-016C Controlled Production Seed for Existing Tour Image
 
-- O componente legado foi removido porque continha cards antigos apontando para contato e nao era mais referenciado pela Home.
-- Imagem escolhida para o seed: `/images/trips/imagem-morro-pao-de-acucar.jpg`, por ser a imagem real local mais proxima de paisagem turistica do Rio para o tour Cristo/Dona Marta.
-- Seed nao foi executado; Neon nao foi tocado.
-- Validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; build local registrou `ECONNREFUSED` Prisma em `/api/trips`/sitemap por DB local indisponivel, com exit code 0.
+Estado: DONE
+
+Objetivo: executar o seed controlado em producao apenas para aplicar a imagem real ao tour semeado anteriormente e renovar a agenda.
+
+Tarefas:
+
+- RT-016C.1 Validar existencia da imagem real em `public/images/trips/`. Estado: DONE.
+- RT-016C.2 Auditar `prisma/seed.ts` para garantir idempotencia e ausencia de operacoes destrutivas. Estado: DONE.
+- RT-016C.3 Executar seed manualmente contra Neon production (Trigger). Estado: DONE.
+- RT-016C.4 Validar imagem real renderizada na Home e `/tours` em producao. Estado: DONE.
+- RT-016C.5 Atualizar documentacao operacional. Estado: DONE.
+
+Criterios de aceite: imagem real aplicada; agenda renovada; nenhum novo tour adicionado; sem code change ou migration.
+Dependencias: RT-016B.
+Risco: baixo.
+Evidencia esperada: smoke PASS em producao; tour exibe imagem `/images/trips/imagem-morro-pao-de-acucar.jpg`.
