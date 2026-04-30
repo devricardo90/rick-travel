@@ -13,6 +13,7 @@ RT-015C DONE: smoke completo de producao validado pelo Trigger.
 RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
 RT-016B DONE remoto + production smoke validated: Home consolidada no catalogo real; package cards antigos removidos da renderizacao; commit `5e120a4`.
 RT-016C DONE remoto + production smoke validated: seed controlado executado; imagem real aplicada ao tour existente; agenda renovada; smoke PASS em producao.
+RT-017A DONE: regras e fatiamento do Admin Tour Manager MVP documentados em `docs/ops/admin-tour-manager-rules.md`.
 
 ## O que foi registrado nesta atualizacao
 
@@ -49,10 +50,10 @@ RT-016C DONE remoto + production smoke validated: seed controlado executado; ima
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `5e120a4`.
+- GitHub `main`: `e009333`.
 - Vercel production: RT-016C validada pelo Trigger.
 - Neon production: 1 Trip com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED).
-- Working tree: limpa.
+- Working tree: contem arquivo de regras e atualizacoes de backlog/status para RT-017A.
 
 ## Evidencias importantes
 
@@ -71,4 +72,4 @@ RT-016C DONE remoto + production smoke validated: seed controlado executado; ima
 
 ## Proxima acao recomendada
 
-Definir proxima sprint com o Trigger. RT-016A esta validada em producao; sistema permanece operacional sem seed, migration, gateway ou mudanca de schema/env/auth/provider.
+Definir proxima tarefa READY em Discussion Gate. Candidatos planejados em RT-017B/C/D para gerenciamento de tours no admin. Sistema permanece operacional sem novas READY abertas nesta atualizacao.

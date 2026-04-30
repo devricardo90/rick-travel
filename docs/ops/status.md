@@ -59,7 +59,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-016A DONE remoto + production smoke validated: commit `799698c feat: polish booking confirmation flow`; fluxo user-side pos-reserva polido para pre-reserva com confirmacao manual; redirect para `/pt/reservas/{bookingId}` validado em producao; `/pt/reservas` lista a reserva e "Ver detalhes" abre o detalhe; payment status nao aparece mais como enum cru `UNPAID`; admin booking list permanece funcional; nenhum gateway, schema, migration, seed, env ou regra admin alterados.
 - RT-016B DONE remoto + production smoke validated: commit `5e120a4 chore: simplify home catalog entry point`; Home deixou de renderizar os package cards comerciais antigos que apontavam para contato; `Passeios disponiveis` permanece como catalogo real principal; seed preparado para usar imagem real local `/images/trips/imagem-morro-pao-de-acucar.jpg`; seed nao executado; sem schema, migration, Neon, gateway, admin, auth/env/provider.
 - RT-016C DONE remoto + production smoke validated: seed controlado executado manualmente pelo Trigger contra Neon production para aplicar imagem real ao tour existente; imagem `/images/trips/imagem-morro-pao-de-acucar.jpg` validada em producao na Home e tours; agenda renovada para 90 dias; nenhum novo tour adicionado; sem schema, migration ou code change.
-- GitHub `main` aponta para `5e120a4`.
+- RT-017A DONE: regras e escopo do Admin Tour Manager MVP definidos e documentados em `docs/ops/admin-tour-manager-rules.md`; backlog fatiado em RT-017B/C/D/E.
+- GitHub `main` aponta para `e009333`.
 - Vercel production validada pelo Trigger com RT-016C.
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED).
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
@@ -69,10 +70,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A/B/C/D/E/F/G, RT-014A e RT-014B concluidas).
+- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A concluida).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
-- Reservas do usuario: RT-016A ajustou a experiencia para deixar explicito que o MVP opera com pre-reserva pendente e confirmacao/pagamento manual pela equipe Rick Travel.
-- Catalogo publico: RT-016B consolidou a Home em torno de `Passeios disponiveis` como caminho real para detalhe e reserva.
+- Gerenciamento de Tours: regras do MVP definidas (RT-017A); foco em listagem, criacao e edicao segura sem hard delete ou upload binario.
 
 
 ## Validacao publica objetiva
@@ -92,8 +92,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
-- avaliar proximas tasks operacionais: conteudo adicional, UX polish ou integracao de pagamento;
-- janela controlada para o residual de `npm audit` em tooling Prisma.
+- definir proxima tarefa READY em Discussion Gate;
+- candidatos planejados: listagem, criacao e edicao de tours no admin (RT-017B/C/D).
 
 ### Medio prazo
 

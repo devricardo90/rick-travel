@@ -96,6 +96,20 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 — RT-017A — Admin Tour Manager Rules and Scope
+
+**Executado por:** Gemini CLI (Documentação e Planejamento)
+**Status:** DONE
+**Documento:** `docs/ops/admin-tour-manager-rules.md`
+
+**Resumo:**
+- Regras do MVP de gerenciamento de tours definidas.
+- Proibição de hard delete e upload binário registrada.
+- Backlog fatiado em RT-017B (List), RT-017C (Create), RT-017D (Edit) e RT-017E (Schedules).
+- Nenhum código de aplicação ou banco alterado.
+
+---
+
 ## 2026-04-30 - RT-016A Smoke - Confirmacao de Reserva do Usuario
 
 **Executado por:** Trigger (manual, browser em producao)

@@ -12,7 +12,7 @@ Tarefas:
 
 - RT-001.1 Inventariar docs, configs, rotas, modelos e scripts. Estado: DONE.
 - RT-001.2 Separar evidencias reais de assumptions/unknowns. Estado: DONE.
-- RT-001.3 Validar decisoes de negocio com owner. Estado: READY.
+- RT-001.3 Validar decisoes de negocio com owner. Estado: PLANNED.
 
 Criterios de aceite: status, backlog, handoff, resume pack e matriz de versoes existem e refletem o repositorio.
 Dependencias: nenhuma.
@@ -31,7 +31,7 @@ Tarefas:
 - RT-002.2 Resolver duplicatas `(2)` sem apagar contexto valido. Estado: DONE.
 - RT-002.3 Corrigir typecheck global. Estado: DONE.
 - RT-002.4 Manter build sem dependencia de fonte remota. Estado: DONE.
-- RT-002.5 Revisar E2E autenticado remanescente. Estado: READY.
+- RT-002.5 Revisar E2E autenticado remanescente. Estado: PLANNED.
 
 Criterios de aceite: lint, typecheck, build e unit tests verdes.
 Dependencias: RT-001.
@@ -48,7 +48,7 @@ Tarefas:
 
 - RT-003.1 Criar/atualizar `.env.example` sem segredos. Estado: DONE.
 - RT-003.2 Documentar uso de `npm.cmd`/`npx.cmd` no Windows. Estado: DONE.
-- RT-003.3 Confirmar fluxo Docker PostgreSQL em `localhost:5433`. Estado: READY.
+- RT-003.3 Confirmar fluxo Docker PostgreSQL em `localhost:5433`. Estado: PLANNED.
 - RT-003.4 Congelar Node em `.nvmrc`. Estado: DONE.
 
 Criterios de aceite: novo dev consegue subir app com Postgres local e Prisma.
@@ -58,15 +58,15 @@ Evidencia esperada: healthcheck e dev server ok.
 
 ## RT-004 Autenticacao
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: validar auth usuario/admin.
 
 Tarefas:
 
-- RT-004.1 Validar login/registro com Better Auth. Estado: READY.
-- RT-004.2 Validar protecao de `/reservas` e `/admin`. Estado: READY.
-- RT-004.3 Revisar rotas debug para ambiente nao desenvolvimento. Estado: READY.
+- RT-004.1 Validar login/registro com Better Auth. Estado: PLANNED.
+- RT-004.2 Validar protecao de `/reservas` e `/admin`. Estado: PLANNED.
+- RT-004.3 Revisar rotas debug para ambiente nao desenvolvimento. Estado: PLANNED.
 
 Criterios de aceite: usuarios anonimos nao acessam areas privadas; admin comum nao executa actions restritas.
 Dependencias: RT-003.
@@ -75,15 +75,15 @@ Evidencia esperada: E2E auth verde.
 
 ## RT-005 Base de dados
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: estabilizar Prisma/PostgreSQL.
 
 Tarefas:
 
-- RT-005.1 Validar migrations em banco limpo. Estado: READY.
-- RT-005.2 Criar seed controlado para dev/E2E. Estado: READY.
-- RT-005.3 Validar indices e integridade para booking/schedule/payment. Estado: READY.
+- RT-005.1 Validar migrations em banco limpo. Estado: PLANNED.
+- RT-005.2 Criar seed controlado para dev/E2E. Estado: PLANNED.
+- RT-005.3 Validar indices e integridade para booking/schedule/payment. Estado: PLANNED.
 
 Criterios de aceite: `prisma migrate deploy` e seed rodam em ambiente limpo.
 Dependencias: RT-003.
@@ -98,11 +98,11 @@ Objetivo: estabilizar o fluxo publico ja deployado.
 
 Tarefas:
 
-- RT-006.1 Home/listagem/detalhe de tour em runtime publicado. Estado: READY.
-- RT-006.2 Reserva autenticada com agenda/capacidade em runtime publicado. Estado: READY.
-- RT-006.3 Minhas reservas com status e polling em runtime publicado. Estado: READY.
-- RT-006.4 Rodar smoke pos-deploy nos fluxos publicos prioritarios. Estado: READY.
-- RT-006.5 Registrar gaps reais encontrados no runtime publicado. Estado: READY.
+- RT-006.1 Home/listagem/detalhe de tour em runtime publicado. Estado: PLANNED.
+- RT-006.2 Reserva autenticada com agenda/capacidade em runtime publicado. Estado: PLANNED.
+- RT-006.3 Minhas reservas com status e polling em runtime publicado. Estado: PLANNED.
+- RT-006.4 Rodar smoke pos-deploy nos fluxos publicos prioritarios. Estado: PLANNED.
+- RT-006.5 Registrar gaps reais encontrados no runtime publicado. Estado: PLANNED.
 
 Criterios de aceite: MVP publico permanece acessivel e sem regressao critica nos fluxos publicos.
 Dependencias: RT-004, RT-005.
@@ -111,16 +111,16 @@ Evidencia esperada: smoke pos-deploy e registro objetivo de ocorrencias.
 
 ## RT-007 Painel/admin
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: reconstruir o Admin MVP de forma controlada e segura.
 
 Tarefas:
 
-- RT-007.1 Reativar protecao de rotas e auth skeleton. Estado: READY.
-- RT-007.2 Dashboard simples com stats basicos. Estado: READY.
-- RT-007.3 Listagem e visualizacao de bookings. Estado: READY.
-- RT-007.4 Listagem e triagem de contatos. Estado: READY.
+- RT-007.1 Reativar protecao de rotas e auth skeleton. Estado: PLANNED.
+- RT-007.2 Dashboard simples com stats basicos. Estado: PLANNED.
+- RT-007.3 Listagem e visualizacao de bookings. Estado: PLANNED.
+- RT-007.4 Listagem e triagem de contatos. Estado: PLANNED.
 
 Criterios de aceite: acesso restrito a role ADMIN; codigo reconstruido com auditoria; sem regressao de seguranca.
 Dependencias: RT-013A.
@@ -136,9 +136,9 @@ Objetivo: manter integracoes externas congeladas fora do escopo atual.
 Tarefas:
 
 - RT-008.1 Mercado Pago sandbox/producao: token, Pix e webhook publico. Estado: BLOCKED.
-- RT-008.2 Resend: dominio/remetente e email de confirmacao. Estado: READY.
-- RT-008.3 MyMemory/traducao: validar limite/fallback. Estado: READY.
-- RT-008.4 WhatsApp: confirmar numero e mensagem comercial. Estado: READY.
+- RT-008.2 Resend: dominio/remetente e email de confirmacao. Estado: PLANNED.
+- RT-008.3 MyMemory/traducao: validar limite/fallback. Estado: PLANNED.
+- RT-008.4 WhatsApp: confirmar numero e mensagem comercial. Estado: PLANNED.
 
 Criterios de aceite: nenhuma retomada de Mercado Pago sem justificativa operacional especifica.
 Dependencias: decisao de escopo e credenciais externas.
@@ -223,14 +223,14 @@ Notas operacionais:
 
 ## RT-012 Observabilidade
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: ter visibilidade minima.
 
 Tarefas:
 
-- RT-012.1 Healthcheck com banco. Estado: READY.
-- RT-012.2 Logs estruturados para webhook/pagamento. Estado: READY.
+- RT-012.1 Healthcheck com banco. Estado: PLANNED.
+- RT-012.2 Logs estruturados para webhook/pagamento. Estado: PLANNED.
 - RT-012.3 Monitoramento de erro. Estado: BLOCKED.
 
 Criterios de aceite: falhas criticas aparecem em logs/alertas.
@@ -290,12 +290,12 @@ Objetivo: reduzir risco pos-publicacao.
 
 Tarefas:
 
-- RT-013.1 Rotacionar segredos locais se necessario. Estado: READY.
+- RT-013.1 Rotacionar segredos locais se necessario. Estado: PLANNED.
 - RT-013.2 Criar `.env.example`. Estado: DONE.
 - RT-013.3 Revisar webhook secret Mercado Pago. Estado: BLOCKED.
-- RT-013.4 Revisar dados sensiveis em logs. Estado: READY.
+- RT-013.4 Revisar dados sensiveis em logs. Estado: PLANNED.
 - RT-013.5 Classificar audit moderado remanescente em Prisma dev tooling. Estado: DONE.
-- RT-013.6 Resolver audit moderado remanescente em janela controlada. Estado: READY.
+- RT-013.6 Resolver audit moderado remanescente em janela controlada. Estado: PLANNED.
 - RT-013.7 Documentar contrato de secrets por ambiente. Estado: DONE.
 
 Criterios de aceite: nenhum segredo versionado; logs revisados; escopo congelado preservado.
@@ -305,15 +305,15 @@ Evidencia esperada: checklist seguranca e plano de janela controlada.
 
 ## RT-014 UX/UI polish
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: melhorar conversao sem mexer no core.
 
 Tarefas:
 
-- RT-014.1 Revisar responsividade dos fluxos publicos. Estado: READY.
-- RT-014.2 Revisar acessibilidade basica. Estado: READY.
-- RT-014.3 Validar assets reais e performance. Estado: READY.
+- RT-014.1 Revisar responsividade dos fluxos publicos. Estado: PLANNED.
+- RT-014.2 Revisar acessibilidade basica. Estado: PLANNED.
+- RT-014.3 Validar assets reais e performance. Estado: PLANNED.
 
 Criterios de aceite: smoke visual desktop/mobile sem overlap critico.
 Dependencias: core estavel.
@@ -322,7 +322,7 @@ Evidencia esperada: screenshots e checklist UX.
 
 ## RT-015 Conteudo/comercial
 
-Estado: READY
+Estado: PLANNED
 
 Objetivo: consolidar proposta comercial e canais sem ampliar escopo tecnico atual.
 
@@ -716,3 +716,83 @@ Criterios de aceite: imagem real aplicada; agenda renovada; nenhum novo tour adi
 Dependencias: RT-016B.
 Risco: baixo.
 Evidencia esperada: smoke PASS em producao; tour exibe imagem `/images/trips/imagem-morro-pao-de-acucar.jpg`.
+
+## RT-017A Admin Tour Manager Rules and Scope
+
+Estado: DONE
+
+Objetivo: registrar as regras funcionais e tecnicas do Admin Tour Manager MVP antes de implementar codigo.
+
+Tarefas:
+
+- RT-017A.1 Criar documento de regras para Admin Tour Manager MVP. Estado: DONE.
+- RT-017A.2 Definir diretrizes de integridade, imagens e i18n. Estado: DONE.
+- RT-017A.3 Fatiar o backlog de implementacao em tarefas granulares. Estado: DONE.
+- RT-017A.4 Atualizar documentacao operacional. Estado: DONE.
+
+Criterios de aceite: documento `docs/ops/admin-tour-manager-rules.md` existe; regras aprovadas; tarefas subsequentes mapeadas.
+Dependencias: RT-016C.
+Risco: baixo.
+Evidencia esperada: este registro e o arquivo de regras.
+
+## RT-017B Admin Tour List
+
+Estado: PLANNED
+
+Objetivo: implementar listagem somente leitura de tours no admin.
+
+Tarefas:
+
+- RT-017B.1 Adicionar `listAllTrips` em `trip.service.ts`. Estado: PLANNED.
+- RT-017B.2 Adicionar `listAllTripsAction` em `app/actions/admin.ts`. Estado: PLANNED.
+- RT-017B.3 Criar pagina `/[locale]/admin/tours` com tabela de listagem. Estado: PLANNED.
+
+Criterios de aceite: admins conseguem ver todos os tours; link de navegacao no admin layout funciona.
+Dependencias: RT-017A.
+
+## RT-017C Admin Tour Create
+
+Estado: PLANNED
+
+Objetivo: implementar criacao de novos tours via admin.
+
+Tarefas:
+
+- RT-017C.1 Criar Server Action de criacao protegida. Estado: PLANNED.
+- RT-017C.2 Criar formulario em `/[locale]/admin/tours/new` com validacao de campos Json. Estado: PLANNED.
+
+Criterios de aceite: novo tour criado com `isPublished: false`; campos i18n persistidos corretamente.
+Dependencias: RT-017B.
+
+## RT-017D Admin Tour Edit & Visibility
+
+Estado: PLANNED
+
+Objetivo: implementar edicao e controle de publicacao de tours.
+
+Tarefas:
+
+- RT-017D.1 Criar Server Action de edicao protegida. Estado: PLANNED.
+- RT-017D.2 Criar pagina de edicao `/[locale]/admin/tours/[id]`. Estado: PLANNED.
+- RT-017D.3 Implementar toggle de `isPublished`. Estado: PLANNED.
+
+Criterios de aceite: edicao nao afeta bookings historicos; tour aparece/some do publico conforme status.
+Dependencias: RT-017C.
+
+## RT-017E Admin Tour Basic Schedule Management
+
+Estado: PLANNED
+
+Objetivo: permitir controle basico de agendas vinculadas a um tour no admin.
+
+Tarefas:
+
+- RT-017E.1 Listar schedules dentro do detalhe do tour. Estado: PLANNED.
+- RT-017E.2 Implementar acao para abrir/fechar (`status`) de um schedule. Estado: PLANNED.
+
+Criterios de aceite: admin consegue bloquear datas sem excluir o registro.
+Dependencias: RT-017D.
+
+## Proxima READY
+
+A definicao da proxima tarefa READY sera realizada em Discussion Gate apos a conclusao da RT-017A.
