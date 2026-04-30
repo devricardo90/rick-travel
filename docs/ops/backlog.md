@@ -794,6 +794,52 @@ Tarefas:
 Criterios de aceite: admin consegue bloquear datas sem excluir o registro.
 Dependencias: RT-017D.
 
+## RT-018A Production Product Smoke Check
+
+Estado: DONE
+
+Objetivo: auditar o produto em producao como usuario real, validando descoberta de tour, reserva, confirmacao manual e protecoes admin.
+
+Tarefas:
+
+- RT-018A.1 Validar Git limpo e sincronizado antes do smoke. Estado: DONE.
+- RT-018A.2 Confirmar commit Vercel em producao. Estado: DONE.
+- RT-018A.3 Validar Home, catalogo, detalhe, login e registro. Estado: DONE.
+- RT-018A.4 Criar reserva pelo fluxo publico normal ate confirmacao manual. Estado: DONE.
+- RT-018A.5 Validar protecao admin sem sessao. Estado: DONE.
+- RT-018A.6 Validar comportamento admin com usuario comum autenticado. Estado: DONE.
+- RT-018A.7 Registrar bugs, bloqueios e proximas candidatas sem alterar codigo. Estado: DONE.
+
+Criterios de aceite: resultado objetivo em PASS/FAIL/BLOCKED/WARN; nenhuma alteracao de codigo, schema, seed, migration, deploy ou banco manual; nenhuma nova READY aberta automaticamente.
+Dependencias: RT-017C.
+Risco: medio.
+Evidencia: commit de producao `6b59c92`; booking publico `cmoli78ld000204js1agra4il`; public flow PASS; admin anonymous PASS; admin non-admin FAIL com `ERROR 2933230167`; admin real login BLOCKED; checkout externo NOT TESTED/nao iniciado; content image alignment WARN; React hydration `#418` WARN.
+
+Notas operacionais:
+
+- O booking de auditoria foi criado apenas pelo fluxo publico normal do produto.
+- O segundo tour "Pao de Acucar ao Entardecer" permanece rascunho corretamente fora do catalogo publico.
+- O catalogo publico tem apenas 1 tour publicado; isso e aceitavel para o smoke, mas e uma limitacao de produto.
+- Proxima candidata recomendada, sem READY automatica: RT-018B - Fix Admin Non-Admin Authorization Handling.
+
+## RT-018B Fix Admin Non-Admin Authorization Handling
+
+Estado: PLANNED
+
+Objetivo: corrigir o tratamento de autorizacao das rotas admin para usuario autenticado sem role ADMIN, substituindo erro 500 por bloqueio controlado.
+
+Tarefas:
+
+- RT-018B.1 Reproduzir localmente o acesso non-admin a `/[locale]/admin`.
+- RT-018B.2 Ajustar tratamento de `FORBIDDEN`/non-admin no AdminLayout ou boundary apropriado.
+- RT-018B.3 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts` para anonimo, USER e ADMIN.
+- RT-018B.4 Registrar evidencias sem expor credenciais.
+
+Criterios de aceite: anonimo redireciona para login; USER autenticado recebe bloqueio controlado ou redirect previsto, nunca 500; ADMIN continua acessando painel; sem schema, migration, seed ou deploy manual.
+Dependencias: RT-018A.
+Risco: alto.
+Evidencia esperada: testes locais e production smoke controlado apos deploy automatico autorizado.
+
 ## Proxima READY
 
-A definicao da proxima tarefa READY sera realizada em Discussion Gate apos a conclusao da RT-017A.
+A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidata recomendada: RT-018B. Nao abrir RT-018B, RT-017D ou RT-017E como READY automaticamente.

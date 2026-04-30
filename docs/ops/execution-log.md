@@ -5,6 +5,54 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-018A Production Product Smoke Check
+
+**Executado por:** Codex (auditoria funcional em producao)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit Vercel:** `6b59c92 docs: record operational handoff after admin tour validation`
+**Escopo:** validar produto em producao como usuario real, sem alterar codigo, schema, seed, migration ou deploy.
+
+**Resultado resumido:**
+
+| Area | Resultado | Evidencia |
+|---|---|---|
+| Public flow | PASS | Home, catalogo, detalhe, login, registro e reserva ate confirmacao manual funcionaram |
+| Admin anonymous protection | PASS | Rotas admin sem sessao redirecionam para `/pt/login` |
+| Admin non-admin authorization | FAIL | Usuario comum autenticado recebe 500 nas rotas admin; erro `ERROR 2933230167` |
+| Admin real login | BLOCKED | Credencial ADMIN nao estava disponivel no ambiente |
+| Checkout externo | NOT TESTED | Fluxo nao iniciou pagamento online; pagamento exibido como "A combinar com a equipe" |
+| Content image alignment | WARN | Tour Cristo/Dona Marta usa imagem real `/images/trips/imagem-morro-pao-de-acucar.jpg`, que parece Pao de Acucar |
+| React hydration | WARN | Minified React error `#418` observado durante navegacao/auth; nao bloqueou reserva |
+
+**Fluxo publico validado:**
+
+- URL inicial: `/pt`.
+- Tour publicado: `Cristo Redentor + Mirante Dona Marta`.
+- Detalhe: `/pt/tours/seed-001-cristo-dona-marta`.
+- Preco: R$ 245,00.
+- Duracao exibida: Aprox. 4 horas.
+- Agenda/select: PASS.
+- Booking criado pelo fluxo publico normal: `cmoli78ld000204js1agra4il`.
+- Pagina final: `/pt/reservas/cmoli78ld000204js1agra4il`.
+- Status: Pendente.
+- Total: R$ 245,00.
+- Pagamento: A combinar com a equipe.
+
+**Restricoes mantidas:**
+
+- Nenhum codigo alterado.
+- Nenhum schema alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhuma alteracao manual no banco executada.
+- Usuario e booking foram criados apenas pelo fluxo publico normal do produto.
+- Nenhuma nova READY aberta.
+
+**Proxima candidata recomendada:** RT-018B - Fix Admin Non-Admin Authorization Handling.
+
+---
+
 ## 2026-04-30 - RT-017C Smoke Manual - Criacao de Tour como Rascunho
 
 **Executado por:** Trigger (manual, browser em producao)

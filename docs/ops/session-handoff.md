@@ -17,11 +17,27 @@ RT-017A DONE: regras e fatiamento do Admin Tour Manager MVP documentados em `doc
 RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada e validada visualmente em producao; link "Tours" ativo; tour real exibido com contagem de agendas.
 RT-017C DONE remoto + production smoke manual validated: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional e validada em producao pelo Trigger.
 
+RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b59c92`; fluxo publico PASS; admin anonimo PASS; admin non-admin FAIL; login ADMIN BLOCKED por ausencia de credencial no ambiente.
+
 ## O que foi registrado nesta atualizacao
 
 - RT-017C: criada `createTripAction` protegida em `admin.ts`; implementada página de criação com formulário, validação de Título PT e conversão de preço; botão "Novo Tour" adicionado à listagem; commit remoto `4c3e3fe`.
 - RT-017C production smoke manual: Vercel production estava no commit `4c3e3fe`; Trigger executou o smoke com credencial ADMIN privada; credenciais nao foram compartilhadas com o agente; tour real "Pao de Acucar ao Entardecer" criado como rascunho com ID `cmolfs9eu000004l2trz4q8bf`, cidade `rio de janeiro`, preco R$ 245,00, status RASCUNHO / `isPublished=false` e 0 agendas; tour aparece em `/pt/admin/tours`; tour nao aparece em `/pt/tours`, que exibe apenas "Cristo Redentor + Mirante Dona Marta"; nenhum deploy manual, migration, seed ou alteracao direta no banco foi executado pelo agente.
 - Observacoes do smoke RT-017C: preco planejado anteriormente era R$ 295,00, mas o tour foi criado com R$ 245,00; cidade ficou em minusculo (`rio de janeiro`); nao corrigir agora; ajustes futuros devem aguardar task de edicao/admin update.
+- RT-018A production product smoke:
+  - URL testada: `https://rick-travel.vercel.app/pt`.
+  - Commit em producao: `6b59c92`, Vercel Ready, branch `main`.
+  - Git antes/final do smoke: working tree limpa; `main...origin/main`.
+  - Public flow: Home PASS; `/pt/tours` PASS; `/pt/tours/seed-001-cristo-dona-marta` PASS; `/pt/login` PASS; `/pt/register` PASS; reserva publica PASS ate confirmacao manual.
+  - Booking criado por fluxo publico normal: `cmoli78ld000204js1agra4il`; pagina final `/pt/reservas/cmoli78ld000204js1agra4il`; status Pendente; total R$ 245,00; pagamento "A combinar com a equipe"; nenhum checkout externo/pagamento online iniciado.
+  - Tour principal: "Cristo Redentor + Mirante Dona Marta"; preco R$ 245,00; duracao "Aprox. 4 horas"; descricao, CTA e agenda/select PASS.
+  - Content WARN: imagem real exibida (`/images/trips/imagem-morro-pao-de-acucar.jpg`) parece Pao de Acucar, nao Cristo/Dona Marta.
+  - Catalogo WARN: apenas 1 tour publico; "Pao de Acucar ao Entardecer" permanece rascunho corretamente fora do publico.
+  - Admin anonymous protection PASS: `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts` sem sessao redirecionam para `/pt/login`.
+  - Admin real login BLOCKED: credencial ADMIN nao estava disponivel no ambiente.
+  - Admin non-admin authorization FAIL: usuario comum autenticado recebeu 500 nas rotas admin; erro de producao `ERROR 2933230167`; esperado e bloqueio controlado, redirect ou 403.
+  - React hydration WARN: minified React error `#418` observado durante navegacao/auth; nao bloqueou reserva.
+  - Nenhum codigo, schema, seed, migration, deploy ou alteracao manual de banco foi executado; usuario e booking foram criados somente pelo fluxo publico normal do produto.
 
 - RT-017B: adicionado `listAllTrips` em `trip.service.ts`; adicionado link "Tours" no menu admin; criada pagina `/[locale]/admin/tours` com listagem read-only; validado que apenas admins acessam via `AdminLayout`; smoke visual PASS em producao via deploy automatico Vercel.
 - RT-017D/E permanecem PLANNED; nenhuma READY aberta.
@@ -59,9 +75,9 @@ RT-017C DONE remoto + production smoke manual validated: criação de novos tour
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `4c3e3fe`.
-- Vercel production: commit `4c3e3fe` validado para RT-017C pelo Trigger.
-- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), e 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas.
+- GitHub `main`: `6b59c92` antes desta atualizacao documental.
+- Vercel production: commit `6b59c92` validado para RT-018A.
+- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 - Working tree: apenas documentacao operacional desta atualizacao, sem alteracao de codigo.
 
 ## Evidencias importantes
@@ -71,14 +87,15 @@ RT-017C DONE remoto + production smoke manual validated: criação de novos tour
 - `paymentStatus` nao e alterado pelo cancelamento admin (confirmado em smoke).
 - RT-016A nao inicia checkout nem promete pagamento online; pagamento aparece como etapa manual a combinar com a equipe.
 - RT-016B nao executou seed; apenas preparou `prisma/seed.ts` para proxima execucao autorizada.
+- RT-018A identificou bug P1: usuario autenticado sem role ADMIN recebe 500 em rotas admin em vez de bloqueio controlado.
 - Nenhuma migration executada.
 - Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-017D/E como READY ainda.
+- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-018B, RT-017D ou RT-017E como READY automaticamente.
 
 ## Proxima acao recomendada
 
-Definir proxima tarefa READY em Discussion Gate. Candidatos planejados: RT-017D (edicao/admin update) e RT-017E (agendas), ainda sem READY aberta. Sistema permanece operacional sem novas READY abertas nesta atualizacao.
+Definir proxima tarefa READY em Discussion Gate. Proxima candidata recomendada: RT-018B - Fix Admin Non-Admin Authorization Handling. Candidatos ainda planejados: RT-017D (edicao/admin update) e RT-017E (agendas). Sistema permanece operacional sem novas READY abertas nesta atualizacao.
