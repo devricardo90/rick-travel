@@ -101,6 +101,15 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 **Executado por:** Gemini CLI
 **Status:** DONE
 **Efeito:** Listagem de tours disponível em `/[locale]/admin/tours`.
+**Smoke Validation (Produção):**
+- Link "Tours" ativo no menu admin: PASS.
+- Rota `/[locale]/admin/tours` renderiza: PASS.
+- Tour semeado exibido: "Cristo Redentor + Mirante Dona Marta": PASS.
+- Dados exibidos: Rio de Janeiro, R$ 245,00, 1 agenda, status PUBLICADO: PASS.
+- ID técnico visível: PASS.
+- Ausência de botões mutáveis: PASS.
+- Deploy automático Vercel observado: PASS.
+- Nenhum migration/seed/banco alterado: PASS.
 
 **Resumo:**
 - Adicionado `listAllTrips` em `trip.service.ts` com contagem de agendas.
