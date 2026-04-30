@@ -21,19 +21,25 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
 RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin Authorization Handling publicado no commit `bcf8119`; usuario comum recebe "Acesso negado" nas rotas admin, sem 500.
 RT-018C DONE remoto + production admin smoke validated: Production Admin Access validation concluída via RT-018D.
 RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking de auditoria visível PASS.
-RT-018E DONE: Fix Logout Flow; rota customizada `sign-out/route.ts` removida; `authClient.signOut()` agora atinge `[...all]` do Better Auth corretamente; locale-aware redirect corrigido em ambos os componentes; commit `837694b` pushed para `origin/main`.
+## RT-019A: Publicar Pao de Acucar com caminho controlado de dados
+Estado: READY
+Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
+Progresso:
+- `prisma/seed.ts` atualizado de forma idempotente para incluir Pao de Acucar (`seed-002-pao-de-acucar`).
+- Imagem do Cristo Redentor corrigida para `IMAGE_PLACEHOLDER` (reset visual para sanar inconsistencia).
+- Pao de Acucar configurado com imagem correta (`/images/trips/imagem-pao-de-acucar.jpg`) e agenda futura (+95 dias).
+- Validacoes locais: lint PASS, typecheck PASS, build PASS.
+- Aguardando autorizacao do Trigger para execucao do seed em producao.
 
-## O que foi registrado nesta atualizacao
+## RT-018E: Fix Logout Flow
+- Causa raiz: `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth; apenas limpava cookies sem invalidar sessao no banco.
+- Solucao: rota removida; `authClient.signOut()` agora atinge `[...all]` (Better Auth nativo) que invalida a sessao no banco e limpa cookies via `nextCookies()`.
+- `components/auth-status.tsx`: `const locale = useLocale()` adicionado; redirect corrigido para `/${locale}`.
+- `components/mobile-menu.tsx`: `const locale = useLocale()` adicionado no componente; redirect corrigido de `"/"` para `` `/${locale}` ``; import nao utilizado `ShieldCheck` removido.
+- Validacoes locais: lint PASS, typecheck PASS, test PASS (4 arquivos, 15 testes), build PASS, git diff --check PASS.
+- Commit: `837694b fix: correct logout flow` publicado em `origin/main`.
+- Deploy automatico Vercel validado com Production Smoke PASS (RT-018E).
 
-- RT-018E: Fix Logout Flow.
-  - Causa raiz: `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth; apenas limpava cookies sem invalidar sessao no banco.
-  - Solucao: rota removida; `authClient.signOut()` agora atinge `[...all]` (Better Auth nativo) que invalida a sessao no banco e limpa cookies via `nextCookies()`.
-  - `components/auth-status.tsx`: `const locale = useLocale()` adicionado; redirect corrigido para `/${locale}`.
-  - `components/mobile-menu.tsx`: `const locale = useLocale()` adicionado no componente; redirect corrigido de `"/"` para `` `/${locale}` ``; import nao utilizado `ShieldCheck` removido.
-  - Validacoes locais: lint PASS, typecheck PASS, test PASS (4 arquivos, 15 testes), build PASS, git diff --check PASS.
-  - Commit: `837694b fix: correct logout flow` publicado em `origin/main`.
-  - Deploy automatico Vercel pendente de validacao pelo Trigger.
-  - Sem schema, seed, migration, deploy manual, banco manual, imagem, tour, checkout ou regra de booking alterados.
 
 - RT-018D: validacao de acesso ADMIN em producao.
   - Credenciais fornecidas manualmente pelo Trigger (nao expostas em logs/docs).

@@ -886,6 +886,11 @@ Dependencias: RT-018B.
 Risco: baixo.
 Evidencia: Login Status 200; Rotas Status 200; Booking visível: True.
 
+## RT-019A Publicar Pao de Acucar com caminho controlado de dados
+Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
+Criterios de aceite: seed atualizado de forma idempotente; Pao de Acucar publicado com imagem correta e agenda futura; Cristo Redentor com imagem corrigida (placeholder); lint/typecheck/build PASS; producao validada com 2 tours no catalogo.
+Status: READY.
+
 ## RT-018E Fix Logout Flow
 
 Estado: DONE
