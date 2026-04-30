@@ -21,15 +21,16 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
 RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin Authorization Handling publicado no commit `bcf8119`; usuario comum recebe "Acesso negado" nas rotas admin, sem 500.
 RT-018C DONE remoto + production admin smoke validated: Production Admin Access validation concluída via RT-018D.
 RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking de auditoria visível PASS.
-## RT-019A: Publicar Pao de Acucar com caminho controlado de dados
-Estado: READY
+## RT-019A DONE: Publicar Pao de Acucar com caminho controlado de dados
+Estado: DONE + Production Smoke PASS
 Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
-Progresso:
-- `prisma/seed.ts` atualizado de forma idempotente com logica de **Semantic Match** para evitar duplicacao com o draft existente (`cmolfs9eu...`).
-- Imagem do Cristo Redentor mantida como a atual (`/images/trips/imagem-morro-pao-de-acucar.jpg`) por decisao visual (evitar placeholder cinza).
-- Pao de Acucar configurado com imagem correta (`/images/trips/imagem-pao-de-acucar.jpg`) e agenda futura (+95 dias).
-- Validacoes locais: lint PASS, typecheck PASS, build PASS.
-- Aguardando autorizacao do Trigger para execucao do seed em producao.
+Evidencias:
+- Seed executado em producao: detectou tour existente pelo titulo e reutilizou ID `cmolfs9eu000004l2trz4q8bf`.
+- `/pt/tours`: 2 tours visiveis (Cristo e Pao de Acucar).
+- Pao de Acucar: publicado, imagem correta aplicada, agenda futura ativa (`03/08/2026`).
+- Fluxo de reserva: validado ate tela de confirmacao.
+- Cristo Redentor: mantida imagem atual para evitar regressao visual de placeholder.
+- Commit final: `0938b1e`.
 
 ## RT-018E: Fix Logout Flow
 - Causa raiz: `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth; apenas limpava cookies sem invalidar sessao no banco.

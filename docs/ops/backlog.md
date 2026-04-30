@@ -887,9 +887,10 @@ Risco: baixo.
 Evidencia: Login Status 200; Rotas Status 200; Booking visível: True.
 
 ## RT-019A Publicar Pao de Acucar com caminho controlado de dados
+Estado: DONE
 Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
 Criterios de aceite: seed atualizado de forma idempotente com logica de Semantic Match para evitar duplicacao; Pao de Acucar publicado com imagem correta e agenda futura; Cristo Redentor mantido com imagem atual (sem placeholder); lint/typecheck/build PASS; producao validada com 2 tours no catalogo.
-Status: READY.
+Evidencia: Production Smoke PASS; seed detectou tour existente `cmolfs9eu000004l2trz4q8bf` pelo titulo.
 
 ## RT-018E Fix Logout Flow
 

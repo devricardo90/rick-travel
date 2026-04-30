@@ -7,33 +7,34 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ## 2026-04-30 - RT-019A Publicar Pao de Acucar com caminho controlado de dados
 
-**Executado por:** Claude Code (preparacao local + validacoes)
-**Ambiente:** local
-**Status:** READY (Aguardando autorizacao para execucao do seed em producao)
+**Executado por:** Claude Code (seed em producao + validacoes)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit:** `0938b1e feat: make production tour seed idempotent for Pão de Açúcar`
+**Status:** DONE + Production Smoke PASS
 
 **Objetivo:**
-Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel, evitando duplicacao semantica com o draft existente.
+Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
 
-**Solucao aplicada no seed:**
-- Implementada logica de **Semantic Match**: o script busca por um tour com titulo "Pao de Acucar ao Entardecer" antes de definir o ID de ancoragem.
-- Se encontrado, o ID existente (ex: `cmolfs9eu...`) e reutilizado no `upsert`.
-- Se nao encontrado, utiliza o ID deterministico `seed-002-pao-de-acucar`.
-- Agendas usam IDs deterministicos (`seed-001-schedule-001`, `seed-002-schedule-002`) para evitar duplicacao em execucoes repetidas.
-- **Decisao visual (Cristo):** Mantida imagem atual (`/images/trips/imagem-morro-pao-de-acucar.jpg`) para evitar o uso de placeholder cinza em producao; a correcao para uma imagem real do Cristo fica pendente para task futura.
+**Execucao do Seed:**
+- Seed detectou tour existente pelo titulo "Pao de Acucar ao Entardecer".
+- ID reutilizado: `cmolfs9eu000004l2trz4q8bf`.
+- `isPublished`: setado para `true`.
+- `imageUrl`: atualizada para `/images/trips/imagem-pao-de-acucar.jpg`.
+- Agenda: `seed-002-schedule-002` (03/08/2026) criada com sucesso.
+- Cristo Redentor: ID `seed-001-cristo-dona-marta` atualizado (reset de agenda; mantida imagem atual).
 
-**Validacoes locais:**
-| Validacao | Resultado |
-|---|---|
-| `npm.cmd run lint` | PASS |
-| `npm.cmd run typecheck` | PASS |
-| `npm.cmd run build` | PASS |
-| `git diff --check` | PASS |
+**Validacoes em Producao:**
+| Cenario | Resultado | Evidencia |
+|---|---|---|
+| Catalogo publico | PASS | 2 tours visiveis em `/pt/tours` |
+| Detalhe Pao de Acucar | PASS | Imagem e dados corretos; sem duplicacao |
+| Agenda Pao de Acucar | PASS | Data `03/08/2026` disponivel |
+| Fluxo de reserva | PASS | Avanca ate tela de confirmacao com sucesso |
 
 **Restricoes mantidas:**
-- Nenhum seed executado em producao ainda.
 - Nenhuma migration executada.
-- Nenhum deploy manual executado.
-- Nenhuma alteracao manual no banco executada.
+- Nenhuma alteracao de schema.
+- Nenhuma alteracao manual direta no banco.
 
 ---
 
