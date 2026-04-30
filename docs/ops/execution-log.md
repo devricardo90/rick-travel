@@ -63,3 +63,39 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 - Nao executar seed novamente.
 - Nao executar migration.
 - Nao alterar Neon manualmente.
+
+---
+
+## 2026-04-30 - RT-016A Smoke - Confirmacao de Reserva do Usuario
+
+**Executado por:** Trigger (manual, browser em producao)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit validado:** `799698c feat: polish booking confirmation flow`
+**Pre-requisito:** RT-016A deployada; sem seed ou migration nesta validacao.
+
+**Passos e resultados:**
+
+| Passo | URL / Acao | Resultado |
+|---|---|---|
+| 1 | `/pt/tours` | Abre corretamente |
+| 2 | Click no tour | Detalhe do tour abre corretamente |
+| 3 | Criar reserva | Booking criado com sucesso |
+| 4 | Pos-criacao | Usuario redirecionado para `/pt/reservas/{bookingId}` |
+| 5 | Pagina de confirmacao | Abre corretamente |
+| 6 | Mensagem de produto | Pre-reserva e confirmacao manual pela equipe ficam claras |
+| 7 | `/pt/reservas` | Reserva aparece na listagem |
+| 8 | "Ver detalhes" | Abre o detalhe da reserva |
+| 9 | Payment status | Nao aparece mais como enum cru `UNPAID` |
+| 10 | `/pt/admin/bookings` | Listagem admin permanece funcional |
+
+**Validacao de pagamento:** nenhum gateway foi adicionado; fluxo continua sem pagamento online e com confirmacao/pagamento manual pela equipe Rick Travel.
+
+**Status do smoke:** PASS completo.
+
+**Estado pos-smoke:**
+
+- Working tree limpa antes desta atualizacao documental.
+- `main` sincronizado com `origin/main` antes desta atualizacao documental.
+- Nao executar seed novamente.
+- Nao executar migration.
+- Nao alterar Neon manualmente.

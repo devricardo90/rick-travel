@@ -56,9 +56,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-015B DONE: seed idempotente criado (`prisma/seed.ts`); commit `cf0f96f` em `origin/main`; seed executado manualmente pelo Trigger contra Neon production; 1 Trip (Cristo Redentor + Mirante Dona Marta, R$ 245,00) e 1 TripSchedule OPEN (29/07/2026) criados.
 - RT-015C-FIX DONE: bug critico corrigido — bottom sheet do mobile-menu interceptava cliques invisivelmente (`opacity: 0` sem `pointer-events: none`); commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
 - RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED na listagem; detalhe pos-cancelamento: "Nenhuma tentativa de pagamento registrada."; payment attempts remained absent — no payment gateway/refund/payment mutation was triggered in the MVP flow).
-- RT-016A DONE local: fluxo user-side pos-reserva polido para pre-reserva com confirmacao manual; criada rota `/[locale]/reservas/[bookingId]` protegida por ownership; redirect apos criacao usa `booking.id`; `/reservas` mostra status e pagamento legiveis sem enum cru; nenhum gateway, schema, migration, seed, env ou regra admin alterados.
-- GitHub `main` aponta para `fa83e02`.
-- Vercel production esta `Ready` com `fa83e02`.
+- RT-016A DONE remoto + production smoke validated: commit `799698c feat: polish booking confirmation flow`; fluxo user-side pos-reserva polido para pre-reserva com confirmacao manual; redirect para `/pt/reservas/{bookingId}` validado em producao; `/pt/reservas` lista a reserva e "Ver detalhes" abre o detalhe; payment status nao aparece mais como enum cru `UNPAID`; admin booking list permanece funcional; nenhum gateway, schema, migration, seed, env ou regra admin alterados.
+- GitHub `main` aponta para `799698c`.
+- Vercel production validada pelo Trigger com RT-016A (`799698c`).
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN, 1 Booking de teste (status CANCELED apos smoke).
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
 
@@ -83,6 +83,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /api/trips`: `200`, retorno com 1 trip publicada (Cristo Redentor + Mirante Dona Marta).
 - `GET /robots.txt`: `200`.
 - `GET /sitemap.xml`: `200`.
+- RT-016A production smoke PASS: `/pt/tours` abre; detalhe do tour abre; booking cria; usuario redireciona para `/pt/reservas/{bookingId}`; pagina de confirmacao funciona; mensagem de pre-reserva/confirmacao manual esta clara; `/pt/reservas` lista a reserva; "Ver detalhes" abre o detalhe; payment status nao exibe enum cru; admin booking list segue funcional.
 
 ## Foco atual
 

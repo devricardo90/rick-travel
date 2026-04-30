@@ -10,7 +10,7 @@ RT-015A DONE: auditoria de catalogo concluida.
 RT-015B DONE: seed de producao criado e executado manualmente.
 RT-015C-FIX DONE: bug critico de click interception corrigido.
 RT-015C DONE: smoke completo de producao validado pelo Trigger.
-RT-016A DONE local: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
+RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
 
 ## O que foi registrado nesta atualizacao
 
@@ -34,13 +34,15 @@ RT-016A DONE local: polish do fluxo de confirmacao de reserva do usuario impleme
   - `/reservas` agora lista reservas com status e pagamento legiveis, link de detalhe e copy de pre-reserva/manual confirmation flow;
   - nenhum gateway, schema, migration, seed, env, Neon/provider/auth ou regra de cancelamento admin foi alterado;
   - validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; `git diff --check` PASS com avisos LF/CRLF.
+  - commit publicado: `799698c feat: polish booking confirmation flow`;
+  - smoke de producao validado pelo Trigger: `/pt/tours`, detalhe do tour, criacao de booking, redirect para `/pt/reservas/{bookingId}`, pagina de confirmacao, mensagem de pre-reserva/manual confirmation, listagem `/pt/reservas`, link "Ver detalhes", payment status sem enum cru e listagem admin de bookings funcional.
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `fa83e02`.
-- Vercel production: `Ready` com `fa83e02`.
+- GitHub `main`: `799698c`.
+- Vercel production: RT-016A validada pelo Trigger com commit `799698c`.
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN (29/07/2026), 1 Booking de teste (CANCELED apos smoke).
-- Working tree: contem alteracoes locais da RT-016A aguardando revisao/commit.
+- Working tree: limpa apos commit/push da RT-016A.
 
 ## Evidencias importantes
 
@@ -54,8 +56,8 @@ RT-016A DONE local: polish do fluxo de confirmacao de reserva do usuario impleme
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Avaliar proximas tasks: conteudo adicional de tours, UX polish ou integracao de pagamento.
+- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao.
 
 ## Proxima acao recomendada
 
-Definir proxima sprint com o Trigger. Bloqueios criticos do MVP publico (catalogo vazio + click interception) foram resolvidos. Sistema em estado operacional.
+Definir proxima sprint com o Trigger. RT-016A esta validada em producao; sistema permanece operacional sem seed, migration, gateway ou mudanca de schema/env/auth/provider.

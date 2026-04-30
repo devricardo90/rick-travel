@@ -641,7 +641,7 @@ Notas operacionais:
 
 ## RT-016A Booking Confirmation and User Reservation Flow Polish
 
-Estado: DONE local
+Estado: DONE
 
 Objetivo: melhorar o fluxo do usuario apos criar uma reserva, deixando explicito que a reserva nasce como pre-reserva pendente com confirmacao manual, sem gateway de pagamento.
 
@@ -667,3 +667,15 @@ Notas operacionais:
 - `components/my-bookings.tsx` removeu CTAs/fluxo visual de checkout e mostra pagamento como etapa manual.
 - Nenhuma alteracao feita em `schema.prisma`, migrations, seed, Neon/env/provider/auth ou regras admin.
 - Validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; `git diff --check` PASS com avisos LF/CRLF.
+- Commit publicado: `799698c feat: polish booking confirmation flow`.
+- Production smoke validado pelo Trigger:
+  - `/pt/tours` abre corretamente;
+  - detalhe do tour abre corretamente;
+  - criacao de booking funciona;
+  - usuario e redirecionado para `/pt/reservas/{bookingId}`;
+  - pagina de confirmacao funciona;
+  - mensagem de pre-reserva/confirmacao manual esta clara;
+  - `/pt/reservas` lista a reserva;
+  - "Ver detalhes" abre o detalhe da reserva;
+  - payment status nao aparece mais como enum cru `UNPAID`;
+  - listagem admin de bookings permanece funcional.
