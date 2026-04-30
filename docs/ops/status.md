@@ -1,6 +1,6 @@
 # Status Operacional - Rick Travel
 
-Data: 2026-04-29
+Data: 2026-04-30
 
 ## Protocolo Rick
 
@@ -52,12 +52,14 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-013G DONE remoto: pagina de detalhe de reserva somente leitura; commit `09ffcb0` em `origin/main`.
 - RT-014A DONE remoto: regras de cancelamento admin definidas e registradas.
 - RT-014B DONE remoto: acao de cancelamento admin implementada; commit `08a3de2` no topo de `main`/`origin/main`.
-- GitHub `main` aponta para `08a3de2 feat: implement admin booking cancellation action (RT-014B)`.
-- Vercel Production Deployment do commit `08a3de2` esta `Ready`.
-- Admin em producao acessado com sucesso em `https://rick-travel.vercel.app/pt/admin`.
-- Admin bookings em producao carregou em `https://rick-travel.vercel.app/pt/admin/bookings` com empty state: nenhuma reserva encontrada.
-- Neon production: usuario `ricardo@gmail.com` atualizado manualmente para `role = ADMIN` e `emailVerified = true`; alteracao feita diretamente no banco, sem mudanca de codigo.
-- Nenhuma migration/deploy/seed executado.
+- RT-015A DONE: auditoria de catalogo confirmou 0 trips em Neon production; causa do vazio identificada (ausencia de dados, nao bug de codigo).
+- RT-015B DONE: seed idempotente criado (`prisma/seed.ts`); commit `cf0f96f` em `origin/main`; seed executado manualmente pelo Trigger contra Neon production; 1 Trip (Cristo Redentor + Mirante Dona Marta, R$ 245,00) e 1 TripSchedule OPEN (29/07/2026) criados.
+- RT-015C-FIX DONE: bug critico corrigido — bottom sheet do mobile-menu interceptava cliques invisivelmente (`opacity: 0` sem `pointer-events: none`); commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
+- RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED, paymentStatus inalterado).
+- GitHub `main` aponta para `fa83e02`.
+- Vercel production esta `Ready` com `fa83e02`.
+- Neon production: 1 Trip publicada, 1 TripSchedule OPEN, 1 Booking de teste (status CANCELED apos smoke).
+- Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
 
 ## Novo status geral do projeto
 
@@ -76,7 +78,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /pt/tours`: `200`.
 - `GET /pt/quem-somos`: `200`.
 - `GET /pt/contato`: `200`.
-- `GET /api/trips`: `200`, retorno atual `[]`.
+- `GET /api/trips`: `200`, retorno com 1 trip publicada (Cristo Redentor + Mirante Dona Marta).
 - `GET /robots.txt`: `200`.
 - `GET /sitemap.xml`: `200`.
 
@@ -84,8 +86,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
-- criar booking de teste pelo fluxo publico em producao e validar a listagem/detalhe/cancelamento no Admin;
-- consolidar checklist de estabilizacao pos-deploy do MVP publico.
+- avaliar proximas tasks operacionais: conteudo adicional, UX polish ou integracao de pagamento;
+- janela controlada para o residual de `npm audit` em tooling Prisma.
 
 ### Medio prazo
 
@@ -100,7 +102,6 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 ## Riscos remanescentes
 
 - P1: estabilizacao pos-deploy ainda depende de evidencias operacionais continuas no ambiente publicado.
-- P1: o MVP publico esta acessivel, mas o catalogo atual nao exibe inventario porque nao ha trips publicadas no ambiente validado.
 - P1: `npm audit` residual em Prisma dev tooling segue pendente para janela controlada.
 - P1: a credencial de bootstrap ADMIN removida deve ser considerada potencialmente exposta.
 - P2: reabrir Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.

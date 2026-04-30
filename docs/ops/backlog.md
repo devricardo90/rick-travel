@@ -551,3 +551,90 @@ Notas operacionais:
 - Bookings admin carregou `https://rick-travel.vercel.app/pt/admin/bookings` com empty state: nenhuma reserva encontrada.
 - Neon production: usuario `ricardo@gmail.com` promovido manualmente para `ADMIN` e `emailVerified = true`; alteracao feita no banco, nao no codigo.
 - Proximo passo: criar booking de teste pelo fluxo publico em producao e validar listagem, detalhe e cancelamento admin apenas nessa reserva de teste.
+
+## RT-015A Catalog Model Audit
+
+Estado: DONE
+
+Objetivo: auditar por que `/tours` nao exibe nada em producao, sem alterar codigo ou banco.
+
+Tarefas:
+
+- RT-015A.1 Confirmar filtro `isPublished: true` em `trip-list.tsx`. Estado: DONE.
+- RT-015A.2 Confirmar que Neon production tem 0 trips publicadas. Estado: DONE.
+- RT-015A.3 Confirmar que schema `Trip` nao tem campo `slug`. Estado: DONE.
+- RT-015A.4 Registrar causa raiz do vazio: ausencia de registros, nao bug de codigo. Estado: DONE.
+
+Criterios de aceite: causa do vazio identificada sem mudanca de codigo ou banco.
+Dependencias: RT-014B.
+Risco: baixo.
+Evidencia esperada: registro documental da auditoria.
+
+Notas operacionais:
+
+- Neon production: 0 trips, 0 trips publicadas.
+- Filtro `isPublished: true` em `trip-list.tsx` e correto; o problema e ausencia de dados.
+- Schema `Trip` nao tem campo `slug`; id e o unico campo unico.
+
+## RT-015B Minimal Production Tour Seed
+
+Estado: DONE
+
+Objetivo: criar seed idempotente para 1 Trip publicada + 1 TripSchedule OPEN em producao.
+
+Tarefas:
+
+- RT-015B.1 Criar `prisma/seed.ts` com Trip e TripSchedule usando IDs deterministicos. Estado: DONE.
+- RT-015B.2 Adicionar `prisma.seed` em `package.json`. Estado: DONE.
+- RT-015B.3 Commitar e publicar `prisma/seed.ts` em `origin/main`. Estado: DONE.
+- RT-015B.4 Executar seed manualmente contra Neon production (pelo Trigger). Estado: DONE.
+
+Criterios de aceite: seed idempotente; sem `deleteMany`; sem migration; sem alteracao de schema; `/tours` exibe 1 tour apos seed.
+Dependencias: RT-015A.
+Risco: baixo.
+Evidencia esperada: commit `cf0f96f` em `origin/main`; seed executado manualmente; tour visivel em `/pt/tours`.
+
+Notas operacionais:
+
+- IDs deterministicos: `seed-001-cristo-dona-marta` (Trip), `seed-001-schedule-001` (TripSchedule).
+- Trip: Cristo Redentor + Mirante Dona Marta, R$ 245,00, physicalLevel MODERATE, i18n pt/en/es/sv.
+- Schedule: startAt = 90 dias a partir da execucao (dinamico), capacity = 10, status = OPEN.
+- Seed executado manualmente pelo Trigger contra Neon production apos push de `cf0f96f`.
+- Tour visivel em `/pt/tours` apos seed.
+
+## RT-015C End-to-End Booking and Admin Validation
+
+Estado: DONE
+
+Objetivo: validar o fluxo completo de reserva, visualizacao admin e cancelamento admin em producao com o tour semeado.
+
+Tarefas:
+
+- RT-015C.1 Verificar `/pt/tours` exibe o tour semeado. Estado: DONE.
+- RT-015C.2 Diagnosticar e corrigir click interception do mobile-menu (RT-015C-FIX). Estado: DONE.
+- RT-015C.3 Verificar tour detail abre corretamente. Estado: DONE.
+- RT-015C.4 Verificar schedule selector funcional. Estado: DONE.
+- RT-015C.5 Criar reserva de teste pelo fluxo publico autenticado. Estado: DONE.
+- RT-015C.6 Verificar reserva aparece em `/pt/admin/bookings`. Estado: DONE.
+- RT-015C.7 Verificar detalhe da reserva no admin. Estado: DONE.
+- RT-015C.8 Cancelar reserva de teste e confirmar status = CANCELED e paymentStatus inalterado. Estado: DONE.
+
+Criterios de aceite: fluxo completo publico → admin → cancelamento validado em producao sem regressao.
+Dependencias: RT-015B, RT-015C-FIX.
+Risco: medio.
+Evidencia esperada: reserva de teste com Ricardo / ricardo@gmail.com; R$ 245,00; 1 hospede; data 29/07/2026; status CANCELED apos cancelamento admin.
+
+Notas operacionais:
+
+- Bloqueio inicial: click interception por bottom sheet do mobile-menu invisivel com `opacity: 0` mas sem `pointer-events: none`.
+- RT-015C-FIX: commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
+- Fix: (1) `pointer-events-none` no className inicial do sheet; (2) `sheet.style.pointerEvents = "auto"` no branch open; (3) `sheet.style.pointerEvents = "none"` no branch close.
+- Smoke final confirmado pelo Trigger em producao:
+  - `/pt/tours`: tour Cristo Redentor + Mirante Dona Marta visivel.
+  - Tour detail: abre corretamente apos fix.
+  - Schedule selector: funcional apos fix.
+  - Reserva criada: Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026.
+  - `/pt/admin/bookings`: reserva aparece.
+  - Detalhe admin: dados corretos.
+  - Cancelamento admin: status = CANCELED, paymentStatus inalterado.
+- Lint, typecheck e build passaram antes do commit da fix.
