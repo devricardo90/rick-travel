@@ -20,6 +20,28 @@ export async function listBookingsForUser(userId: string) {
     });
 }
 
+export async function getBookingForUser(bookingId: string, userId: string) {
+    const normalizedBookingId = typeof bookingId === "string" ? bookingId.trim() : "";
+
+    if (!normalizedBookingId) {
+        throw new DomainError("bookingId invalido", {
+            code: "INVALID_BOOKING_ID",
+            status: 400,
+        });
+    }
+
+    return prisma.booking.findFirst({
+        where: {
+            id: normalizedBookingId,
+            userId,
+        },
+        include: {
+            trip: { select: { id: true, title: true, city: true, priceCents: true } },
+            schedule: { select: { startAt: true, endAt: true, pricePerPersonCents: true } },
+        },
+    });
+}
+
 export async function listAllBookings() {
     return prisma.booking.findMany({
         orderBy: { createdAt: "desc" },

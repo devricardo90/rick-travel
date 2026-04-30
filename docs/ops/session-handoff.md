@@ -10,6 +10,7 @@ RT-015A DONE: auditoria de catalogo concluida.
 RT-015B DONE: seed de producao criado e executado manualmente.
 RT-015C-FIX DONE: bug critico de click interception corrigido.
 RT-015C DONE: smoke completo de producao validado pelo Trigger.
+RT-016A DONE local: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
 
 ## O que foi registrado nesta atualizacao
 
@@ -26,19 +27,27 @@ RT-015C DONE: smoke completo de producao validado pelo Trigger.
   - Cancelamento admin: status = CANCELED confirmado (visivel na listagem).
   - Detalhe pos-cancelamento: Hospedes: 1; Total: R$ 245,00; Data: 29/07/2026; "Nenhuma tentativa de pagamento registrada."
   - Payment attempts remained absent; no payment gateway/refund/payment mutation was triggered in the MVP flow. Nenhum campo `paymentStatus` exposto diretamente pela UI do detalhe.
+- RT-016A:
+  - adicionada rota `/[locale]/reservas/[bookingId]` para confirmacao/detalhe da reserva do usuario;
+  - adicionada protecao de ownership via `getBookingForUser(bookingId, userId)`;
+  - criacao de booking no detalhe do tour redireciona para `/reservas/{bookingId}` somente quando a API devolve `id`;
+  - `/reservas` agora lista reservas com status e pagamento legiveis, link de detalhe e copy de pre-reserva/manual confirmation flow;
+  - nenhum gateway, schema, migration, seed, env, Neon/provider/auth ou regra de cancelamento admin foi alterado;
+  - validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; `git diff --check` PASS com avisos LF/CRLF.
 
 ## Estado atual do repositorio
 
 - GitHub `main`: `fa83e02`.
 - Vercel production: `Ready` com `fa83e02`.
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN (29/07/2026), 1 Booking de teste (CANCELED apos smoke).
-- Working tree: limpa.
+- Working tree: contem alteracoes locais da RT-016A aguardando revisao/commit.
 
 ## Evidencias importantes
 
 - `components/mobile-menu.tsx`: fix de `pointer-events` em 3 pontos; unico arquivo alterado na RT-015C-FIX.
 - `prisma/seed.ts`: seed idempotente com `upsert` em IDs fixos; sem `deleteMany`; sem migration.
 - `paymentStatus` nao e alterado pelo cancelamento admin (confirmado em smoke).
+- RT-016A nao inicia checkout nem promete pagamento online; pagamento aparece como etapa manual a combinar com a equipe.
 - Nenhuma migration executada.
 - Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
 

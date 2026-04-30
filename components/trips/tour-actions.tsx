@@ -122,6 +122,12 @@ export function TourActions({ tripId, priceCents, tripTitle, city, schedules = [
                 return;
             }
 
+            if (typeof data?.id === "string" && data.id.trim()) {
+                window.dispatchEvent(new Event("bookings:refresh"));
+                window.location.href = `/${locale}/reservas/${encodeURIComponent(data.id)}`;
+                return;
+            }
+
             setMessage(data?.status === "PENDING" ? t('pendingMessage') : t('successMessage'));
             window.dispatchEvent(new Event("bookings:refresh"));
         } catch {

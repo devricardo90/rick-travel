@@ -56,6 +56,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-015B DONE: seed idempotente criado (`prisma/seed.ts`); commit `cf0f96f` em `origin/main`; seed executado manualmente pelo Trigger contra Neon production; 1 Trip (Cristo Redentor + Mirante Dona Marta, R$ 245,00) e 1 TripSchedule OPEN (29/07/2026) criados.
 - RT-015C-FIX DONE: bug critico corrigido — bottom sheet do mobile-menu interceptava cliques invisivelmente (`opacity: 0` sem `pointer-events: none`); commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
 - RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED na listagem; detalhe pos-cancelamento: "Nenhuma tentativa de pagamento registrada."; payment attempts remained absent — no payment gateway/refund/payment mutation was triggered in the MVP flow).
+- RT-016A DONE local: fluxo user-side pos-reserva polido para pre-reserva com confirmacao manual; criada rota `/[locale]/reservas/[bookingId]` protegida por ownership; redirect apos criacao usa `booking.id`; `/reservas` mostra status e pagamento legiveis sem enum cru; nenhum gateway, schema, migration, seed, env ou regra admin alterados.
 - GitHub `main` aponta para `fa83e02`.
 - Vercel production esta `Ready` com `fa83e02`.
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN, 1 Booking de teste (status CANCELED apos smoke).
@@ -68,6 +69,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Runtime inicial: validado com alias publico e healthchecks `200`.
 - Admin: em reconstrucao controlada (RT-013A/B/C/D/E/F/G, RT-014A e RT-014B concluidas).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
+- Reservas do usuario: RT-016A ajustou a experiencia para deixar explicito que o MVP opera com pre-reserva pendente e confirmacao/pagamento manual pela equipe Rick Travel.
 
 
 ## Validacao publica objetiva

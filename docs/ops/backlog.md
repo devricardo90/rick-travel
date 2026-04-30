@@ -638,3 +638,32 @@ Notas operacionais:
   - Detalhe admin apos cancelamento: Hospedes: 1; Total: R$ 245,00; Data: 29/07/2026; "Nenhuma tentativa de pagamento registrada."
   - Payment attempts remained absent; no payment gateway/refund/payment mutation was triggered in the MVP flow.
 - Lint, typecheck e build passaram antes do commit da fix.
+
+## RT-016A Booking Confirmation and User Reservation Flow Polish
+
+Estado: DONE local
+
+Objetivo: melhorar o fluxo do usuario apos criar uma reserva, deixando explicito que a reserva nasce como pre-reserva pendente com confirmacao manual, sem gateway de pagamento.
+
+Tarefas:
+
+- RT-016A.1 Criar rota `/[locale]/reservas/[bookingId]`. Estado: DONE.
+- RT-016A.2 Criar componente de confirmacao de reserva. Estado: DONE.
+- RT-016A.3 Adicionar `getBookingForUser(bookingId, userId)` com validacao de ownership. Estado: DONE.
+- RT-016A.4 Redirecionar o usuario apos criacao para `/reservas/{bookingId}` somente quando a API retorna `booking.id`. Estado: DONE.
+- RT-016A.5 Melhorar `/reservas` com status/pagamento legiveis e link "Ver detalhes". Estado: DONE.
+- RT-016A.6 Adicionar traducoes minimas pt/en/es/sv. Estado: DONE.
+- RT-016A.7 Atualizar documentacao operacional. Estado: DONE.
+
+Criterios de aceite: user-side de reserva fica compreensivel; usuario so ve a propria reserva; nenhum gateway foi adicionado; schema/migration/env/admin cancellation permanecem intactos.
+Dependencias: RT-015C.
+Risco: baixo.
+Evidencia esperada: `/pt/reservas/[bookingId]` no build; `getBookingForUser` filtra por `id` e `userId`; listagem nao mostra enum cru de pagamento.
+
+Notas operacionais:
+
+- `getBookingForUser` usa `findFirst` com `id` e `userId`; reserva inexistente ou de outro usuario cai em `notFound()` na pagina.
+- `components/trips/tour-actions.tsx` preserva o tratamento de erro atual e so redireciona se `data.id` for string nao vazia.
+- `components/my-bookings.tsx` removeu CTAs/fluxo visual de checkout e mostra pagamento como etapa manual.
+- Nenhuma alteracao feita em `schema.prisma`, migrations, seed, Neon/env/provider/auth ou regras admin.
+- Validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; `git diff --check` PASS com avisos LF/CRLF.
