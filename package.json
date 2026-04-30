@@ -5,6 +5,9 @@
   "engines": {
     "node": "22.x"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "postinstall": "prisma generate",
