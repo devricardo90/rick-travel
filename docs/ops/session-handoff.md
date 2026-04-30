@@ -25,8 +25,8 @@ RT-018D DONE: Validate Existing Production Admin User executado em produção; l
 Estado: READY
 Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
 Progresso:
-- `prisma/seed.ts` atualizado de forma idempotente para incluir Pao de Acucar (`seed-002-pao-de-acucar`).
-- Imagem do Cristo Redentor corrigida para `IMAGE_PLACEHOLDER` (reset visual para sanar inconsistencia).
+- `prisma/seed.ts` atualizado de forma idempotente com logica de **Semantic Match** para evitar duplicacao com o draft existente (`cmolfs9eu...`).
+- Imagem do Cristo Redentor mantida como a atual (`/images/trips/imagem-morro-pao-de-acucar.jpg`) por decisao visual (evitar placeholder cinza).
 - Pao de Acucar configurado com imagem correta (`/images/trips/imagem-pao-de-acucar.jpg`) e agenda futura (+95 dias).
 - Validacoes locais: lint PASS, typecheck PASS, build PASS.
 - Aguardando autorizacao do Trigger para execucao do seed em producao.

@@ -5,7 +5,37 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
-## 2026-04-30 - RT-018E Fix Logout Flow
+## 2026-04-30 - RT-019A Publicar Pao de Acucar com caminho controlado de dados
+
+**Executado por:** Claude Code (preparacao local + validacoes)
+**Ambiente:** local
+**Status:** READY (Aguardando autorizacao para execucao do seed em producao)
+
+**Objetivo:**
+Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel, evitando duplicacao semantica com o draft existente.
+
+**Solucao aplicada no seed:**
+- Implementada logica de **Semantic Match**: o script busca por um tour com titulo "Pao de Acucar ao Entardecer" antes de definir o ID de ancoragem.
+- Se encontrado, o ID existente (ex: `cmolfs9eu...`) e reutilizado no `upsert`.
+- Se nao encontrado, utiliza o ID deterministico `seed-002-pao-de-acucar`.
+- Agendas usam IDs deterministicos (`seed-001-schedule-001`, `seed-002-schedule-002`) para evitar duplicacao em execucoes repetidas.
+- **Decisao visual (Cristo):** Mantida imagem atual (`/images/trips/imagem-morro-pao-de-acucar.jpg`) para evitar o uso de placeholder cinza em producao; a correcao para uma imagem real do Cristo fica pendente para task futura.
+
+**Validacoes locais:**
+| Validacao | Resultado |
+|---|---|
+| `npm.cmd run lint` | PASS |
+| `npm.cmd run typecheck` | PASS |
+| `npm.cmd run build` | PASS |
+| `git diff --check` | PASS |
+
+**Restricoes mantidas:**
+- Nenhum seed executado em producao ainda.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhuma alteracao manual no banco executada.
+
+---
 
 **Executado por:** Claude Code (correcao local + validacoes + push)
 **Ambiente:** local + `https://rick-travel.vercel.app`

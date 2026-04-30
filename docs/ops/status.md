@@ -67,7 +67,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-018C DONE: Production Admin Access validation concluída via RT-018D; login ADMIN, rotas admin e visibilidade de booking validados em produção com sucesso.
 - RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking `cmoli78ld000204js1agra4il` visível PASS.
 - RT-018E DONE + Production Smoke PASS: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; smoke em producao validou header `X-Matched-Path: /api/auth/[...all]`, clear cookies e redirect para locale.
-- RT-019A READY: Publicar Pao de Acucar com caminho controlado de dados; seed atualizado de forma idempotente para incluir Pao de Acucar (`seed-002-pao-de-acucar`) e corrigir imagem do Cristo; lint/typecheck/build PASS local; aguardando autorizacao para execucao em producao.
+- RT-019A READY: Publicar Pao de Acucar com caminho controlado de dados; seed atualizado de forma idempotente para incluir Pao de Acucar e corrigir imagem do Cristo; incluida logica de Semantic Match para detectar tour existente pelo titulo em producao e evitar duplicacao; mantida imagem atual do Cristo (`/images/trips/imagem-morro-pao-de-acucar.jpg`) para evitar impacto visual negativo de placeholder; lint/typecheck/build PASS local; aguardando autorizacao para execucao em producao.
 - GitHub `main` está em `e0fbd19` após RT-018E.
 - Vercel production validada com RT-018E smoke.
 
