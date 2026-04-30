@@ -23,7 +23,9 @@ RT-015C DONE: smoke completo de producao validado pelo Trigger.
   - Booking criado: Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede.
   - `/pt/admin/bookings`: reserva aparece na listagem.
   - Detalhe admin `/pt/admin/bookings/[id]`: dados corretos.
-  - Cancelamento admin: status = CANCELED confirmado; paymentStatus inalterado confirmado.
+  - Cancelamento admin: status = CANCELED confirmado (visivel na listagem).
+  - Detalhe pos-cancelamento: Hospedes: 1; Total: R$ 245,00; Data: 29/07/2026; "Nenhuma tentativa de pagamento registrada."
+  - Payment attempts remained absent; no payment gateway/refund/payment mutation was triggered in the MVP flow. Nenhum campo `paymentStatus` exposto diretamente pela UI do detalhe.
 
 ## Estado atual do repositorio
 

@@ -45,8 +45,11 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 | 6 | "Ver detalhes" | Pagina de detalhe abre com dados corretos |
 | 7 | Dados do detalhe | Cliente: Ricardo / ricardo@gmail.com; Trip: Cristo Redentor + Mirante Dona Marta; Data: 29/07/2026; Hospedes: 1; Total: R$ 245,00 |
 | 8 | Botao Cancelar | Exibido (booking estava PENDING/CONFIRMED) |
-| 9 | Confirmacao e cancelamento | `booking.status` = CANCELED |
-| 10 | `paymentStatus` | Inalterado (conforme regra RT-014A) |
+| 9 | Confirmacao e cancelamento | `booking.status` = CANCELED (visivel na listagem) |
+| 10 | Detalhe apos cancelamento | Hospedes: 1; Total: R$ 245,00; Data: 29/07/2026 |
+| 11 | Tentativas de pagamento | "Nenhuma tentativa de pagamento registrada." |
+
+**Validacao de pagamento:** Payment attempts remained absent; no payment gateway/refund/payment mutation was triggered in the MVP flow. Nenhum campo `paymentStatus` e exposto diretamente pela UI do detalhe da reserva.
 
 **Status do smoke:** PASS completo.
 

@@ -55,7 +55,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-015A DONE: auditoria de catalogo confirmou 0 trips em Neon production; causa do vazio identificada (ausencia de dados, nao bug de codigo).
 - RT-015B DONE: seed idempotente criado (`prisma/seed.ts`); commit `cf0f96f` em `origin/main`; seed executado manualmente pelo Trigger contra Neon production; 1 Trip (Cristo Redentor + Mirante Dona Marta, R$ 245,00) e 1 TripSchedule OPEN (29/07/2026) criados.
 - RT-015C-FIX DONE: bug critico corrigido — bottom sheet do mobile-menu interceptava cliques invisivelmente (`opacity: 0` sem `pointer-events: none`); commit `fa83e02 fix: prevent invisible mobile menu sheet from intercepting page clicks (RT-015C)` em `origin/main`.
-- RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED, paymentStatus inalterado).
+- RT-015C DONE: smoke completo validado em producao pelo Trigger — tour visivel em `/pt/tours`, reserva criada (Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026), listagem e detalhe admin corretos, cancelamento admin confirmado (status = CANCELED na listagem; detalhe pos-cancelamento: "Nenhuma tentativa de pagamento registrada."; payment attempts remained absent — no payment gateway/refund/payment mutation was triggered in the MVP flow).
 - GitHub `main` aponta para `fa83e02`.
 - Vercel production esta `Ready` com `fa83e02`.
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN, 1 Booking de teste (status CANCELED apos smoke).

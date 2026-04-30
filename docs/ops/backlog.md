@@ -617,12 +617,12 @@ Tarefas:
 - RT-015C.5 Criar reserva de teste pelo fluxo publico autenticado. Estado: DONE.
 - RT-015C.6 Verificar reserva aparece em `/pt/admin/bookings`. Estado: DONE.
 - RT-015C.7 Verificar detalhe da reserva no admin. Estado: DONE.
-- RT-015C.8 Cancelar reserva de teste e confirmar status = CANCELED e paymentStatus inalterado. Estado: DONE.
+- RT-015C.8 Cancelar reserva de teste e confirmar status = CANCELED e ausencia de tentativas de pagamento. Estado: DONE.
 
 Criterios de aceite: fluxo completo publico → admin → cancelamento validado em producao sem regressao.
 Dependencias: RT-015B, RT-015C-FIX.
 Risco: medio.
-Evidencia esperada: reserva de teste com Ricardo / ricardo@gmail.com; R$ 245,00; 1 hospede; data 29/07/2026; status CANCELED apos cancelamento admin.
+Evidencia esperada: reserva de teste com Ricardo / ricardo@gmail.com; R$ 245,00; 1 hospede; data 29/07/2026; status CANCELED apos cancelamento admin; nenhuma tentativa de pagamento registrada.
 
 Notas operacionais:
 
@@ -634,7 +634,7 @@ Notas operacionais:
   - Tour detail: abre corretamente apos fix.
   - Schedule selector: funcional apos fix.
   - Reserva criada: Ricardo / ricardo@gmail.com, R$ 245,00, 1 hospede, 29/07/2026.
-  - `/pt/admin/bookings`: reserva aparece.
-  - Detalhe admin: dados corretos.
-  - Cancelamento admin: status = CANCELED, paymentStatus inalterado.
+  - `/pt/admin/bookings`: reserva aparece na listagem com status CANCELED apos cancelamento.
+  - Detalhe admin apos cancelamento: Hospedes: 1; Total: R$ 245,00; Data: 29/07/2026; "Nenhuma tentativa de pagamento registrada."
+  - Payment attempts remained absent; no payment gateway/refund/payment mutation was triggered in the MVP flow.
 - Lint, typecheck e build passaram antes do commit da fix.
