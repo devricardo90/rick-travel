@@ -96,6 +96,21 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 — RT-017C — Admin Tour Create
+
+**Executado por:** Gemini CLI
+**Status:** DONE
+**Efeito:** Criação de novos tours (rascunho) disponível em `/[locale]/admin/tours/new`.
+
+**Resumo:**
+- Criada Server Action `createTripAction` protegida por `requireAdminSession()`.
+- Implementada página de criação com formulário e validações.
+- Novos tours nascem obrigatoriamente com `isPublished: false`.
+- Adicionado botão de navegação "Novo Tour" na listagem admin.
+- Nenhuma alteração de schema ou banco realizada.
+
+---
+
 ## 2026-04-30 — RT-017B — Admin Tour List
 
 **Executado por:** Gemini CLI

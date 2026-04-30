@@ -8,6 +8,30 @@ import {
 } from "@/lib/services/email.service";
 import { listAllBookings, getBookingById, cancelBookingByAdmin } from "@/lib/services/booking.service";
 import { listAllContacts, markContactAsRead } from "@/lib/services/contact.service";
+import { createTripRecord } from "@/lib/services/trip.service";
+import { TripInput } from "@/lib/schemas";
+
+/**
+ * Cria um novo tour pelo admin.
+ * Todo novo tour nasce com isPublished: false (RT-017C).
+ */
+export async function createTripAction(data: TripInput, locale: string) {
+    await requireAdminSession();
+    try {
+        // Forçar isPublished como false independentemente do input (regra RT-017C)
+        const tourData = { ...data, isPublished: false };
+        const trip = await createTripRecord(tourData);
+        revalidatePath(`/${locale}/admin/tours`);
+        revalidatePath(`/${locale}/tours`);
+        revalidatePath("/api/trips");
+        return { success: true, id: trip.id };
+    } catch (error: unknown) {
+        console.error("Error creating trip:", error);
+        return {
+            error: error instanceof Error ? error.message : "Falha ao criar tour."
+        };
+    }
+}
 
 /**
  * Busca todas as reservas para o painel administrativo.

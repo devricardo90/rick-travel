@@ -61,6 +61,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-016C DONE remoto + production smoke validated: seed controlado executado manualmente pelo Trigger contra Neon production para aplicar imagem real ao tour existente; imagem `/images/trips/imagem-morro-pao-de-acucar.jpg` validada em producao na Home e tours; agenda renovada para 90 dias; nenhum novo tour adicionado; sem schema, migration ou code change.
 - RT-017A DONE: regras e escopo do Admin Tour Manager MVP definidos e documentados em `docs/ops/admin-tour-manager-rules.md`; backlog fatiado em RT-017B/C/D/E.
 - RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada no admin; acesso via `/[locale]/admin/tours`; link "Tours" ativo no menu; tour "Cristo Redentor + Mirante Dona Marta" exibido com imagem, preco R$ 245,00 e 1 agenda; status PUBLICADO; sem acoes mutaveis (create/edit/delete/publish/schedule); deploy automatico Vercel verificado; proteção herdada do AdminLayout (teste explícito com não-admin pendente).
+- RT-017C DONE remoto: criação de novos tours implementada via formulário em `/[locale]/admin/tours/new`; novos tours nascem obrigatoriamente como rascunho (`isPublished: false`); validação de campos i18n (PT obrigatório) e preço incluída; redirecionamento após criação funcional.
 - GitHub `main` aponta para `1bfe782`.
 - Vercel production validada pelo Trigger com RT-016C.
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED).
@@ -71,9 +72,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A e RT-017B concluidas).
+- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluídas).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
-- Gerenciamento de Tours: listagem funcional (RT-017B); regras do MVP definidas (RT-017A); foco em criacao e edicao segura sem hard delete ou upload binario.
+- Gerenciamento de Tours: listagem e criação funcional (RT-017B/C); regras do MVP definidas (RT-017A); foco em edição segura sem hard delete ou upload binário.
 
 
 ## Validacao publica objetiva

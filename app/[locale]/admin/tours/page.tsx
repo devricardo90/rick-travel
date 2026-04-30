@@ -1,5 +1,8 @@
 import { listAllTrips } from "@/lib/services/trip.service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 function formatCurrency(cents: number) {
   return (cents / 100).toLocaleString('pt-BR', {
@@ -8,7 +11,12 @@ function formatCurrency(cents: number) {
   });
 }
 
-export default async function AdminToursPage() {
+export default async function AdminToursPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const tours = await listAllTrips();
 
   return (
@@ -20,6 +28,12 @@ export default async function AdminToursPage() {
             Visualize todos os pacotes e passeios cadastrados no sistema.
           </p>
         </div>
+        <Button asChild>
+          <Link href={`/${locale}/admin/tours/new`}>
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Tour
+          </Link>
+        </Button>
       </div>
 
       <Card>

@@ -15,8 +15,11 @@ RT-016B DONE remoto + production smoke validated: Home consolidada no catalogo r
 RT-016C DONE remoto + production smoke validated: seed controlado executado; imagem real aplicada ao tour existente; agenda renovada; smoke PASS em producao.
 RT-017A DONE: regras e fatiamento do Admin Tour Manager MVP documentados em `docs/ops/admin-tour-manager-rules.md`.
 RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada e validada visualmente em producao; link "Tours" ativo; tour real exibido com contagem de agendas.
+RT-017C DONE remoto: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional.
 
 ## O que foi registrado nesta atualizacao
+
+- RT-017C: criada `createTripAction` protegida em `admin.ts`; implementada página de criação com formulário, validação de Título PT e conversão de preço; botão "Novo Tour" adicionado à listagem.
 
 - RT-017B: adicionado `listAllTrips` em `trip.service.ts`; adicionado link "Tours" no menu admin; criada pagina `/[locale]/admin/tours` com listagem read-only; validado que apenas admins acessam via `AdminLayout`; smoke visual PASS em producao via deploy automatico Vercel.
 - RT-017C/D/E permanecem PLANNED; nenhuma READY aberta.

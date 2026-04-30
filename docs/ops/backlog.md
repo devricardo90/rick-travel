@@ -752,16 +752,17 @@ Dependencias: RT-017A.
 
 ## RT-017C Admin Tour Create
 
-Estado: PLANNED
+Estado: DONE
 
-Objetivo: implementar criacao de novos tours via admin.
+Objetivo: implementar criacao de novos tours via admin como rascunho.
 
 Tarefas:
 
-- RT-017C.1 Criar Server Action de criacao protegida. Estado: PLANNED.
-- RT-017C.2 Criar formulario em `/[locale]/admin/tours/new` com validacao de campos Json. Estado: PLANNED.
+- RT-017C.1 Criar Server Action de criacao protegida forçando `isPublished: false`. Estado: DONE.
+- RT-017C.2 Criar formulario em `/[locale]/admin/tours/new` com validacao de campos Json. Estado: DONE.
+- RT-017C.3 Adicionar botao "Novo Tour" na listagem. Estado: DONE.
 
-Criterios de aceite: novo tour criado com `isPublished: false`; campos i18n persistidos corretamente.
+Criterios de aceite: novo tour criado com `isPublished: false`; campos i18n persistidos corretamente; redirect funciona.
 Dependencias: RT-017B.
 
 ## RT-017D Admin Tour Edit & Visibility
