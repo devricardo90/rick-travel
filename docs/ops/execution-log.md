@@ -5,6 +5,48 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-018E Fix Logout Flow
+
+**Executado por:** Claude Code (correcao local + validacoes + push)
+**Ambiente:** local + `https://rick-travel.vercel.app`
+**Commit:** `837694b fix: correct logout flow`
+**Status Vercel:** deploy automatico esperado (push para origin/main concluido)
+
+**Causa raiz:**
+`app/api/auth/sign-out/route.ts` era uma rota customizada que interceptava o POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth. Ela apenas limpava cookies manualmente (sem flags corretas de SameSite/HttpOnly) e sem invalidar a sessao no banco de dados. Resultado: sessao permanecia ativa no banco mesmo apos o logout.
+
+**Solucao aplicada:**
+
+- Removida `app/api/auth/sign-out/route.ts` (rota customizada incorreta).
+- `auth-status.tsx` ja usava `authClient.signOut()` corretamente; adicionado locale-aware redirect para `/${locale}`.
+- `mobile-menu.tsx`: wired `const locale = useLocale()` no componente e corrigido redirect de `"/"` para `` `/${locale}` ``; removido import nao utilizado `ShieldCheck`.
+
+**Resultado:**
+`authClient.signOut()` agora chama `/api/auth/sign-out` via `[...all]` do Better Auth que invalida a sessao no banco e limpa o cookie corretamente via plugin `nextCookies()`.
+
+**Validacoes locais:**
+
+| Validacao | Resultado |
+|---|---|
+| `npm.cmd run lint` | PASS |
+| `npm.cmd run typecheck` | PASS |
+| `npm.cmd test` | PASS (4 arquivos, 15 testes) |
+| `npm.cmd run build` | PASS (exit code 0) |
+| `git diff --check` | PASS |
+
+**Restricoes mantidas:**
+
+- Nenhum schema alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhuma alteracao manual no banco executada.
+- Nenhuma regra de booking, tour, contato, imagem ou checkout alterada.
+
+**Status:** DONE; commit `837694b` publicado em `origin/main`; deploy automatico Vercel pendente de validacao pelo Trigger.
+
+---
+
 ## 2026-04-30 - RT-018D Validate Existing Production Admin User
 
 **Executado por:** Codex (validacao operacional)

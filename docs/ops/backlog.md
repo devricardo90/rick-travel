@@ -886,6 +886,30 @@ Dependencias: RT-018B.
 Risco: baixo.
 Evidencia: Login Status 200; Rotas Status 200; Booking visível: True.
 
+## RT-018E Fix Logout Flow
+
+Estado: DONE
+
+Objetivo: corrigir o fluxo de logout que nao encerrava a sessao corretamente.
+
+Tarefas:
+
+- RT-018E.1 Auditar rota customizada `app/api/auth/sign-out/route.ts` e identificar conflito com Better Auth. Estado: DONE.
+- RT-018E.2 Remover rota customizada incorreta. Estado: DONE.
+- RT-018E.3 Corrigir redirect locale-aware em `auth-status.tsx`. Estado: DONE.
+- RT-018E.4 Corrigir wiring de `useLocale` e redirect em `mobile-menu.tsx`. Estado: DONE.
+- RT-018E.5 Validar localmente e publicar commit. Estado: DONE.
+
+Criterios de aceite: logout invalida sessao no banco; cookie limpo; redirect para locale correto; `/pt/admin` apos logout redireciona para login; refresh nao restaura sessao.
+Dependencias: RT-018D.
+Risco: alto.
+Evidencia: commit `837694b fix: correct logout flow`; lint/typecheck/test/build PASS; push para `origin/main`; validacao em producao pendente pelo Trigger.
+
+Notas operacionais:
+
+- Causa raiz: rota `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth, limpando apenas cookies sem invalidar a sessao no banco. Com a rota customizada removida, `authClient.signOut()` chama o handler Better Auth que invalida a sessao no banco via `nextCookies()`.
+- Nenhum schema, seed, migration, deploy manual, banco manual, imagem, tour ou checkout foi alterado.
+
 ## Proxima READY
 
-A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidata operacional imediata: desbloquear RT-018C com credencial ADMIN/procedimento controlado. Candidatas planejadas: RT-017D e RT-017E; tambem ha follow-ups de conteudo/imagem e hydration observados na RT-018A. Nao abrir nova READY automaticamente.
+Trigger validar RT-018E smoke em producao. Proxima READY a definir em Discussion Gate. Candidatas: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Nao abrir nova READY automaticamente.

@@ -21,8 +21,19 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
 RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin Authorization Handling publicado no commit `bcf8119`; usuario comum recebe "Acesso negado" nas rotas admin, sem 500.
 RT-018C DONE remoto + production admin smoke validated: Production Admin Access validation concluída via RT-018D.
 RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking de auditoria visível PASS.
+RT-018E DONE: Fix Logout Flow; rota customizada `sign-out/route.ts` removida; `authClient.signOut()` agora atinge `[...all]` do Better Auth corretamente; locale-aware redirect corrigido em ambos os componentes; commit `837694b` pushed para `origin/main`.
 
 ## O que foi registrado nesta atualizacao
+
+- RT-018E: Fix Logout Flow.
+  - Causa raiz: `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth; apenas limpava cookies sem invalidar sessao no banco.
+  - Solucao: rota removida; `authClient.signOut()` agora atinge `[...all]` (Better Auth nativo) que invalida a sessao no banco e limpa cookies via `nextCookies()`.
+  - `components/auth-status.tsx`: `const locale = useLocale()` adicionado; redirect corrigido para `/${locale}`.
+  - `components/mobile-menu.tsx`: `const locale = useLocale()` adicionado no componente; redirect corrigido de `"/"` para `` `/${locale}` ``; import nao utilizado `ShieldCheck` removido.
+  - Validacoes locais: lint PASS, typecheck PASS, test PASS (4 arquivos, 15 testes), build PASS, git diff --check PASS.
+  - Commit: `837694b fix: correct logout flow` publicado em `origin/main`.
+  - Deploy automatico Vercel pendente de validacao pelo Trigger.
+  - Sem schema, seed, migration, deploy manual, banco manual, imagem, tour, checkout ou regra de booking alterados.
 
 - RT-018D: validacao de acesso ADMIN em producao.
   - Credenciais fornecidas manualmente pelo Trigger (nao expostas em logs/docs).
@@ -100,10 +111,10 @@ RT-018D DONE: Validate Existing Production Admin User executado em produção; l
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `bcf8119` antes desta atualizacao documental.
-- Vercel production: commit `bcf8119` validado como Ready para RT-018C.
-- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
-- Working tree: contem correcao RT-018B em `AdminLayout`, teste unitario e documentacao operacional desta atualizacao ate o commit.
+- GitHub `main`: `837694b fix: correct logout flow` (topo apos RT-018E).
+- Vercel production: deploy automatico esperado do commit `837694b`; validacao pelo Trigger pendente.
+- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
+- Working tree: limpa apos commit e push de RT-018E.
 
 ## Evidencias importantes
 
@@ -119,8 +130,9 @@ RT-018D DONE: Validate Existing Production Admin User executado em produção; l
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
+- Validacao em producao do fluxo de logout pelo Trigger (login usuario comum → logout → sessao encerrada; login ADMIN → logout → sessao encerrada; `/pt/admin` apos logout → redirect para login).
 - Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-017D ou RT-017E como READY automaticamente.
 
 ## Proxima acao recomendada
 
-Definir proxima tarefa READY em Discussion Gate. Candidata operacional imediata: desbloquear credencial ADMIN/procedimento controlado para concluir RT-018C. Outros candidatos planejados: RT-017D (edicao/admin update), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Sistema permanece operacional sem novas READY abertas nesta atualizacao.
+Trigger validar o fluxo de logout em producao (RT-018E smoke): login usuario comum, logout, tentar `/pt/admin`, verificar redirect; repetir com ADMIN. Apos validacao, proxima READY a definir em Discussion Gate. Candidatas: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`.

@@ -66,7 +66,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-018B DONE remoto + production non-admin smoke validated: commit `bcf8119`; bug de autorizacao admin non-admin corrigido no `AdminLayout`; `FORBIDDEN` agora renderiza tela controlada "Acesso negado"; `UNAUTHENTICATED` continua redirecionando para login; ADMIN continua renderizando o painel; teste unitario cobre os tres cenarios; smoke em producao confirmou usuario comum sem 500 nas rotas admin; sem schema, seed, migration, deploy manual ou alteracao manual de banco.
 - RT-018C DONE: Production Admin Access validation concluída via RT-018D; login ADMIN, rotas admin e visibilidade de booking validados em produção com sucesso.
 - RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking `cmoli78ld000204js1agra4il` visível PASS.
-- GitHub `main` está sincronizado com `origin/main` em `f75e153` antes desta atualização documental.
+- RT-018E DONE: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; deploy automatico Vercel pendente de validacao.
+- GitHub `main` está em `837694b` após RT-018E.
 - Vercel production validada com RT-018D.
 
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
