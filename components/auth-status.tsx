@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { useLocale } from "next-intl";
 
 type SessionUser = {
   id: string;
@@ -16,6 +17,7 @@ type SessionUser = {
 export function AuthStatus() {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const locale = useLocale();
 
   async function loadSession() {
     try {
@@ -47,7 +49,7 @@ export function AuthStatus() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          window.location.href = "/";
+          window.location.href = `/${locale}`;
         },
       },
     });

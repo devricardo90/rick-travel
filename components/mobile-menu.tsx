@@ -12,11 +12,10 @@ import {
     Ticket,
     LogIn,
     UserPlus,
-    ShieldCheck,
     ChevronRight,
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ThemeToggleButton } from "./ThemeToggleButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { authClient } from "@/lib/auth-client";
@@ -244,6 +243,7 @@ export default function MobileMenu({ open, onClose }: Props) {
     const sheetRef = useRef<HTMLDivElement>(null);
     const [user, setUser] = useState<SessionUser | null>(null);
     const [authLoading, setAuthLoading] = useState(true);
+    const locale = useLocale();
     const navItems = useNavItems();
 
     /* Carrega sessão ao abrir */
@@ -302,7 +302,7 @@ export default function MobileMenu({ open, onClose }: Props) {
             fetchOptions: {
                 onSuccess: () => {
                     onClose();
-                    window.location.href = "/";
+                    window.location.href = `/${locale}`;
                 },
             },
         });
