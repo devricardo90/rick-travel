@@ -5,6 +5,41 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-018D Validate Existing Production Admin User
+
+**Executado por:** Codex (validacao operacional)
+**Ambiente:** `https://rick-travel.vercel.app`
+**Commit Vercel:** `f75e153 docs: record RT-018C production admin validation`
+**Status Vercel:** Ready
+
+**Resultado resumido:**
+
+| Area | Resultado | Evidencia |
+|---|---|---|
+| Git inicial | PASS | working tree limpa; `main...origin/main`; topo `f75e153` |
+| Producao | PASS | Vercel Ready |
+| Login ADMIN | PASS | Status 200 (ricardo@gmail.com) |
+| `/pt/admin` com ADMIN | PASS | Status 200 |
+| `/pt/admin/tours` com ADMIN | PASS | Status 200 |
+| `/pt/admin/bookings` com ADMIN | PASS | Status 200 |
+| `/pt/admin/contacts` com ADMIN | PASS | Status 200 |
+| Booking `cmoli78ld000204js1agra4il` visivel no admin | PASS | Conteúdo encontrado na página de bookings |
+
+**Restricoes mantidas:**
+
+- Nenhuma credencial foi exposta em logs, arquivos ou relatórios.
+- Nenhum usuário foi promovido.
+- Nenhuma alteração manual no banco foi executada.
+- Nenhum schema alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhum código alterado.
+
+**Status:** DONE.
+
+---
+
 ## 2026-04-30 - RT-018C Validate Production Admin Access
 
 **Executado por:** Codex (validacao operacional)

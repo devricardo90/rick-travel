@@ -19,9 +19,18 @@ RT-017C DONE remoto + production smoke manual validated: criação de novos tour
 
 RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b59c92`; fluxo publico PASS; admin anonimo PASS; admin non-admin FAIL; login ADMIN BLOCKED por ausencia de credencial no ambiente.
 RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin Authorization Handling publicado no commit `bcf8119`; usuario comum recebe "Acesso negado" nas rotas admin, sem 500.
-RT-018C BLOCKED: Production Admin Access validation confirmou producao `bcf8119` Ready, mas nao havia credencial ADMIN utilizavel no ambiente; nenhuma alteracao manual no banco foi feita.
+RT-018C DONE remoto + production admin smoke validated: Production Admin Access validation concluída via RT-018D.
+RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking de auditoria visível PASS.
 
 ## O que foi registrado nesta atualizacao
+
+- RT-018D: validacao de acesso ADMIN em producao.
+  - Credenciais fornecidas manualmente pelo Trigger (nao expostas em logs/docs).
+  - Login ADMIN PASS (200 OK).
+  - `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings`, `/pt/admin/contacts` PASS (200 OK).
+  - Booking `cmoli78ld000204js1agra4il` visível em `/pt/admin/bookings` PASS.
+  - Sem alteração de código, banco, schema ou deploy manual.
+- RT-018C desbloqueada e concluída.
 
 - RT-017C: criada `createTripAction` protegida em `admin.ts`; implementada página de criação com formulário, validação de Título PT e conversão de preço; botão "Novo Tour" adicionado à listagem; commit remoto `4c3e3fe`.
 - RT-017C production smoke manual: Vercel production estava no commit `4c3e3fe`; Trigger executou o smoke com credencial ADMIN privada; credenciais nao foram compartilhadas com o agente; tour real "Pao de Acucar ao Entardecer" criado como rascunho com ID `cmolfs9eu000004l2trz4q8bf`, cidade `rio de janeiro`, preco R$ 245,00, status RASCUNHO / `isPublished=false` e 0 agendas; tour aparece em `/pt/admin/tours`; tour nao aparece em `/pt/tours`, que exibe apenas "Cristo Redentor + Mirante Dona Marta"; nenhum deploy manual, migration, seed ou alteracao direta no banco foi executado pelo agente.

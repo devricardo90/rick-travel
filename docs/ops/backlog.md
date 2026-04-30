@@ -848,7 +848,7 @@ Notas operacionais:
 
 ## RT-018C Validate Production Admin Access
 
-Estado: BLOCKED
+Estado: DONE
 
 Objetivo: validar acesso ADMIN real em producao e confirmar que o painel administrativo renderiza para leitura/gestao basica.
 
@@ -856,21 +856,35 @@ Tarefas:
 
 - RT-018C.1 Validar Git limpo e sincronizado. Estado: DONE.
 - RT-018C.2 Confirmar Vercel production Ready no commit esperado. Estado: DONE.
-- RT-018C.3 Verificar existencia de credencial ADMIN utilizavel sem expor segredo. Estado: BLOCKED.
-- RT-018C.4 Login ADMIN em producao. Estado: BLOCKED.
-- RT-018C.5 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts`. Estado: BLOCKED.
-- RT-018C.6 Verificar booking `cmoli78ld000204js1agra4il` no admin. Estado: BLOCKED.
+- RT-018C.3 Verificar existencia de credencial ADMIN utilizavel sem expor segredo. Estado: DONE via RT-018D.
+- RT-018C.4 Login ADMIN em producao. Estado: DONE via RT-018D.
+- RT-018C.5 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts`. Estado: DONE via RT-018D.
+- RT-018C.6 Verificar booking `cmoli78ld000204js1agra4il` no admin. Estado: DONE via RT-018D.
 
 Criterios de aceite: ADMIN real consegue acessar painel e rotas principais; booking de smoke fica visivel em admin bookings ou detalhe equivalente; nenhuma acao destrutiva executada.
-Dependencias: credencial ADMIN valida para producao ou promocao controlada autorizada.
+Dependencias: RT-018D.
 Risco: medio.
-Evidencia: Vercel production Ready no commit `bcf8119`; credenciais ADMIN ausentes no processo e env local pesquisado; nenhuma alteracao manual no banco realizada.
+Evidencia: login ADMIN PASS; rotas admin PASS; booking visível PASS em produção.
 
-Notas operacionais:
+## RT-018D Validate Existing Production Admin User
 
-- Nao promover usuario sem autorizacao explicita do Trigger.
-- Opcoes de desbloqueio: promover usuario existente conhecido para ADMIN via Neon SQL Editor com autorizacao explicita; ou criar task separada para fluxo seguro de promocao ADMIN.
-- Nao executar seed, migration, deploy manual ou alteracao de schema para desbloquear esta validacao.
+Estado: DONE
+
+Objetivo: validar o usuário administrador existente em produção utilizando as credenciais fornecidas pelo Trigger.
+
+Tarefas:
+
+- RT-018D.1 Verificar estado Git. Estado: DONE.
+- RT-018D.2 Confirmar produção acessível. Estado: DONE.
+- RT-018D.3 Validar login ADMIN sem expor credenciais. Estado: DONE.
+- RT-018D.4 Testar rotas `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings`, `/pt/admin/contacts`. Estado: DONE.
+- RT-018D.5 Validar visibilidade do booking `cmoli78ld000204js1agra4il`. Estado: DONE.
+- RT-018D.6 Registrar resultados e atualizar documentação operacional. Estado: DONE.
+
+Criterios de aceite: Todas as validações concluídas com sucesso (PASS); nenhuma exposição de credenciais; nenhuma alteração destrutiva ou no banco realizada.
+Dependencias: RT-018B.
+Risco: baixo.
+Evidencia: Login Status 200; Rotas Status 200; Booking visível: True.
 
 ## Proxima READY
 
