@@ -276,6 +276,7 @@ export default function MobileMenu({ open, onClose }: Props) {
 
         if (open) {
             overlay.style.pointerEvents = "auto";
+            sheet.style.pointerEvents = "auto";
             gsap.to(overlay, { opacity: 1, duration: 0.22, ease: "power2.out" });
             gsap.fromTo(
                 sheet,
@@ -289,6 +290,7 @@ export default function MobileMenu({ open, onClose }: Props) {
             );
         } else {
             overlay.style.pointerEvents = "none";
+            sheet.style.pointerEvents = "none";
             gsap.to(overlay, { opacity: 0, duration: 0.16, ease: "power2.inOut" });
             gsap.to(sheet, { y: 28, opacity: 0, scale: 0.98, duration: 0.2, ease: "power2.in" });
         }
@@ -329,7 +331,7 @@ export default function MobileMenu({ open, onClose }: Props) {
             {/* Bottom Sheet — tema escuro premium */}
             <div
                 ref={sheetRef}
-                className="fixed left-3 right-3 bottom-3 z-50 rounded-[26px] border border-white/10 p-4 opacity-0 shadow-2xl"
+                className="fixed left-3 right-3 bottom-3 z-50 rounded-[26px] border border-white/10 p-4 opacity-0 shadow-2xl pointer-events-none"
                 style={{
                     background: "rgba(7, 26, 43, 0.96)",
                     backdropFilter: "blur(24px)",
