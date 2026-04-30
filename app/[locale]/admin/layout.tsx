@@ -3,7 +3,7 @@ import { requireAdminSession } from "@/lib/authz";
 import { redirect } from "next/navigation";
 import { isDomainError } from "@/lib/errors/domain-error";
 import Link from "next/link";
-import { LayoutDashboard, CalendarDays, MessageSquare } from "lucide-react";
+import { LayoutDashboard, CalendarDays, MessageSquare, Map } from "lucide-react";
 
 export default async function AdminLayout({
   children,
@@ -25,6 +25,7 @@ export default async function AdminLayout({
 
   const navItems = [
     { href: `/${locale}/admin`, label: "Dashboard", icon: LayoutDashboard },
+    { href: `/${locale}/admin/tours`, label: "Tours", icon: Map },
     { href: `/${locale}/admin/bookings`, label: "Reservas", icon: CalendarDays },
     { href: `/${locale}/admin/contacts`, label: "Contatos", icon: MessageSquare },
   ];

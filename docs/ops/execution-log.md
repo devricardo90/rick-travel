@@ -96,6 +96,20 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 — RT-017B — Admin Tour List
+
+**Executado por:** Gemini CLI
+**Status:** DONE
+**Efeito:** Listagem de tours disponível em `/[locale]/admin/tours`.
+
+**Resumo:**
+- Adicionado `listAllTrips` em `trip.service.ts` com contagem de agendas.
+- Adicionado link "Tours" no menu de navegação do admin.
+- Criada página de listagem somente leitura com Título, Cidade, Preço, Agendas e Status.
+- Nenhuma mutação de banco ou alteração de schema realizada.
+
+---
+
 ## 2026-04-30 — RT-017A — Admin Tour Manager Rules and Scope
 
 **Executado por:** Gemini CLI (Documentação e Planejamento)

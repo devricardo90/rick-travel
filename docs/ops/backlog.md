@@ -737,15 +737,15 @@ Evidencia esperada: este registro e o arquivo de regras.
 
 ## RT-017B Admin Tour List
 
-Estado: PLANNED
+Estado: DONE
 
 Objetivo: implementar listagem somente leitura de tours no admin.
 
 Tarefas:
 
-- RT-017B.1 Adicionar `listAllTrips` em `trip.service.ts`. Estado: PLANNED.
-- RT-017B.2 Adicionar `listAllTripsAction` em `app/actions/admin.ts`. Estado: PLANNED.
-- RT-017B.3 Criar pagina `/[locale]/admin/tours` com tabela de listagem. Estado: PLANNED.
+- RT-017B.1 Adicionar `listAllTrips` em `trip.service.ts`. Estado: DONE.
+- RT-017B.2 Adicionar `listAllTripsAction` em `app/actions/admin.ts`. Estado: PLANNED (Substituida por chamada direta ao service no Server Component).
+- RT-017B.3 Criar pagina `/[locale]/admin/tours` com tabela de listagem. Estado: DONE.
 
 Criterios de aceite: admins conseguem ver todos os tours; link de navegacao no admin layout funciona.
 Dependencias: RT-017A.

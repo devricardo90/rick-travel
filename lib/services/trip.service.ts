@@ -205,3 +205,16 @@ export async function deleteTripRecord(tripId: string) {
     where: { id: tripId },
   });
 }
+
+export async function listAllTrips() {
+  return prisma.trip.findMany({
+    include: {
+      _count: {
+        select: { schedules: true },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
