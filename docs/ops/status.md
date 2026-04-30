@@ -66,9 +66,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-018B DONE remoto + production non-admin smoke validated: commit `bcf8119`; bug de autorizacao admin non-admin corrigido no `AdminLayout`; `FORBIDDEN` agora renderiza tela controlada "Acesso negado"; `UNAUTHENTICATED` continua redirecionando para login; ADMIN continua renderizando o painel; teste unitario cobre os tres cenarios; smoke em producao confirmou usuario comum sem 500 nas rotas admin; sem schema, seed, migration, deploy manual ou alteracao manual de banco.
 - RT-018C DONE: Production Admin Access validation concluída via RT-018D; login ADMIN, rotas admin e visibilidade de booking validados em produção com sucesso.
 - RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking `cmoli78ld000204js1agra4il` visível PASS.
-- RT-018E DONE: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; deploy automatico Vercel pendente de validacao.
-- GitHub `main` está em `837694b` após RT-018E.
-- Vercel production validada com RT-018D.
+- RT-018E DONE + Production Smoke PASS: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; smoke em producao validou header `X-Matched-Path: /api/auth/[...all]`, clear cookies e redirect para locale.
+- GitHub `main` está em `622df2a` após RT-018E.
+- Vercel production validada com RT-018E smoke.
 
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
@@ -78,7 +78,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluidas; RT-018B corrige localmente o bug de autorizacao para usuario autenticado sem role ADMIN).
+- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluidas; RT-018B corrige localmente o bug de autorizacao para usuario autenticado sem role ADMIN; RT-018D valida acesso admin em producao).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
 - Gerenciamento de Tours: listagem e criacao funcional (RT-017B/C); criacao de rascunho validada em producao com tour real; regras do MVP definidas (RT-017A); foco futuro em edicao segura sem hard delete ou upload binario.
 
@@ -94,6 +94,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /api/trips`: `200`, retorno com 1 trip publicada (Cristo Redentor + Mirante Dona Marta).
 - RT-017C production smoke manual PASS: novo tour "Pao de Acucar ao Entardecer" criado como rascunho no admin e ausente do catalogo publico `/pt/tours`, confirmando `isPublished=false`.
 - RT-018A production product smoke: Home PASS; `/pt/tours` PASS; detalhe do tour publicado PASS; login/register PASS; reserva publica PASS ate confirmacao manual; checkout externo nao iniciado; catalogo publico contem 1 tour publicado.
+- RT-018E production smoke PASS: logout agora invalida sessao no banco e limpa cookies via Better Auth nativo; header `X-Matched-Path: /api/auth/[...all]` confirmado em producao; `/api/auth/sign-out` retorna `{"success":true}`; redirect para locale-aware URL PASS; `/pt/admin` redireciona para login apos logout PASS.
 - `GET /robots.txt`: `200`.
 - `GET /sitemap.xml`: `200`.
 - RT-016A production smoke PASS: `/pt/tours` abre; detalhe do tour abre; booking cria; usuario redireciona para `/pt/reservas/{bookingId}`; pagina de confirmacao funciona; mensagem de pre-reserva/confirmacao manual esta clara; `/pt/reservas` lista a reserva; "Ver detalhes" abre o detalhe; payment status nao exibe enum cru; admin booking list segue funcional.
@@ -119,7 +120,6 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 ## Riscos remanescentes
 
 - P1: estabilizacao pos-deploy ainda depende de evidencias operacionais continuas no ambiente publicado.
-- P1: validacao real de ADMIN em producao segue bloqueada ate disponibilizar credencial ADMIN ou executar promocao controlada autorizada.
 - P1: `npm audit` residual em Prisma dev tooling segue pendente para janela controlada.
 - P1: a credencial de bootstrap ADMIN removida deve ser considerada potencialmente exposta.
 - P2: reabrir Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.

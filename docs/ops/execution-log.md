@@ -10,7 +10,7 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 **Executado por:** Claude Code (correcao local + validacoes + push)
 **Ambiente:** local + `https://rick-travel.vercel.app`
 **Commit:** `837694b fix: correct logout flow`
-**Status Vercel:** deploy automatico esperado (push para origin/main concluido)
+**Status Vercel:** Ready (validado no commit `622df2a`)
 
 **Causa raiz:**
 `app/api/auth/sign-out/route.ts` era uma rota customizada que interceptava o POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth. Ela apenas limpava cookies manualmente (sem flags corretas de SameSite/HttpOnly) e sem invalidar a sessao no banco de dados. Resultado: sessao permanecia ativa no banco mesmo apos o logout.
@@ -23,6 +23,16 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 **Resultado:**
 `authClient.signOut()` agora chama `/api/auth/sign-out` via `[...all]` do Better Auth que invalida a sessao no banco e limpa o cookie corretamente via plugin `nextCookies()`.
+
+**Validacoes operacionais (Producao):**
+
+| Cenario | Resultado | Evidencia |
+|---|---|---|
+| Rota customizada removida | PASS | Header `X-Matched-Path: /api/auth/[...all]` |
+| Sign-out funcional | PASS | Status 200; `{"success":true}`; Cookies cleared |
+| Redirecionamento locale | PASS | `window.location.href = /${locale}` via code inspection + manual smoke |
+| Protecao `/pt/admin` pos-logout | PASS | Redireciona para `/pt/login` |
+| Database connection (deep) | PASS | `{"database":"ok"}` |
 
 **Validacoes locais:**
 
@@ -43,7 +53,7 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 - Nenhuma alteracao manual no banco executada.
 - Nenhuma regra de booking, tour, contato, imagem ou checkout alterada.
 
-**Status:** DONE; commit `837694b` publicado em `origin/main`; deploy automatico Vercel pendente de validacao pelo Trigger.
+**Status:** Production Smoke PASS.
 
 ---
 
