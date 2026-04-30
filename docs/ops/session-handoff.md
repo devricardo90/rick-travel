@@ -18,6 +18,7 @@ RT-017B DONE remoto + production smoke validated: listagem somente leitura de to
 RT-017C DONE remoto + production smoke manual validated: criação de novos tours (rascunho) via formulário em `/[locale]/admin/tours/new` funcional e validada em producao pelo Trigger.
 
 RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b59c92`; fluxo publico PASS; admin anonimo PASS; admin non-admin FAIL; login ADMIN BLOCKED por ausencia de credencial no ambiente.
+RT-018B DONE local: Fix Admin Non-Admin Authorization Handling implementado e validado localmente; production smoke pos-deploy ainda pendente.
 
 ## O que foi registrado nesta atualizacao
 
@@ -38,6 +39,12 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
   - Admin non-admin authorization FAIL: usuario comum autenticado recebeu 500 nas rotas admin; erro de producao `ERROR 2933230167`; esperado e bloqueio controlado, redirect ou 403.
   - React hydration WARN: minified React error `#418` observado durante navegacao/auth; nao bloqueou reserva.
   - Nenhum codigo, schema, seed, migration, deploy ou alteracao manual de banco foi executado; usuario e booking foram criados somente pelo fluxo publico normal do produto.
+- RT-018B:
+  - Causa provavel do 500: `requireAdminSession()` lancava `DomainError` `FORBIDDEN`, mas o `AdminLayout` so tratava `UNAUTHENTICATED`; o `FORBIDDEN` era relancado e virava erro 500 em producao.
+  - Solucao aplicada: tratamento centralizado de `FORBIDDEN` em `app/[locale]/admin/layout.tsx`, renderizando tela controlada "Acesso negado" com retorno ao site.
+  - Protecao preservada: `requireAdminSession()` continua sendo a entrada central; paginas e actions admin nao receberam duplicacao de RBAC.
+  - Validacao local: `tests/admin-layout.test.tsx` cobre anonimo -> redirect para login, USER -> acesso negado controlado, ADMIN -> conteudo renderizado.
+  - Sem alteracao em regras de booking, tour, contact, schema, seed, migration, deploy manual ou banco manual.
 
 - RT-017B: adicionado `listAllTrips` em `trip.service.ts`; adicionado link "Tours" no menu admin; criada pagina `/[locale]/admin/tours` com listagem read-only; validado que apenas admins acessam via `AdminLayout`; smoke visual PASS em producao via deploy automatico Vercel.
 - RT-017D/E permanecem PLANNED; nenhuma READY aberta.
@@ -78,7 +85,7 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
 - GitHub `main`: `6b59c92` antes desta atualizacao documental.
 - Vercel production: commit `6b59c92` validado para RT-018A.
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 novo Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
-- Working tree: apenas documentacao operacional desta atualizacao, sem alteracao de codigo.
+- Working tree: contem correcao RT-018B em `AdminLayout`, teste unitario e documentacao operacional desta atualizacao ate o commit.
 
 ## Evidencias importantes
 
@@ -87,15 +94,15 @@ RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b
 - `paymentStatus` nao e alterado pelo cancelamento admin (confirmado em smoke).
 - RT-016A nao inicia checkout nem promete pagamento online; pagamento aparece como etapa manual a combinar com a equipe.
 - RT-016B nao executou seed; apenas preparou `prisma/seed.ts` para proxima execucao autorizada.
-- RT-018A identificou bug P1: usuario autenticado sem role ADMIN recebe 500 em rotas admin em vez de bloqueio controlado.
+- RT-018B corrige localmente o bug P1 identificado na RT-018A; validar em producao apos deploy automatico do commit.
 - Nenhuma migration executada.
 - Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-018B, RT-017D ou RT-017E como READY automaticamente.
+- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-017D ou RT-017E como READY automaticamente.
 
 ## Proxima acao recomendada
 
-Definir proxima tarefa READY em Discussion Gate. Proxima candidata recomendada: RT-018B - Fix Admin Non-Admin Authorization Handling. Candidatos ainda planejados: RT-017D (edicao/admin update) e RT-017E (agendas). Sistema permanece operacional sem novas READY abertas nesta atualizacao.
+Definir proxima tarefa READY em Discussion Gate. Candidatos planejados: RT-017D (edicao/admin update), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Sistema permanece operacional sem novas READY abertas nesta atualizacao.

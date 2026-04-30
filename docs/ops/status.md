@@ -63,6 +63,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-017B DONE remoto + production smoke validated: listagem somente leitura de tours implementada no admin; acesso via `/[locale]/admin/tours`; link "Tours" ativo no menu; tour "Cristo Redentor + Mirante Dona Marta" exibido com imagem, preco R$ 245,00 e 1 agenda; status PUBLICADO; sem acoes mutaveis (create/edit/delete/publish/schedule); deploy automatico Vercel verificado; proteção herdada do AdminLayout (teste explícito com não-admin pendente).
 - RT-017C DONE remoto + production smoke manual validated: commit `4c3e3fe feat: add admin tour draft creation` publicado em producao Vercel; smoke manual executado pelo Trigger com credencial ADMIN privada, sem compartilhar credenciais com agente; tour real "Pao de Acucar ao Entardecer" criado como rascunho; ID `cmolfs9eu000004l2trz4q8bf`; cidade `rio de janeiro`; preco R$ 245,00; status RASCUNHO / `isPublished=false`; 0 agendas; aparece em `/pt/admin/tours`; nao aparece em `/pt/tours`, onde permanece visivel apenas o tour publicado "Cristo Redentor + Mirante Dona Marta"; nenhum deploy manual, migration, seed ou alteracao direta no banco executado pelo agente.
 - RT-018A DONE: Production Product Smoke Check executado em producao no commit `6b59c92`; fluxo publico PASS ate confirmacao manual (`/pt/reservas/cmoli78ld000204js1agra4il`, status Pendente, R$ 245,00, pagamento "A combinar com a equipe"); admin anonimo PASS com redirect para `/pt/login`; admin com usuario comum autenticado FAIL com 500 nas rotas `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts` (`ERROR 2933230167`); login ADMIN BLOCKED por ausencia de credencial no ambiente; checkout externo NOT TESTED/nao iniciado; alinhamento de imagem WARN; React hydration `#418` WARN.
+- RT-018B DONE local: bug de autorizacao admin non-admin corrigido no `AdminLayout`; `FORBIDDEN` agora renderiza tela controlada "Acesso negado"; `UNAUTHENTICATED` continua redirecionando para login; ADMIN continua renderizando o painel; teste unitario cobre os tres cenarios; sem schema, seed, migration, deploy manual ou alteracao manual de banco.
 - GitHub `main` estava sincronizado com `origin/main` em `6b59c92` antes desta atualizacao documental.
 - Vercel production validada com RT-018A no commit `6b59c92`.
 - Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
@@ -73,7 +74,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - Build: estabilizado.
 - Publicacao: MVP publico acessivel em `https://rick-travel.vercel.app`.
 - Runtime inicial: validado com alias publico e healthchecks `200`.
-- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluidas; RT-018A identificou bug de autorizacao para usuario autenticado sem role ADMIN).
+- Admin: em reconstrucao controlada (RT-013A ate RT-014B; RT-017A ate RT-017C concluidas; RT-018B corrige localmente o bug de autorizacao para usuario autenticado sem role ADMIN).
 - Mercado Pago: implementacao existente no repositorio, mas fora do escopo da fase atual.
 - Gerenciamento de Tours: listagem e criacao funcional (RT-017B/C); criacao de rascunho validada em producao com tour real; regras do MVP definidas (RT-017A); foco futuro em edicao segura sem hard delete ou upload binario.
 
@@ -98,7 +99,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 ### Curto prazo
 
 - definir proxima tarefa READY em Discussion Gate;
-- candidatos planejados: RT-018B (corrigir autorizacao admin para non-admin), RT-017D (edicao de tours) e RT-017E (agendas), ainda sem READY aberta.
+- candidatos planejados: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`, ainda sem READY aberta.
 
 
 ### Medio prazo
@@ -114,7 +115,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 ## Riscos remanescentes
 
 - P1: estabilizacao pos-deploy ainda depende de evidencias operacionais continuas no ambiente publicado.
-- P1: rotas admin retornam 500 para usuario autenticado sem role ADMIN; proxima candidata recomendada e RT-018B para tratamento controlado de autorizacao.
+- P1: validar em producao, apos deploy automatico do commit de RT-018B, que rotas admin nao retornam 500 para usuario autenticado sem role ADMIN.
 - P1: `npm audit` residual em Prisma dev tooling segue pendente para janela controlada.
 - P1: a credencial de bootstrap ADMIN removida deve ser considerada potencialmente exposta.
 - P2: reabrir Mercado Pago agora ampliaria escopo sem justificativa operacional desta fase.

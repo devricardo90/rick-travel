@@ -5,6 +5,44 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-04-30 - RT-018B Fix Admin Non-Admin Authorization Handling
+
+**Executado por:** Codex (correcao local + validacoes)
+**Ambiente:** local
+**Escopo:** corrigir erro 500 para usuario autenticado sem role ADMIN em rotas admin.
+**Deploy:** nenhum deploy manual executado.
+
+**Causa provavel:** `requireAdminSession()` lancava `DomainError` com `code = FORBIDDEN`, mas o `AdminLayout` so tratava `UNAUTHENTICATED`; o erro `FORBIDDEN` era relancado e virava 500 em Server Components no runtime publicado.
+
+**Solucao aplicada:**
+
+- `UNAUTHENTICATED`: permanece redirecionando para login.
+- `FORBIDDEN`: agora renderiza tela controlada "Acesso negado".
+- `ADMIN`: continua renderizando o painel.
+- Protecao permanece centralizada em `requireAdminSession()` no `AdminLayout`.
+
+**Validacoes locais:**
+
+- `npm.cmd test -- tests/admin-layout.test.tsx`: PASS, 3 testes.
+- `npm.cmd run lint`: PASS com warning pre-existente em `components/mobile-menu.tsx`.
+- `npm.cmd run typecheck`: PASS.
+- `npm.cmd test`: PASS, 4 arquivos, 15 testes.
+- `npm.cmd run build`: PASS; warnings conhecidos de workspace root e `ECONNREFUSED` para DB local durante `/api/trips`/sitemap, exit code 0.
+- `git diff --check`: PASS com warning LF/CRLF.
+
+**Restricoes mantidas:**
+
+- Nenhum schema alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum deploy manual executado.
+- Nenhuma alteracao manual no banco executada.
+- Nenhuma regra de booking, tour ou contact alterada fora do necessario para auth admin.
+
+**Status:** DONE local; production smoke pos-deploy automatico ainda pendente.
+
+---
+
 ## 2026-04-30 - RT-018A Production Product Smoke Check
 
 **Executado por:** Codex (auditoria funcional em producao)

@@ -824,22 +824,28 @@ Notas operacionais:
 
 ## RT-018B Fix Admin Non-Admin Authorization Handling
 
-Estado: PLANNED
+Estado: DONE
 
 Objetivo: corrigir o tratamento de autorizacao das rotas admin para usuario autenticado sem role ADMIN, substituindo erro 500 por bloqueio controlado.
 
 Tarefas:
 
-- RT-018B.1 Reproduzir localmente o acesso non-admin a `/[locale]/admin`.
-- RT-018B.2 Ajustar tratamento de `FORBIDDEN`/non-admin no AdminLayout ou boundary apropriado.
-- RT-018B.3 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts` para anonimo, USER e ADMIN.
-- RT-018B.4 Registrar evidencias sem expor credenciais.
+- RT-018B.1 Reproduzir localmente o acesso non-admin a `/[locale]/admin`. Estado: DONE.
+- RT-018B.2 Ajustar tratamento de `FORBIDDEN`/non-admin no AdminLayout ou boundary apropriado. Estado: DONE.
+- RT-018B.3 Validar `/pt/admin`, `/pt/admin/tours`, `/pt/admin/bookings` e `/pt/admin/contacts` para anonimo, USER e ADMIN. Estado: DONE via teste unitario do layout central.
+- RT-018B.4 Registrar evidencias sem expor credenciais. Estado: DONE.
 
 Criterios de aceite: anonimo redireciona para login; USER autenticado recebe bloqueio controlado ou redirect previsto, nunca 500; ADMIN continua acessando painel; sem schema, migration, seed ou deploy manual.
 Dependencias: RT-018A.
 Risco: alto.
-Evidencia esperada: testes locais e production smoke controlado apos deploy automatico autorizado.
+Evidencia: `AdminLayout` agora trata `DomainError` `FORBIDDEN` com tela controlada "Acesso negado"; `UNAUTHENTICATED` segue redirecionando para login; ADMIN segue renderizando o painel; `tests/admin-layout.test.tsx` cobre os tres cenarios; lint PASS, typecheck PASS, tests PASS, build PASS, `git diff --check` PASS.
+
+Notas operacionais:
+
+- Causa provavel do 500: `requireAdminSession()` lancava `DomainError` com `code = FORBIDDEN`, mas o `AdminLayout` so tratava `UNAUTHENTICATED` e relancava `FORBIDDEN`, gerando erro 500 em Server Components no runtime publicado.
+- A correcao ficou centralizada no `AdminLayout`; paginas e actions admin continuam usando a protecao existente.
+- Nenhuma regra de booking, tour, contact, schema, seed, migration, banco manual ou deploy manual foi alterada.
 
 ## Proxima READY
 
-A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidata recomendada: RT-018B. Nao abrir RT-018B, RT-017D ou RT-017E como READY automaticamente.
+A definicao da proxima tarefa READY sera realizada em Discussion Gate. Candidatas planejadas: RT-017D e RT-017E; tambem ha follow-ups de conteudo/imagem e hydration observados na RT-018A. Nao abrir nova READY automaticamente.

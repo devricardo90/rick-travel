@@ -3,7 +3,9 @@ import { requireAdminSession } from "@/lib/authz";
 import { redirect } from "next/navigation";
 import { isDomainError } from "@/lib/errors/domain-error";
 import Link from "next/link";
-import { LayoutDashboard, CalendarDays, MessageSquare, Map } from "lucide-react";
+import { LayoutDashboard, CalendarDays, MessageSquare, Map, ShieldAlert } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function AdminLayout({
   children,
@@ -17,9 +19,35 @@ export default async function AdminLayout({
   try {
     await requireAdminSession();
   } catch (error: unknown) {
-    if (isDomainError(error) && error.code === "UNAUTHENTICATED") {
-      redirect(`/${locale}/login?callbackUrl=/${locale}/admin`);
+    if (isDomainError(error)) {
+      if (error.code === "UNAUTHENTICATED") {
+        redirect(`/${locale}/login?callbackUrl=/${locale}/admin`);
+      }
+
+      if (error.code === "FORBIDDEN") {
+        return (
+          <main className="min-h-screen bg-muted/30 px-6 py-16">
+            <Card className="mx-auto max-w-lg">
+              <CardHeader className="text-center">
+                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldAlert className="h-6 w-6" />
+                </div>
+                <CardTitle>Acesso negado</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-center">
+                <p className="text-sm leading-6 text-muted-foreground">
+                  Sua conta nao tem permissao para acessar o painel administrativo.
+                </p>
+                <Button asChild variant="outline">
+                  <Link href={`/${locale}`}>Voltar para o site</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </main>
+        );
+      }
     }
+
     throw error;
   }
 
