@@ -11,6 +11,7 @@ RT-015B DONE: seed de producao criado e executado manualmente.
 RT-015C-FIX DONE: bug critico de click interception corrigido.
 RT-015C DONE: smoke completo de producao validado pelo Trigger.
 RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao de reserva do usuario implementado sem gateway.
+RT-016B DONE local: Home consolidada no catalogo real; package cards antigos removidos da renderizacao; seed preparado com imagem real sem execucao.
 
 ## O que foi registrado nesta atualizacao
 
@@ -36,13 +37,21 @@ RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao
   - validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; `git diff --check` PASS com avisos LF/CRLF.
   - commit publicado: `799698c feat: polish booking confirmation flow`;
   - smoke de producao validado pelo Trigger: `/pt/tours`, detalhe do tour, criacao de booking, redirect para `/pt/reservas/{bookingId}`, pagina de confirmacao, mensagem de pre-reserva/manual confirmation, listagem `/pt/reservas`, link "Ver detalhes", payment status sem enum cru e listagem admin de bookings funcional.
+- RT-016B:
+  - removida da Home a renderizacao da secao legada que continha package cards apontando para contato;
+  - componente legado removido por nao estar mais referenciado e conter os cards antigos;
+  - `ReservationsSection`/`Passeios disponiveis` permanece como catalogo real principal;
+  - `/pt/tours` segue como catalogo oficial completo;
+  - seed preparado para usar `/images/trips/imagem-morro-pao-de-acucar.jpg` no tour existente;
+  - seed nao executado; Neon nao tocado; sem schema, migration, gateway, admin, auth/env/provider;
+  - validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; build local registrou `ECONNREFUSED` Prisma em `/api/trips`/sitemap por DB local indisponivel, com exit code 0.
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `799698c`.
+- GitHub `main`: `76ea025`.
 - Vercel production: RT-016A validada pelo Trigger com commit `799698c`.
 - Neon production: 1 Trip publicada, 1 TripSchedule OPEN (29/07/2026), 1 Booking de teste (CANCELED apos smoke).
-- Working tree: limpa apos commit/push da RT-016A.
+- Working tree: contem alteracoes locais da RT-016B aguardando revisao/commit.
 
 ## Evidencias importantes
 
@@ -50,6 +59,7 @@ RT-016A DONE remoto + production smoke validated: polish do fluxo de confirmacao
 - `prisma/seed.ts`: seed idempotente com `upsert` em IDs fixos; sem `deleteMany`; sem migration.
 - `paymentStatus` nao e alterado pelo cancelamento admin (confirmado em smoke).
 - RT-016A nao inicia checkout nem promete pagamento online; pagamento aparece como etapa manual a combinar com a equipe.
+- RT-016B nao executou seed; apenas preparou `prisma/seed.ts` para proxima execucao autorizada.
 - Nenhuma migration executada.
 - Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
 

@@ -679,3 +679,28 @@ Notas operacionais:
   - "Ver detalhes" abre o detalhe da reserva;
   - payment status nao aparece mais como enum cru `UNPAID`;
   - listagem admin de bookings permanece funcional.
+
+## RT-016B Remove Confusing Package Cards and Promote Real Catalog
+
+Estado: DONE local
+
+Objetivo: remover da Home os cards comerciais antigos que pareciam tours reais, mas apontavam para contato, mantendo `Passeios disponiveis` como caminho principal para catalogo real, detalhe e reserva.
+
+Tarefas:
+
+- RT-016B.1 Remover renderizacao da secao legada de package cards na Home e excluir o componente legado nao referenciado. Estado: DONE.
+- RT-016B.2 Manter `ReservationsSection` e `Passeios disponiveis` como catalogo real principal. Estado: DONE.
+- RT-016B.3 Preparar seed do tour existente para usar imagem real local. Estado: DONE.
+- RT-016B.4 Atualizar documentacao operacional. Estado: DONE.
+
+Criterios de aceite: Home nao mostra mais os cards comerciais antigos apontando para contato; `/tours` segue como catalogo oficial; seed fica preparado com imagem real sem execucao; nenhuma mudanca de schema/migration/gateway/admin/auth/env.
+Dependencias: RT-016A.
+Risco: baixo.
+Evidencia esperada: `app/[locale]/(public)/page.tsx` nao importa/renderiza a secao legada; componente legado removido; `prisma/seed.ts` usa `/images/trips/imagem-morro-pao-de-acucar.jpg`.
+
+Notas operacionais:
+
+- O componente legado foi removido porque continha cards antigos apontando para contato e nao era mais referenciado pela Home.
+- Imagem escolhida para o seed: `/images/trips/imagem-morro-pao-de-acucar.jpg`, por ser a imagem real local mais proxima de paisagem turistica do Rio para o tour Cristo/Dona Marta.
+- Seed nao foi executado; Neon nao foi tocado.
+- Validacoes locais: `npm.cmd run lint` PASS com warning pre-existente em `components/mobile-menu.tsx`; `npm.cmd run typecheck` PASS; `npm.cmd run build` PASS fora do sandbox; build local registrou `ECONNREFUSED` Prisma em `/api/trips`/sitemap por DB local indisponivel, com exit code 0.

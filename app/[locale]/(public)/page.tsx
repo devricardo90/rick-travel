@@ -8,10 +8,6 @@ const Testimonials = dynamic(() => import("@/components/testimonials"), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
 
-const Features = dynamic(() => import("@/components/features-1"), {
-    loading: () => <div className="section-spacing h-80 animate-pulse" />,
-});
-
 const FAQsTwo = dynamic(() => import("@/components/faqs-2"), {
     loading: () => <div className="section-spacing h-96 animate-pulse" />,
 });
@@ -86,10 +82,6 @@ export default function Home() {
                 <div className="pointer-events-none absolute inset-x-0 top-[30rem] h-px bg-white/8" />
 
                 <ReservationsSection />
-
-                <FadeInSection delay={0.15}>
-                    <Features />
-                </FadeInSection>
 
                 <FadeInSection delay={0.2}>
                     <Testimonials />

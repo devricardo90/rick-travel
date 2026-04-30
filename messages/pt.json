@@ -20,23 +20,6 @@
             "myBookings": "Minhas reservas",
             "availableTrips": "Passeios disponíveis"
         },
-        "Features": {
-            "title": "Nossos Tours Exclusivos no Rio de Janeiro",
-            "subtitle": "Escolha o pacote ideal para sua viagem e descubra as belezas do Rio de Janeiro com guias credenciados e experiências personalizadas.",
-            "package1": {
-                "title": "Rio Essencial – 1 Dia",
-                "description": "Conheça os principais cartões-postais do Rio de Janeiro em um dia completo. Cristo Redentor, Pão de Açúcar, praias icônicas e pontos históricos, tudo com transporte incluso e acompanhamento de guia credenciado Cadastur."
-            },
-            "package2": {
-                "title": "Rio Completo – 2 Dias",
-                "description": "Explore o melhor do Rio de Janeiro em dois dias intensos de passeios guiados. Combine visitas aos principais pontos turísticos com experiências culturais, gastronômicas e atividades exclusivas."
-            },
-            "package3": {
-                "title": "Rio Imersão – 3 Dias",
-                "description": "Imersão completa no Rio de Janeiro com três dias de passeios exclusivos e personalizados. Roteiro completo, transporte privado, acompanhamento multilíngue e experiência premium."
-            },
-            "requestQuote": "Solicitar orçamento"
-        },
         "Testimonials": {
             "title": "Avaliações e Depoimentos",
             "subtitle": "Experiências reais de clientes que descobriram o Rio de Janeiro com a Rick Travel.",

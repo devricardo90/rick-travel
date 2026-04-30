@@ -20,23 +20,6 @@
             "myBookings": "Mina Bokningar",
             "availableTrips": "Tillgängliga Turer"
         },
-        "Features": {
-            "title": "Våra Exklusiva Turer i Rio de Janeiro",
-            "subtitle": "Välj det perfekta paketet för din resa och upptäck skönheterna i Rio de Janeiro med licensierade guider och personliga upplevelser.",
-            "package1": {
-                "title": "Essentiella Rio – 1 Dag",
-                "description": "Besök Rio de Janeiros huvudattraktioner på en hel dag. Kristusstatyn, Sockertoppen, ikoniska stränder och historiska platser, allt med inkluderad transport och en Cadastur-licensierad guide."
-            },
-            "package2": {
-                "title": "Kompletta Rio – 2 Dagar",
-                "description": "Utforska det bästa av Rio de Janeiro på två intensiva dagar av guidade turer. Kombinera besök till stora turistattraktioner med kulturella, gastronomiska och exklusiva aktiviteter."
-            },
-            "package3": {
-                "title": "Rio Immersion – 3 Dagar",
-                "description": "Full fördjupning i Rio de Janeiro med tre dagar av exklusiva och personliga turer. Komplett resplan, privat transport, flerspråkig vägledning och premiumupplevelse."
-            },
-            "requestQuote": "Begär Offert"
-        },
         "Testimonials": {
             "title": "Recensioner och Vittnesmål",
             "subtitle": "Verkliga upplevelser från kunder som upptäckte Rio de Janeiro med Rick Travel.",

@@ -28,6 +28,7 @@ dotenv.config()
 // Changing these values would create NEW records. Do not rename.
 const SEED_TRIP_ID = 'seed-001-cristo-dona-marta'
 const SEED_SCHEDULE_ID = 'seed-001-schedule-001'
+const SEED_TRIP_IMAGE_URL = '/images/trips/imagem-morro-pao-de-acucar.jpg'
 
 /** Returns a date 90 days from now at 12:00 UTC. */
 function futureScheduleDate(): Date {
@@ -53,10 +54,11 @@ async function main() {
     // --- Trip ---
     const trip = await prisma.trip.upsert({
       where: { id: SEED_TRIP_ID },
-      // On re-run: only re-publish. Title/price/city are not overwritten
-      // to avoid clobbering any manual edits made via API.
+      // On re-run: re-publish and keep the seeded image on a real local asset.
+      // Title/price/city are not overwritten to avoid clobbering manual edits.
       update: {
         isPublished: true,
+        imageUrl: SEED_TRIP_IMAGE_URL,
       },
       create: {
         id: SEED_TRIP_ID,
@@ -75,7 +77,7 @@ async function main() {
         city: 'Rio de Janeiro',
         location: 'Corcovado / Morro Dona Marta, Rio de Janeiro',
         priceCents: 24500,
-        imageUrl: '/images/placeholder.svg',
+        imageUrl: SEED_TRIP_IMAGE_URL,
         isPublished: true,
         durationDays: 1,
         physicalLevel: PhysicalLevel.MODERATE,

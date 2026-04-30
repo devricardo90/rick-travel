@@ -20,23 +20,6 @@
             "myBookings": "My Bookings",
             "availableTrips": "Available Tours"
         },
-        "Features": {
-            "title": "Our Exclusive Tours in Rio de Janeiro",
-            "subtitle": "Choose the perfect package for your trip and discover the beauties of Rio de Janeiro with licensed guides and personalized experiences.",
-            "package1": {
-                "title": "Essential Rio – 1 Day",
-                "description": "Visit Rio de Janeiro's main landmarks in a full day. Christ the Redeemer, Sugarloaf Mountain, iconic beaches, and historical sites, all with included transportation and a Cadastur-licensed guide."
-            },
-            "package2": {
-                "title": "Complete Rio – 2 Days",
-                "description": "Explore the best of Rio de Janeiro in two intense days of guided tours. Combine visits to major tourist attractions with cultural, gastronomic, and exclusive activities."
-            },
-            "package3": {
-                "title": "Rio Immersion – 3 Days",
-                "description": "Full immersion in Rio de Janeiro with three days of exclusive and personalized tours. Complete itinerary, private transportation, multilingual guidance, and premium experience."
-            },
-            "requestQuote": "Request a Quote"
-        },
         "Testimonials": {
             "title": "Reviews and Testimonials",
             "subtitle": "Real experiences from clients who discovered Rio de Janeiro with Rick Travel.",
