@@ -9,8 +9,9 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 **Executado por:** Claude Code (seed em producao + validacoes)
 **Ambiente:** `https://rick-travel.vercel.app`
-**Commit:** `0938b1e feat: make production tour seed idempotent for Pão de Açúcar`
-**Status:** DONE + Production Smoke PASS
+**Commit de seed:** `0938b1e feat: make production tour seed idempotent for Pao de Acucar`
+**Commit documental final:** `8f4061b docs: record RT-019A production seed validation`
+**Status:** Remote DONE + Production Seed/Smoke PASS
 
 **Objetivo:**
 Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
@@ -35,6 +36,8 @@ Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, seg
 - Nenhuma migration executada.
 - Nenhuma alteracao de schema.
 - Nenhuma alteracao manual direta no banco.
+- Seed executado uma unica vez para RT-019A; nao foi executado novamente apos a documentacao.
+- Nenhuma READY task aberta.
 
 ---
 

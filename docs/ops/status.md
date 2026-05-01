@@ -67,11 +67,11 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-018C DONE: Production Admin Access validation concluída via RT-018D; login ADMIN, rotas admin e visibilidade de booking validados em produção com sucesso.
 - RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking `cmoli78ld000204js1agra4il` visível PASS.
 - RT-018E DONE + Production Smoke PASS: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; smoke em producao validou header `X-Matched-Path: /api/auth/[...all]`, clear cookies e redirect para locale.
-- RT-019A DONE + Production Smoke PASS: Publicar Pao de Acucar com caminho controlado de dados; seed detectou tour existente pelo titulo "Pao de Acucar ao Entardecer" e reutilizou o ID `cmolfs9eu000004l2trz4q8bf`, evitando duplicacao; `isPublished` setado para `true`; imagem correta aplicada; agenda futura criada; `/pt/tours` exibe 2 tours; fluxo de reserva validado; mantida imagem atual do Cristo (`/images/trips/imagem-morro-pao-de-acucar.jpg`) como pendencia visual para task futura.
-- GitHub `main` está em `0938b1e` após RT-019A.
-- Vercel production validada com RT-018E smoke.
+- RT-019A Remote DONE + Production Seed/Smoke PASS: Publicar Pao de Acucar com caminho controlado de dados; seed detectou tour existente pelo titulo "Pao de Acucar ao Entardecer" e reutilizou o ID `cmolfs9eu000004l2trz4q8bf`, evitando duplicacao; `isPublished` setado para `true`; imagem correta aplicada; agenda futura criada; `/pt/tours` exibe 2 tours; fluxo de reserva validado; mantida imagem atual do Cristo (`/images/trips/imagem-morro-pao-de-acucar.jpg`) como pendencia visual para task futura.
+- GitHub `main` e repositorio local estao sincronizados em `8f4061b docs: record RT-019A production seed validation`.
+- Vercel production validada com RT-018E smoke e RT-019A production seed/smoke.
 
-- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (status CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
+- Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (status CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 - Neon production: usuario `ricardo@gmail.com` com `role = ADMIN` e `emailVerified = true` (alteracao manual anterior).
 
 ## Novo status geral do projeto
@@ -92,7 +92,7 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /pt/tours`: `200`.
 - `GET /pt/quem-somos`: `200`.
 - `GET /pt/contato`: `200`.
-- `GET /api/trips`: `200`, retorno com 1 trip publicada (Cristo Redentor + Mirante Dona Marta).
+- `GET /api/trips`: `200`; apos RT-019A, catalogo publico validado com 2 tours publicados.
 - RT-017C production smoke manual PASS: novo tour "Pao de Acucar ao Entardecer" criado como rascunho no admin e ausente do catalogo publico `/pt/tours`, confirmando `isPublished=false`.
 - RT-018A production product smoke: Home PASS; `/pt/tours` PASS; detalhe do tour publicado PASS; login/register PASS; reserva publica PASS ate confirmacao manual; checkout externo nao iniciado; catalogo publico contem 1 tour publicado.
 - RT-018E production smoke PASS: logout agora invalida sessao no banco e limpa cookies via Better Auth nativo; header `X-Matched-Path: /api/auth/[...all]` confirmado em producao; `/api/auth/sign-out` retorna `{"success":true}`; redirect para locale-aware URL PASS; `/pt/admin` redireciona para login apos logout PASS.
@@ -104,8 +104,9 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 
 ### Curto prazo
 
-- definir proxima tarefa READY em Discussion Gate;
-- candidatos planejados: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`, ainda sem READY aberta.
+- nenhuma READY task aberta nesta pausa;
+- proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
+- RT-021A - Revisao de UX, Navegacao e Busca Publica: ideia futura/recomendada, nao READY. Escopo futuro: logo -> home; contato -> contato; menus desktop/mobile; rotas com locale; cards de tour; detalhe do tour; booking CTA; filtro da pagina Nossos Tours; busca da hero.
 
 
 ### Medio prazo

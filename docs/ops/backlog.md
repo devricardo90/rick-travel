@@ -890,7 +890,7 @@ Evidencia: Login Status 200; Rotas Status 200; Booking visível: True.
 Estado: DONE
 Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
 Criterios de aceite: seed atualizado de forma idempotente com logica de Semantic Match para evitar duplicacao; Pao de Acucar publicado com imagem correta e agenda futura; Cristo Redentor mantido com imagem atual (sem placeholder); lint/typecheck/build PASS; producao validada com 2 tours no catalogo.
-Evidencia: Production Smoke PASS; seed detectou tour existente `cmolfs9eu000004l2trz4q8bf` pelo titulo.
+Evidencia: Remote DONE + Production Seed/Smoke PASS; seed detectou tour existente `cmolfs9eu000004l2trz4q8bf` pelo titulo; Pao de Acucar publicado em producao; `/pt/tours` validado com 2 tours; sem duplicacao; seed executado uma unica vez e nao executado novamente apos documentacao; commit topo `8f4061b`.
 
 ## RT-018E Fix Logout Flow
 
@@ -909,13 +909,15 @@ Tarefas:
 Criterios de aceite: logout invalida sessao no banco; cookie limpo; redirect para locale correto; `/pt/admin` apos logout redireciona para login; refresh nao restaura sessao.
 Dependencias: RT-018D.
 Risco: alto.
-Evidencia: commit `837694b fix: correct logout flow`; lint/typecheck/test/build PASS; push para `origin/main`; validacao em producao pendente pelo Trigger.
+Evidencia: commit `837694b fix: correct logout flow`; lint/typecheck/test/build PASS; push para `origin/main`; Production Smoke PASS validado em producao.
 
 Notas operacionais:
 
 - Causa raiz: rota `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth, limpando apenas cookies sem invalidar a sessao no banco. Com a rota customizada removida, `authClient.signOut()` chama o handler Better Auth que invalida a sessao no banco via `nextCookies()`.
 - Nenhum schema, seed, migration, deploy manual, banco manual, imagem, tour ou checkout foi alterado.
 
-## Proxima READY
+## Proxima Discussion Gate
 
-Trigger validar RT-018E smoke em producao. Proxima READY a definir em Discussion Gate. Candidatas: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`. Nao abrir nova READY automaticamente.
+Nenhuma READY task aberta nesta pausa. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
+
+RT-021A - Revisao de UX, Navegacao e Busca Publica: futura/recomendada, nao READY. Escopo futuro: logo -> home; contato -> contato; menus desktop/mobile; rotas com locale; cards de tour; detalhe do tour; booking CTA; filtro da pagina Nossos Tours; busca da hero.

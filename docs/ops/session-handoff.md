@@ -22,7 +22,7 @@ RT-018B DONE remoto + production non-admin smoke validated: Fix Admin Non-Admin 
 RT-018C DONE remoto + production admin smoke validated: Production Admin Access validation concluída via RT-018D.
 RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking de auditoria visível PASS.
 ## RT-019A DONE: Publicar Pao de Acucar com caminho controlado de dados
-Estado: DONE + Production Smoke PASS
+Estado: Remote DONE + Production Seed/Smoke PASS
 Objetivo: Fazer o tour Pao de Acucar aparecer no catalogo publico de forma controlada, segura e reproduzivel.
 Evidencias:
 - Seed executado em producao: detectou tour existente pelo titulo e reutilizou ID `cmolfs9eu000004l2trz4q8bf`.
@@ -30,7 +30,7 @@ Evidencias:
 - Pao de Acucar: publicado, imagem correta aplicada, agenda futura ativa (`03/08/2026`).
 - Fluxo de reserva: validado ate tela de confirmacao.
 - Cristo Redentor: mantida imagem atual para evitar regressao visual de placeholder.
-- Commit final: `0938b1e`.
+- Commit final remoto/documental: `8f4061b docs: record RT-019A production seed validation`.
 
 ## RT-018E: Fix Logout Flow
 - Causa raiz: `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth; apenas limpava cookies sem invalidar sessao no banco.
@@ -39,7 +39,7 @@ Evidencias:
 - `components/mobile-menu.tsx`: `const locale = useLocale()` adicionado no componente; redirect corrigido de `"/"` para `` `/${locale}` ``; import nao utilizado `ShieldCheck` removido.
 - Validacoes locais: lint PASS, typecheck PASS, test PASS (4 arquivos, 15 testes), build PASS, git diff --check PASS.
 - Commit: `837694b fix: correct logout flow` publicado em `origin/main`.
-- Deploy automatico Vercel validado com Production Smoke PASS (RT-018E).
+- Deploy automatico Vercel validado com Production Smoke PASS (RT-018E); nenhuma validacao adicional pendente para encerrar RT-018E.
 
 
 - RT-018D: validacao de acesso ADMIN em producao.
@@ -118,10 +118,10 @@ Evidencias:
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `837694b fix: correct logout flow` (topo apos RT-018E).
-- Vercel production: deploy automatico esperado do commit `837694b`; validacao pelo Trigger pendente.
-- Neon production: 1 Trip publicada com imagem real, 1 TripSchedule OPEN renovado, 1 Booking de teste (CANCELED), 1 Trip rascunho "Pao de Acucar ao Entardecer" com 0 agendas, e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
-- Working tree: limpa apos commit e push de RT-018E.
+- GitHub `main` e repositorio local: `8f4061b docs: record RT-019A production seed validation`.
+- Git: working tree limpa e `main` sincronizada com `origin/main`.
+- Vercel production: RT-018E Production Smoke PASS; RT-019A Production Seed/Smoke PASS.
+- Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 
 ## Evidencias importantes
 
@@ -132,14 +132,14 @@ Evidencias:
 - RT-016B nao executou seed; apenas preparou `prisma/seed.ts` para proxima execucao autorizada.
 - RT-018B corrigiu o bug P1 identificado na RT-018A; smoke em producao confirmou usuario comum com "Acesso negado" e sem 500.
 - Nenhuma migration executada.
-- Seed executado uma vez manualmente pelo Trigger; nao deve ser executado novamente.
+- Seed de RT-019A executado uma unica vez; nao foi executado novamente apos a documentacao.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Validacao em producao do fluxo de logout pelo Trigger (login usuario comum → logout → sessao encerrada; login ADMIN → logout → sessao encerrada; `/pt/admin` apos logout → redirect para login).
-- Avaliar proximas tasks em decisao futura do Trigger, sem nova READY aberta nesta atualizacao. Nao abrir RT-017D ou RT-017E como READY automaticamente.
+- Nenhuma READY task aberta nesta pausa.
+- Avaliar proximas tasks em Discussion Gate futura, sem abrir RT-017D, RT-017E ou RT-021A automaticamente.
 
 ## Proxima acao recomendada
 
-Trigger validar o fluxo de logout em producao (RT-018E smoke): login usuario comum, logout, tentar `/pt/admin`, verificar redirect; repetir com ADMIN. Apos validacao, proxima READY a definir em Discussion Gate. Candidatas: RT-017D (edicao de tours), RT-017E (agendas), follow-up de imagem/conteudo e investigacao do hydration `#418`.
+Discussion Gate: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero. Depois dessa task de admin, considerar RT-021A - Revisao de UX, Navegacao e Busca Publica apenas como futura/recomendada, nao READY; escopo futuro: logo -> home, contato -> contato, menus desktop/mobile, rotas com locale, cards de tour, detalhe do tour, booking CTA, filtro da pagina Nossos Tours e busca da hero.
