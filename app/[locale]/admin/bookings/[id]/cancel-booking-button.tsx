@@ -30,7 +30,7 @@ export function CancelBookingButton({ bookingId, locale }: CancelBookingButtonPr
     setError(null);
 
     startTransition(async () => {
-      const result = await cancelBookingByAdminAction(bookingId);
+      const result = await cancelBookingByAdminAction(bookingId, locale);
 
       if (result.error) {
         setError(result.error);

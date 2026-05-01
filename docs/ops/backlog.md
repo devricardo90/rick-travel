@@ -930,6 +930,30 @@ Escopo executado:
 Criterios de aceite: logo, contato, tours, cards e detalhe preservam locale; Hero Search nao gera locale duplicado; busca falsa removida/corrigida; Nossos Tours sem filtro inutil; card nao tenta reservar sem data; footer sem controles falsos; lint/typecheck/test/build/git diff --check PASS. Production UX Smoke PASS em `69379fe`: Hero Search sem `/pt/pt`, `?search=Pao` filtra Pao de Acucar e exclui Cristo, busca sem resultado mostra empty state generico aceitavel, detalhes dos 2 tours `200`, CTA de reserva anonima redireciona para login com redirect seguro sem criar booking, menu desktop/mobile preserva locale.
 Restricoes mantidas: sem admin, auth/logout, seed, banco, migration, pagamento, schema, deploy manual ou regra de booking.
 
+## RT-022A Admin Booking Actions
+
+Estado: REVIEW
+
+Objetivo: tornar o fluxo operacional basico de reservas no admin seguro para o ciclo PENDING -> CONFIRMED/CANCELED, sem tocar em checkout, pagamento, schema, seed, tour ou schedule.
+
+Decisao: implementar acoes de reserva primeiro. Admin tour edit/publish, schedule management e hard delete ficam fora desta task.
+
+Tarefas:
+
+- RT-022A.1 Promover a task como unica ativa e confirmar repo limpo/sincronizado. Estado: DONE.
+- RT-022A.2 Adicionar `confirmBookingByAdmin` no service central de reservas. Estado: DONE local.
+- RT-022A.3 Adicionar Server Action admin protegida por `requireAdminSession()`. Estado: DONE local.
+- RT-022A.4 Exibir no detalhe apenas acoes validas por status. Estado: DONE local.
+- RT-022A.5 Alinhar copy/listagem/status do admin. Estado: DONE local.
+- RT-022A.6 Adicionar/atualizar testes aplicaveis. Estado: DONE local.
+- RT-022A.7 Rodar lint/typecheck/test/build/git diff --check e smoke admin possivel. Estado: DONE automatizado; smoke manual mutavel BLOCKED sem ambiente local/admin controlado (`check:db` carregou `.env` com banco remoto/gerenciado; `.env.local` nao possui credenciais admin).
+
+Criterios de aceite: ADMIN confirma apenas reserva PENDING; ADMIN cancela apenas PENDING/CONFIRMED; CANCELED nao mostra acoes; CONFIRMED nao mostra confirmar novamente; transicoes invalidas bloqueadas server-side; confirmar nao altera `paymentStatus`; cancelar nao aciona refund; sem schema, migration, seed, banco manual, auth, payment, checkout, tour, schedule ou deploy manual.
+
+Evidencia atual: implementacao local sem commit/push; review aceita somente como REVIEW, nao DONE; lint/typecheck/test/build/git diff --check PASS; smoke manual de confirmar/cancelar BLOCKED para evitar alteracao de banco remoto/gerenciado e porque nao ha credenciais admin locais em `.env.local`.
+
+Proximo passo obrigatorio: preparar ambiente local/admin controlado para smoke mutavel com dados de teste ou abrir task separada de validacao para verificar com seguranca o ciclo admin de reserva.
+
 ## Proxima Discussion Gate
 
-Nenhuma READY task aberta apos RT-021A Production UX Smoke PASS. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
+Nenhuma nova READY task alem da RT-022A. Proxima Discussion Gate recomendada apos RT-022A: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.

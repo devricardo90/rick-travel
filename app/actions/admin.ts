@@ -1,12 +1,18 @@
 'use server'
 
 import { requireAdminSession } from "@/lib/authz";
+import { isDomainError } from "@/lib/errors/domain-error";
 import { revalidatePath } from "next/cache";
 import {
     getRecommendedBookingEmailTemplate,
     sendBookingEmail,
 } from "@/lib/services/email.service";
-import { listAllBookings, getBookingById, cancelBookingByAdmin } from "@/lib/services/booking.service";
+import {
+    listAllBookings,
+    getBookingById,
+    cancelBookingByAdmin,
+    confirmBookingByAdmin,
+} from "@/lib/services/booking.service";
 import { listAllContacts, markContactAsRead } from "@/lib/services/contact.service";
 import { createTripRecord } from "@/lib/services/trip.service";
 import { TripInput } from "@/lib/schemas";
@@ -65,16 +71,41 @@ export async function getBookingByIdAction(id: string) {
  * Cancela uma reserva pelo admin.
  * Somente PENDING e CONFIRMED. Nao altera paymentStatus. (RT-014B).
  */
-export async function cancelBookingByAdminAction(id: string) {
+export async function cancelBookingByAdminAction(id: string, locale?: string) {
     await requireAdminSession();
     try {
         await cancelBookingByAdmin(id);
         revalidatePath(`/admin/bookings/${id}`);
         revalidatePath("/admin/bookings");
+        if (locale) {
+            revalidatePath(`/${locale}/admin/bookings/${id}`);
+            revalidatePath(`/${locale}/admin/bookings`);
+        }
         return { success: true };
     } catch (error) {
         console.error("Error canceling booking:", error);
-        return { error: "Falha ao cancelar reserva." };
+        return { error: isDomainError(error) ? error.message : "Falha ao cancelar reserva." };
+    }
+}
+
+/**
+ * Confirma uma reserva pelo admin.
+ * Somente PENDING. Nao altera paymentStatus. (RT-022A).
+ */
+export async function confirmBookingByAdminAction(id: string, locale?: string) {
+    await requireAdminSession();
+    try {
+        await confirmBookingByAdmin(id);
+        revalidatePath(`/admin/bookings/${id}`);
+        revalidatePath("/admin/bookings");
+        if (locale) {
+            revalidatePath(`/${locale}/admin/bookings/${id}`);
+            revalidatePath(`/${locale}/admin/bookings`);
+        }
+        return { success: true };
+    } catch (error) {
+        console.error("Error confirming booking:", error);
+        return { error: isDomainError(error) ? error.message : "Falha ao confirmar reserva." };
     }
 }
 

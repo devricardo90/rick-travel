@@ -1,6 +1,6 @@
 # Session Handoff - Rick Travel
 
-Data: 2026-04-30
+Data: 2026-05-01
 
 ## Contexto
 
@@ -118,9 +118,9 @@ Evidencias:
 
 ## Estado atual do repositorio
 
-- GitHub `main`: `c7314f2 docs: align Rick Travel handoff after RT-019A`.
+- GitHub `main`: `8b3c2cc docs: record RT-021A production UX smoke`.
 - RT-021A: Remote DONE + Production UX Smoke PASS no commit `69379fe fix: polish public tour navigation UX`.
-- GitHub `main` esperado ao encerrar: topo `69379fe` sincronizado apos commit documental de smoke, se autorizado para push posteriormente.
+- RT-022A: REVIEW local, nao DONE, sem commit; lint/typecheck/test/build/git diff --check PASS; smoke manual mutavel BLOCKED porque `check:db` carregou `.env` com banco remoto/gerenciado e `.env.local` nao possui credenciais admin.
 - Vercel production: RT-018E Production Smoke PASS; RT-019A Production Seed/Smoke PASS.
 - Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 
@@ -135,13 +135,14 @@ Evidencias:
 - Nenhuma migration executada.
 - Seed de RT-019A executado uma unica vez; nao foi executado novamente apos a documentacao.
 - RT-021A corrigiu UX publica: Hero Search locale-aware sem locale duplicado, busca real por `search`, Nossos Tours sem filtro lateral, card levando ao detalhe/agenda, footer sem links falsos; lint/typecheck/test/build/git diff --check PASS; Production UX Smoke PASS.
+- RT-022A promovida pelo Trigger como unica task ativa; implementacao local em REVIEW, nao DONE, adiciona confirmacao admin de reservas pendentes e mantem cancelamento admin de pendentes/confirmadas; sem commit/push ate autorizacao.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Nenhuma READY task aberta apos RT-021A Production UX Smoke PASS.
+- RT-022A e a unica task ativa; nenhuma outra READY aberta.
 - Observacao futura opcional: empty state de busca sem resultado usa copy generica aceitavel; nao corrigir microcopy agora.
 
 ## Proxima acao recomendada
 
-Com RT-021A encerrada localmente, proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
+Preparar ambiente local/admin controlado para smoke mutavel da RT-022A com dados de teste ou abrir task separada de validacao; manter sem commit/push ate autorizacao explicita. Depois da RT-022A, discutir admin tour edit/publish como task separada.

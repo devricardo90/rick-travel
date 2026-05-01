@@ -14,6 +14,12 @@ export default async function AdminBookingsPage({
 }) {
   const { locale } = await params;
   let bookings = [];
+
+  const statusLabels: Record<string, string> = {
+    PENDING: "Pendente",
+    CONFIRMED: "Confirmada",
+    CANCELED: "Cancelada",
+  };
   
   try {
     bookings = await getBookingsAction();
@@ -40,7 +46,7 @@ export default async function AdminBookingsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle>Todas as Reservas (Somente Leitura)</CardTitle>
+          <CardTitle>Todas as Reservas</CardTitle>
         </CardHeader>
         <CardContent>
           {bookings.length === 0 ? (
@@ -91,7 +97,7 @@ export default async function AdminBookingsPage({
                           booking.status === 'CANCELED' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' :
                           'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
                         }`}>
-                          {booking.status}
+                          {statusLabels[booking.status] ?? booking.status}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right">

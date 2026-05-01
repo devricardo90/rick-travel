@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLocalizedField } from "@/lib/localized-field";
 import { ArrowLeft } from "lucide-react";
 import { CancelBookingButton } from "./cancel-booking-button";
+import { ConfirmBookingButton } from "./confirm-booking-button";
 
 /**
  * RT-013G: Admin Booking Detail Read-Only
@@ -75,6 +76,19 @@ export default async function AdminBookingDetailPage({
     REFUNDED: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
   };
 
+  const statusLabels: Record<string, string> = {
+    PENDING: "Pendente",
+    CONFIRMED: "Confirmada",
+    CANCELED: "Cancelada",
+  };
+
+  const paymentStatusLabels: Record<string, string> = {
+    UNPAID: "A combinar",
+    PAID: "Pago",
+    REFUNDED: "Estornado",
+    PARTIAL: "Parcial",
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -99,19 +113,24 @@ export default async function AdminBookingDetailPage({
                 statusColors[booking.status] ?? statusColors.PENDING
               }`}
             >
-              {booking.status}
+              {statusLabels[booking.status] ?? booking.status}
             </span>
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
                 paymentStatusColors[booking.paymentStatus] ?? paymentStatusColors.UNPAID
               }`}
             >
-              {booking.paymentStatus}
+              {paymentStatusLabels[booking.paymentStatus] ?? booking.paymentStatus}
             </span>
           </div>
-          {(booking.status === "PENDING" || booking.status === "CONFIRMED") && (
-            <CancelBookingButton bookingId={booking.id} locale={locale} />
-          )}
+          <div className="flex flex-col items-end gap-2 sm:flex-row">
+            {booking.status === "PENDING" && (
+              <ConfirmBookingButton bookingId={booking.id} locale={locale} />
+            )}
+            {(booking.status === "PENDING" || booking.status === "CONFIRMED") && (
+              <CancelBookingButton bookingId={booking.id} locale={locale} />
+            )}
+          </div>
         </div>
       </div>
 

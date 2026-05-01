@@ -79,7 +79,7 @@ export default async function AdminPage({
               <li>Funcionalidades de leitura (Read-Only) para Bookings e Contacts: Ativas</li>
               <li>Ação de marcar contato como lido: Ativa</li>
               <li>Proteção de rotas via Better Auth + RBAC: Ativa</li>
-              <li>Ações de escrita em Reservas (Confirmar/Cancelar): Pendentes</li>
+              <li>Ações de Reservas: confirmar pendentes e cancelar pendentes/confirmadas</li>
             </ul>
           </div>
         </CardContent>

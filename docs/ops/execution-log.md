@@ -5,6 +5,41 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-05-01 - RT-022A Admin Booking Actions
+
+**Executado por:** Codex (implementacao local)
+**Ambiente:** local; sem deploy manual
+**Base remota:** `8b3c2cc docs: record RT-021A production UX smoke`
+**Status:** REVIEW local, sem commit/push
+
+**Objetivo:**
+Tornar o fluxo operacional basico de reservas no admin seguro para confirmar reservas pendentes e cancelar reservas pendentes/confirmadas.
+
+**Resultado local:**
+- Adicionado `confirmBookingByAdmin` no service de reservas.
+- Adicionada Server Action admin protegida por `requireAdminSession()` para confirmar reserva.
+- Detalhe admin passa a exibir confirmar apenas para PENDING e cancelar apenas para PENDING/CONFIRMED.
+- Listagem/detalhe/admin copy alinhados para nao tratar a area de reservas como somente leitura.
+- Testes de service adicionados para confirmacao admin e transicoes basicas.
+
+**Validacoes locais:**
+- `npm.cmd run lint`: PASS.
+- `npm.cmd run typecheck`: PASS.
+- `npm.cmd run test`: PASS fora do sandbox apos `spawn EPERM` no sandbox; 4 arquivos, 18 testes.
+- `npm.cmd run build`: PASS fora do sandbox apos `readlink EPERM` no sandbox; warning conhecido de workspace root por multiplos lockfiles.
+- `git diff --check`: PASS.
+- Smoke manual mutavel de confirmar/cancelar: BLOCKED; `check:db` carregou `.env` com banco remoto/gerenciado e `.env.local` nao possui credenciais admin. Nao foi executado contra producao para evitar alteracao de banco.
+
+**Restricoes mantidas:**
+- Nenhum schema alterado.
+- Nenhuma migration executada.
+- Nenhum seed executado.
+- Nenhum banco alterado manualmente.
+- Nenhum pagamento, checkout, auth, tour, schedule ou deploy manual alterado.
+- Nenhuma nova READY task aberta.
+
+---
+
 ## 2026-05-01 - RT-021A Revisao de UX, Navegacao e Busca Publica
 
 **Executado por:** Codex (fixes locais + validacoes)

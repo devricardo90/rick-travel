@@ -128,6 +128,46 @@ export async function cancelBookingByAdmin(bookingId: string) {
     });
 }
 
+/**
+ * Confirma uma reserva pelo admin. Somente PENDING pode ser confirmado.
+ * Nao altera paymentStatus. Nao envia e-mail. Nao registra analytics.
+ */
+export async function confirmBookingByAdmin(bookingId: string) {
+    const normalizedId = typeof bookingId === "string" ? bookingId.trim() : "";
+
+    if (!normalizedId) {
+        throw new DomainError("bookingId invalido", {
+            code: "INVALID_BOOKING_ID",
+            status: 400,
+        });
+    }
+
+    const booking = await prisma.booking.findUnique({
+        where: { id: normalizedId },
+        select: { id: true, status: true },
+    });
+
+    if (!booking) {
+        throw new DomainError("Reserva nao encontrada", {
+            code: "BOOKING_NOT_FOUND",
+            status: 404,
+        });
+    }
+
+    if (booking.status !== "PENDING") {
+        throw new DomainError("Confirmacao permitida apenas para reservas pendentes.", {
+            code: "INVALID_STATUS_FOR_CONFIRMATION",
+            status: 400,
+        });
+    }
+
+    return prisma.booking.update({
+        where: { id: normalizedId },
+        data: { status: "CONFIRMED" },
+        select: { id: true, status: true, paymentStatus: true },
+    });
+}
+
 export async function createBookingForUser(userId: string, input: CreateBookingInput) {
     const tripId = typeof input.tripId === "string" ? input.tripId.trim() : "";
     const scheduleId = typeof input.scheduleId === "string" ? input.scheduleId.trim() : undefined;

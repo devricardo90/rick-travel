@@ -21,7 +21,12 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { DomainError } from "@/lib/errors/domain-error";
-import { cancelBookingForUser, createBookingForUser } from "@/lib/services/booking.service";
+import {
+  cancelBookingByAdmin,
+  cancelBookingForUser,
+  confirmBookingByAdmin,
+  createBookingForUser,
+} from "@/lib/services/booking.service";
 
 describe("booking.service", () => {
   beforeEach(() => {
@@ -150,5 +155,62 @@ describe("booking.service", () => {
     await expect(cancelBookingForUser("user-1", "booking-1")).rejects.toMatchObject({
       code: "CANCELLATION_WINDOW_EXPIRED",
     } satisfies Partial<DomainError>);
+  });
+
+  it("confirms pending bookings without changing payment status", async () => {
+    prismaMock.booking.findUnique.mockResolvedValue({
+      id: "booking-1",
+      status: "PENDING",
+    });
+    prismaMock.booking.update.mockResolvedValue({
+      id: "booking-1",
+      status: "CONFIRMED",
+      paymentStatus: "UNPAID",
+    });
+
+    const result = await confirmBookingByAdmin(" booking-1 ");
+
+    expect(prismaMock.booking.update).toHaveBeenCalledWith({
+      where: { id: "booking-1" },
+      data: { status: "CONFIRMED" },
+      select: { id: true, status: true, paymentStatus: true },
+    });
+    expect(result).toMatchObject({
+      status: "CONFIRMED",
+      paymentStatus: "UNPAID",
+    });
+  });
+
+  it("blocks admin confirmation unless the booking is pending", async () => {
+    prismaMock.booking.findUnique.mockResolvedValue({
+      id: "booking-1",
+      status: "CONFIRMED",
+    });
+
+    await expect(confirmBookingByAdmin("booking-1")).rejects.toMatchObject({
+      code: "INVALID_STATUS_FOR_CONFIRMATION",
+    } satisfies Partial<DomainError>);
+    expect(prismaMock.booking.update).not.toHaveBeenCalled();
+  });
+
+  it("allows admin cancellation for pending and confirmed bookings only", async () => {
+    prismaMock.booking.findUnique.mockResolvedValueOnce({
+      id: "booking-1",
+      status: "CONFIRMED",
+    });
+    prismaMock.booking.update.mockResolvedValue({
+      id: "booking-1",
+      status: "CANCELED",
+    });
+
+    await expect(cancelBookingByAdmin("booking-1")).resolves.toMatchObject({
+      status: "CANCELED",
+    });
+
+    expect(prismaMock.booking.update).toHaveBeenCalledWith({
+      where: { id: "booking-1" },
+      data: { status: "CANCELED" },
+      select: { id: true, status: true },
+    });
   });
 });
