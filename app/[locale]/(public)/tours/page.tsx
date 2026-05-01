@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import TripList from "@/components/trip-list";
 import { ToursHeader } from "@/components/tours-header";
-import { TourFilters } from "@/components/trips/tour-filters";
 
 function getToursMetadataCopy(locale: string) {
   switch (locale) {
@@ -52,17 +51,14 @@ export async function generateMetadata({
 }
 
 interface ToursPageProps {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
-    minPrice?: string;
-    maxPrice?: string;
-    duration?: string;
-    level?: string;
-    children?: string;
+    search?: string;
   }>;
 }
 
-export default async function ToursPage({ searchParams }: ToursPageProps) {
-  const params = await searchParams;
+export default async function ToursPage({ params, searchParams }: ToursPageProps) {
+  const [{ locale }, query] = await Promise.all([params, searchParams]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#071826] text-white">
@@ -78,15 +74,9 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
       <main className="relative z-10 mx-auto max-w-7xl px-5 pb-20 pt-28 lg:px-12 lg:pt-32">
         <ToursHeader />
 
-        <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-start">
-          <aside className="w-full lg:w-[320px] lg:min-w-[320px]">
-            <div className="sticky top-24">
-              <TourFilters />
-            </div>
-          </aside>
-
-          <section className="min-w-0 flex-1">
-            <TripList searchParams={params} />
+        <div className="mt-10">
+          <section className="min-w-0">
+            <TripList searchParams={query} locale={locale} />
           </section>
         </div>
       </main>

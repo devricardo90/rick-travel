@@ -128,7 +128,7 @@ export function HeroSearch() {
     }, [])
 
     const handleSuggestionClick = (tripId: string) => {
-        router.push(`/${locale}/tours/${tripId}`)
+        router.push(`/tours/${tripId}`)
         setShowSuggestions(false)
         setQuery('')
     }
@@ -137,9 +137,9 @@ export function HeroSearch() {
         event.preventDefault()
 
         if (suggestions.length === 1) {
-            router.push(`/${locale}/tours/${suggestions[0].id}`)
+            router.push(`/tours/${suggestions[0].id}`)
         } else if (query.trim().length >= 2) {
-            router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)
+            router.push({ pathname: '/tours', query: { search: query.trim() } })
         }
 
         setShowSuggestions(false)
@@ -284,7 +284,7 @@ export function HeroSearch() {
 
                                 <button
                                     type="button"
-                                    onClick={() => router.push(`/${locale}/tours?search=${encodeURIComponent(query)}`)}
+                                    onClick={() => router.push({ pathname: '/tours', query: { search: query.trim() } })}
                                     className="mt-1 flex w-full items-center justify-center rounded-2xl border border-white/8 px-4 py-3 text-sm font-semibold text-white/80 transition-colors hover:bg-white/5 hover:text-white"
                                 >
                                     {metaCopy.viewAll}

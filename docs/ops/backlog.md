@@ -916,8 +916,20 @@ Notas operacionais:
 - Causa raiz: rota `app/api/auth/sign-out/route.ts` interceptava POST `/api/auth/sign-out` antes do handler `[...all]` do Better Auth, limpando apenas cookies sem invalidar a sessao no banco. Com a rota customizada removida, `authClient.signOut()` chama o handler Better Auth que invalida a sessao no banco via `nextCookies()`.
 - Nenhum schema, seed, migration, deploy manual, banco manual, imagem, tour ou checkout foi alterado.
 
+## RT-021A Revisao de UX, Navegacao e Busca Publica
+
+Estado: DONE local
+Objetivo: corrigir pequenos problemas publicos de UX/navegacao sem redesign e sem tocar em areas sensiveis.
+Escopo executado:
+- Hero Search corrigida para nao passar URL com locale duplicado ao router locale-aware.
+- Busca do catalogo corrigida de forma minima: `?search=` agora filtra titulo, descricao, cidade e localizacao.
+- Filtro lateral da pagina Nossos Tours removido do MVP com 2 tours.
+- CTA principal do card de tour agora leva ao detalhe/selecionar data, sem tentar criar booking sem `scheduleId`.
+- Footer sem `href="#"` visivel; redes sociais sem destino real foram removidas e "Precos" removido.
+
+Criterios de aceite: logo, contato, tours, cards e detalhe preservam locale; Hero Search nao gera locale duplicado; busca falsa removida/corrigida; Nossos Tours sem filtro inutil; card nao tenta reservar sem data; footer sem controles falsos; lint/typecheck/test/build/git diff --check PASS. Smoke local de rotas com tours depende de DB local; quando indisponivel, complementar com smoke HTTP read-only de producao e validacao local de navegacao que nao depende de DB.
+Restricoes mantidas: sem admin, auth/logout, seed, banco, migration, pagamento, schema, deploy manual ou regra de booking.
+
 ## Proxima Discussion Gate
 
-Nenhuma READY task aberta nesta pausa. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
-
-RT-021A - Revisao de UX, Navegacao e Busca Publica: futura/recomendada, nao READY. Escopo futuro: logo -> home; contato -> contato; menus desktop/mobile; rotas com locale; cards de tour; detalhe do tour; booking CTA; filtro da pagina Nossos Tours; busca da hero.
+Nenhuma READY task aberta apos RT-021A. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.

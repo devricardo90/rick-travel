@@ -5,6 +5,45 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 
 ---
 
+## 2026-05-01 - RT-021A Revisao de UX, Navegacao e Busca Publica
+
+**Executado por:** Codex (fixes locais + validacoes)
+**Ambiente:** local; sem deploy manual
+**Base remota:** `c7314f2 docs: align Rick Travel handoff after RT-019A`
+**Status:** DONE local
+
+**Objetivo:**
+Corrigir pequenos problemas publicos de UX/navegacao sem redesign e sem tocar em areas sensiveis.
+
+**Resultado:**
+- Hero Search corrigida para usar navegacao locale-aware sem gerar `/pt/pt/...`.
+- Busca do catalogo corrigida de forma minima: `?search=` agora filtra os tours renderizados.
+- Filtro lateral de Nossos Tours removido do MVP enquanto o catalogo tem 2 tours.
+- CTA principal do card de tour passou a levar ao detalhe/selecionar data.
+- Footer ficou sem links falsos `href="#"`.
+
+**Validacoes:**
+- `npm.cmd run lint`: PASS.
+- `npm.cmd run typecheck`: PASS.
+- `npm.cmd run test`: PASS com permissao elevada apos `spawn EPERM` no sandbox.
+- `npm.cmd run build`: PASS com permissao elevada apos `readlink EPERM` no sandbox; warnings conhecidos de workspace root e DB local indisponivel em rotas que consultam Prisma.
+- `git diff --check`: PASS.
+- Smoke local: `/pt/contato` `200`; `/pt/pt/tours` `404`; menu desktop/mobile em `/pt/contato` preserva locale nos links.
+- Smoke de producao read-only: `/pt`, `/pt/tours`, `/pt/contato`, `/pt/tours/cmolfs9eu000004l2trz4q8bf` e `/pt/tours/seed-001-cristo-dona-marta` retornaram `200`.
+- Smoke local completo de `/pt` e `/pt/tours` bloqueado por DB local indisponivel (`ECONNREFUSED`); app nao foi apontado para banco de producao.
+
+**Restricoes mantidas:**
+- Nenhum admin alterado.
+- Nenhum auth/logout alterado.
+- Nenhum seed executado.
+- Nenhuma migration executada.
+- Nenhum banco alterado.
+- Nenhum pagamento, schema ou regra de booking alterado.
+- Nenhum deploy manual executado.
+- Nenhuma nova READY task aberta.
+
+---
+
 ## 2026-04-30 - RT-019A Publicar Pao de Acucar com caminho controlado de dados
 
 **Executado por:** Claude Code (seed em producao + validacoes)

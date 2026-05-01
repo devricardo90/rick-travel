@@ -2,7 +2,7 @@
 
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { format } from "date-fns";
-import { Calendar, MapPin, Users, Loader2, Clock } from "lucide-react";
+import { Calendar, MapPin, Users, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { normalizeTripImage } from "@/lib/image-utils";
 import { useLocale, useTranslations } from "next-intl";
@@ -15,8 +15,6 @@ import { TripCardData } from "@/lib/types";
 
 interface TripCardProps {
     trip: TripCardData;
-    onReserve: (id: string) => void;
-    loading?: boolean;
 }
 
 function PhysicalLevelBadge({ level }: { level: string }) {
@@ -34,7 +32,20 @@ function PhysicalLevelBadge({ level }: { level: string }) {
     );
 }
 
-export function TripCard({ trip, onReserve, loading }: TripCardProps) {
+function getCardCtaLabel(locale: string) {
+    switch (locale) {
+        case "en":
+            return "View dates";
+        case "es":
+            return "Ver fechas";
+        case "sv":
+            return "Se datum";
+        default:
+            return "Ver datas";
+    }
+}
+
+export function TripCard({ trip }: TripCardProps) {
     const locale = useLocale();
     const t = useTranslations("TripCard");
     const startDate = trip.startDate ? new Date(trip.startDate) : null;
@@ -129,12 +140,10 @@ export function TripCard({ trip, onReserve, loading }: TripCardProps) {
 
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
-                                onClick={() => onReserve(trip.id)}
-                                disabled={loading}
+                                asChild
                                 className="shrink-0 rounded-xl bg-white text-slate-900 transition-all duration-200 hover:bg-white/92"
                             >
-                                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                {t("reserveNow")}
+                                <Link href={`/tours/${trip.id}`}>{getCardCtaLabel(locale)}</Link>
                             </Button>
                         </motion.div>
                     </div>

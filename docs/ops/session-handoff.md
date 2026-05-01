@@ -118,8 +118,9 @@ Evidencias:
 
 ## Estado atual do repositorio
 
-- GitHub `main` e repositorio local: `8f4061b docs: record RT-019A production seed validation`.
-- Git: working tree limpa e `main` sincronizada com `origin/main`.
+- GitHub `main`: `c7314f2 docs: align Rick Travel handoff after RT-019A`.
+- RT-021A: DONE local, commit local pendente de push apos validacoes.
+- Git esperado ao encerrar: working tree limpa e `main` ahead de `origin/main` apenas pelo commit local RT-021A.
 - Vercel production: RT-018E Production Smoke PASS; RT-019A Production Seed/Smoke PASS.
 - Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 
@@ -133,13 +134,14 @@ Evidencias:
 - RT-018B corrigiu o bug P1 identificado na RT-018A; smoke em producao confirmou usuario comum com "Acesso negado" e sem 500.
 - Nenhuma migration executada.
 - Seed de RT-019A executado uma unica vez; nao foi executado novamente apos a documentacao.
+- RT-021A corrigiu UX publica: Hero Search locale-aware sem locale duplicado, busca real por `search`, Nossos Tours sem filtro lateral, card levando ao detalhe/agenda, footer sem links falsos; lint/typecheck/test/build/git diff --check PASS.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Nenhuma READY task aberta nesta pausa.
-- Avaliar proximas tasks em Discussion Gate futura, sem abrir RT-017D, RT-017E ou RT-021A automaticamente.
+- Nenhuma READY task aberta apos RT-021A.
+- Push do commit local RT-021A depende de autorizacao separada do Trigger.
 
 ## Proxima acao recomendada
 
-Discussion Gate: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero. Depois dessa task de admin, considerar RT-021A - Revisao de UX, Navegacao e Busca Publica apenas como futura/recomendada, nao READY; escopo futuro: logo -> home, contato -> contato, menus desktop/mobile, rotas com locale, cards de tour, detalhe do tour, booking CTA, filtro da pagina Nossos Tours e busca da hero.
+Com RT-021A encerrada localmente, proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
