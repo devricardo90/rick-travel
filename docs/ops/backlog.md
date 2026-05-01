@@ -918,7 +918,7 @@ Notas operacionais:
 
 ## RT-021A Revisao de UX, Navegacao e Busca Publica
 
-Estado: DONE local
+Estado: DONE
 Objetivo: corrigir pequenos problemas publicos de UX/navegacao sem redesign e sem tocar em areas sensiveis.
 Escopo executado:
 - Hero Search corrigida para nao passar URL com locale duplicado ao router locale-aware.
@@ -927,9 +927,9 @@ Escopo executado:
 - CTA principal do card de tour agora leva ao detalhe/selecionar data, sem tentar criar booking sem `scheduleId`.
 - Footer sem `href="#"` visivel; redes sociais sem destino real foram removidas e "Precos" removido.
 
-Criterios de aceite: logo, contato, tours, cards e detalhe preservam locale; Hero Search nao gera locale duplicado; busca falsa removida/corrigida; Nossos Tours sem filtro inutil; card nao tenta reservar sem data; footer sem controles falsos; lint/typecheck/test/build/git diff --check PASS. Smoke local de rotas com tours depende de DB local; quando indisponivel, complementar com smoke HTTP read-only de producao e validacao local de navegacao que nao depende de DB.
+Criterios de aceite: logo, contato, tours, cards e detalhe preservam locale; Hero Search nao gera locale duplicado; busca falsa removida/corrigida; Nossos Tours sem filtro inutil; card nao tenta reservar sem data; footer sem controles falsos; lint/typecheck/test/build/git diff --check PASS. Production UX Smoke PASS em `69379fe`: Hero Search sem `/pt/pt`, `?search=Pao` filtra Pao de Acucar e exclui Cristo, busca sem resultado mostra empty state generico aceitavel, detalhes dos 2 tours `200`, CTA de reserva anonima redireciona para login com redirect seguro sem criar booking, menu desktop/mobile preserva locale.
 Restricoes mantidas: sem admin, auth/logout, seed, banco, migration, pagamento, schema, deploy manual ou regra de booking.
 
 ## Proxima Discussion Gate
 
-Nenhuma READY task aberta apos RT-021A. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
+Nenhuma READY task aberta apos RT-021A Production UX Smoke PASS. Proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.

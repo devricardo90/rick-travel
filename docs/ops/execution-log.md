@@ -10,7 +10,8 @@ Nao registrar operacoes de codigo ou commits rotineiros — apenas execucoes com
 **Executado por:** Codex (fixes locais + validacoes)
 **Ambiente:** local; sem deploy manual
 **Base remota:** `c7314f2 docs: align Rick Travel handoff after RT-019A`
-**Status:** DONE local
+**Commit remoto:** `69379fe fix: polish public tour navigation UX`
+**Status:** Remote DONE + Production UX Smoke PASS
 
 **Objetivo:**
 Corrigir pequenos problemas publicos de UX/navegacao sem redesign e sem tocar em areas sensiveis.
@@ -31,6 +32,7 @@ Corrigir pequenos problemas publicos de UX/navegacao sem redesign e sem tocar em
 - Smoke local: `/pt/contato` `200`; `/pt/pt/tours` `404`; menu desktop/mobile em `/pt/contato` preserva locale nos links.
 - Smoke de producao read-only: `/pt`, `/pt/tours`, `/pt/contato`, `/pt/tours/cmolfs9eu000004l2trz4q8bf` e `/pt/tours/seed-001-cristo-dona-marta` retornaram `200`.
 - Smoke local completo de `/pt` e `/pt/tours` bloqueado por DB local indisponivel (`ECONNREFUSED`); app nao foi apontado para banco de producao.
+- Production UX Smoke pos-push: Hero Search nao gera `/pt/pt` e navegou para `/pt/tours/cmolfs9eu000004l2trz4q8bf`; `?search=Pao` mostrou Pao de Acucar e nao mostrou Cristo; busca sem resultado mostrou empty state generico aceitavel; cards levam ao detalhe, nao ao booking direto; detalhes dos 2 tours retornam `200`; CTA de reserva anonima no detalhe redireciona para login com redirect seguro; nenhum booking foi criado; footer sem `href="#"`; menu desktop/mobile preserva locale.
 
 **Restricoes mantidas:**
 - Nenhum admin alterado.

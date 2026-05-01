@@ -119,8 +119,8 @@ Evidencias:
 ## Estado atual do repositorio
 
 - GitHub `main`: `c7314f2 docs: align Rick Travel handoff after RT-019A`.
-- RT-021A: DONE local, commit local pendente de push apos validacoes.
-- Git esperado ao encerrar: working tree limpa e `main` ahead de `origin/main` apenas pelo commit local RT-021A.
+- RT-021A: Remote DONE + Production UX Smoke PASS no commit `69379fe fix: polish public tour navigation UX`.
+- GitHub `main` esperado ao encerrar: topo `69379fe` sincronizado apos commit documental de smoke, se autorizado para push posteriormente.
 - Vercel production: RT-018E Production Smoke PASS; RT-019A Production Seed/Smoke PASS.
 - Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
 
@@ -134,13 +134,13 @@ Evidencias:
 - RT-018B corrigiu o bug P1 identificado na RT-018A; smoke em producao confirmou usuario comum com "Acesso negado" e sem 500.
 - Nenhuma migration executada.
 - Seed de RT-019A executado uma unica vez; nao foi executado novamente apos a documentacao.
-- RT-021A corrigiu UX publica: Hero Search locale-aware sem locale duplicado, busca real por `search`, Nossos Tours sem filtro lateral, card levando ao detalhe/agenda, footer sem links falsos; lint/typecheck/test/build/git diff --check PASS.
+- RT-021A corrigiu UX publica: Hero Search locale-aware sem locale duplicado, busca real por `search`, Nossos Tours sem filtro lateral, card levando ao detalhe/agenda, footer sem links falsos; lint/typecheck/test/build/git diff --check PASS; Production UX Smoke PASS.
 
 ## O que continua pendente
 
 - Janela controlada para o residual de `npm audit` em Prisma dev tooling.
-- Nenhuma READY task aberta apos RT-021A.
-- Push do commit local RT-021A depende de autorizacao separada do Trigger.
+- Nenhuma READY task aberta apos RT-021A Production UX Smoke PASS.
+- Observacao futura opcional: empty state de busca sem resultado usa copy generica aceitavel; nao corrigir microcopy agora.
 
 ## Proxima acao recomendada
 

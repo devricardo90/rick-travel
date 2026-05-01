@@ -68,8 +68,8 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - RT-018D DONE: Validate Existing Production Admin User executado em produção; login ADMIN PASS; rotas admin PASS; booking `cmoli78ld000204js1agra4il` visível PASS.
 - RT-018E DONE + Production Smoke PASS: Fix Logout Flow; causa raiz: rota customizada `app/api/auth/sign-out/route.ts` interceptava o handler Better Auth e limpava cookies sem invalidar sessao no banco; solucao: rota removida, `authClient.signOut()` agora atinge `[...all]` corretamente; commit `837694b`; lint/typecheck/test/build PASS; push para `origin/main` concluido; smoke em producao validou header `X-Matched-Path: /api/auth/[...all]`, clear cookies e redirect para locale.
 - RT-019A Remote DONE + Production Seed/Smoke PASS: Publicar Pao de Acucar com caminho controlado de dados; seed detectou tour existente pelo titulo "Pao de Acucar ao Entardecer" e reutilizou o ID `cmolfs9eu000004l2trz4q8bf`, evitando duplicacao; `isPublished` setado para `true`; imagem correta aplicada; agenda futura criada; `/pt/tours` exibe 2 tours; fluxo de reserva validado; mantida imagem atual do Cristo (`/images/trips/imagem-morro-pao-de-acucar.jpg`) como pendencia visual para task futura.
-- RT-021A DONE local: Revisao de UX, Navegacao e Busca Publica; corrigida Hero Search para usar navegacao locale-aware sem duplicar locale; busca do catalogo passou a consumir `search`; filtro lateral de Nossos Tours removido do MVP; card de tour agora leva ao detalhe/selecionar data; footer ficou sem `href="#"` visivel; lint/typecheck/test/build PASS; sem admin, auth/logout, seed, banco, migration, pagamento, schema ou regra de booking.
-- GitHub `main` remoto estava em `c7314f2 docs: align Rick Travel handoff after RT-019A` antes da RT-021A; RT-021A fica como commit local pendente de push.
+- RT-021A Remote DONE + Production UX Smoke PASS: Revisao de UX, Navegacao e Busca Publica; commit `69379fe fix: polish public tour navigation UX`; Hero Search nao gera `/pt/pt`; `?search=Pao` mostra Pao de Acucar e nao mostra Cristo; busca sem resultado mostra empty state generico aceitavel; cards levam ao detalhe, nao ao booking direto; detalhes dos 2 tours retornam `200`; CTA de reserva no detalhe redireciona anonimo para login com redirect seguro, sem criar booking; footer sem `href="#"`; menu desktop/mobile preserva locale; sem admin, auth/logout, seed, banco, migration, pagamento, schema ou regra de booking.
+- GitHub `main` remoto esta em `69379fe fix: polish public tour navigation UX` apos RT-021A.
 - Vercel production validada com RT-018E smoke e RT-019A production seed/smoke.
 
 - Neon production: 2 Trips publicadas no catalogo (`Cristo Redentor + Mirante Dona Marta` e `Pao de Acucar ao Entardecer`), agendas futuras ativas, sem duplicacao de Pao de Acucar, 1 Booking de teste (status CANCELED) e 1 booking de auditoria criado pelo fluxo publico normal (`cmoli78ld000204js1agra4il`).
@@ -100,13 +100,13 @@ O projeto nao esta mais na etapa de bloqueio de build nem na etapa de preparo de
 - `GET /robots.txt`: `200`.
 - `GET /sitemap.xml`: `200`.
 - RT-016A production smoke PASS: `/pt/tours` abre; detalhe do tour abre; booking cria; usuario redireciona para `/pt/reservas/{bookingId}`; pagina de confirmacao funciona; mensagem de pre-reserva/confirmacao manual esta clara; `/pt/reservas` lista a reserva; "Ver detalhes" abre o detalhe; payment status nao exibe enum cru; admin booking list segue funcional.
-- RT-021A smoke: producao read-only confirmou `/pt`, `/pt/tours`, `/pt/contato` e detalhes dos 2 tours com `200`; local confirmou `/pt/contato` `200`, `/pt/pt/tours` `404` e menu desktop/mobile com links locale-aware. Smoke local completo de `/pt` e `/pt/tours` ficou bloqueado por DB local indisponivel (`ECONNREFUSED`), sem apontar o app para banco de producao.
+- RT-021A Production UX Smoke PASS: `/pt`, `/pt/tours`, `/pt/contato` e detalhes dos 2 tours retornam `200`; Hero Search navega para `/pt/tours/cmolfs9eu000004l2trz4q8bf` sem locale duplicado; `?search=Pao` filtra corretamente; busca sem resultado exibe empty state generico aceitavel; card CTAs apontam para `/pt/tours/{id}`; reserva anonima no detalhe redireciona para login com redirect seguro; footer sem links falsos; menu desktop/mobile preserva locale.
 
 ## Foco atual
 
 ### Curto prazo
 
-- nenhuma READY task aberta apos RT-021A;
+- nenhuma READY task aberta apos RT-021A Production UX Smoke PASS;
 - proxima Discussion Gate recomendada: evoluir o admin existente para edicao/publicacao de tours, sem recriar o admin do zero.
 
 
